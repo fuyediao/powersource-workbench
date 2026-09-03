@@ -14,7 +14,7 @@
   "errorOtpVerify": "验证码无效或已过期，请重试。",
   "logIn": "登录",
   "modeEmailOtp": "验证码",
-  "notConfigured": "尚未配置 Supabase。请设置 VITE_DEPLOYMENT_DOMAIN 与 VITE_SUPABASE_ANON_KEY。",
+  "notConfigured": "尚未配置 Supabase。请设置 VITE_DEPLOYMENT_DOMAIN 与 VITE_SUPABASE_PUBLISHABLE_KEY。",
   "or": "或",
   "otpInvalid": "请输入 6 位验证码。",
   "otpLabel": "验证码",
@@ -28,9 +28,13 @@
   "passwordSignInFailed": "登录失败，请检查邮箱与密码，或改用验证码登录。",
   "resend": "重新发送",
   "resendIn": "{{seconds}} 秒后可重发",
+  "signIn": "登录",
   "signingIn": "登录中…",
   "signInWithApple": "使用 Apple 登录",
   "signInWithGoogle": "使用 Google 账号登录",
   "signOut": "登出",
+  "subtitle": "使用 Workbench 用户名和密码登录。",
+  "title": "欢迎回来",
+  "username": "用户名",
   "welcomeBack": "欢迎回来！"
 }

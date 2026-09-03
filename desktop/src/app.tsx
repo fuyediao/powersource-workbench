@@ -426,13 +426,8 @@ export default function App() {
     body = (
       <LoginPage
         error={auth.error}
-        configured={auth.configured}
-        isBusy={auth.isActionLoading}
-        onClearError={auth.clearError}
-        onSignInWithGoogle={auth.signInWithGoogle}
-        onSignInWithPassword={auth.signInWithPassword}
-        onSignInWithOtp={auth.signInWithOtp}
-        onVerifyEmailOtp={auth.verifyEmailOtp}
+        loading={auth.isActionLoading}
+        onLogin={auth.login}
       />
     )
   } else {

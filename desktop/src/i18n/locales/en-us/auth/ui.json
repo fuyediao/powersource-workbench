@@ -14,7 +14,7 @@
   "errorOtpVerify": "Invalid or expired verification code. Please try again.",
   "logIn": "Log in",
   "modeEmailOtp": "Code",
-  "notConfigured": "Supabase is not configured. Set VITE_DEPLOYMENT_DOMAIN and VITE_SUPABASE_ANON_KEY.",
+  "notConfigured": "Supabase is not configured. Set VITE_DEPLOYMENT_DOMAIN and VITE_SUPABASE_PUBLISHABLE_KEY.",
   "or": "or",
   "otpInvalid": "Please enter the 6-digit code.",
   "otpLabel": "Verification code",
@@ -28,9 +28,13 @@
   "passwordSignInFailed": "Sign-in failed. Check your email and password, or use the verification code tab.",
   "resend": "Send again",
   "resendIn": "Send again in {{seconds}}s",
+  "signIn": "Sign in",
   "signingIn": "Signing in…",
   "signInWithApple": "Log in with Apple",
   "signInWithGoogle": "Log in with Google",
   "signOut": "Sign out",
+  "subtitle": "Sign in with your Workbench username and password.",
+  "title": "Welcome back",
+  "username": "Username",
   "welcomeBack": "Welcome back!"
 }

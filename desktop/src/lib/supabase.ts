@@ -1,13 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from '@/types/database'
-import { resolveSupabaseUrl } from '@/config/deployment-urls'
+import { resolveSupabasePublishableKey, resolveSupabaseUrl } from '@/config/deployment-urls'
 
 const supabaseUrl = resolveSupabaseUrl()
-const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim() ?? ''
+const supabaseAnonKey = resolveSupabasePublishableKey()
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn(
-    'Missing VITE_DEPLOYMENT_DOMAIN or VITE_SUPABASE_ANON_KEY. Auth is disabled.',
+    'Missing VITE_DEPLOYMENT_DOMAIN or VITE_SUPABASE_PUBLISHABLE_KEY. Auth is disabled.',
   )
 }
 
@@ -25,5 +25,5 @@ export const supabase =
       })
     : null
 
-/** True when Supabase URL and anon key are configured. */
+/** True when Supabase URL and publishable key are configured. */
 export const isSupabaseConfigured = Boolean(supabase)

@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Replaced GeoCRM email, Google, and OTP login with Workbench username and password sign-in through `workbench-api`, while keeping Supabase sessions for the copied desktop shell.
+- Updated desktop env to two lines: `VITE_DEPLOYMENT_DOMAIN=powersource.work` and `VITE_SUPABASE_PUBLISHABLE_KEY`, deriving API and Supabase URLs in code.
 - Replaced the slim Workbench Electron shell with a full copy of the GeoCRM Electron source tree, including bundled libraries and the example environment file.
 - Set the first super-admin username to `ps0000`. The password is stored in Auth only, not in local `.env` files.
 - Removed leftover local binaries, empty backend folders, unused Electron locale IPC, unused i18n keys, and the unused invitation Edge Functions.

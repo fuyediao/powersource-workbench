@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Replaced GeoCRM email, Google, and OTP login with Workbench username and password sign-in through `workbench-api`, while keeping Supabase sessions for the copied desktop shell.
+- Updated desktop env to two lines: `VITE_DEPLOYMENT_DOMAIN=powersource.work` and `VITE_SUPABASE_PUBLISHABLE_KEY`, deriving API and Supabase URLs in code.
 - Replaced the slim Workbench shell with a full copy of the GeoCRM Electron source tree so the desktop UI can be adapted in place.
 - Stored the Simplified Chinese locale as `zh-cn.json` / `zh-CN` instead of a Traditional Chinese filename.
 - Clarified the sign-in subtitle so it no longer refers to an existing administrator account.
