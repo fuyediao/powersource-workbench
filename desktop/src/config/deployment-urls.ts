@@ -7,7 +7,10 @@ export function resolveDeploymentHost(domain: string): string {
   return domain.trim().replace(/^https?:\/\//, '').replace(/\/$/, '')
 }
 
-/** Resolves the public Supabase URL used by the desktop client. */
+/**
+ * Resolves the public Supabase URL used by the desktop client.
+ * @returns The configured or derived Supabase URL.
+ */
 export function resolveSupabaseUrl(): string {
   const explicit = import.meta.env.VITE_SUPABASE_URL?.trim()
   if (explicit) {
@@ -20,14 +23,20 @@ export function resolveSupabaseUrl(): string {
   return import.meta.env.DEV ? 'http://127.0.0.1:54321' : 'https://supabase.powersource.work'
 }
 
-/** Reads the public Supabase API key embedded in the desktop build. */
+/**
+ * Reads the public Supabase API key embedded in the desktop build.
+ * @returns The required Supabase publishable or legacy anonymous key.
+ */
 export function resolveSupabasePublishableKey(): string {
   const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim()
   if (!key) throw new Error('VITE_SUPABASE_PUBLISHABLE_KEY is required')
   return key
 }
 
-/** Resolves the internal email domain used to represent username-only accounts. */
+/**
+ * Resolves the internal email domain used to represent username-only accounts.
+ * @returns The internal account email domain.
+ */
 export function resolveAccountEmailDomain(): string {
   return resolveDeploymentHost(import.meta.env.VITE_WORKBENCH_ACCOUNT_EMAIL_DOMAIN ?? '')
     || 'accounts.powersource.work'

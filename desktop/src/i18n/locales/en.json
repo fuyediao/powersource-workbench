@@ -83,6 +83,8 @@
     "username_unavailable": "This username is already in use or reserved.",
     "forbidden": "This action is available only to the system administrator.",
     "invalid_session": "Your session has expired. Sign in again.",
+    "invalid_api_key": "The desktop Supabase key is invalid.",
+    "method_not_allowed": "This operation is not supported.",
     "origin_not_allowed": "This application origin is not allowed.",
     "internal_error": "The server could not complete the request.",
     "network_error": "The Supabase service is unavailable."

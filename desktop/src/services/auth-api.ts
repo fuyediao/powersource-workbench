@@ -23,17 +23,29 @@ interface SupabaseTokenResponse {
 
 const usernamePattern = /^[a-z0-9][a-z0-9._-]{2,31}$/
 
-/** Normalizes a username before it is sent to Supabase Auth. */
+/**
+ * Normalizes a username before it is sent to Supabase Auth.
+ * @param username - User-supplied Workbench username.
+ * @returns The normalized username.
+ */
 function normalizeUsername(username: string): string {
   return username.trim().toLowerCase()
 }
 
-/** Maps a Workbench username to the internal email identity used by Supabase Auth. */
+/**
+ * Maps a Workbench username to the internal email identity used by Supabase Auth.
+ * @param username - Normalized Workbench username.
+ * @returns The internal Supabase Auth email address.
+ */
 function usernameToEmail(username: string): string {
   return `${username}@${resolveAccountEmailDomain()}`
 }
 
-/** Converts a Supabase Auth user into the public Workbench account shape. */
+/**
+ * Converts a Supabase Auth user into the public Workbench account shape.
+ * @param user - Supabase Auth user payload.
+ * @returns A Workbench account.
+ */
 function mapUser(user: SupabaseAuthUser): WorkbenchUser {
   const metadata = user.app_metadata ?? {}
   const emailUsername = user.email?.split('@', 1)[0] ?? ''
@@ -43,7 +55,11 @@ function mapUser(user: SupabaseAuthUser): WorkbenchUser {
   return { id: user.id, username, displayName, role }
 }
 
-/** Persists tokens from a Supabase password or refresh exchange. */
+/**
+ * Persists tokens from a Supabase password or refresh exchange.
+ * @param response - Supabase token response.
+ * @returns The normalized stored session.
+ */
 function persistTokenResponse(response: SupabaseTokenResponse): StoredAuthSession {
   const session = {
     accessToken: response.access_token,
@@ -54,7 +70,10 @@ function persistTokenResponse(response: SupabaseTokenResponse): StoredAuthSessio
   return session
 }
 
-/** Returns a fresh Supabase access session, refreshing it when necessary. */
+/**
+ * Returns a fresh Supabase access session, refreshing it when necessary.
+ * @returns A usable Supabase session.
+ */
 async function ensureSession(): Promise<StoredAuthSession> {
   const session = readAuthSession()
   if (!session) throw new Error('invalid_session')
@@ -65,7 +84,12 @@ async function ensureSession(): Promise<StoredAuthSession> {
   return persistTokenResponse(response.data)
 }
 
-/** Signs in with an invited Workbench username and password. */
+/**
+ * Signs in with an invited Workbench username and password.
+ * @param username - Workbench username.
+ * @param password - Account password.
+ * @returns The authenticated Workbench user.
+ */
 export async function signIn(username: string, password: string): Promise<WorkbenchUser> {
   const normalizedUsername = normalizeUsername(username)
   if (!usernamePattern.test(normalizedUsername)) throw new Error('invalid_username')
@@ -77,7 +101,13 @@ export async function signIn(username: string, password: string): Promise<Workbe
   return mapUser(response.data.user)
 }
 
-/** Activates a one-time invitation and signs into the new Supabase account. */
+/**
+ * Activates a one-time invitation and signs into the new Supabase account.
+ * @param invitationCode - One-time invitation code.
+ * @param username - Reserved Workbench username.
+ * @param password - New account password.
+ * @returns The authenticated Workbench user.
+ */
 export async function activateInvitation(
   invitationCode: string,
   username: string,
@@ -92,7 +122,10 @@ export async function activateInvitation(
   return signIn(normalizedUsername, password)
 }
 
-/** Loads the current account from Supabase Auth using a persisted session. */
+/**
+ * Loads the current account from Supabase Auth using a persisted session.
+ * @returns The authenticated Workbench user.
+ */
 export async function loadSession(): Promise<WorkbenchUser> {
   const session = await ensureSession()
   const response = await supabaseAuthApi.get<SupabaseAuthUser>('/user', {
@@ -101,7 +134,10 @@ export async function loadSession(): Promise<WorkbenchUser> {
   return mapUser(response.data)
 }
 
-/** Invalidates the current Supabase Auth session. */
+/**
+ * Invalidates the current Supabase Auth session.
+ * @returns Nothing.
+ */
 export async function signOut(): Promise<void> {
   const session = readAuthSession()
   try {
@@ -115,7 +151,12 @@ export async function signOut(): Promise<void> {
   }
 }
 
-/** Creates a one-time account invitation through the administrator Edge Function. */
+/**
+ * Creates a one-time account invitation through the administrator Edge Function.
+ * @param username - Username reserved for the invitee.
+ * @param displayName - Optional display name.
+ * @returns The new invitation details.
+ */
 export async function createInvitation(
   username: string,
   displayName: string,

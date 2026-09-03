@@ -83,6 +83,8 @@
     "username_unavailable": "这个账号已经被使用或预留。",
     "forbidden": "只有系统管理员可以执行这项操作。",
     "invalid_session": "登录已过期，请重新登录。",
+    "invalid_api_key": "桌面端的 Supabase 金钥无效。",
+    "method_not_allowed": "不支援这项操作。",
     "origin_not_allowed": "这个应用来源不在允许清单中。",
     "internal_error": "服务器暂时无法完成要求。",
     "network_error": "目前无法连接 Supabase 服务。"

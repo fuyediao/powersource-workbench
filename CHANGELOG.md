@@ -16,3 +16,5 @@ All notable changes to PowerSource Workbench are documented here.
 - Added support for the current Supabase server secret key while retaining compatibility with legacy service-role deployments.
 - Replaced the interim Go API with direct Supabase Auth, RLS-protected profiles, and invitation Edge Functions.
 - Moved client configuration to a public Supabase URL and publishable key while keeping privileged keys only in ignored deployment files.
+- Added Edge Function compatibility for both current Supabase keys and the legacy anonymous and service-role keys used by the existing self-hosted deployment.
+- Added direct-auth helper tests and excluded generated Python bytecode from source control.

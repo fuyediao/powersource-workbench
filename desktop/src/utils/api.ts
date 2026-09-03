@@ -28,7 +28,10 @@ export const supabaseFunctionsApi = axios.create({
   headers: commonHeaders,
 })
 
-/** Reads and validates the locally persisted Supabase session. */
+/**
+ * Reads and validates the locally persisted Supabase session.
+ * @returns The stored session or null when none is valid.
+ */
 export function readAuthSession(): StoredAuthSession | null {
   const stored = localStorage.getItem(sessionStorageKey)
   if (!stored) return null
@@ -48,7 +51,11 @@ export function readAuthSession(): StoredAuthSession | null {
   }
 }
 
-/** Persists or removes the current Supabase session. */
+/**
+ * Persists or removes the current Supabase session.
+ * @param session - Session to persist, or null to clear it.
+ * @returns Nothing.
+ */
 export function persistAuthSession(session: StoredAuthSession | null): void {
   if (session) {
     localStorage.setItem(sessionStorageKey, JSON.stringify(session))

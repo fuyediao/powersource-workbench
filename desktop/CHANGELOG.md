@@ -13,3 +13,4 @@ All notable changes to the PowerSource Workbench desktop application are documen
 - Removed legacy product terminology from the visible Workbench experience.
 - Replaced the Go API session client with direct Supabase Auth and Edge Function calls.
 - Added persisted Supabase access-token refresh while keeping the interface username-only.
+- Improved localization of direct Supabase Auth and Edge Function error codes.
