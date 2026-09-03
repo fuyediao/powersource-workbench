@@ -62,11 +62,11 @@
     "subtitle": "Explore specialized AI tools across business, creative, technical, and research workflows.",
     "searchPlaceholder": "Search tools",
     "myAssistants": "My tools",
-    "myAssistantsSubtitle": "Tools synchronized with your PowerSource Workbench account.",
+    "myAssistantsSubtitle": "Tools synchronized with your Workbench account.",
     "create": "Create",
     "categories": "Tool categories",
     "featured": "Featured",
-    "featuredSubtitle": "Recommended PowerSource Workbench tools for this week.",
+    "featuredSubtitle": "Recommended Workbench tools for this week.",
     "searchResults": "Search results",
     "emptySearch": "No tools match your search.",
     "emptyMine": "You have not created a tool yet.",
@@ -284,7 +284,7 @@
       "title": "Connectors",
       "subtitle": "Connect Harness to business services and MCP servers.",
       "custom": "Custom connector",
-      "workbench": "Built-in access to signed-in PowerSource Workbench customers, opportunities, activity, and business context.",
+      "workbench": "Built-in access to signed-in Workbench customers, opportunities, activity, and business context.",
       "dropbox": "Search and reference files from Dropbox through an authorized account.",
       "gmail": "Search, read, draft, and organize Gmail through an authorized account.",
       "googleCalendar": "Review and manage Google Calendar events after authorization.",
@@ -325,7 +325,7 @@
       "productivity": "Organize sales work, meetings, documents, and CRM data."
     },
     "creator": {
-      "workbench": "By PowerSource Workbench",
+      "workbench": "By Workbench",
       "you": "By you"
     },
     "creatorForm": {
@@ -566,7 +566,7 @@
     "empty": "No skills yet.",
     "emptyEntries": "No entries in this category yet.",
     "newEntry": "New entry",
-    "unavailable": "Connect the PowerSource Workbench API to store skills on your account.",
+    "unavailable": "Connect the Workbench API to store skills on your account.",
     "generator": {
       "title": "Describe what you want to create",
       "hint": "The selected model creates an editable draft. Nothing is saved until you review it.",
@@ -677,7 +677,7 @@
     "create": "Create",
     "searchPlaceholder": "Search scheduled tasks",
     "empty": "No scheduled tasks yet.",
-    "sampleNotice": "Sample tasks. Connect the PowerSource Workbench API to store them on your account.",
+    "sampleNotice": "Sample tasks. Connect the Workbench API to store them on your account.",
     "nextRun": "Next",
     "runNow": "Run now",
     "pause": "Pause",

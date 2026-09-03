@@ -84,7 +84,7 @@
     "systemAdminRevoked": "System administrator revoked."
   },
   "errors": {
-    "apiNotConfigured": "The PowerSource Workbench API URL is not configured.",
+    "apiNotConfigured": "The Workbench API URL is not configured.",
     "loadFailed": "Failed to load users.",
     "createFailed": "Failed to create user.",
     "updateFailed": "Failed to update user.",

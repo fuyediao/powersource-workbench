@@ -48,7 +48,7 @@
     "entitlements": "build/entitlements.mac.plist",
     "entitlementsInherit": "build/entitlements.mac.plist",
     "extendInfo": {
-      "CFBundleName": "PowerSource Workbench",
+      "CFBundleName": "Workbench",
       "CFBundleDisplayName": "PowerSource Workbench"
     }
   },

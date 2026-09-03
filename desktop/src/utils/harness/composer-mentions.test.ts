@@ -11,7 +11,7 @@ import {
 describe('Harness composer @ mentions', () => {
   it('builds a compact token from a display name', () => {
     expect(mentionToken('Google Calendar')).toBe('GoogleCalendar')
-    expect(mentionToken('PowerSource Workbench')).toBe('PowerSourceWorkbench')
+    expect(mentionToken('Workbench')).toBe('Workbench')
   })
 
   it('detects an active @ query at the caret', () => {
@@ -47,10 +47,10 @@ describe('Harness composer @ mentions', () => {
       ],
       ['Dropbox'],
     )
-    expect(catalog[0]?.name).toBe('PowerSource Workbench')
+    expect(catalog[0]?.name).toBe('Workbench')
     expect(filterMentionOptions(catalog, 'gm').map((item) => item.name)).toEqual(['Gmail'])
-    expect(mentionsInText('Read @Gmail and @PowerSourceWorkbench', catalog)).toEqual([
-      { name: 'PowerSource Workbench', path: '' },
+    expect(mentionsInText('Read @Gmail and @Workbench', catalog)).toEqual([
+      { name: 'Workbench', path: '' },
       { name: 'Gmail', path: 'app://gmail' },
     ])
   })

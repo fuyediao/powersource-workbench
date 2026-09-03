@@ -135,7 +135,7 @@ export function buildMentionCatalog(
   const rows: ComposerMentionOption[] = [
     {
       id: 'workbench',
-      name: 'PowerSource Workbench',
+      name: 'Workbench',
       path: '',
       kind: 'workbench',
       callable: true,

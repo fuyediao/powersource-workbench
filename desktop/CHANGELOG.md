@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Used Workbench in everyday chrome (window, tray, menu, title bar) and kept PowerSource Workbench for the installer, About panel, and legal copy.
 - Loaded Home weather, FX, stock and crypto quotes, news, and search suggestions from workbench-api `/start/*` instead of calling those third-party APIs from the renderer.
 - Stored Home and Settings appearance (theme, widgets, wallpapers, opacities, search engine, weather, currency, todos, and search history) in local SQLite instead of company Supabase.
 - Cached sign-in tokens in main-process SQLite so quitting after login still restores the session, and kept the last username on the login form.

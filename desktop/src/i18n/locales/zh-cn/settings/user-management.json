@@ -84,7 +84,7 @@
     "systemAdminRevoked": "已撤销系统管理员。"
   },
   "errors": {
-    "apiNotConfigured": "尚未配置 PowerSource Workbench API 地址。",
+    "apiNotConfigured": "尚未配置 Workbench API 地址。",
     "loadFailed": "加载用户失败。",
     "createFailed": "创建用户失败。",
     "updateFailed": "更新用户失败。",

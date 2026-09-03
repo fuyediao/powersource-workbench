@@ -1,5 +1,5 @@
 import { BrowserWindow, Menu, app, type MenuItemConstructorOptions } from 'electron'
-import { APP_DISPLAY_NAME } from '../shared/app-identity'
+import { APP_SHORT_NAME } from '../shared/app-identity'
 import {
   MENU_AURA_EVENT,
   MENU_AURA_LIBRARY_EVENT,
@@ -95,13 +95,13 @@ import { quitWindowsApp, updateWindowsTrayMenu } from './platform/windows/tray'
 import { toggleSpotlight } from './spotlight'
 
 const DEFAULT_LABELS: ApplicationMenuLabels = {
-  about: `About ${APP_DISPLAY_NAME}`,
-  hide: `Hide ${APP_DISPLAY_NAME}`,
+  about: `About ${APP_SHORT_NAME}`,
+  hide: `Hide ${APP_SHORT_NAME}`,
   hideOthers: 'Hide Others',
   showAll: 'Show All',
-  quit: `Quit ${APP_DISPLAY_NAME}`,
+  quit: `Quit ${APP_SHORT_NAME}`,
   spotlight: 'Spotlight',
-  openApp: `Open ${APP_DISPLAY_NAME}`,
+  openApp: `Open ${APP_SHORT_NAME}`,
   agentOverlay: 'Ask Agent',
   signOut: 'Sign out',
   file: 'File',
@@ -3165,7 +3165,7 @@ function buildDarwinTemplate(state: ApplicationMenuState): MenuItemConstructorOp
 
   return [
     {
-      label: APP_DISPLAY_NAME,
+      label: APP_SHORT_NAME,
       submenu: [
         { role: 'about', label: labels.about },
         { type: 'separator' },
@@ -3295,7 +3295,7 @@ function buildNonDarwinTemplate(state: ApplicationMenuState): MenuItemConstructo
   const { signedIn, canCloseTab, labels } = state
   return [
     {
-      label: APP_DISPLAY_NAME,
+      label: APP_SHORT_NAME,
       submenu: [
         {
           label: labels.settings,

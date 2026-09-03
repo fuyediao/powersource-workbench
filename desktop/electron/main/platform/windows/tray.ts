@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Tray, nativeImage } from 'electron'
 import path from 'node:path'
-import { APP_DISPLAY_NAME } from '../../../shared/app-identity'
+import { APP_SHORT_NAME } from '../../../shared/app-identity'
 import type { ApplicationMenuLabels } from '../../../shared/ipc'
 import { OPEN_SETTINGS_EVENT, SIGN_OUT_EVENT } from '../../../shared/ipc'
 import {
@@ -115,7 +115,7 @@ export function createWindowsTray(
   const iconPath = path.join(iconDir, 'favicon.ico')
   const image = nativeImage.createFromPath(iconPath)
   tray = new Tray(image.isEmpty() ? nativeImage.createEmpty() : image)
-  tray.setToolTip(APP_DISPLAY_NAME)
+  tray.setToolTip(APP_SHORT_NAME)
   refreshWindowsTrayMenu()
   tray.on('click', () => showBrowserWindow(getWindowRef()))
   tray.on('double-click', () => showBrowserWindow(getWindowRef()))

@@ -62,11 +62,11 @@
     "subtitle": "探索涵蓋商業、創作、技術與研究工作流的專業 AI 工具。",
     "searchPlaceholder": "搜尋工具",
     "myAssistants": "我的工具",
-    "myAssistantsSubtitle": "與你的 PowerSource Workbench 帳號同步的工具。",
+    "myAssistantsSubtitle": "與你的 Workbench 帳號同步的工具。",
     "create": "建立",
     "categories": "工具分類",
     "featured": "精選",
-    "featuredSubtitle": "本週推薦的 PowerSource Workbench 工具。",
+    "featuredSubtitle": "本週推薦的 Workbench 工具。",
     "searchResults": "搜尋結果",
     "emptySearch": "找不到符合搜尋條件的工具。",
     "emptyMine": "你還沒有建立工具。",
@@ -149,7 +149,7 @@
     },
     "connectors": {
       "title": "連接器", "subtitle": "將 Harness 連接到業務服務與 MCP 服務。", "custom": "自訂連接器",
-      "workbench": "使用登入工作階段直接存取 PowerSource Workbench 客戶、商機、活動與業務背景。",
+      "workbench": "使用登入工作階段直接存取 Workbench 客戶、商機、活動與業務背景。",
       "dropbox": "授權後搜尋並引用 Dropbox 檔案。", "gmail": "授權後搜尋、讀取、撰寫並整理 Gmail。",
       "googleCalendar": "授權後查看並管理 Google 日曆活動。", "googleDrive": "授權後搜尋並引用 Google Drive 檔案。",
       "microsoftTeams": "授權後使用 Microsoft Teams 對話與協作內容。", "outlookCalendar": "授權後查看並管理 Outlook 日曆活動。",
@@ -167,7 +167,7 @@
       "productivity": "整理銷售工作、會議、文件與 CRM 資料。"
     },
     "creator": {
-      "workbench": "作者：PowerSource Workbench",
+      "workbench": "作者：Workbench",
       "you": "作者：你"
     },
     "creatorForm": {
@@ -361,7 +361,7 @@
     "empty": "尚無技能。",
     "emptyEntries": "此分類尚無項目。",
     "newEntry": "新增項目",
-    "unavailable": "連接 PowerSource Workbench API 後才會存到你的帳號。",
+    "unavailable": "連接 Workbench API 後才會存到你的帳號。",
     "generator": {
       "title": "描述你想建立的內容",
       "hint": "所選模型會產生可編輯草稿；確認前不會儲存。",
@@ -472,7 +472,7 @@
     "create": "建立",
     "searchPlaceholder": "搜尋已排程任務",
     "empty": "尚無已排程任務。",
-    "sampleNotice": "示範任務。連接 PowerSource Workbench API 後才會存到你的帳號。",
+    "sampleNotice": "示範任務。連接 Workbench API 後才會存到你的帳號。",
     "nextRun": "下次",
     "runNow": "立刻執行",
     "pause": "暫停",

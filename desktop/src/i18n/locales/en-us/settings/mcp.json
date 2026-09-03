@@ -24,6 +24,6 @@
   "copy": "Copy",
   "copied": "Copied",
   "copyFailed": "Could not copy. Try again.",
-  "unavailableTitle": "PowerSource Workbench API not configured",
-  "unavailableBody": "Set the PowerSource Workbench API origin before enabling Model Context Protocol access."
+  "unavailableTitle": "Workbench API not configured",
+  "unavailableBody": "Set the Workbench API origin before enabling Model Context Protocol access."
 }

@@ -1,6 +1,6 @@
 # PowerSource Workbench Desktop
 
-Electron desktop client for the PowerSource group workbench. It includes the desktop, local search, settings, and password-only account login experiences.
+Electron desktop client for the PowerSource group workbench. It includes the desktop, local search, settings, and password-only account login experiences. Everyday chrome uses Workbench. The installer, About panel, and legal copy keep PowerSource Workbench.
 
 ## Development
 

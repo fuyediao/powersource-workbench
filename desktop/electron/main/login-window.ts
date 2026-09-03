@@ -4,7 +4,7 @@
  */
 import { BrowserWindow, nativeTheme } from 'electron'
 import path from 'node:path'
-import { APP_DISPLAY_NAME } from '../shared/app-identity'
+import { APP_SHORT_NAME } from '../shared/app-identity'
 import { APP_WINDOW_LOGIN_ARG } from '../shared/ipc'
 import { hideNonDarwinMenuBar } from './application-menu'
 import { appWindows, createAppWindow, destroyAllAppWindows, focusedAppWindow } from './app-windows'
@@ -122,7 +122,7 @@ export async function createLoginWindow(seed?: { show?: boolean }): Promise<Brow
   }
 
   const win = new BrowserWindow({
-    title: APP_DISPLAY_NAME,
+    title: APP_SHORT_NAME,
     width: LOGIN_WIDTH,
     height: LOGIN_HEIGHT,
     resizable: false,

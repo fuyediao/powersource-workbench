@@ -194,7 +194,7 @@ export function formatTranscriptForReview(items: HarnessItem[]): string {
         lines.push(`Tool (${item.status}): ${item.server}/${item.tool}`)
         break
       case 'crmToolCall':
-        lines.push(`PowerSource Workbench (${item.status}): ${item.tool}`)
+        lines.push(`Workbench (${item.status}): ${item.tool}`)
         break
       default:
         break

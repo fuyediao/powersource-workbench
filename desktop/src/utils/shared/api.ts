@@ -41,7 +41,7 @@ export interface WeatherDto {
  */
 async function netCall<T>(method: string, ...args: unknown[]): Promise<T> {
   if (!window.workbench?.net?.invoke) {
-    throw new Error('PowerSource Workbench net bridge is unavailable.')
+    throw new Error('Workbench net bridge is unavailable.')
   }
   return window.workbench.net.invoke(method, ...args) as Promise<T>
 }

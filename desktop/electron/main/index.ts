@@ -1,7 +1,7 @@
 import { app, session, systemPreferences } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { APP_DISPLAY_NAME } from '../shared/app-identity'
+import { APP_DISPLAY_NAME, APP_SHORT_NAME } from '../shared/app-identity'
 import { AUTH_DEEP_LINK_SCHEME } from '../shared/ipc'
 import { setupAgentOverlay, teardownAgentOverlay } from './agent-overlay'
 import { configureAppWindows } from './app-windows'
@@ -43,7 +43,7 @@ function enableGpuPerformanceSwitches(): void {
 
 enableGpuPerformanceSwitches()
 registerHomeWallpaperScheme()
-app.setName(APP_DISPLAY_NAME)
+app.setName(APP_SHORT_NAME)
 
 /**
  * App root (package directory).
@@ -67,7 +67,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 // If `npm run dev` exits immediately, quit the old Electron in the Dock first.
 if (!app.requestSingleInstanceLock()) {
   console.error(
-    '[workbench] Another PowerSource Workbench instance is already running. Quit it, then retry.',
+    '[workbench] Another Workbench instance is already running. Quit it, then retry.',
   )
   app.quit()
   process.exit(0)
@@ -99,6 +99,7 @@ async function showOrCreateAppWindow(): Promise<void> {
 }
 
 app.whenReady().then(async () => {
+  app.setAboutPanelOptions({ applicationName: APP_DISPLAY_NAME })
   configureAppWindows({
     preload,
     indexHtml,

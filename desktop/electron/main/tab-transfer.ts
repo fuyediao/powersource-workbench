@@ -22,7 +22,7 @@ import {
   type AppWindowPeer,
   type TabTransferPayload,
 } from '../shared/ipc'
-import { APP_DISPLAY_NAME } from '../shared/app-identity'
+import { APP_SHORT_NAME } from '../shared/app-identity'
 import { appWindowById, appWindows, createAppWindow, windowAtScreenPoint } from './app-windows'
 import { showBrowserWindow } from './platform'
 import { transferHarnessHost } from './harness'
@@ -189,7 +189,7 @@ function listPeerWindows(event: IpcMainInvokeEvent): AppWindowPeer[] {
     if (win === source) {
       continue
     }
-    const title = windowLabels.get(win)?.trim() || win.getTitle().trim() || APP_DISPLAY_NAME
+    const title = windowLabels.get(win)?.trim() || win.getTitle().trim() || APP_SHORT_NAME
     peers.push({ id: win.id, title })
   }
   return peers
@@ -206,7 +206,7 @@ function setWindowLabel(event: IpcMainInvokeEvent, label: unknown): void {
   if (!win || win.isDestroyed() || typeof label !== 'string') {
     return
   }
-  const title = label.trim() || APP_DISPLAY_NAME
+  const title = label.trim() || APP_SHORT_NAME
   windowLabels.set(win, title)
   win.setTitle(title)
 }

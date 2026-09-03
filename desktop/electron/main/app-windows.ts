@@ -12,7 +12,7 @@
 
 import { BrowserWindow, shell } from 'electron'
 import path from 'node:path'
-import { APP_DISPLAY_NAME } from '../shared/app-identity'
+import { APP_SHORT_NAME } from '../shared/app-identity'
 import { APP_WINDOW_HIDE_HOME_ARG } from '../shared/ipc'
 import { hideNonDarwinMenuBar } from './application-menu'
 import { destroyInAppBrowserPanesForWindow } from './in-app-browser'
@@ -92,7 +92,7 @@ function buildAdditionalArguments(seed?: AppWindowSeed): string[] {
  */
 export async function createAppWindow(seed?: AppWindowSeed): Promise<BrowserWindow> {
   const win = new BrowserWindow({
-    title: APP_DISPLAY_NAME,
+    title: APP_SHORT_NAME,
     width: 1280,
     height: 860,
     minWidth: 900,
