@@ -4,6 +4,7 @@ import { Check, Copy, Languages, Monitor, Moon, Settings, ShieldCheck, Sun, User
 import { createInvitation } from '@/services/auth-api'
 import type { InvitationResult, WorkbenchUser } from '@/types/auth'
 import { apiErrorMessage } from '@/utils/api-error'
+import { isPlatformAdmin } from '@/utils/roles'
 import { applyTheme, loadTheme, type ThemePreference } from '@/utils/theme'
 
 type SettingsSection = 'general' | 'appearance' | 'account' | 'invitations'
@@ -30,12 +31,22 @@ export function SettingsPage({ user }: SettingsPageProps) {
 
   useEffect(() => applyTheme(theme), [theme])
 
+  /**
+   * Resolves the localized label for the signed-in Workbench role.
+   * @returns Translation key for the role badge.
+   */
+  function roleLabelKey(): 'settings.superAdmin' | 'settings.systemAdmin' | 'settings.member' {
+    if (user.role === 'super_admin') return 'settings.superAdmin'
+    if (user.role === 'system_admin') return 'settings.systemAdmin'
+    return 'settings.member'
+  }
+
   const sections: Array<{ id: SettingsSection; label: string; icon: typeof Settings }> = [
     { id: 'general', label: t('settings.general'), icon: Settings },
     { id: 'appearance', label: t('settings.appearance'), icon: Sun },
     { id: 'account', label: t('settings.account'), icon: UserRound },
   ]
-  if (user.role === 'system_admin') {
+  if (isPlatformAdmin(user.role)) {
     sections.push({ id: 'invitations', label: t('settings.invitations'), icon: ShieldCheck })
   }
 
@@ -100,10 +111,10 @@ export function SettingsPage({ user }: SettingsPageProps) {
           {section === 'account' ? (
             <div className="settings-card">
               <h3>{t('settings.profile')}</h3>
-              <div className="profile-card"><div className="avatar">{(user.displayName || user.username).slice(0, 1).toUpperCase()}</div><div><strong>{user.displayName || user.username}</strong><span>@{user.username}</span></div><div className="role-badge">{t(user.role === 'system_admin' ? 'settings.systemAdmin' : 'settings.member')}</div></div>
+              <div className="profile-card"><div className="avatar">{(user.displayName || user.username).slice(0, 1).toUpperCase()}</div><div><strong>{user.displayName || user.username}</strong><span>@{user.username}</span></div><div className="role-badge">{t(roleLabelKey())}</div></div>
             </div>
           ) : null}
-          {section === 'invitations' && user.role === 'system_admin' ? (
+          {section === 'invitations' && isPlatformAdmin(user.role) ? (
             <div className="settings-card">
               <h3>{t('settings.invitations')}</h3>
               <p className="muted">{t('settings.invitationHelp')}</p>

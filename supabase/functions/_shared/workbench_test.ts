@@ -2,6 +2,7 @@ import {
   createInvitationCode,
   hashInvitationCode,
   hasValidPublicKey,
+  isPlatformAdminMetadata,
   isValidUsername,
   normalizeUsername,
 } from "./workbench.ts";
@@ -27,6 +28,12 @@ Deno.test("creates and hashes high-entropy invitation codes", async () => {
   assert(code.length >= 40, "Invitation code is too short");
   assert(firstHash.length === 64, "Invitation hash has an invalid length");
   assert(firstHash === secondHash, "Invitation hashing is not deterministic");
+});
+
+Deno.test("treats super_admin as a platform administrator", () => {
+  assert(isPlatformAdminMetadata({ role: "super_admin" }), "Expected super_admin");
+  assert(isPlatformAdminMetadata({ role: "system_admin" }), "Expected system_admin");
+  assert(!isPlatformAdminMetadata({ role: "member" }), "Expected member to be rejected");
 });
 
 Deno.test("accepts only the configured public API key", async () => {

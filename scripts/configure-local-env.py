@@ -5,15 +5,14 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import re
-import secrets
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 CRM_BACKEND_ENV = REPOSITORY_ROOT.parent / "CRM" / "backend" / ".env"
 VPS_ENV = REPOSITORY_ROOT / ".env.vps"
-LEGACY_BACKEND_ENV = REPOSITORY_ROOT / "backend" / ".env"
 DESKTOP_ENV = REPOSITORY_ROOT / "desktop" / ".env"
 SUPABASE_ENV = REPOSITORY_ROOT / "supabase" / ".env"
+BACKEND_ENV = REPOSITORY_ROOT / "backend" / ".env"
 
 
 def read_env(path: Path) -> dict[str, str]:
@@ -60,7 +59,6 @@ def configure(replace: bool = False) -> None:
 
     source = read_env(CRM_BACKEND_ENV)
     vps = read_env(VPS_ENV)
-    legacy = read_env(LEGACY_BACKEND_ENV) if LEGACY_BACKEND_ENV.exists() else {}
     domain = normalize_domain(vps.get("URL", ""))
     if not domain.endswith(".work"):
         raise RuntimeError("The VPS URL must identify the PowerSource .work deployment")
@@ -75,9 +73,13 @@ def configure(replace: bool = False) -> None:
         raise RuntimeError("The source environment has no Supabase server key")
     server_key_name = "SUPABASE_SECRET_KEY" if secret_key else "SUPABASE_SERVICE_ROLE_KEY"
 
-    admin_username = legacy.get("WORKBENCH_ADMIN_USERNAME", "").strip() or derive_admin_username(source.get("SUPER_ADMIN_EMAIL", ""))
-    admin_password = legacy.get("WORKBENCH_ADMIN_PASSWORD", "") or secrets.token_urlsafe(24)
-    supabase_url = f"https://supabase.{domain}"
+    super_admin_email = (
+        source.get("SUPER_ADMIN_EMAIL", "").strip().lower()
+        or (source.get("SYSTEM_ADMIN_EMAILS", "").split(",")[0].strip().lower() if source.get("SYSTEM_ADMIN_EMAILS") else "")
+        or "contact@geocrm.org"
+    )
+    admin_username = derive_admin_username(super_admin_email)
+    supabase_url = source.get("SUPABASE_PUBLIC_URL", "").strip().rstrip("/") or "https://supabase.powersource.app"
     account_domain = f"accounts.{domain}"
 
     write_private_env(
@@ -86,7 +88,19 @@ def configure(replace: bool = False) -> None:
             f"VITE_DEPLOYMENT_DOMAIN={domain}",
             f"VITE_SUPABASE_URL={supabase_url}",
             f"VITE_SUPABASE_PUBLISHABLE_KEY={publishable_key}",
-            f"VITE_WORKBENCH_ACCOUNT_EMAIL_DOMAIN={account_domain}",
+            "VITE_WORKBENCH_API_URL=http://127.0.0.1:3010",
+        ],
+        replace,
+    )
+    write_private_env(
+        BACKEND_ENV,
+        [
+            "PORT=3010",
+            f"SUPABASE_URL={supabase_url}",
+            f"SUPABASE_ANON_KEY={publishable_key}",
+            f"{server_key_name}={server_key}",
+            f"SUPER_ADMIN_EMAIL={super_admin_email}",
+            f"WORKBENCH_ACCOUNT_EMAIL_DOMAIN={account_domain}",
         ],
         replace,
     )
@@ -97,9 +111,9 @@ def configure(replace: bool = False) -> None:
             f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
             f"{server_key_name}={server_key}",
             f"WORKBENCH_ACCOUNT_EMAIL_DOMAIN={account_domain}",
+            f"WORKBENCH_SUPER_ADMIN_EMAIL={super_admin_email}",
             f"WORKBENCH_ADMIN_USERNAME={admin_username}",
-            f"WORKBENCH_ADMIN_PASSWORD={admin_password}",
-            "WORKBENCH_ADMIN_DISPLAY_NAME=System Administrator",
+            "WORKBENCH_ADMIN_DISPLAY_NAME=Super Administrator",
         ],
         replace,
     )

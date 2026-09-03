@@ -6,6 +6,7 @@ import {
   hashInvitationCode,
   hasValidPublicKey,
   isRecord,
+  isPlatformAdminMetadata,
   isValidUsername,
   jsonResponse,
   normalizeUsername,
@@ -66,7 +67,7 @@ export default {
       if (accountError || !account.user) {
         return errorResponse("invalid_session", 401);
       }
-      if (account.user.app_metadata.role !== "system_admin") {
+      if (!isPlatformAdminMetadata(account.user.app_metadata)) {
         return errorResponse("forbidden", 403);
       }
 

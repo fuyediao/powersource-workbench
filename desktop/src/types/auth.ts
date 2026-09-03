@@ -1,4 +1,4 @@
-export type WorkbenchRole = 'system_admin' | 'member'
+export type WorkbenchRole = 'super_admin' | 'system_admin' | 'member'
 
 export interface WorkbenchUser {
   id: string

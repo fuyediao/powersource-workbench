@@ -34,10 +34,20 @@ export function resolveSupabasePublishableKey(): string {
 }
 
 /**
- * Resolves the internal email domain used to represent username-only accounts.
- * @returns The internal account email domain.
+ * Resolves the Workbench Go API origin used for login and invitations.
+ * @returns The configured API URL without a trailing slash.
  */
-export function resolveAccountEmailDomain(): string {
-  return resolveDeploymentHost(import.meta.env.VITE_WORKBENCH_ACCOUNT_EMAIL_DOMAIN ?? '')
-    || 'accounts.powersource.work'
+export function resolveWorkbenchApiUrl(): string {
+  const explicit = import.meta.env.VITE_WORKBENCH_API_URL?.trim()
+  if (explicit) {
+    return explicit.replace(/\/$/, '')
+  }
+  if (import.meta.env.DEV) {
+    return 'http://127.0.0.1:3010'
+  }
+  const host = resolveDeploymentHost(import.meta.env.VITE_DEPLOYMENT_DOMAIN ?? '')
+  if (host) {
+    return `https://api.${host}`
+  }
+  return 'https://api.powersource.work'
 }

@@ -4,6 +4,9 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Sent username and password login to the Workbench Go API and kept the Supabase Data API for workspace rows.
+- Signed the unique super administrator in with the existing GeoCRM username and password instead of a generated Workbench password.
+- Added the `super_admin` role to the signed-in profile and invitation gate.
 - Removed invitation activation from the login form so signed-out users see only username and password sign-in.
 - Removed the left branding panel from the login screen.
 - Added the standalone PowerSource Workbench Electron shell.

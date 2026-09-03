@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { resolveSupabasePublishableKey, resolveSupabaseUrl } from '@/config/deployment-urls'
+import { resolveSupabasePublishableKey, resolveSupabaseUrl, resolveWorkbenchApiUrl } from '@/config/deployment-urls'
 
 const sessionStorageKey = 'powersource-workbench-supabase-session'
 const supabaseUrl = resolveSupabaseUrl()
@@ -11,21 +11,23 @@ export interface StoredAuthSession {
   refreshToken: string
 }
 
-const commonHeaders = {
-  apikey: publishableKey,
+const jsonHeaders = {
   'Content-Type': 'application/json',
 }
 
-export const supabaseAuthApi = axios.create({
-  baseURL: `${supabaseUrl}/auth/v1`,
-  timeout: 15_000,
-  headers: commonHeaders,
+export const workbenchApi = axios.create({
+  baseURL: resolveWorkbenchApiUrl(),
+  timeout: 20_000,
+  headers: jsonHeaders,
 })
 
-export const supabaseFunctionsApi = axios.create({
-  baseURL: `${supabaseUrl}/functions/v1`,
-  timeout: 20_000,
-  headers: commonHeaders,
+export const supabaseDataApi = axios.create({
+  baseURL: `${supabaseUrl}/rest/v1`,
+  timeout: 15_000,
+  headers: {
+    apikey: publishableKey,
+    'Content-Type': 'application/json',
+  },
 })
 
 /**

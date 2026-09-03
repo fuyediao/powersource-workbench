@@ -1,6 +1,6 @@
 # PowerSource Workbench Supabase
 
-This directory contains the direct Supabase backend for Workbench authentication.
+This directory contains Workbench profile and invitation tables. Login password exchange runs in `backend/` (Go). The desktop reads these tables through the Supabase Data API with the user JWT.
 
 ## Components
 
@@ -13,4 +13,4 @@ This directory contains the direct Supabase backend for Workbench authentication
 
 The Edge runtime must provide its normal Supabase URL, publishable keys, secret keys, and JWKS configuration. Set `WORKBENCH_ACCOUNT_EMAIL_DOMAIN` to `accounts.powersource.work` when deploying the functions.
 
-Use the root `scripts/bootstrap-admin.py` only after applying the migration. Its secret key remains in the ignored `supabase/.env` file and is never bundled into Electron.
+Use the root `scripts/bootstrap-admin.py` only after applying the migration. The script attaches the existing GeoCRM super-admin Auth user and does not set a new password. Its secret key remains in the ignored `supabase/.env` file and is never bundled into Electron.

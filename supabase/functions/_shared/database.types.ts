@@ -46,7 +46,7 @@ export interface Database {
           created_at?: string;
           display_name?: string;
           id: string;
-          role?: "member" | "system_admin";
+          role?: "member" | "super_admin" | "system_admin";
           status?: "active" | "disabled";
           updated_at?: string;
           username: string;
@@ -56,14 +56,14 @@ export interface Database {
           created_at: string;
           display_name: string;
           id: string;
-          role: "member" | "system_admin";
+          role: "member" | "super_admin" | "system_admin";
           status: "active" | "disabled";
           updated_at: string;
           username: string;
         };
         Update: {
           display_name?: string;
-          role?: "member" | "system_admin";
+          role?: "member" | "super_admin" | "system_admin";
           status?: "active" | "disabled";
           updated_at?: string;
           username?: string;

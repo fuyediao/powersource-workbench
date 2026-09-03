@@ -41,7 +41,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
           </label>
           <label>
             <span>{t('auth.password')}</span>
-            <input autoComplete="current-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={10} />
+            <input autoComplete="current-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
           </label>
           {error ? <p className="form-error" role="alert">{error}</p> : null}
           <button className="primary-button" type="submit" disabled={loading}>

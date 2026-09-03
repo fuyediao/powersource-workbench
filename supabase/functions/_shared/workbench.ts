@@ -38,6 +38,17 @@ export function isValidUsername(username: string): boolean {
 }
 
 /**
+ * Reports whether Auth app metadata belongs to a platform administrator.
+ * Super admin is a superset of system admin.
+ * @param metadata - Auth app_metadata object.
+ * @returns Whether the account may create invitations.
+ */
+export function isPlatformAdminMetadata(metadata: unknown): boolean {
+  if (!isRecord(metadata)) return false;
+  return metadata.role === "super_admin" || metadata.role === "system_admin";
+}
+
+/**
  * Maps a Workbench username to its internal Supabase Auth email address.
  * @param username - Normalized Workbench username.
  * @returns The internal Auth email address.
