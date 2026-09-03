@@ -15,7 +15,7 @@ import (
 // New builds the Workbench API handler.
 func New(env config.Env) http.Handler {
 	sb := supabase.New(env.SupabaseURL, env.SupabaseAnonKey, env.SupabaseServiceRoleKey)
-	authHandler := auth.New(env, sb)
+	authHandler := auth.New(sb)
 
 	r := chi.NewRouter()
 	r.Use(httpx.CORS)

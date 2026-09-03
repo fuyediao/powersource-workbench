@@ -105,12 +105,18 @@ func (c *Client) GetUser(ctx context.Context, accessToken string) (*User, error)
 	return &user, nil
 }
 
-// PatchAppMetadata merges app_metadata on an Auth user using the service role.
-func (c *Client) PatchAppMetadata(ctx context.Context, userID string, metadata map[string]any) error {
-	_, err := c.doJSON(ctx, http.MethodPut, "/auth/v1/admin/users/"+url.PathEscape(userID), c.serviceKey, c.serviceKey, map[string]any{
-		"app_metadata": metadata,
-	})
-	return err
+// GetAdminUser loads an Auth user by id. The email field is only used to
+// complete GoTrue's password grant; Workbench never treats it as a login id.
+func (c *Client) GetAdminUser(ctx context.Context, userID string) (*User, error) {
+	body, err := c.doJSON(ctx, http.MethodGet, "/auth/v1/admin/users/"+url.PathEscape(userID), c.serviceKey, c.serviceKey, nil)
+	if err != nil {
+		return nil, err
+	}
+	var user User
+	if err := json.Unmarshal(body, &user); err != nil || user.ID == "" {
+		return nil, &APIError{Status: http.StatusNotFound, Code: "invalid_credentials"}
+	}
+	return &user, nil
 }
 
 func (c *Client) doJSON(ctx context.Context, method, path, apiKey, bearer string, payload any) ([]byte, error) {

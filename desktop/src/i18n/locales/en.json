@@ -4,7 +4,7 @@
   },
   "auth": {
     "title": "Welcome back",
-    "subtitle": "Sign in with your existing administrator username and password.",
+    "subtitle": "Sign in with your Workbench username and password.",
     "username": "Username",
     "password": "Password",
     "signIn": "Sign in",
@@ -33,7 +33,6 @@
   "search": {
     "title": "Search",
     "placeholder": "Search Workbench…",
-    "hint": "Search pages and settings",
     "noResults": "No matching items",
     "results": "Results"
   },
@@ -44,13 +43,12 @@
     "account": "Account",
     "invitations": "Invitations",
     "language": "Language",
-    "traditionalChinese": "Traditional Chinese",
+    "simplifiedChinese": "Simplified Chinese",
     "theme": "Theme",
     "system": "System",
     "light": "Light",
     "dark": "Dark",
     "profile": "Signed-in account",
-    "role": "Role",
     "superAdmin": "Super administrator",
     "systemAdmin": "System administrator",
     "member": "Member",
@@ -64,22 +62,14 @@
     "codeCopied": "Copied",
     "noPermissionEditor": "The previous permission editor is not included. A new group-wide permission model can be added later."
   },
-  "common": {
-    "open": "Open",
-    "close": "Close"
-  },
   "errors": {
     "invalid_credentials": "The username or password is incorrect.",
     "account_disabled": "This account is disabled.",
-    "invalid_invitation": "This invitation is invalid, expired, revoked, or already used.",
     "invalid_username": "Use 3–32 lowercase letters, numbers, dots, underscores, or hyphens.",
     "username_unavailable": "This username is already in use or reserved.",
     "forbidden": "This action is available only to the system administrator.",
     "invalid_session": "Your session has expired. Sign in again.",
-    "invalid_api_key": "The desktop Supabase key is invalid.",
-    "method_not_allowed": "This operation is not supported.",
-    "origin_not_allowed": "This application origin is not allowed.",
     "internal_error": "The server could not complete the request.",
-    "network_error": "The Supabase service is unavailable."
+    "network_error": "The service is unavailable."
   }
 }

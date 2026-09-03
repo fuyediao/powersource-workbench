@@ -13,7 +13,6 @@ interface ImportMeta {
 
 interface WorkbenchBridge {
   platform: NodeJS.Platform
-  getSystemLocale: () => Promise<string>
 }
 
 interface Window {

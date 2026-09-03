@@ -1,6 +1,6 @@
 # 集团权限架构
 
-草案。用来整理权限示意图，尚未实现。当前桌面端已有 `super_admin`（挂现有 GeoCRM 账号与密码）、`system_admin` 与 `member`。登录走 Go `backend/`，资料表由桌面端用用户 JWT 直连 Supabase。公司 / 部门 / 组树尚未实现。
+草案。用来整理权限示意图，尚未实现。当前桌面端已有 `super_admin`、`system_admin` 与 `member`。登录走 VPS 上的 Go（`https://api.powersource.work`），资料表由桌面端用用户 JWT 直连 `https://supabase.powersource.work`。GeoCRM 的 `.app` 只作行为参考，不共用账号和库。公司 / 部门 / 组树尚未实现。
 
 本文分三块：原图转写、整理后的模型、第一版范围。文末「已决」已拍板，可按此开表结构。
 

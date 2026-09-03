@@ -1,0 +1,16 @@
+{
+  "name": "powersource-workbench",
+  "private": true,
+  "description": "Root scripts for the PowerSource Workbench desktop",
+  "scripts": {
+    "dev": "npm run dev --prefix desktop",
+    "dev:electron": "npm run dev --prefix desktop",
+    "lint": "npm run lint --prefix desktop",
+    "lint:style": "npm run lint:style --prefix desktop",
+    "typecheck": "npm run typecheck --prefix desktop"
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=10"
+  }
+}

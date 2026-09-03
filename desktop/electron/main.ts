@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, nativeTheme, net, protocol } from 'electron'
+import { app, BrowserWindow, nativeTheme, net, protocol } from 'electron'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -67,7 +67,6 @@ app.setName('PowerSource Workbench')
 
 app.whenReady().then(() => {
   registerApplicationProtocol()
-  ipcMain.handle('workbench:get-system-locale', () => app.getLocale())
   createMainWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

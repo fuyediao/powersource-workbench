@@ -1,44 +1,19 @@
-"""Create ignored direct-Supabase environment files from the existing deployment configuration."""
+"""Create ignored Workbench environment files from the .work VPS Supabase stack."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
-import re
 
+from vps_ssh import connect_ssh, read_env, run_ssh
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-CRM_BACKEND_ENV = REPOSITORY_ROOT.parent / "CRM" / "backend" / ".env"
 VPS_ENV = REPOSITORY_ROOT / ".env.vps"
 DESKTOP_ENV = REPOSITORY_ROOT / "desktop" / ".env"
 SUPABASE_ENV = REPOSITORY_ROOT / "supabase" / ".env"
 BACKEND_ENV = REPOSITORY_ROOT / "backend" / ".env"
 
-
-def read_env(path: Path) -> dict[str, str]:
-    """Read a simple dotenv file into a string dictionary."""
-    values: dict[str, str] = {}
-    for raw_line in path.read_text(encoding="utf-8").splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        values[key.strip()] = value.strip().strip('"').strip("'")
-    return values
-
-
-def normalize_domain(value: str) -> str:
-    """Normalize a deployment URL setting into a bare hostname."""
-    return value.removeprefix("https://").removeprefix("http://").strip().rstrip("/")
-
-
-def derive_admin_username(email: str) -> str:
-    """Derive a valid Workbench username from the existing administrator identity."""
-    local_part = email.split("@", 1)[0].strip().lower()
-    normalized = re.sub(r"[^a-z0-9._-]+", ".", local_part).strip("._-")
-    if len(normalized) < 3:
-        return "admin"
-    return normalized[:32]
+REMOTE_SUPABASE_ENV = "/opt/supabase-project/.env"
 
 
 def write_private_env(path: Path, lines: list[str], replace: bool) -> None:
@@ -50,37 +25,46 @@ def write_private_env(path: Path, lines: list[str], replace: bool) -> None:
     path.chmod(0o600)
 
 
+def load_remote_supabase_env() -> dict[str, str]:
+    """Read the Workbench VPS Supabase dotenv without printing values."""
+    client, _host, _user = connect_ssh()
+    try:
+        code, out, err = run_ssh(client, f"cat {REMOTE_SUPABASE_ENV}")
+        if code != 0:
+            raise RuntimeError(f"Unable to read {REMOTE_SUPABASE_ENV}: {err.strip()}")
+    finally:
+        client.close()
+    values: dict[str, str] = {}
+    for raw_line in out.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        values[key.strip()] = value.strip().strip('"').strip("'")
+    return values
+
+
 def configure(replace: bool = False) -> None:
-    """Create desktop and Supabase runtime environment files."""
-    if not CRM_BACKEND_ENV.exists():
-        raise RuntimeError(f"Missing source environment file: {CRM_BACKEND_ENV}")
+    """Create desktop, backend, and bootstrap environment files for .work."""
     if not VPS_ENV.exists():
         raise RuntimeError(f"Missing VPS environment file: {VPS_ENV}")
 
-    source = read_env(CRM_BACKEND_ENV)
     vps = read_env(VPS_ENV)
-    domain = normalize_domain(vps.get("URL", ""))
+    domain = vps.get("URL", "").removeprefix("https://").removeprefix("http://").strip().rstrip("/")
     if not domain.endswith(".work"):
         raise RuntimeError("The VPS URL must identify the PowerSource .work deployment")
 
-    publishable_key = source.get("SUPABASE_PUBLISHABLE_KEY", "").strip() or source.get("SUPABASE_ANON_KEY", "").strip()
-    if not publishable_key:
-        raise RuntimeError("The source environment has no Supabase publishable key")
-    secret_key = source.get("SUPABASE_SECRET_KEY", "").strip()
-    legacy_service_role_key = source.get("SUPABASE_SERVICE_ROLE_KEY", "").strip()
-    server_key = secret_key or legacy_service_role_key
-    if not server_key:
-        raise RuntimeError("The source environment has no Supabase server key")
-    server_key_name = "SUPABASE_SECRET_KEY" if secret_key else "SUPABASE_SERVICE_ROLE_KEY"
+    remote = load_remote_supabase_env()
+    publishable_key = remote.get("ANON_KEY", "").strip()
+    server_key = remote.get("SERVICE_ROLE_KEY", "").strip()
+    if not publishable_key or not server_key:
+        raise RuntimeError("The Workbench Supabase stack is missing ANON_KEY or SERVICE_ROLE_KEY")
 
-    super_admin_email = (
-        source.get("SUPER_ADMIN_EMAIL", "").strip().lower()
-        or (source.get("SYSTEM_ADMIN_EMAILS", "").split(",")[0].strip().lower() if source.get("SYSTEM_ADMIN_EMAILS") else "")
-        or "contact@geocrm.org"
-    )
-    admin_username = derive_admin_username(super_admin_email)
-    supabase_url = source.get("SUPABASE_PUBLIC_URL", "").strip().rstrip("/") or "https://supabase.powersource.app"
-    account_domain = f"accounts.{domain}"
+    supabase_url = f"https://supabase.{domain}"
+    api_url = f"https://api.{domain}"
+    existing_supabase = read_env(SUPABASE_ENV) if SUPABASE_ENV.exists() else {}
+    admin_username = existing_supabase.get("WORKBENCH_ADMIN_USERNAME", "").strip() or "admin"
+    admin_password = existing_supabase.get("WORKBENCH_ADMIN_PASSWORD", "").strip()
 
     write_private_env(
         DESKTOP_ENV,
@@ -88,40 +72,35 @@ def configure(replace: bool = False) -> None:
             f"VITE_DEPLOYMENT_DOMAIN={domain}",
             f"VITE_SUPABASE_URL={supabase_url}",
             f"VITE_SUPABASE_PUBLISHABLE_KEY={publishable_key}",
-            "VITE_WORKBENCH_API_URL=http://127.0.0.1:3010",
+            f"VITE_WORKBENCH_API_URL={api_url}",
         ],
         replace,
     )
     write_private_env(
         BACKEND_ENV,
         [
-            "PORT=3010",
+            "PORT=3001",
             f"SUPABASE_URL={supabase_url}",
             f"SUPABASE_ANON_KEY={publishable_key}",
-            f"{server_key_name}={server_key}",
-            f"SUPER_ADMIN_EMAIL={super_admin_email}",
-            f"WORKBENCH_ACCOUNT_EMAIL_DOMAIN={account_domain}",
+            f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
         ],
         replace,
     )
-    write_private_env(
-        SUPABASE_ENV,
-        [
-            f"SUPABASE_URL={supabase_url}",
-            f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
-            f"{server_key_name}={server_key}",
-            f"WORKBENCH_ACCOUNT_EMAIL_DOMAIN={account_domain}",
-            f"WORKBENCH_SUPER_ADMIN_EMAIL={super_admin_email}",
-            f"WORKBENCH_ADMIN_USERNAME={admin_username}",
-            "WORKBENCH_ADMIN_DISPLAY_NAME=Super Administrator",
-        ],
-        replace,
-    )
-    print("Created direct-Supabase environment files without printing credential values.")
+    supabase_lines = [
+        f"SUPABASE_URL={supabase_url}",
+        f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
+        f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
+        f"WORKBENCH_ADMIN_USERNAME={admin_username}",
+        "WORKBENCH_ADMIN_DISPLAY_NAME=Super Administrator",
+    ]
+    if admin_password:
+        supabase_lines.append(f"WORKBENCH_ADMIN_PASSWORD={admin_password}")
+    write_private_env(SUPABASE_ENV, supabase_lines, replace)
+    print("Created Workbench .work environment files without printing credential values.")
 
 
 def parse_arguments() -> argparse.Namespace:
-    """Parse command-line options for local environment generation."""
+    """Parse command-line options for environment generation."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--replace", action="store_true", help="Replace environment files created by this script")
     return parser.parse_args()

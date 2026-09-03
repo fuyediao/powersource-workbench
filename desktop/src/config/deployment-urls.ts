@@ -42,9 +42,6 @@ export function resolveWorkbenchApiUrl(): string {
   if (explicit) {
     return explicit.replace(/\/$/, '')
   }
-  if (import.meta.env.DEV) {
-    return 'http://127.0.0.1:3010'
-  }
   const host = resolveDeploymentHost(import.meta.env.VITE_DEPLOYMENT_DOMAIN ?? '')
   if (host) {
     return `https://api.${host}`

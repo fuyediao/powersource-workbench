@@ -4,8 +4,11 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Removed leftover local binaries, empty backend folders, unused Electron locale IPC, unused i18n keys, and the unused invitation Edge Functions.
+- Added the root `npm run dev:electron` script so the desktop starts from the repository root.
+- Pointed login and workspace data at the Workbench `powersource.work` VPS. GeoCRM on `powersource.app` remains a behavior reference only.
+- Routed Workbench login through the VPS Go API. Sign-in is username and password only; Workbench tables do not store email.
 - Routed Workbench login, refresh, logout, session restore, and invitation creation through a new Go API (`backend/`). The desktop still reads workspace tables directly from the Supabase Data API with the user JWT.
-- Reused the existing GeoCRM super-admin Auth user for Workbench login. The desktop signs in against the shared public Supabase host with username `contact` and the current GeoCRM password; bootstrap no longer creates a second account.
 - Added the `super_admin` Workbench profile role, a single-row unique constraint, and a migration seed for that Auth user.
 - Removed invitation activation from the desktop login form so the signed-out screen is password-only.
 - Removed the left branding panel from the desktop login screen.

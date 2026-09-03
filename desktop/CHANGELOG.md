@@ -4,8 +4,10 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
-- Sent username and password login to the Workbench Go API and kept the Supabase Data API for workspace rows.
-- Signed the unique super administrator in with the existing GeoCRM username and password instead of a generated Workbench password.
+- Stored the Simplified Chinese locale as `zh-cn.json` / `zh-CN` instead of a Traditional Chinese filename.
+- Clarified the sign-in subtitle so it no longer refers to an existing administrator account.
+- Removed unused locale IPC and leftover invitation error strings.
+- Pointed desktop login at `https://api.powersource.work` and workspace rows at `https://supabase.powersource.work`. Username is the only sign-in identity.
 - Added the `super_admin` role to the signed-in profile and invitation gate.
 - Removed invitation activation from the login form so signed-out users see only username and password sign-in.
 - Removed the left branding panel from the login screen.

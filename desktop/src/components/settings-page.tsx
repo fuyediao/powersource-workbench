@@ -93,7 +93,7 @@ export function SettingsPage({ user }: SettingsPageProps) {
           {section === 'general' ? (
             <div className="settings-card">
               <h3>{t('settings.language')}</h3>
-              <div className="setting-row"><Languages size={20} /><span>{t('settings.language')}</span><select value={i18n.language === 'zh-TW' ? 'zh-TW' : 'en'} onChange={(event) => void i18n.changeLanguage(event.target.value)}><option value="zh-TW">{t('settings.traditionalChinese')}</option><option value="en">English</option></select></div>
+              <div className="setting-row"><Languages size={20} /><span>{t('settings.language')}</span><select value={i18n.language === 'zh-CN' ? 'zh-CN' : 'en'} onChange={(event) => void i18n.changeLanguage(event.target.value)}><option value="zh-CN">{t('settings.simplifiedChinese')}</option><option value="en">English</option></select></div>
               <p className="settings-note">{t('settings.noPermissionEditor')}</p>
             </div>
           ) : null}

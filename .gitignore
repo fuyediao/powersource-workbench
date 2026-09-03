@@ -150,6 +150,10 @@ vite.config.ts.timestamp-*
 
 .env.vps
 
+# Local Go build artifacts
+*.exe
+*.exe~
+
 # Test outputs
 test-results/
 playwright-report/

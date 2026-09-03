@@ -44,7 +44,7 @@ async function ensureSession(): Promise<StoredAuthSession> {
 
 /**
  * Signs in through the Workbench Go API with a username and password.
- * @param username - Workbench username, or the GeoCRM super-admin email.
+ * @param username - Workbench username. Email is not accepted.
  * @param password - Existing account password.
  * @returns The authenticated Workbench user.
  */

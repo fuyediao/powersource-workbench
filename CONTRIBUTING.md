@@ -16,11 +16,10 @@ Thank you for improving PowerSource Workbench.
 Run these checks before opening a change:
 
 ```powershell
-cd desktop
 npm run lint
 npm run lint:style
 npm run typecheck
-npm run build:vite
+npm run build:vite --prefix desktop
 
 cd ../backend
 gofmt -l .

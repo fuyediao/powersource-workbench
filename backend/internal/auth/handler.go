@@ -11,18 +11,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fuyediao/powersource-workbench/backend/internal/config"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
 
 // Handler serves /auth/* routes.
 type Handler struct {
-	env config.Env
-	sb  *supabase.Client
+	sb *supabase.Client
 }
 
 type workProfile struct {
+	ID          string `json:"id"`
 	DisplayName string `json:"display_name"`
 	Role        string `json:"role"`
 	Status      string `json:"status"`
@@ -44,8 +43,8 @@ type sessionResponse struct {
 }
 
 // New constructs an auth handler.
-func New(env config.Env, sb *supabase.Client) *Handler {
-	return &Handler{env: env, sb: sb}
+func New(sb *supabase.Client) *Handler {
+	return &Handler{sb: sb}
 }
 
 // Login handles POST /auth/login.
@@ -58,21 +57,16 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		httpx.WriteCode(w, http.StatusBadRequest, "invalid_username")
 		return
 	}
-	email, code := ResolveSignInEmail(body.Username, h.env.SuperAdminEmail, h.env.AccountEmailDomain)
-	if code != "" {
-		httpx.WriteCode(w, http.StatusBadRequest, code)
+	username := NormalizeUsername(body.Username)
+	if !ValidUsername(username) {
+		httpx.WriteCode(w, http.StatusBadRequest, "invalid_username")
 		return
 	}
 	if strings.TrimSpace(body.Password) == "" {
 		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
 		return
 	}
-	session, err := h.sb.SignInPassword(r.Context(), email, body.Password)
-	if err != nil {
-		writeSupabase(w, err, "invalid_credentials")
-		return
-	}
-	profile, err := h.ensureProfile(r.Context(), session.User)
+	profile, err := h.loadProfileByUsername(r.Context(), username)
 	if err != nil {
 		writeSupabase(w, err, "internal_error")
 		return
@@ -83,6 +77,16 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	if profile.Status == "disabled" {
 		httpx.WriteCode(w, http.StatusForbidden, "account_disabled")
+		return
+	}
+	authUser, err := h.sb.GetAdminUser(r.Context(), profile.ID)
+	if err != nil || authUser == nil || strings.TrimSpace(authUser.Email) == "" {
+		writeSupabase(w, err, "internal_error")
+		return
+	}
+	session, err := h.sb.SignInPassword(r.Context(), authUser.Email, body.Password)
+	if err != nil {
+		writeSupabase(w, err, "invalid_credentials")
 		return
 	}
 	writeSession(w, session, *profile)
@@ -219,7 +223,7 @@ func (h *Handler) requireProfile(w http.ResponseWriter, r *http.Request) (*supab
 func (h *Handler) loadProfile(ctx context.Context, userID string) (*workProfile, error) {
 	var profile workProfile
 	found, err := h.sb.From("work_profiles").
-		Select("username,display_name,role,status").
+		Select("id,username,display_name,role,status").
 		Eq("id", userID).
 		MaybeSingle(ctx, &profile)
 	if err != nil {
@@ -231,39 +235,19 @@ func (h *Handler) loadProfile(ctx context.Context, userID string) (*workProfile,
 	return &profile, nil
 }
 
-func (h *Handler) ensureProfile(ctx context.Context, user supabase.User) (*workProfile, error) {
-	profile, err := h.loadProfile(ctx, user.ID)
+func (h *Handler) loadProfileByUsername(ctx context.Context, username string) (*workProfile, error) {
+	var profile workProfile
+	found, err := h.sb.From("work_profiles").
+		Select("id,username,display_name,role,status").
+		Eq("username", username).
+		MaybeSingle(ctx, &profile)
 	if err != nil {
 		return nil, err
 	}
-	if profile != nil {
-		return profile, nil
-	}
-	if strings.ToLower(strings.TrimSpace(user.Email)) != h.env.SuperAdminEmail {
+	if !found {
 		return nil, nil
 	}
-	username := UsernameFromEmail(user.Email)
-	row := map[string]any{
-		"id":           user.ID,
-		"username":     username,
-		"display_name": "Super Administrator",
-		"role":         "super_admin",
-		"status":       "active",
-	}
-	if err := h.sb.From("work_profiles").Upsert(row, "id").Exec(ctx); err != nil {
-		return nil, err
-	}
-	metadata := user.AppMetadata
-	if metadata == nil {
-		metadata = map[string]any{}
-	}
-	metadata["role"] = "super_admin"
-	metadata["username"] = username
-	metadata["display_name"] = "Super Administrator"
-	if err := h.sb.PatchAppMetadata(ctx, user.ID, metadata); err != nil {
-		return nil, err
-	}
-	return h.loadProfile(ctx, user.ID)
+	return &profile, nil
 }
 
 func writeSession(w http.ResponseWriter, session *supabase.Session, profile workProfile) {

@@ -53,38 +53,6 @@ create policy work_profiles_select_own
   using ((select auth.uid()) = id);
 
 comment on table public.work_profiles is 'Supabase Auth-backed PowerSource Workbench profiles.';
-comment on table public.work_invitations is 'One-time Workbench account invitations managed by Edge Functions.';
-
--- Attach the existing GeoCRM super-admin Auth user. Do not create a second
--- password; Workbench signs in with the same GoTrue credentials.
-do $$
-declare
-  v_user_id uuid;
-  v_username text := 'contact';
-begin
-  select id into v_user_id
-  from auth.users
-  where lower(email) = 'contact@geocrm.org'
-  limit 1;
-  if v_user_id is null then
-    return;
-  end if;
-
-  insert into public.work_profiles (id, username, display_name, role, status)
-  values (v_user_id, v_username, 'Super Administrator', 'super_admin', 'active')
-  on conflict (id) do update
-    set role = 'super_admin',
-        username = excluded.username,
-        status = 'active',
-        updated_at = now();
-
-  update auth.users
-  set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || jsonb_build_object(
-    'role', 'super_admin',
-    'username', v_username,
-    'display_name', 'Super Administrator'
-  )
-  where id = v_user_id;
-end $$;
+comment on table public.work_invitations is 'One-time Workbench account invitations created by the Go API.';
 
 notify pgrst, 'reload schema';

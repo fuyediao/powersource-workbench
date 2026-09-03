@@ -2,25 +2,23 @@ package auth
 
 import "testing"
 
-func TestResolveSignInEmail(t *testing.T) {
+func TestValidUsername(t *testing.T) {
 	t.Parallel()
 	cases := []struct {
-		name       string
-		identifier string
-		wantEmail  string
-		wantCode   string
+		name  string
+		value string
+		want  bool
 	}{
-		{name: "super admin username", identifier: "contact", wantEmail: "contact@geocrm.org"},
-		{name: "super admin email", identifier: "Contact@geocrm.org", wantEmail: "contact@geocrm.org"},
-		{name: "member username", identifier: "team.user", wantEmail: "team.user@accounts.powersource.work"},
-		{name: "invalid", identifier: "A", wantCode: "invalid_username"},
+		{name: "super admin", value: "contact", want: true},
+		{name: "member", value: "team.user", want: true},
+		{name: "email is not a username", value: "contact@geocrm.org", want: false},
+		{name: "too short", value: "ab", want: false},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			email, code := ResolveSignInEmail(tc.identifier, "contact@geocrm.org", "accounts.powersource.work")
-			if email != tc.wantEmail || code != tc.wantCode {
-				t.Fatalf("got %q %q, want %q %q", email, code, tc.wantEmail, tc.wantCode)
+			if got := ValidUsername(NormalizeUsername(tc.value)); got != tc.want {
+				t.Fatalf("ValidUsername(%q) = %v, want %v", tc.value, got, tc.want)
 			}
 		})
 	}
