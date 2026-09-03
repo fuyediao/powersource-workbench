@@ -1,0 +1,74 @@
+{
+  "name": "powersource-workbench-desktop",
+  "productName": "PowerSource Workbench",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PowerSource group workbench desktop application",
+  "license": "AGPL-3.0",
+  "author": "PowerSource",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build && electron-builder",
+    "build:vite": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "lint:style": "stylelint \"src/**/*.css\""
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=10"
+  },
+  "dependencies": {
+    "@fontsource/plus-jakarta-sans": "5.3.0",
+    "axios": "1.19.0",
+    "i18next": "26.3.6",
+    "lucide-react": "0.544.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-i18next": "17.0.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.15.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.4",
+    "electron": "43.3.0",
+    "electron-builder": "26.15.3",
+    "eslint": "9.15.0",
+    "globals": "15.14.0",
+    "stylelint": "16.26.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.18.0",
+    "vite": "8.2.0",
+    "vite-plugin-electron": "1.0.1"
+  },
+  "build": {
+    "appId": "com.powersource.workbench",
+    "productName": "PowerSource Workbench",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Office"
+    }
+  }
+}

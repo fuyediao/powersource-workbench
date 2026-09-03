@@ -1,0 +1,90 @@
+{
+  "app": {
+    "name": "PowerSource Workbench",
+    "tagline": "One workspace for the entire group"
+  },
+  "auth": {
+    "title": "Welcome back",
+    "subtitle": "Sign in with your invited Workbench account.",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signingIn": "Signing in…",
+    "activate": "Activate invitation",
+    "activationTitle": "Activate your account",
+    "activationSubtitle": "Enter the invitation code supplied by the system administrator.",
+    "invitationCode": "Invitation code",
+    "confirmPassword": "Confirm password",
+    "activating": "Activating…",
+    "backToSignIn": "Back to sign in",
+    "passwordMismatch": "Passwords do not match.",
+    "signOut": "Sign out"
+  },
+  "nav": {
+    "home": "Desktop",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "home": {
+    "greeting": "Good {{period}}, {{name}}",
+    "morning": "morning",
+    "afternoon": "afternoon",
+    "evening": "evening",
+    "lead": "Your group workspace is ready. New business applications can be added here on a clean foundation.",
+    "quickAccess": "Quick access",
+    "searchTitle": "Search Workbench",
+    "searchDescription": "Find pages, settings, and future group applications.",
+    "settingsTitle": "Personalize",
+    "settingsDescription": "Adjust appearance, language, and account preferences.",
+    "emptyTitle": "A clean foundation",
+    "emptyDescription": "Legacy business modules and the previous permission model were intentionally excluded from this workspace."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search Workbench…",
+    "hint": "Search pages and settings",
+    "noResults": "No matching items",
+    "results": "Results"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "appearance": "Appearance",
+    "account": "Account",
+    "invitations": "Invitations",
+    "language": "Language",
+    "traditionalChinese": "Traditional Chinese",
+    "theme": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "profile": "Signed-in account",
+    "role": "Role",
+    "systemAdmin": "System administrator",
+    "member": "Member",
+    "invitationHelp": "Create a one-time invitation for a new group member.",
+    "reservedUsername": "Reserved username",
+    "displayName": "Display name (optional)",
+    "createInvitation": "Create invitation",
+    "creatingInvitation": "Creating…",
+    "invitationCreated": "Invitation created. Copy this code now; it is shown only once.",
+    "copyCode": "Copy code",
+    "codeCopied": "Copied",
+    "noPermissionEditor": "The previous permission editor is not included. A new group-wide permission model can be added later."
+  },
+  "common": {
+    "open": "Open",
+    "close": "Close"
+  },
+  "errors": {
+    "invalid_credentials": "The username or password is incorrect.",
+    "invalid_invitation": "This invitation is invalid, expired, revoked, or already used.",
+    "invalid_username": "Use 3–32 lowercase letters, numbers, dots, underscores, or hyphens.",
+    "username_unavailable": "This username is already in use or reserved.",
+    "forbidden": "This action is available only to the system administrator.",
+    "invalid_session": "Your session has expired. Sign in again.",
+    "origin_not_allowed": "This application origin is not allowed.",
+    "internal_error": "The server could not complete the request.",
+    "network_error": "The Supabase service is unavailable."
+  }
+}

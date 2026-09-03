@@ -82,6 +82,8 @@ out
 .nuxt
 dist
 .output
+release
+dist-electron
 
 # Gatsby files
 .cache/
@@ -143,3 +145,7 @@ vite.config.ts.timestamp-*
 .vite/
 
 .env.vps
+
+# Test outputs
+test-results/
+playwright-report/
