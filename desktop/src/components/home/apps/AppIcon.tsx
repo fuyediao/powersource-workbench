@@ -132,10 +132,6 @@ const FUNCTION_SVG_ICONS: Record<string, FunctionSvgConfig> = {
     Icon: NextorchBrandIcon,
     iconClass: 'h-[58%] w-auto text-brand',
   },
-  'function-nextorch-te': {
-    Icon: NextorchBrandIcon,
-    iconClass: 'h-[58%] w-auto text-brand',
-  },
   'function-oa': {
     Icon: PowersourceBrandIcon,
     iconClass: 'h-[72%] w-[72%]',
@@ -172,7 +168,6 @@ const FUNCTION_SVG_ICONS_COMPACT: Record<string, string> = {
   'function-clash': 'size-3.5 sm:size-4 text-brand',
   'function-harness': 'size-3.5 sm:size-4 text-brand',
   'function-nextorch': 'h-[70%] w-auto text-brand',
-  'function-nextorch-te': 'h-[70%] w-auto text-brand',
   'function-oa': 'h-[78%] w-[78%]',
   'function-erp': 'h-[78%] w-[78%]',
   'function-nexdot': 'h-[68%] w-[68%] text-brand',

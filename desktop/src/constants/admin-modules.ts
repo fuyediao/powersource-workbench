@@ -282,7 +282,7 @@ export const NEXDOT_NAV_GROUPS: AdminNavItem[][] = [
   ],
 ]
 
-/** T&E Admin Home Function sidebar (`workbench://te-admin`; not the Nextorch `workbench://te` site). */
+/** T&E Admin Home Function sidebar (`workbench://te-admin`). */
 export const TE_ADMIN_NAV_GROUPS: AdminNavItem[][] = [
   [
     { path: '/te-admin', moduleKey: 'te', labelKey: 'admin.sidebar.te' },

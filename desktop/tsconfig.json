@@ -28,7 +28,6 @@
     "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["./src/*"],
-      "@univerjs/icons": ["./node_modules/@univerjs/icons/dist/esm/index.d.ts"],
       "@univerjs/core/facade": ["./src/lib/univer/shared/core/facade/index.ts"],
       "@univerjs/engine-formula/facade": ["./src/lib/univer/shared/engine-formula/facade/index.ts"],
       "@univerjs/sheets/facade": ["./src/lib/univer/excel/sheets/facade/index.ts"],

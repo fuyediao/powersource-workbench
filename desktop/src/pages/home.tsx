@@ -18,7 +18,6 @@ import { useAsideWidgetFlip } from '@/hooks/use-aside-widget-flip'
 import { isFunctionsCategory, FUNCTION_FEATURE_APPS, getFunctionSiteApps } from '@/constants/rail-categories'
 import type { FeatureTabId, WorkbenchSearchTarget } from '@/constants/feature-tabs'
 import type { AppItem, Category } from '@/types/library'
-import { useSettingsRoles } from '@/hooks/use-settings-roles'
 import { useDesktopModuleAccess } from '@/hooks/use-desktop-module-access'
 import { useHomeAppOrder } from '@/hooks/use-home-app-order'
 
@@ -99,10 +98,8 @@ function CategoryAppsSection({
   onOpenSettings,
 }: CategoryAppsSectionProps) {
   const { t } = useTranslation()
-  const roles = useSettingsRoles(userId)
   const desktopAccess = useDesktopModuleAccess(userId)
   const homeAppOrder = useHomeAppOrder(userId, FUNCTION_FEATURE_APPS)
-  const canOpenTeOfficial = roles.isSystemAdmin || roles.isGroupAdmin
   const isFunctions = isFunctionsCategory(categoryId)
   const canEditLayout = !readOnly || isFunctions
   const functionSiteApps = getFunctionSiteApps()
@@ -205,7 +202,6 @@ function CategoryAppsSection({
             onLinkExisting={onLinkExisting}
             onOpenFeature={onOpenFeature}
             onOpenSettings={onOpenSettings}
-            canOpenTeOfficial={canOpenTeOfficial}
           />
         </div>
       ) : (
@@ -250,7 +246,7 @@ export function HomePage({
 }: HomePageProps) {
   const { t } = useTranslation()
   const pageWidgets = useSharedPageWidgets()
-  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showSchedule, showMail, showApps, peekApps } =
+  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showMail, showApps, peekApps } =
     pageWidgets.widgets
   const asideVisibility: Record<AsideWidgetId, boolean> = {
     weather: showWeather,
@@ -258,9 +254,7 @@ export function HomePage({
     currency: showCurrency,
     markets: showMarkets,
     news: showNews,
-    schedule: showSchedule,
     mail: showMail,
-    focus: false,
   }
   const leftOrder = pageWidgets.asideRails.left
   const rightOrder = pageWidgets.asideRails.right
@@ -302,14 +296,6 @@ export function HomePage({
     return 'stack'
   }
 
-  /**
-   * Admin shortcuts are removed from this Workbench shell.
-   * @param _path - Absolute Admin path (ignored).
-   * @returns Nothing.
-   */
-  function openAdminFromWidget(_path: string): void {
-    return
-  }
   const [categorySlide, setCategorySlide] = useState<CategorySlide | null>(null)
   const [exitingPanel, setExitingPanel] = useState<ExitingCategoryPanel | null>(null)
   const [editingApps, setEditingApps] = useState(false)
@@ -455,12 +441,10 @@ export function HomePage({
                   data-aside-pair="column"
                 >
                   <AsideWidgetBoard
-                    userId={userId}
                     order={leftOrder}
                     visibility={asideVisibility}
                     leadId={leftLeadId}
                     pair={false}
-                    onOpenAdminPath={openAdminFromWidget}
                     onOpenMail={() => onOpenFeature('mail')}
                   />
                 </div>
@@ -560,7 +544,6 @@ export function HomePage({
                   }
                 >
                   <AsideWidgetBoard
-                    userId={userId}
                     order={rightOrder}
                     visibility={asideVisibility}
                     leadId={rightLeadId}
@@ -570,7 +553,6 @@ export function HomePage({
                       showMarketsNewsPair &&
                       asidePair.layoutPair === 'pair'
                     }
-                    onOpenAdminPath={openAdminFromWidget}
                     onOpenMail={() => onOpenFeature('mail')}
                   />
                 </div>

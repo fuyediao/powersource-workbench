@@ -72,18 +72,14 @@ interface SettingsPanelProps {
   showNews: boolean
   showTodo: boolean
   showCurrency: boolean
-  showSchedule: boolean
   showMail: boolean
-  showFocus: boolean
   showApps: boolean
   onSetShowWeather: (visible: boolean) => void
   onSetShowMarkets: (visible: boolean) => void
   onSetShowNews: (visible: boolean) => void
   onSetShowTodo: (visible: boolean) => void
   onSetShowCurrency: (visible: boolean) => void
-  onSetShowSchedule: (visible: boolean) => void
   onSetShowMail: (visible: boolean) => void
-  onSetShowFocus: (visible: boolean) => void
   onSetShowApps: (visible: boolean) => void
   peekApps: boolean
   onSetRotateEnabled: (enabled: boolean) => void
@@ -141,18 +137,14 @@ export function SettingsPanel({
   showNews,
   showTodo,
   showCurrency,
-  showSchedule,
   showMail,
-  showFocus,
   showApps,
   onSetShowWeather,
   onSetShowMarkets,
   onSetShowNews,
   onSetShowTodo,
   onSetShowCurrency,
-  onSetShowSchedule,
   onSetShowMail,
-  onSetShowFocus,
   onSetShowApps,
   peekApps,
   onSetRotateEnabled,
@@ -298,18 +290,14 @@ export function SettingsPanel({
             showNews={showNews}
             showTodo={showTodo}
             showCurrency={showCurrency}
-            showSchedule={showSchedule}
             showMail={showMail}
-            showFocus={showFocus}
             showApps={showApps}
             onSetShowWeather={onSetShowWeather}
             onSetShowMarkets={onSetShowMarkets}
             onSetShowNews={onSetShowNews}
             onSetShowTodo={onSetShowTodo}
             onSetShowCurrency={onSetShowCurrency}
-            onSetShowSchedule={onSetShowSchedule}
             onSetShowMail={onSetShowMail}
-            onSetShowFocus={onSetShowFocus}
             onSetShowApps={onSetShowApps}
             peekApps={peekApps}
           />

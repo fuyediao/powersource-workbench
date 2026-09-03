@@ -36,9 +36,7 @@ export function usePageWidgets(userId: string | null): {
   setShowNews: (visible: boolean) => void
   setShowTodo: (visible: boolean) => void
   setShowCurrency: (visible: boolean) => void
-  setShowSchedule: (visible: boolean) => void
   setShowMail: (visible: boolean) => void
-  setShowFocus: (visible: boolean) => void
   setShowApps: (visible: boolean) => void
   setPeekApps: (visible: boolean) => void
   setAsideRails: (rails: AsideWidgetRails) => void
@@ -233,30 +231,12 @@ export function usePageWidgets(userId: string | null): {
   }
 
   /**
-   * Toggles the schedule reminder card.
-   * @param visible - Whether the schedule card should show.
-   * @returns Nothing.
-   */
-  function setShowSchedule(visible: boolean): void {
-    persist((current) => ({ ...current, showSchedule: visible }))
-  }
-
-  /**
    * Toggles the mail unread reminder card.
    * @param visible - Whether the mail card should show.
    * @returns Nothing.
    */
   function setShowMail(visible: boolean): void {
     persist((current) => ({ ...current, showMail: visible }))
-  }
-
-  /**
-   * Toggles the business-focus card.
-   * @param visible - Whether the focus card should show.
-   * @returns Nothing.
-   */
-  function setShowFocus(visible: boolean): void {
-    persist((current) => ({ ...current, showFocus: visible }))
   }
 
   /**
@@ -299,9 +279,7 @@ export function usePageWidgets(userId: string | null): {
     setShowNews,
     setShowTodo,
     setShowCurrency,
-    setShowSchedule,
     setShowMail,
-    setShowFocus,
     setShowApps,
     setPeekApps,
     setAsideRails,

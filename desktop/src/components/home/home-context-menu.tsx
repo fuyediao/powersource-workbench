@@ -93,22 +93,10 @@ export function HomeContextMenu({ children, onOpenSettings }: HomeContextMenuPro
       toggle: () => pageWidgets.setShowCurrency(!pageWidgets.widgets.showCurrency),
     },
     {
-      id: 'schedule',
-      label: t('home.aside.scheduleReminder'),
-      visible: pageWidgets.widgets.showSchedule,
-      toggle: () => pageWidgets.setShowSchedule(!pageWidgets.widgets.showSchedule),
-    },
-    {
       id: 'mail',
       label: t('home.aside.mailReminder'),
       visible: pageWidgets.widgets.showMail,
       toggle: () => pageWidgets.setShowMail(!pageWidgets.widgets.showMail),
-    },
-    {
-      id: 'focus',
-      label: t('home.aside.businessFocus'),
-      visible: pageWidgets.widgets.showFocus,
-      toggle: () => pageWidgets.setShowFocus(!pageWidgets.widgets.showFocus),
     },
   ]
 

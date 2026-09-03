@@ -129,7 +129,7 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
 
     let active = true
     const timer = window.setTimeout(() => {
-      void fetchSuggestions(engine, normalized)
+      void fetchSuggestions(engine, normalized, userId)
         .then((next) => {
           if (active) {
             setSuggestions(next)
@@ -146,10 +146,10 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
       active = false
       window.clearTimeout(timer)
     }
-  }, [engine, query])
+  }, [engine, query, userId])
 
   /**
-   * Selects a search engine and optionally persists it to Supabase.
+   * Selects a search engine and optionally persists it to Home SQLite.
    * @param nextEngine - Engine to select.
    * @returns Nothing.
    */

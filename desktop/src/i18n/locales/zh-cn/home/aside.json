@@ -1,14 +1,5 @@
 {
-  "scheduleReminder": "日程提醒",
-  "businessFocus": "业务关注",
   "mailReminder": "邮件提醒",
   "mailUnreadDescription": "所有邮箱收件箱未读邮件",
-  "mailUnreadUnavailable": "无法加载邮件摘要（请检查邮件 Worker 配置）",
-  "addFollowUpPlan": "添加待办清单",
-  "viewMore": "查看更多",
-  "focus": {
-    "recentLeads": "最近 3 天新获得的线索",
-    "recentAccounts": "最近 3 天新获得的客户",
-    "activeOpportunities": "正在跟进的商机"
-  }
+  "mailUnreadUnavailable": "无法加载邮件摘要（请检查邮件 Worker 配置）"
 }

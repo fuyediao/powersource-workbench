@@ -50,9 +50,7 @@ export interface HomeSettingsRecord {
   showNews: boolean
   showTodo: boolean
   showCurrency: boolean
-  showSchedule: boolean
   showMail: boolean
-  showFocus: boolean
   showApps: boolean
   peekApps: boolean
   openLinksMode: HomeOpenLinksMode | null
@@ -89,6 +87,44 @@ export interface HomeSearchHistoryItemDto {
   query: string
   engine: string
   createdAt: string
+}
+
+/** Max suggestion strings stored for one query. */
+export const HOME_SEARCH_SUGGESTION_LIMIT = 10
+
+/** Max characters kept for one suggestion string. */
+export const HOME_SEARCH_SUGGESTION_TEXT_LIMIT = 200
+
+/**
+ * Sanitizes a search-suggestion list for local SQLite.
+ * @param value - Raw network or stored list.
+ * @returns Deduplicated trimmed strings.
+ */
+export function sanitizeSearchSuggestions(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return []
+  }
+  const seen = new Set<string>()
+  const next: string[] = []
+  for (const item of value) {
+    if (typeof item !== 'string') {
+      continue
+    }
+    const text = item.trim()
+    if (!text || text.length > HOME_SEARCH_SUGGESTION_TEXT_LIMIT) {
+      continue
+    }
+    const key = text.toLowerCase()
+    if (seen.has(key)) {
+      continue
+    }
+    seen.add(key)
+    next.push(text)
+    if (next.length >= HOME_SEARCH_SUGGESTION_LIMIT) {
+      break
+    }
+  }
+  return next
 }
 
 /**

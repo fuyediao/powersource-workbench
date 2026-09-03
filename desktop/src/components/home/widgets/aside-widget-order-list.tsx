@@ -27,8 +27,6 @@ import { useTranslation } from 'react-i18next'
 import {
   CurrencyIcon,
   GripIcon,
-  LucideBriefcaseIcon,
-  LucideCalendarCheckIcon,
   MailIcon,
   NewsIcon,
   TodoIcon,
@@ -204,9 +202,7 @@ export function AsideWidgetOrderList({ rails, onChange }: AsideWidgetOrderListPr
     currency: t('currency.title'),
     markets: t('markets.title'),
     news: t('news.title'),
-    schedule: t('home.aside.scheduleReminder'),
     mail: t('home.aside.mailReminder'),
-    focus: t('home.aside.businessFocus'),
   }
 
   const icons: Record<AsideWidgetId, typeof WeatherIcon> = {
@@ -215,9 +211,7 @@ export function AsideWidgetOrderList({ rails, onChange }: AsideWidgetOrderListPr
     currency: CurrencyIcon,
     markets: TrendIcon,
     news: NewsIcon,
-    schedule: LucideCalendarCheckIcon,
     mail: MailIcon,
-    focus: LucideBriefcaseIcon,
   }
 
   /**

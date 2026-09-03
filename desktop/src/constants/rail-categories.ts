@@ -119,13 +119,6 @@ export const FUNCTION_SITE_APPS: AppItem[] = [
     url: 'https://www.nextorch.com/',
     name: 'functions.apps.nextorch',
   },
-  {
-    id: 'function-nextorch-te',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 3,
-    url: 'workbench://te',
-    name: 'functions.apps.nextorchTe',
-  },
 ]
 
 /**

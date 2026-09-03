@@ -8,20 +8,16 @@ export type AsideWidgetId =
   | 'currency'
   | 'markets'
   | 'news'
-  | 'schedule'
   | 'mail'
-  | 'focus'
 
 /** Which home content-stage rail a widget sits on. */
 export type AsideWidgetRail = 'left' | 'right'
 
 /**
- * Default left-rail order (CRM reminders + briefing).
+ * Default left-rail order (mail reminder + briefing).
  */
 export const DEFAULT_ASIDE_WIDGET_ORDER_LEFT: AsideWidgetId[] = [
-  'schedule',
   'mail',
-  'focus',
   'news',
 ]
 

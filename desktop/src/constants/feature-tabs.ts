@@ -132,15 +132,6 @@ export function isSettingsDeepLink(url: string): boolean {
 }
 
 /**
- * Returns whether a Function tile opens the NEXTORCH T&E access picker.
- * @param url - App tile URL.
- * @returns True for `workbench://te`.
- */
-export function isTeDeepLink(url: string): boolean {
-  return workbenchDeepLinkId(url) === 'te'
-}
-
-/**
  * Returns whether a Function tile opens the POWERSOURCE OA region picker.
  * @param url - App tile URL.
  * @returns True for `workbench://oa`.

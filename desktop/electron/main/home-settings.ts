@@ -14,6 +14,7 @@ import {
   homeWallpaperMediaUrl,
   homeWallpaperThumbPath,
   parseHomeOpenLinksMode,
+  sanitizeSearchSuggestions,
   type HomeMarketAssetDto,
   type HomeSearchHistoryItemDto,
   type HomeSettingsRecord,
@@ -29,6 +30,8 @@ const MAX_WALLPAPER_BYTES = 10 * 1024 * 1024
 const MAX_TODOS = 200
 const SEARCH_HISTORY_LIMIT = 30
 const MAX_MARKET_ASSETS = 2
+const MAX_SUGGESTION_QUERY_LENGTH = 120
+const MAX_SUGGESTION_CACHE_ROWS = 300
 
 const DEFAULT_HOME_SETTINGS: HomeSettingsRecord = {
   searchEngine: 'Google',
@@ -50,9 +53,7 @@ const DEFAULT_HOME_SETTINGS: HomeSettingsRecord = {
   showNews: false,
   showTodo: false,
   showCurrency: false,
-  showSchedule: false,
   showMail: false,
-  showFocus: false,
   showApps: false,
   peekApps: false,
   openLinksMode: null,
@@ -125,6 +126,16 @@ function getSettingsDatabase(): DatabaseSync {
     );
     CREATE INDEX IF NOT EXISTS search_history_user_created
       ON search_history (user_id, created_at DESC);
+    CREATE TABLE IF NOT EXISTS search_suggestions (
+      user_id TEXT NOT NULL,
+      engine TEXT NOT NULL,
+      query TEXT NOT NULL,
+      suggestions_json TEXT NOT NULL,
+      updated_at INTEGER NOT NULL,
+      PRIMARY KEY (user_id, engine, query)
+    );
+    CREATE INDEX IF NOT EXISTS search_suggestions_user_updated
+      ON search_suggestions (user_id, updated_at DESC);
   `)
   settingsDatabase = database
   return database
@@ -307,9 +318,7 @@ function normalizeSettings(value: unknown): HomeSettingsRecord {
     showNews: Boolean(raw.showNews),
     showTodo: Boolean(raw.showTodo),
     showCurrency: Boolean(raw.showCurrency),
-    showSchedule: Boolean(raw.showSchedule),
     showMail: Boolean(raw.showMail),
-    showFocus: Boolean(raw.showFocus),
     showApps: Boolean(raw.showApps),
     peekApps: Boolean(raw.peekApps),
     openLinksMode: parseHomeOpenLinksMode(raw.openLinksMode),
@@ -746,4 +755,107 @@ export function deleteHomeSearchHistory(
     .prepare('DELETE FROM search_history WHERE user_id = ? AND id = ?')
     .run(id, historyId.trim())
   return listHomeSearchHistory(id)
+}
+
+/**
+ * Normalizes a suggestion-cache query key.
+ * @param query - Raw search text.
+ * @returns Lowercased trimmed query, or empty when invalid.
+ */
+function normalizeSuggestionQuery(query: string): string {
+  const normalized = query.trim().toLowerCase()
+  if (!normalized || normalized.length > MAX_SUGGESTION_QUERY_LENGTH) {
+    return ''
+  }
+  return normalized
+}
+
+/**
+ * Normalizes a suggestion-cache engine key.
+ * @param engine - Raw engine id.
+ * @returns Google, Bing, or Yahoo.
+ */
+function normalizeSuggestionEngine(engine: string): string {
+  if (engine === 'Bing' || engine === 'Yahoo') {
+    return engine
+  }
+  return 'Google'
+}
+
+/**
+ * Reads cached autocomplete suggestions for one query.
+ * @param userId - Auth user id.
+ * @param engine - Suggest engine id.
+ * @param query - Search text.
+ * @returns Cached suggestion strings, or an empty list.
+ */
+export function getHomeSearchSuggestions(
+  userId: string,
+  engine: string,
+  query: string,
+): string[] {
+  const id = userId.trim()
+  const key = normalizeSuggestionQuery(query)
+  if (!id || id.length > MAX_USER_ID_LENGTH || !key) {
+    return []
+  }
+  const row = getSettingsDatabase()
+    .prepare(
+      'SELECT suggestions_json FROM search_suggestions WHERE user_id = ? AND engine = ? AND query = ?',
+    )
+    .get(id, normalizeSuggestionEngine(engine), key) as StoreRow | undefined
+  if (!row) {
+    return []
+  }
+  try {
+    return sanitizeSearchSuggestions(JSON.parse(asString(row.suggestions_json)) as unknown)
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Stores autocomplete suggestions for one query and prunes old rows.
+ * @param userId - Auth user id.
+ * @param engine - Suggest engine id.
+ * @param query - Search text.
+ * @param suggestions - Suggestion strings.
+ * @returns Nothing.
+ */
+export function putHomeSearchSuggestions(
+  userId: string,
+  engine: string,
+  query: string,
+  suggestions: string[],
+): void {
+  const id = userId.trim()
+  const key = normalizeSuggestionQuery(query)
+  const next = sanitizeSearchSuggestions(suggestions)
+  if (!id || id.length > MAX_USER_ID_LENGTH || !key || next.length === 0) {
+    return
+  }
+  const database = getSettingsDatabase()
+  database
+    .prepare(
+      `INSERT INTO search_suggestions (user_id, engine, query, suggestions_json, updated_at)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(user_id, engine, query) DO UPDATE SET
+         suggestions_json = excluded.suggestions_json,
+         updated_at = excluded.updated_at`,
+    )
+    .run(id, normalizeSuggestionEngine(engine), key, JSON.stringify(next), Date.now())
+  const overflow = database
+    .prepare(
+      'SELECT query, engine FROM search_suggestions WHERE user_id = ? ORDER BY updated_at DESC LIMIT -1 OFFSET ?',
+    )
+    .all(id, MAX_SUGGESTION_CACHE_ROWS) as StoreRow[]
+  if (overflow.length === 0) {
+    return
+  }
+  const deleteOne = database.prepare(
+    'DELETE FROM search_suggestions WHERE user_id = ? AND engine = ? AND query = ?',
+  )
+  for (const row of overflow) {
+    deleteOne.run(id, asString(row.engine), asString(row.query))
+  }
 }

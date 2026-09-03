@@ -21,7 +21,6 @@ import { CSS } from '@dnd-kit/utilities'
 import { useTranslation } from 'react-i18next'
 import { AddAppDialog, type NewAppFields } from './AddAppDialog'
 import { EndpointPickerDialog } from './EndpointPickerDialog'
-import { TeAccessPickerDialog } from './TeAccessPickerDialog'
 import { AppIcon } from './AppIcon'
 import { MinusIcon, PlusIcon } from '@/icons/AllIcons'
 import { useDialogPresence } from '@/hooks/use-dialog-presence'
@@ -33,11 +32,9 @@ import {
   isErpDeepLink,
   isOaDeepLink,
   isSettingsDeepLink,
-  isTeDeepLink,
 } from '@/constants/feature-tabs'
 import type { FeatureTabId } from '@/constants/feature-tabs'
 import type { PowersourceSystem } from '@/constants/powersource-endpoints'
-import { NEXTORCH_TE_WEB_URL } from '@/constants/nextorch-te'
 
 const LONG_PRESS_MS = 480
 const LONG_PRESS_MOVE_PX = 10
@@ -64,11 +61,6 @@ interface AppGridProps {
   onOpenFeature?: (feature: FeatureTabId) => void
   /** Opens Settings as a title-bar sub-page. */
   onOpenSettings?: () => void
-  /**
-   * When true, the T&E picker includes admin Official handoff
-   * (system / group admin). Non-admins open the public site directly.
-   */
-  canOpenTeOfficial?: boolean
 }
 
 interface SortableAppProps {
@@ -89,8 +81,6 @@ interface SortableAppProps {
   onOpenSettings?: () => void
   /** Opens the POWERSOURCE OA / ERP region picker. */
   onOpenEndpointPicker?: (system: PowersourceSystem) => void
-  /** Opens NEXTORCH T&E (picker for admins, public site otherwise). */
-  onOpenTe?: () => void
 }
 
 interface AppTileProps {
@@ -169,7 +159,6 @@ function SortableApp({
   onOpenFeature,
   onOpenSettings,
   onOpenEndpointPicker,
-  onOpenTe,
 }: SortableAppProps) {
   const { openUrl } = useLinkOpen()
   const sortable = useSortable({
@@ -199,7 +188,7 @@ function SortableApp({
   useEffect(() => () => clearPressTimer(), [])
 
   /**
-   * Opens Settings, a feature sub-page, OA/ERP/T&E picker, or the app URL when not in edit mode.
+   * Opens Settings, a feature sub-page, OA/ERP picker, or the app URL when not in edit mode.
    * @returns Nothing.
    */
   function openApp(): void {
@@ -222,10 +211,6 @@ function SortableApp({
     }
     if (isErpDeepLink(app.url) && onOpenEndpointPicker) {
       onOpenEndpointPicker('erp')
-      return
-    }
-    if (isTeDeepLink(app.url) && onOpenTe) {
-      onOpenTe()
       return
     }
     openUrl(app.url)
@@ -369,14 +354,12 @@ export function AppGrid({
   onLinkExisting,
   onOpenFeature,
   onOpenSettings,
-  canOpenTeOfficial = false,
 }: AppGridProps) {
   const { t } = useTranslation()
   const { openUrl } = useLinkOpen()
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [endpointPicker, setEndpointPicker] = useState<PowersourceSystem | null>(null)
-  const [tePickerOpen, setTePickerOpen] = useState(false)
   const [pendingRemove, setPendingRemove] = useState<AppItem | null>(null)
   const [removing, setRemoving] = useState(false)
   const sensors = useSensors(
@@ -685,13 +668,6 @@ export function AppGrid({
                     onOpenFeature={onOpenFeature}
                     onOpenSettings={onOpenSettings}
                     onOpenEndpointPicker={setEndpointPicker}
-                    onOpenTe={() => {
-                      if (canOpenTeOfficial) {
-                        setTePickerOpen(true)
-                        return
-                      }
-                      openUrl(NEXTORCH_TE_WEB_URL)
-                    }}
                   />
                 )
               })}
@@ -747,13 +723,6 @@ export function AppGrid({
         system={endpointPicker}
         onClose={() => setEndpointPicker(null)}
         onSelect={openUrl}
-      />
-
-      <TeAccessPickerDialog
-        open={tePickerOpen}
-        showOfficial={canOpenTeOfficial}
-        onClose={() => setTePickerOpen(false)}
-        onOpenUrl={openUrl}
       />
 
       {pendingRemove

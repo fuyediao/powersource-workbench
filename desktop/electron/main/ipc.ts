@@ -67,6 +67,8 @@ import {
   listHomeTodos,
   listHomeWallpapers,
   patchHomeSettings,
+  getHomeSearchSuggestions,
+  putHomeSearchSuggestions,
   recordHomeSearchHistory,
   removeHomeWallpaper,
   saveHomeMarketAssets,
@@ -100,13 +102,25 @@ import { readInstallLanguage } from './install-language'
 
 const netHandlers = {
   /**
-   * Loads search suggestions for an engine.
+   * Loads search suggestions for an engine, caching hits in Home SQLite.
    * @param engine - Search engine id.
    * @param query - Search text.
+   * @param userId - Signed-in user id for the local cache.
    * @returns Suggestion strings.
    */
-  fetchSuggestions: async (engine: 'Google' | 'Bing' | 'Yahoo', query: string) =>
-    fetchSuggestions(engine, query),
+  fetchSuggestions: async (
+    engine: 'Google' | 'Bing' | 'Yahoo',
+    query: string,
+    userId?: string,
+  ) => {
+    const live = await fetchSuggestions(engine, query)
+    const uid = typeof userId === 'string' ? userId : ''
+    if (live.length > 0) {
+      putHomeSearchSuggestions(uid, engine, query, live)
+      return live
+    }
+    return getHomeSearchSuggestions(uid, engine, query)
+  },
 
   /**
    * Loads live market quotes.
@@ -287,9 +301,7 @@ function parseHomeSettingsPatch(value: unknown): Partial<HomeSettingsRecord> {
     'showNews',
     'showTodo',
     'showCurrency',
-    'showSchedule',
     'showMail',
-    'showFocus',
     'showApps',
     'peekApps',
   ]

@@ -66,9 +66,7 @@ export interface PageWidgetVisibility {
   showNews: boolean
   showTodo: boolean
   showCurrency: boolean
-  showSchedule: boolean
   showMail: boolean
-  showFocus: boolean
   showApps: boolean
   /** When the apps rail is hidden, whether the apps panel still shows on home. */
   peekApps: boolean
@@ -80,9 +78,7 @@ export const DEFAULT_PAGE_WIDGETS: PageWidgetVisibility = {
   showNews: false,
   showTodo: false,
   showCurrency: false,
-  showSchedule: false,
   showMail: false,
-  showFocus: false,
   showApps: false,
   peekApps: false,
 }
@@ -471,9 +467,7 @@ export async function fetchPageWidgets(userId: string): Promise<{
       showNews: settings.showNews ?? DEFAULT_PAGE_WIDGETS.showNews,
       showTodo: settings.showTodo ?? DEFAULT_PAGE_WIDGETS.showTodo,
       showCurrency: settings.showCurrency ?? DEFAULT_PAGE_WIDGETS.showCurrency,
-      showSchedule: settings.showSchedule ?? DEFAULT_PAGE_WIDGETS.showSchedule,
       showMail: settings.showMail ?? DEFAULT_PAGE_WIDGETS.showMail,
-      showFocus: settings.showFocus ?? DEFAULT_PAGE_WIDGETS.showFocus,
       showApps,
       peekApps: false,
     },
@@ -501,9 +495,7 @@ export async function savePageWidgets(
     showNews: Boolean(widgets.showNews),
     showTodo: Boolean(widgets.showTodo),
     showCurrency: Boolean(widgets.showCurrency),
-    showSchedule: Boolean(widgets.showSchedule),
     showMail: Boolean(widgets.showMail),
-    showFocus: Boolean(widgets.showFocus),
     showApps: Boolean(widgets.showApps) || Boolean(widgets.peekApps),
     peekApps: false,
   }
@@ -513,9 +505,7 @@ export async function savePageWidgets(
     showNews: next.showNews,
     showTodo: next.showTodo,
     showCurrency: next.showCurrency,
-    showSchedule: next.showSchedule,
     showMail: next.showMail,
-    showFocus: next.showFocus,
     showApps: next.showApps,
     peekApps: false,
   })

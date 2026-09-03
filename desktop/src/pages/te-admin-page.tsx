@@ -42,8 +42,7 @@ function teAdminPathOnly(path: string | null): string | null {
 
 /**
  * T&E Admin Home Function (`workbench://te-admin`): applications / users /
- * community / marketing / partner departments / media — not the Nextorch
- * `workbench://te` site picker.
+ * community / marketing / partner departments / media.
  * @param props - Signed-in user.
  * @returns T&E Admin UI.
  */

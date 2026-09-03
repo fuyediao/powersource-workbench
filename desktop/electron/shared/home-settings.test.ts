@@ -3,6 +3,7 @@ import {
   homeWallpaperMediaUrl,
   homeWallpaperThumbPath,
   parseHomeOpenLinksMode,
+  sanitizeSearchSuggestions,
 } from './home-settings'
 
 describe('home wallpaper paths', () => {
@@ -27,5 +28,18 @@ describe('parseHomeOpenLinksMode', () => {
     expect(parseHomeOpenLinksMode(undefined)).toBeNull()
     expect(parseHomeOpenLinksMode(null)).toBeNull()
     expect(parseHomeOpenLinksMode('1')).toBeNull()
+  })
+})
+
+describe('sanitizeSearchSuggestions', () => {
+  it('trims, drops empties, and deduplicates', () => {
+    expect(sanitizeSearchSuggestions(['  Taipei  ', '', 'taipei', 'Kaohsiung'])).toEqual([
+      'Taipei',
+      'Kaohsiung',
+    ])
+  })
+
+  it('rejects non-arrays', () => {
+    expect(sanitizeSearchSuggestions(null)).toEqual([])
   })
 })

@@ -1,14 +1,5 @@
 {
-  "scheduleReminder": "Schedule",
-  "businessFocus": "Business Focus",
   "mailReminder": "Mail",
   "mailUnreadDescription": "Unread messages in Inbox (all connected mailboxes)",
-  "mailUnreadUnavailable": "Mail summary unavailable (check mail worker configuration)",
-  "addFollowUpPlan": "Add Todo List",
-  "viewMore": "View more",
-  "focus": {
-    "recentLeads": "Leads (last 3 days)",
-    "recentAccounts": "Accounts (last 3 days)",
-    "activeOpportunities": "Opportunities in progress"
-  }
+  "mailUnreadUnavailable": "Mail summary unavailable (check mail worker configuration)"
 }

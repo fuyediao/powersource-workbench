@@ -67,7 +67,7 @@ export function SettingsPage({
     useSharedBackgroundOpacity()
   const background = useSharedBackground()
   const pageWidgets = useSharedPageWidgets()
-  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showSchedule, showMail, showFocus, showApps, peekApps } =
+  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showMail, showApps, peekApps } =
     pageWidgets.widgets
 
   return (
@@ -105,9 +105,7 @@ export function SettingsPage({
       showNews={showNews}
       showTodo={showTodo}
       showCurrency={showCurrency}
-      showSchedule={showSchedule}
       showMail={showMail}
-      showFocus={showFocus}
       showApps={showApps}
       peekApps={peekApps}
       onSetShowWeather={pageWidgets.setShowWeather}
@@ -115,9 +113,7 @@ export function SettingsPage({
       onSetShowNews={pageWidgets.setShowNews}
       onSetShowTodo={pageWidgets.setShowTodo}
       onSetShowCurrency={pageWidgets.setShowCurrency}
-      onSetShowSchedule={pageWidgets.setShowSchedule}
       onSetShowMail={pageWidgets.setShowMail}
-      onSetShowFocus={pageWidgets.setShowFocus}
       onSetShowApps={pageWidgets.setShowApps}
       onSetRotateEnabled={background.setRotateEnabled}
       onSetRotateSeconds={background.setRotateSeconds}

@@ -112,13 +112,25 @@ export async function searchPlaces(
 
 /**
  * Loads autocomplete suggestions via the Electron main-process proxy.
+ * Signed-in users persist successful results in Home SQLite and fall back to
+ * that cache when the network list is empty.
  * @param engine - Active search engine.
  * @param query - Search text.
+ * @param userId - Signed-in user id, or null while unauthenticated.
  * @returns Suggestion strings.
  */
-export async function fetchSuggestions(engine: SearchEngine, query: string): Promise<string[]> {
+export async function fetchSuggestions(
+  engine: SearchEngine,
+  query: string,
+  userId?: string | null,
+): Promise<string[]> {
   try {
-    return await netCall<string[]>('fetchSuggestions', suggestEngineFor(engine), query)
+    return await netCall<string[]>(
+      'fetchSuggestions',
+      suggestEngineFor(engine),
+      query,
+      userId ?? '',
+    )
   } catch {
     return []
   }

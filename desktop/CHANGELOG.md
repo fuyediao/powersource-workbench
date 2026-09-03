@@ -4,6 +4,10 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Dropped unused desktop npm dependencies left over from Clash and unused editor/UI stacks, including markdown-it.
+- Cached Home and Spotlight search suggestions in local SQLite so a later lookup can reuse the last network result when workbench-api is unreachable.
+- Removed the NEXTORCH T&E Home Functions tile and its public-site picker.
+- Removed the Home Schedule and Business Focus widgets from Settings, the home rails, and the home context menu.
 - Stored the Settings Open links preference in local SQLite with Home settings, and migrated the previous localStorage value once.
 - Showed the PS Workbench wordmark beside the sign-in mark.
 - Added username and password placeholders on the compact sign-in form.

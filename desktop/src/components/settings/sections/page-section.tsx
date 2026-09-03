@@ -9,9 +9,7 @@ interface PageSectionProps {
   showNews: boolean
   showTodo: boolean
   showCurrency: boolean
-  showSchedule: boolean
   showMail: boolean
-  showFocus: boolean
   showApps: boolean
   peekApps: boolean
   onSetShowWeather: (visible: boolean) => void
@@ -19,9 +17,7 @@ interface PageSectionProps {
   onSetShowNews: (visible: boolean) => void
   onSetShowTodo: (visible: boolean) => void
   onSetShowCurrency: (visible: boolean) => void
-  onSetShowSchedule: (visible: boolean) => void
   onSetShowMail: (visible: boolean) => void
-  onSetShowFocus: (visible: boolean) => void
   onSetShowApps: (visible: boolean) => void
 }
 
@@ -51,7 +47,6 @@ export function PageSection({
   showNews,
   showTodo,
   showCurrency,
-  showSchedule,
   showMail,
   showApps,
   peekApps,
@@ -60,7 +55,6 @@ export function PageSection({
   onSetShowNews,
   onSetShowTodo,
   onSetShowCurrency,
-  onSetShowSchedule,
   onSetShowMail,
   onSetShowApps,
 }: PageSectionProps) {
@@ -157,16 +151,6 @@ export function PageSection({
           <span>{t('currency.title')}</span>
           <span className="text-xs font-bold opacity-80">
             {showCurrency ? t('settings.widgetVisible') : t('settings.widgetHidden')}
-          </span>
-        </button>
-        <button
-          type="button"
-          className={widgetRowClass(showSchedule)}
-          onClick={() => onSetShowSchedule(!showSchedule)}
-        >
-          <span>{t('home.aside.scheduleReminder')}</span>
-          <span className="text-xs font-bold opacity-80">
-            {showSchedule ? t('settings.widgetVisible') : t('settings.widgetHidden')}
           </span>
         </button>
         <button

@@ -63,8 +63,8 @@ outside this directory) before re-adding any package here.
   curated-bundle code, not part of this tree.
 - Every interactive-editor package listed under "Scope" above — removed once nothing outside
   `src/lib/univer/` imported them (see the reachability note above).
-- `@univerjs/icons` stays a normal npm dependency (small, versioned icon component library, not part
-  of the `dream-num/univer` monorepo).
+- `@univerjs/icons` is not copied and is not an npm dependency; the in-tree exchange layer does not
+  import it.
 
 ## GeoCRM-authored substitutes for upstream build-time files
 
