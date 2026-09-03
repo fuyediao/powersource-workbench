@@ -98,7 +98,6 @@ function hideForeignNativePanes(screen: string): void {
   if (!isBrowserTabId(screen)) {
     void window.workbench?.browser?.invoke?.('hideAll')
   }
-  void window.workbench?.clash?.invoke?.('hide')
 }
 
 /**

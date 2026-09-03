@@ -9,9 +9,9 @@
   "type": "module",
   "main": "dist-electron/main/index.js",
   "scripts": {
-    "dev": "node scripts/patch-electron-bundle-name.mjs && node scripts/clash-prebuild.mjs && node scripts/codex-prebuild.mjs --optional && vite",
+    "dev": "node scripts/patch-electron-bundle-name.mjs && node scripts/codex-prebuild.mjs --optional && vite",
     "postinstall": "node scripts/patch-electron-bundle-name.mjs && node scripts/patch-blocksuite-icons-engines.mjs && node scripts/rebuild-node-pty.mjs --optional",
-    "build": "node scripts/clash-prebuild.mjs && node scripts/codex-prebuild.mjs && node scripts/rebuild-node-pty.mjs && tsc --noEmit && vite build && electron-builder",
+    "build": "node scripts/codex-prebuild.mjs && node scripts/rebuild-node-pty.mjs && tsc --noEmit && vite build && electron-builder",
     "build:vite": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
@@ -24,7 +24,6 @@
     "icons:icns": "node scripts/build-mac-icns.mjs",
     "icons:mac": "node scripts/sync-mac-app-icon.mjs",
     "icons:nsis": "node scripts/build-nsis-bitmaps.mjs",
-    "clash:prebuild": "node scripts/clash-prebuild.mjs",
     "harness:prebuild": "node scripts/codex-prebuild.mjs",
     "oss:notices": "node scripts/generate-open-source-notices.mjs"
   },

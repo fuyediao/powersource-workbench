@@ -1,9 +1,5 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron'
 import {
-  CLASH_EVENT_CHANNEL,
-  CLASH_IPC_CHANNEL,
-} from '../shared/clash'
-import {
   HARNESS_EVENT,
   HARNESS_CANVAS_CONSOLE_EVENT,
   HARNESS_IPC_CHANNEL,
@@ -1191,16 +1187,6 @@ contextBridge.exposeInMainWorld('workbench', {
     setBadgeCount: (count: number): Promise<number> =>
       ipcRenderer.invoke(APP_IPC_CHANNEL, 'setBadgeCount', count) as Promise<number>,
   },
-  clash: {
-    /**
-     * Calls a Clash host method (show / hide / setBounds / setAppearance).
-     * @param method - Method name.
-     * @param args - Arguments.
-     * @returns Result.
-     */
-    invoke: (method: string, ...args: unknown[]): Promise<unknown> =>
-      ipcRenderer.invoke(CLASH_IPC_CHANNEL, method, ...args),
-  },
   tabs: {
     /**
      * Drops a torn-off title-bar tab at a screen point: merges onto another
@@ -1282,88 +1268,5 @@ contextBridge.exposeInMainWorld('workbench', {
         ipcRenderer.removeListener(TAB_TRANSFER_RECEIVE_EVENT, handler)
       }
     },
-  },
-})
-
-/**
- * Tauri-style invoke/listen used by the hosted Clash Verge document.
- *
- * Main process pushes every Clash event on one IPC channel (`workbench:clash-event`).
- * A single `ipcRenderer` listener fans out by event name so React subscriptions
- * cannot trip Node's default maxListeners (10) warning.
- */
-type ClashEventMessage = { name?: string; payload?: unknown }
-
-const clashEventHandlers = new Map<string, Set<(payload: unknown) => void>>()
-
-let clashEventIpcListener:
-  | ((event: Electron.IpcRendererEvent, message: ClashEventMessage) => void)
-  | null = null
-
-/**
- * Ensures one `ipcRenderer.on(workbench:clash-event)` is bound, then dispatches by name.
- */
-function ensureClashEventIpc(): void {
-  if (clashEventIpcListener) {
-    return
-  }
-  clashEventIpcListener = (_event, message) => {
-    const name = message?.name
-    if (!name) {
-      return
-    }
-    const handlers = clashEventHandlers.get(name)
-    if (!handlers) {
-      return
-    }
-    for (const handler of handlers) {
-      handler(message.payload)
-    }
-  }
-  ipcRenderer.on(CLASH_EVENT_CHANNEL, clashEventIpcListener)
-}
-
-/**
- * Drops the shared IPC listener when no named Clash handlers remain.
- */
-function releaseClashEventIpcIfIdle(): void {
-  if (clashEventHandlers.size > 0 || !clashEventIpcListener) {
-    return
-  }
-  ipcRenderer.removeListener(CLASH_EVENT_CHANNEL, clashEventIpcListener)
-  clashEventIpcListener = null
-}
-
-contextBridge.exposeInMainWorld('workbenchClash', {
-  /**
-   * Invokes a Clash Verge command in the Electron host.
-   * @param cmd - Command name.
-   * @param args - Argument object.
-   * @returns Command result.
-   */
-  invoke: (cmd: string, args?: Record<string, unknown>): Promise<unknown> =>
-    ipcRenderer.invoke(CLASH_IPC_CHANNEL, 'invoke', cmd, args ?? {}),
-  /**
-   * Subscribes to a Clash host event (Tauri-style payload).
-   * @param name - Event name.
-   * @param handler - Payload callback.
-   * @returns Unsubscribe function.
-   */
-  listen: (name: string, handler: (payload: unknown) => void): (() => void) => {
-    ensureClashEventIpc()
-    let handlers = clashEventHandlers.get(name)
-    if (!handlers) {
-      handlers = new Set()
-      clashEventHandlers.set(name, handlers)
-    }
-    handlers.add(handler)
-    return () => {
-      const current = clashEventHandlers.get(name)
-      current?.delete(handler)
-      if (current && current.size === 0) {
-        clashEventHandlers.delete(name)
-      }
-      releaseClashEventIpcIfIdle()
-    }
   },
 })

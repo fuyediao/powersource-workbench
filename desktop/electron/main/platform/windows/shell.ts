@@ -1,6 +1,6 @@
 import { app, type BrowserWindow } from 'electron'
 import { USES_CUSTOM_TITLE_BAR } from '../../../shared/platform'
-import { attachWindowChromeEvents } from '../../ipc'
+import { attachWindowChromeEvents } from '../../window-chrome'
 import type { PlatformShell } from '../types'
 import { createWindowsTray, handleWindowsCloseToTray, isTrayQuitting } from './tray'
 

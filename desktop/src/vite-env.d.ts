@@ -996,9 +996,6 @@ interface WorkbenchBridge {
       }) => void,
     ) => () => void
   }
-  clash: {
-    invoke: (method: string, ...args: unknown[]) => Promise<unknown>
-  }
   tabs: {
     dropTab: (
       payload: import('../electron/shared/ipc').TabTransferPayload,

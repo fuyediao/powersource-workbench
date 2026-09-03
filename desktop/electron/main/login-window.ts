@@ -9,9 +9,16 @@ import { APP_WINDOW_LOGIN_ARG } from '../shared/ipc'
 import { hideNonDarwinMenuBar } from './application-menu'
 import { appWindows, createAppWindow, destroyAllAppWindows, focusedAppWindow } from './app-windows'
 import { isLoginWindowId, markLoginWindowId, unmarkLoginWindowId } from './login-window-flag'
-import { getPlatformShell, showBrowserWindow } from './platform'
+import { getPlatformShell, showBrowserWindow, type PlatformShell } from './platform'
 
-const platformShell = getPlatformShell()
+/**
+ * Resolves the OS shell at call time so a circular import cannot capture
+ * an uninitialized `windowsShell` / `darwinShell` during module evaluation.
+ * @returns Platform chrome for the current OS.
+ */
+function platformShell(): PlatformShell {
+  return getPlatformShell()
+}
 
 const LOGIN_WIDTH = 440
 const LOGIN_HEIGHT = 580
@@ -132,16 +139,16 @@ export async function createLoginWindow(seed?: { show?: boolean }): Promise<Brow
       nodeIntegration: false,
       additionalArguments: [APP_WINDOW_LOGIN_ARG],
     },
-    ...platformShell.windowOptions(),
+    ...platformShell().windowOptions(),
   })
 
   loginWindow = win
   markLoginWindowId(win.id)
-  platformShell.afterCreateWindow(win)
+  platformShell().afterCreateWindow(win)
   hideNonDarwinMenuBar(win)
 
   win.on('close', (event) => {
-    platformShell.onWindowClose(win, event)
+    platformShell().onWindowClose(win, event)
   })
   win.on('closed', () => {
     unmarkLoginWindowId(win.id)

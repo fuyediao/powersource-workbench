@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import '@/styles/clash-host.css'
 
@@ -8,13 +8,6 @@ const ClashVergeApp = lazy(async () => {
 })
 
 /**
- * Starts the Mihomo sidecar when the Clash tile is shown.
- */
-function ensureSidecar(): void {
-  void window.workbench?.clash?.invoke?.('ensureSidecar')
-}
-
-/**
  * Clash feature page: in-tree Clash Verge UI (Aura-style island in this renderer).
  * Hosts `src/pages/clash/app-host.tsx`.
  * @returns Full-bleed pane matching Admin chrome (sidebar + padded workspace),
@@ -22,10 +15,6 @@ function ensureSidecar(): void {
  */
 export function ClashPage() {
   const { t } = useTranslation()
-
-  useEffect(() => {
-    ensureSidecar()
-  }, [])
 
   return (
     <div

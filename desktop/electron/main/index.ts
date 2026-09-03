@@ -14,7 +14,6 @@ import {
 } from './login-window'
 import { startAppUpdateScheduler } from './app-update-scheduler'
 import { setupApplicationMenu } from './application-menu'
-import { setupClashHost, teardownClashHost } from './clash'
 import { disposeHarnessHosts, registerHarnessIpc } from './harness'
 import { destroyAllInAppBrowserPanes, setupInAppBrowser } from './in-app-browser'
 import { flushPendingAuthDeepLink, handleAuthDeepLink, registerIpcHandlers } from './ipc'
@@ -152,7 +151,6 @@ app.whenReady().then(async () => {
   syncLoginItemFromStore()
   platformShell.onAppReady(process.env.VITE_PUBLIC!, () => getForegroundWindow())
   setupInAppBrowser()
-  setupClashHost({ getMainWindow: () => getForegroundWindow() })
   startAppUpdateScheduler(() => getForegroundWindow())
   // Register Spotlight / Agent overlay IPC before the renderer loads — App.tsx
   // calls setEnabled on mount.
@@ -176,7 +174,6 @@ app.whenReady().then(async () => {
 
 app.on('will-quit', () => {
   destroyAllInAppBrowserPanes()
-  teardownClashHost()
   teardownSpotlight()
   teardownAgentOverlay()
   disposeHarnessHosts()

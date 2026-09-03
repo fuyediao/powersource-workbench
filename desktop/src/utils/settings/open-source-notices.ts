@@ -89,18 +89,6 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
     homepage: 'https://github.com/openai/codex',
   },
   {
-    id: 'mihomo',
-    name: 'Mihomo',
-    license: 'GPL-3.0',
-    homepage: 'https://github.com/MetaCubeX/mihomo',
-  },
-  {
-    id: 'clashVerge',
-    name: 'Clash Verge Rev',
-    license: 'GPL-3.0',
-    homepage: 'https://github.com/clash-verge-rev/clash-verge-rev',
-  },
-  {
     id: 'blocksuite',
     name: 'BlockSuite',
     license: 'MPL-2.0',

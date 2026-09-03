@@ -25,11 +25,6 @@
       "to": ".env"
     },
     {
-      "from": "src/lib/mihomo/bin",
-      "to": "clash-sidecar",
-      "filter": ["mihomo", "mihomo.exe"]
-    },
-    {
       "from": "src/lib/codex/bin",
       "to": "codex",
       "filter": ["codex-app-server", "codex-app-server.exe"]

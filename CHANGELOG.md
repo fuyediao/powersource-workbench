@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Removed Clash / Mihomo from desktop start, packaging, and IPC so `npm run dev` no longer builds or launches the proxy sidecar.
+- Fixed the compact login window crashing on Windows when platform chrome was still undefined (circular import).
 - Renamed remaining GeoCRM internal identifiers to Workbench (`workbench://`, `window.workbench`, IPC, and package id). Display name stays PowerSource Workbench.
 - Set the desktop display name to PowerSource Workbench (window, menu, tray, and installer).
 - Replaced remaining GeoCRM product labels in the live desktop UI with PowerSource Workbench.
