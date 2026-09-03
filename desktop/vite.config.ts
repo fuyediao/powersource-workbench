@@ -15,16 +15,9 @@ const packageDir = path.dirname(fileURLToPath(import.meta.url))
 const univerRoot = path.join(packageDir, 'src/lib/univer')
 /** Root of the in-tree Schedule-X packages (published dist, no npm `@schedule-x/*`). See `src/lib/schedule-x/ORIGIN.md`. */
 const scheduleXRoot = path.join(packageDir, 'src/lib/schedule-x')
-/** Renderer `src/` root (`@/` for Workbench and Clash). */
+/** Renderer `src/` root (`@/`). */
 const srcRoot = path.join(packageDir, 'src')
 const nodeModulesRoot = path.join(packageDir, 'node_modules')
-
-/** Atlaskit DnD packages pulled by BlockSuite (ESM that imports CJS). */
-const ATLASKIT_DND = [
-  '@atlaskit/pragmatic-drag-and-drop',
-  '@atlaskit/pragmatic-drag-and-drop-auto-scroll',
-  '@atlaskit/pragmatic-drag-and-drop-hitbox',
-]
 
 /**
  * List installed `lodash.*` CJS packages under node_modules.
@@ -40,38 +33,7 @@ function listLodashDotPackages(): string[] {
 }
 
 /**
- * Strip leftover `accessor` keywords if any BlockSuite file slips past the postinstall patch.
- * @returns Vite plugin.
- */
-function stripBlocksuiteAccessorKeyword(): Plugin {
-  return {
-    name: 'workbench:strip-blocksuite-accessor',
-    enforce: 'pre',
-    transform(code, id) {
-      const normalized = id.replaceAll('\\', '/')
-      if (!normalized.includes('/node_modules/@blocksuite/')) {
-        return null
-      }
-      const transformed = code
-        .replace(/\baccessor\s+/g, '')
-        .replace(
-          /Object\.getOwnPropertyDescriptor\(target, contextIn\.name\) : \{\}\);/g,
-          'Object.getOwnPropertyDescriptor(target, contextIn.name) : {}) || {};',
-        )
-      if (transformed === code) {
-        return null
-      }
-      return {
-        code: transformed,
-        map: null,
-      }
-    },
-  }
-}
-
-/**
  * Serve every `lodash.*` package as an ESM default export (they ship CJS-only).
- * Fixes Folio white-screens like `does not provide an export named 'default'`.
  * @returns Vite plugin.
  */
 function shimLodashDotCjsDefault(): Plugin {
@@ -259,11 +221,11 @@ function resolveScheduleXEngine(): Plugin {
 }
 
 /**
- * Resolves a Clash Verge source path that may omit an extension or end at a folder.
+ * Resolves a source path that may omit an extension or end at a folder.
  * @param absBase - Absolute path without requiring a file extension.
  * @returns Existing file path, or `null` when nothing matches.
  */
-function resolveClashVergeFile(absBase: string): string | null {
+function resolveSrcFile(absBase: string): string | null {
   if (fs.existsSync(absBase) && fs.statSync(absBase).isFile()) {
     return normalizePath(absBase)
   }
@@ -289,32 +251,23 @@ function resolveClashVergeFile(absBase: string): string | null {
 }
 
 /**
- * Resolves `@/` to `src/`, plus Mihomo HTTP stand-in and Tauri shims.
+ * Resolves `@/` to `src/`.
  * @returns Vite plugin.
  */
-function resolveClashVergeEngine(): Plugin {
-  const tauriShim = normalizePath(path.join(srcRoot, 'services/clash/tauri-shim.ts'))
-  const mihomoHttp = normalizePath(path.join(srcRoot, 'services/clash/mihomo-http.ts'))
+function resolveSrcAlias(): Plugin {
   return {
-    name: 'workbench:resolve-clash-verge',
+    name: 'workbench:resolve-src-alias',
     enforce: 'pre',
     resolveId(id) {
-      if (id === 'tauri-plugin-mihomo-api' || id.startsWith('tauri-plugin-mihomo-api/')) {
-        return mihomoHttp
+      if (!id.startsWith('@/')) {
+        return null
       }
-      if (id.startsWith('@tauri-apps/')) {
-        return tauriShim
-      }
-      const atSlash = id.startsWith('@/')
-      if (atSlash) {
-        const suffix = id.slice(2)
-        const queryIndex = suffix.indexOf('?')
-        const filePart = queryIndex >= 0 ? suffix.slice(0, queryIndex) : suffix
-        const query = queryIndex >= 0 ? suffix.slice(queryIndex) : ''
-        const resolved = resolveClashVergeFile(path.join(srcRoot, filePart))
-        return resolved ? `${resolved}${query}` : null
-      }
-      return null
+      const suffix = id.slice(2)
+      const queryIndex = suffix.indexOf('?')
+      const filePart = queryIndex >= 0 ? suffix.slice(0, queryIndex) : suffix
+      const query = queryIndex >= 0 ? suffix.slice(queryIndex) : ''
+      const resolved = resolveSrcFile(path.join(srcRoot, filePart))
+      return resolved ? `${resolved}${query}` : null
     },
   }
 }
@@ -415,73 +368,13 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: [
         {
-          find: '@clash-verge/app',
-          replacement: path.join(srcRoot, 'pages/clash/app-host.tsx'),
-        },
-        // BlockSuite's patched auto-accessors shadow Lit reactive accessors. The production
-        // ReactiveElement runtime avoids the dev-only throw while keeping updates functional.
-        {
-          find: /^@lit\/reactive-element$/,
-          replacement: path.join(
-            nodeModulesRoot,
-            '@lit/reactive-element/reactive-element.js',
-          ),
-        },
-        {
-          find: /^@lit\/reactive-element\/(.*)$/,
-          replacement: path.join(nodeModulesRoot, '@lit/reactive-element/$1'),
-        },
-        {
-          find: '@clash-verge/settings',
-          replacement: path.join(srcRoot, 'components/settings/sections/clash/clash-section.tsx'),
-        },
-        // CJS-only package; Atlaskit ESM needs named `bind` / `bindAll` exports.
-        {
-          find: 'bind-event-listener',
-          replacement: path.join(
-            packageDir,
-            'src/lib/blocksuite/shims/bind-event-listener.ts',
-          ),
-        },
-        // Folio Canvas imports these facades; alias past package `exports` so Vite
-        // dep-scan cannot fail when the map is mid-install or missing the keys.
-        {
-          find: '@blocksuite/affine/widgets/edgeless-zoom-toolbar/view',
-          replacement: path.join(
-            nodeModulesRoot,
-            '@blocksuite/affine/dist/widgets/edgeless-zoom-toolbar/view.js',
-          ),
-        },
-        {
-          find: '@blocksuite/affine/widgets/edgeless-selected-rect/view',
-          replacement: path.join(
-            nodeModulesRoot,
-            '@blocksuite/affine/dist/widgets/edgeless-selected-rect/view.js',
-          ),
-        },
-        // BlockSuite 0.27 schemas use Zod 3 `z.function().args()`. A hoisted Zod 4
-        // makes Folio throw `_function(...).args is not a function` and white-screen.
-        {
-          find: /^zod$/,
-          replacement: path.join(nodeModulesRoot, 'zod'),
+          find: '@',
+          replacement: srcRoot,
         },
       ],
-      dedupe: [
-        'react',
-        'react-dom',
-        'rxjs',
-        'yjs',
-        'zod',
-        'lit',
-        'lit-element',
-        '@lit/reactive-element',
-        '@blocksuite/global',
-        '@blocksuite/std',
-        '@blocksuite/store',
-      ],
+      dedupe: ['react', 'react-dom'],
     },
     optimizeDeps: {
-      // Prebundle generic CJS leaves; vendored BlockSuite stays one linked ESM graph.
       include: [
         'mermaid',
         'katex',
@@ -497,13 +390,6 @@ export default defineConfig(({ command, mode }) => {
         'remark-gfm',
         'remark-rehype',
         'rehype-stringify',
-        'rxjs',
-        'yjs',
-        'lit',
-        '@toeverything/theme',
-        ...ATLASKIT_DND.filter((name) =>
-          fs.existsSync(path.join(nodeModulesRoot, name)),
-        ),
         ...lodashDotPackages,
       ],
       exclude: ['@plantuml/core/viz-global.js'],
@@ -515,7 +401,6 @@ export default defineConfig(({ command, mode }) => {
       strictPort: true,
       watch: {
         ignored: [
-          '**/src/lib/mihomo/**',
           '**/src/lib/codex/**',
         ],
       },
@@ -523,8 +408,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       workbenchLocaleResourcesPlugin(path.join(packageDir, 'src/i18n/locales')),
       shimLodashDotCjsDefault(),
-      stripBlocksuiteAccessorKeyword(),
-      resolveClashVergeEngine(),
+      resolveSrcAlias(),
       resolveScheduleXEngine(),
       scheduleXPreactJsx(),
       svgr({ include: '**/*.svg?react' }),

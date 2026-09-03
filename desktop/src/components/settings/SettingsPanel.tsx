@@ -31,7 +31,6 @@ import { GroupInfoSection } from '@/components/settings/sections/group-info-sect
 import { GroupManagementSection } from '@/components/settings/sections/group-management-section'
 import { UserManagementSection } from '@/components/settings/sections/user-management-section'
 import { GlobalLeadersSection } from '@/components/settings/sections/global-leaders-section'
-import { AuraSection } from '@/components/settings/sections/aura-section'
 import { OaErpSection } from '@/components/settings/sections/oa-erp-section'
 import { FeedbackSection } from '@/components/settings/sections/feedback-section'
 import { OpenSourceSection } from '@/components/settings/sections/open-source-section'
@@ -322,8 +321,6 @@ export function SettingsPanel({
             onDismissError={onDismissError}
           />
         )
-      case 'aura':
-        return <AuraSection />
       case 'oaErp':
         return <OaErpSection userId={userId} />
       case 'feedback':

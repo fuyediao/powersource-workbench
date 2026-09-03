@@ -24,7 +24,6 @@ import { subscribeOpenMailRequest } from '@/utils/mail/mail-compose-request'
 import { subscribeOpenCalendarRequest } from '@/utils/calendar/calendar-event-request'
 import { isAgentOverlayFallbackChord } from '@/utils/agent-overlay/agent-overlay-shortcut'
 import { isSpotlightFallbackChord } from '@/utils/spotlight/spotlight-shortcut'
-import { subscribeOpenAuraRequest } from '@/utils/aura/aura-document-request'
 import { migrateLegacyOfficeWorkspace } from '@/office/office-workspace-legacy-migration'
 import {
   parseAskAiSearchUrl,
@@ -119,8 +118,8 @@ function MainWindowApp() {
   const [tabReloadEpoch, setTabReloadEpoch] = useState<Record<string, number>>({})
 
   /**
-   * Reloads a title-bar tab: in-app browser pages reload in place; Settings,
-   * feature, and Folio pages remount so their data is fetched again.
+   * Reloads a title-bar tab: in-app browser pages reload in place; Settings
+   * and feature pages remount so their data is fetched again.
    * @param tabId - Tab to refresh.
    * @returns Nothing.
    */
@@ -243,16 +242,6 @@ function MainWindowApp() {
     }
     void migrateLegacyOfficeWorkspace(auth.session.user.id)
   }, [signedIn, auth.session?.user.id])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-    return subscribeOpenAuraRequest(() => {
-      hideForeignNativePanes('aura')
-      tabs.openFeature('aura')
-    })
-  }, [signedIn, tabs])
 
   useEffect(() => {
     if (!signedIn) {

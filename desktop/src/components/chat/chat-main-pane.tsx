@@ -54,14 +54,12 @@ import { AiCombinedModelPicker } from '@/components/chat/ai-combined-model-picke
 import { ChatMarkdown } from '@/components/chat/chat-markdown'
 import { loadChatKindSession, saveChatKindSession } from '@/utils/chat/assistant-kind'
 import { readBrowserGeolocation } from '@/utils/chat/read-geolocation'
-import { exportMarkdownToAura } from '@/utils/aura/aura-document-request'
 import {
   subscribeAskAiSearch,
   takePendingAskAiSearchQuery,
 } from '@/utils/ask-ai/ask-ai-search-request'
 import { resolveUserAvatarUrl, resolveUserDisplayName } from '@/utils/shared/user-profile'
 import {
-  AuraMarkdownIcon,
   BotIcon,
   ChevronDownIcon,
   ChevronRightIcon,
@@ -536,15 +534,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
     } catch {
       // ignore
     }
-  }, [])
-
-  /**
-   * Saves an assistant reply as a personal Aura Markdown file and opens Editor.
-   * @param content - Assistant Markdown to export.
-   * @returns Nothing.
-   */
-  const handleExportToAura = useCallback((content: string): void => {
-    exportMarkdownToAura(content)
   }, [])
 
   /**
@@ -1025,14 +1014,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
                                   title={t('chat.codeBlock.copy')}
                                 >
                                   <CopyIcon className="size-4" aria-hidden />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleExportToAura(msg.content)}
-                                  className="rounded-lg p-2 text-muted transition-colors hover:bg-zinc-950/5 hover:text-ink dark:hover:bg-white/10"
-                                  title={t('chat.message.exportToAura')}
-                                >
-                                  <AuraMarkdownIcon className="size-4" aria-hidden />
                                 </button>
                               </div>
                               {msg.relatedShops && msg.relatedShops.length > 0 ? (

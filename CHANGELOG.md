@@ -4,6 +4,11 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Removed leftover desktop trees that are no longer product surfaces (Admin, Map, Kanban, Folio tabs, Clash Vite/BlockSuite wiring, opportunity-board IPC, and unused CRM locales/services). Home still ships Ask, Harness, Mail, Calendar, Settings, OA, ERP, and NEXTORCH.
+- Dropped unused desktop Folio/Map npm packages (BlockSuite, Leaflet, Yjs, Monaco) and their in-repo vendor tarballs.
+- Kept the Markdown engine, Calendar Schedule-X, Harness Codex, and Univer / OnlyOffice paths used by Ask, Mail attachments, and Harness.
+- Removed the leftover in-tree Mihomo Go kernel from the desktop package.
+- Removed the Home Editor tile, Settings Aura section, and export-to-Editor buttons. Ask and Harness still render Markdown through the local engine.
 - Cached Home and Spotlight search suggestions in local SQLite so a later lookup can reuse the last network result when workbench-api is unreachable.
 - Removed the NEXTORCH T&E Home Functions tile and its public-site picker.
 - Removed the Home Schedule and Business Focus widgets from Settings, the home rails, and the home context menu.

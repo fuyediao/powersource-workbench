@@ -12,7 +12,6 @@ export type SettingsSection =
   | 'page'
   | 'widgets'
   | 'background'
-  | 'aura'
   | 'feedback'
   | 'openSource'
   | 'groupManagement'
@@ -35,7 +34,6 @@ export const SECTION_ORDER: SettingsSection[] = [
   'background',
   'page',
   'widgets',
-  'aura',
   'oaErp',
   'feedback',
   'openSource',
@@ -59,7 +57,6 @@ export const DEFAULT_VISIBLE_SECTIONS: SettingsSection[] = [
   'background',
   'page',
   'widgets',
-  'aura',
   'oaErp',
   'feedback',
   'openSource',
@@ -124,6 +121,9 @@ function normalizePersistedSection(value: string): SettingsSection | null {
     return 'profile'
   }
   if (value === 'clash' || value === 'desktopAccess' || value === 'desktopWrites') {
+    return 'profile'
+  }
+  if (value === 'aura') {
     return 'profile'
   }
   return isSettingsSection(value) ? value : null

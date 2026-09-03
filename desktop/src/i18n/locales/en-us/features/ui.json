@@ -1,8 +1,4 @@
 {
-  "auraLoadError": "Failed to start the Markdown editor.",
-  "auraNew": "New",
-  "clashCoreFailed": "Clash core failed to start.",
-  "clashLoadError": "Could not load Clash.",
   "placeholderBody": "Placeholder page — wire this Workbench surface later.",
   "unauthorizedBody": "You do not have access to this Function."
 }

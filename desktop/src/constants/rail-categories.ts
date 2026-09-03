@@ -30,7 +30,6 @@ export const FUNCTION_BETA_FLAGS = {
   'function-ask': false,
   'function-mail': false,
   'function-calendar': false,
-  'function-aura': false,
   'function-harness': true,
   'function-settings': false,
 } as const satisfies Record<string, boolean>
@@ -78,16 +77,9 @@ export const FUNCTION_FEATURE_APPS: AppItem[] = [
     name: 'functions.apps.calendar',
   },
   {
-    id: 'function-aura',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 4,
-    url: 'workbench://aura',
-    name: 'functions.apps.aura',
-  },
-  {
     id: 'function-settings',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 5,
+    position: 4,
     url: 'workbench://settings',
     name: 'functions.apps.settings',
   },

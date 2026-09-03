@@ -67,7 +67,6 @@ import {
   HOME_APP_ORDER_IPC_CHANNEL,
   HOME_LIBRARY_IPC_CHANNEL,
   HOME_SETTINGS_IPC_CHANNEL,
-  OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
   type AiModelAllowlistRow,
@@ -587,37 +586,6 @@ contextBridge.exposeInMainWorld('workbench', {
         userId,
         historyId,
       ) as Promise<HomeSearchHistoryItemDto[]>,
-  },
-  opportunityBoardLayout: {
-    /**
-     * Reads the persisted Opportunities board layout JSON for one user.
-     * @param userId - Auth user id.
-     * @returns Layout JSON, or null when unset.
-     */
-    get: (userId: string): Promise<string | null> =>
-      ipcRenderer.invoke(OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL, 'get', userId) as Promise<
-        string | null
-      >,
-    /**
-     * Writes the Opportunities board layout JSON for one user.
-     * @param userId - Auth user id.
-     * @param layoutJson - Serialized layout payload.
-     * @returns Nothing.
-     */
-    set: (userId: string, layoutJson: string): Promise<void> =>
-      ipcRenderer.invoke(
-        OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
-        'set',
-        userId,
-        layoutJson,
-      ) as Promise<void>,
-    /**
-     * Deletes the Opportunities board layout for one user.
-     * @param userId - Auth user id.
-     * @returns Nothing.
-     */
-    clear: (userId: string): Promise<void> =>
-      ipcRenderer.invoke(OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL, 'clear', userId) as Promise<void>,
   },
   oaErpCredentials: {
     /**

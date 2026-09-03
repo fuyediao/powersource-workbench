@@ -1,43 +1,76 @@
 /**
- * Editor UI façade used by the Aura WYSIWYG kernel.
- *
- * Re-exports toast / hint / image-preview store APIs so core modules import
- * one Workbench module instead of a ports injection layer.
+ * Editor UI façade used by the Markdown WYSIWYG kernel.
+ * Ask and Harness only render Markdown; these hooks are no-ops unless an
+ * editor instance is constructed.
  */
-import { showToast } from '@/hooks/aura/toast-store'
-import {
-  setHintFillHandler,
-  setHintState,
-  hideHint,
-  moveHintSelection,
-  commitHintSelection,
-  isHintVisible,
-  type HintState,
-} from '@/hooks/aura/hint-store'
-import { openImagePreview } from '@/hooks/aura/image-preview-store'
 
 export type EditorImageTheme = 'classic' | 'dark'
 
-export type EditorHintState = Partial<
-  HintState & {
-    right?: number | 'auto'
-  }
->
+export type EditorHintState = {
+  visible?: boolean
+  items?: unknown
+  selectedIndex?: number
+  html?: string
+  left?: number
+  top?: number
+  right?: number | 'auto'
+}
 
 /**
  * Imperative UI hooks for toast, autocomplete hint, and image lightbox.
  */
 export const editorUi = {
-  showToast,
-  setHintFillHandler,
-  setHintState: (next: EditorHintState) => {
-    setHintState(next)
+  /**
+   * Shows a toast. No-op when the Editor page is not mounted.
+   * @param _message - Toast text.
+   * @param _timeout - Dismiss delay in milliseconds.
+   * @returns Nothing.
+   */
+  showToast(_message: string, _timeout?: number): void {
+    // Editor chrome is not shipped; chat / Harness do not surface these toasts.
   },
-  hideHint,
-  moveHintSelection,
-  commitHintSelection,
-  isHintVisible,
-  openImagePreview: (img: HTMLImageElement, theme: EditorImageTheme = 'classic') => {
-    openImagePreview(img, theme)
+  /**
+   * Registers the hint fill callback.
+   * @param _handler - Fill handler, or null to clear.
+   * @returns Nothing.
+   */
+  setHintFillHandler(_handler: ((value: string) => void) | null): void {},
+  /**
+   * Updates hint popup state.
+   * @param _next - Partial hint state.
+   * @returns Nothing.
+   */
+  setHintState(_next: EditorHintState): void {},
+  /**
+   * Hides the hint popup.
+   * @returns Nothing.
+   */
+  hideHint(): void {},
+  /**
+   * Moves the hint selection.
+   * @param _delta - Selection offset.
+   * @returns Nothing.
+   */
+  moveHintSelection(_delta: number): void {},
+  /**
+   * Commits the current hint selection.
+   * @returns Whether a hint was committed.
+   */
+  commitHintSelection(): boolean {
+    return false
   },
+  /**
+   * Reports whether the hint popup is visible.
+   * @returns Always false without Editor chrome.
+   */
+  isHintVisible(): boolean {
+    return false
+  },
+  /**
+   * Opens the image lightbox.
+   * @param _img - Image element.
+   * @param _theme - Lightbox theme.
+   * @returns Nothing.
+   */
+  openImagePreview(_img: HTMLImageElement, _theme: EditorImageTheme = 'classic'): void {},
 } as const

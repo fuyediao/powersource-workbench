@@ -10,8 +10,7 @@ binary over stdio JSON-RPC. The renderer never talks to Codex directly.
   [`8d32abcd017d06511b46050cff9dbba8738fc2fa`](https://github.com/openai/codex/commit/8d32abcd017d06511b46050cff9dbba8738fc2fa)
 - **License**: Apache-2.0 — copy in [`LICENSE`](LICENSE); notice in [`NOTICE`](NOTICE)
 - **Reason**: Harness workflow is local Codex `app-server` (files, shell, sandbox,
-  approvals, third-party MCP). Same in-tree sidecar pattern as Mihomo
-  (`src/lib/mihomo`). Do not use the npm `@openai/codex` CLI.
+  approvals, third-party MCP). Do not use the npm `@openai/codex` CLI.
 - **Lint**: oxlint and `tsc --noEmit` exclude this tree.
 
 ## Scope

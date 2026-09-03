@@ -4,7 +4,6 @@ export const FEATURE_TAB_IDS = [
   'harness',
   'mail',
   'calendar',
-  'aura',
 ] as const
 
 /** Title-bar / deep-link id for a Workbench feature page. */
@@ -112,16 +111,6 @@ export function workbenchSearchTargetLabelKey(target: WorkbenchSearchTarget): st
   return FEATURE_TAB_LABEL_KEY[target.id]
 }
 
-/** Returns whether a title tab addresses one Folio page. */
-export function isFolioPageTabId(tabId: string): boolean {
-  return tabId.startsWith('folio:') && tabId.length > 'folio:'.length
-}
-
-/** Extract a page id from a dynamic Folio tab id. */
-export function folioPageIdFromTab(tabId: string): string | null {
-  return isFolioPageTabId(tabId) ? tabId.slice('folio:'.length) : null
-}
-
 /**
  * Returns whether a Function tile URL opens Settings.
  * @param url - App tile URL.
@@ -164,5 +153,4 @@ export const FEATURE_TAB_LABEL_KEY: Record<FeatureTabId, string> = {
   harness: 'functions.apps.harness',
   mail: 'functions.apps.mail',
   calendar: 'functions.apps.calendar',
-  aura: 'functions.apps.aura',
 }

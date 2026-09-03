@@ -21,7 +21,6 @@
   "codeDownload": "Download as .txt",
   "codePlain": "Code",
   "codeMapData": "Map data (JSON)",
-  "exportToAura": "Export Markdown to Aura",
   "captureFailed": "Could not capture the page. Sent your question without a screenshot.",
   "needApiKey": "Add this provider’s API key in Settings before chatting.",
   "providers": {

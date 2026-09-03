@@ -5,7 +5,6 @@ import type { TitleBarTab, TitleBarTabId } from '@/components/layout/MacStyleTit
 import {
   FEATURE_TAB_LABEL_KEY,
   isFeatureTabId,
-  isFolioPageTabId,
   type FeatureTabId,
 } from '@/constants/feature-tabs'
 import {
@@ -51,17 +50,10 @@ export interface BrowserTabState {
   faviconUrl?: string
 }
 
-export interface FolioTabState {
-  id: TitleBarTabId
-  pageId: string
-  title: string
-}
-
 interface PersistedTitleTabs {
   screen: TitleBarTabId
   openTabs: TitleBarTabId[]
   browserTabs: BrowserTabState[]
-  folioTabs: FolioTabState[]
 }
 
 /**
@@ -113,18 +105,17 @@ function loadPersistedTitleTabs(): PersistedTitleTabs | null {
               : undefined,
         }))
       : []
-    const folioTabs: FolioTabState[] = []
     const browserIds = new Set(browserTabs.map((tab) => tab.id))
     const openTabs = stripHomeTab(
       parsed.openTabs.filter(
         (id): id is TitleBarTabId =>
           typeof id === 'string' &&
-          (isStaticTabId(id) || (isBrowserTabId(id) && browserIds.has(id)) || folioTabs.some((tab) => tab.id === id)),
+          (isStaticTabId(id) || (isBrowserTabId(id) && browserIds.has(id))),
       ),
     )
     const screen =
       parsed.screen === 'home' || openTabs.includes(parsed.screen) ? parsed.screen : 'home'
-    return { screen, openTabs, browserTabs, folioTabs }
+    return { screen, openTabs, browserTabs }
   } catch {
     return null
   }
@@ -170,11 +161,9 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
   openTabs: TitleBarTabId[]
   tabs: TitleBarTab[] | undefined
   browserTabs: BrowserTabState[]
-  folioTabs: FolioTabState[]
   openSettings: () => void
   openFeature: (feature: FeatureTabId) => void
   openBrowserTab: (url: string) => void
-  openFolioPage: (pageId: string, title?: string) => void
   setBrowserTabTitle: (tabId: TitleBarTabId, title: string, faviconUrl?: string) => void
   selectTab: (tabId: TitleBarTabId) => void
   closeTab: (tabId: TitleBarTabId) => void
@@ -201,14 +190,12 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
   const { t } = useTranslation()
   const settingsTitle = t('settings.title')
   const browserFallback = t('browser.tabFallback')
-  const folioUntitled = t('folio.untitled')
   const initial = useMemo(() => loadPersistedTitleTabs(), [])
   const [screen, setScreen] = useState<TitleBarTabId>(initial?.screen ?? 'home')
   const [openTabs, setOpenTabs] = useState<TitleBarTabId[]>(initial?.openTabs ?? [])
   const [browserTabs, setBrowserTabs] = useState<BrowserTabState[]>(
     initial?.browserTabs ?? [],
   )
-  const [folioTabs, setFolioTabs] = useState<FolioTabState[]>(initial?.folioTabs ?? [])
   const wasSignedInRef = useRef(signedIn)
   const signedInRef = useRef(signedIn)
   signedInRef.current = signedIn
@@ -231,7 +218,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
         setScreen('home')
         setOpenTabs([])
         setBrowserTabs([])
-        setFolioTabs([])
         pendingTransfersRef.current = []
       }
       return
@@ -242,7 +228,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
       setScreen(saved.screen)
       setOpenTabs(saved.openTabs)
       setBrowserTabs(saved.browserTabs)
-      setFolioTabs(saved.folioTabs)
     }
     const queued = pendingTransfersRef.current
     pendingTransfersRef.current = []
@@ -253,8 +238,8 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
 
   useEffect(() => {
     if (!signedIn) return
-    persistTitleTabs({ screen, openTabs, browserTabs, folioTabs })
-  }, [signedIn, screen, openTabs, browserTabs, folioTabs])
+    persistTitleTabs({ screen, openTabs, browserTabs })
+  }, [signedIn, screen, openTabs, browserTabs])
 
   /**
    * Opens Settings as a tab (or focuses it if already open).
@@ -267,7 +252,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
 
   /**
    * Opens a Workbench feature page as a closable title-bar tab.
-   * @param feature - Feature id (`chat` / `messages` / `mail` / `calendar` / `map` / `admin` / `aura` / `folio` / `docs` / `sheets` / `slides`).
+   * @param feature - Feature id (`chat` / `harness` / `mail` / `calendar`).
    * @returns Nothing.
    */
   const openFeature = useCallback((feature: FeatureTabId): void => {
@@ -285,16 +270,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     const id = `browser:${crypto.randomUUID()}` as TitleBarTabId
     setBrowserTabs((tabs) => [...tabs, { id, url, title: tabLabelFromUrl(url) }])
     setOpenTabs((tabs) => [...tabs, id])
-    setScreen(id)
-  }, [])
-
-  /** Open or focus a per-page Folio title tab. */
-  const openFolioPage = useCallback((pageId: string, title = ''): void => {
-    const id = `folio:${pageId}` as TitleBarTabId
-    setFolioTabs((tabs) => tabs.some((tab) => tab.id === id)
-      ? tabs.map((tab) => tab.id === id && title ? { ...tab, title } : tab)
-      : [...tabs, { id, pageId, title }])
-    setOpenTabs((tabs) => tabs.includes(id) ? tabs : [...tabs, id])
     setScreen(id)
   }, [])
 
@@ -366,7 +341,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     if (isBrowserTabId(tabId)) {
       setBrowserTabs((tabs) => tabs.filter((tab) => tab.id !== tabId))
     }
-    if (isFolioPageTabId(tabId)) setFolioTabs((tabs) => tabs.filter((tab) => tab.id !== tabId))
   }
 
   /**
@@ -414,19 +388,12 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
         faviconUrl: tab.faviconUrl,
       }
     }
-    if (isFolioPageTabId(tabId)) {
-      const tab = folioTabs.find((folio) => folio.id === tabId)
-      if (!tab) {
-        return null
-      }
-      return { id: tabId, kind: 'folio', pageId: tab.pageId, title: tab.title || folioUntitled }
-    }
     return null
   }
 
   /**
    * Inserts a tab received from another window (tear-off / merge target) and
-   * focuses it. Duplicates of an already-open Settings / feature / Folio tab
+   * focuses it. Duplicates of an already-open Settings / feature tab
    * focus the existing tab instead of opening a second copy.
    * @param payload - Serialized tab from the main process.
    * @returns Nothing.
@@ -464,19 +431,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
                 faviconUrl: payload.faviconUrl,
               },
             ],
-      )
-      setOpenTabs((tabs) => (tabs.includes(id) ? tabs : [...tabs, id]))
-      setScreen(id)
-      return
-    }
-    if (payload.kind === 'folio') {
-      if (!payload.pageId) {
-        return
-      }
-      setFolioTabs((tabs) =>
-        tabs.some((tab) => tab.id === id)
-          ? tabs
-          : [...tabs, { id, pageId: payload.pageId as string, title: payload.title ?? folioUntitled }],
       )
       setOpenTabs((tabs) => (tabs.includes(id) ? tabs : [...tabs, id]))
       setScreen(id)
@@ -580,7 +534,6 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
       return undefined
     }
     const browserById = new Map(browserTabs.map((tab) => [tab.id, tab]))
-    const folioById = new Map(folioTabs.map((tab) => [tab.id, tab]))
     return openTabs.flatMap((id): TitleBarTab[] => {
       if (id === 'home') {
         return []
@@ -614,12 +567,9 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
           },
         ]
       }
-      if (isFolioPageTabId(id)) {
-        return [{ id, label: folioById.get(id)?.title || folioUntitled, closable: true }]
-      }
       return []
     })
-  }, [browserFallback, browserTabs, folioTabs, folioUntitled, openTabs, settingsTitle, signedIn, t])
+  }, [browserFallback, browserTabs, openTabs, settingsTitle, signedIn, t])
 
   useEffect(() => {
     if (!signedIn) {
@@ -635,11 +585,9 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     openTabs,
     tabs,
     browserTabs,
-    folioTabs,
     openSettings,
     openFeature,
     openBrowserTab,
-    openFolioPage,
     setBrowserTabTitle,
     selectTab,
     closeTab,

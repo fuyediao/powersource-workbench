@@ -894,11 +894,6 @@ interface WorkbenchBridge {
       historyId: string,
     ) => Promise<import('../electron/shared/home-settings').HomeSearchHistoryItemDto[]>
   }
-  opportunityBoardLayout: {
-    get: (userId: string) => Promise<string | null>
-    set: (userId: string, layoutJson: string) => Promise<void>
-    clear: (userId: string) => Promise<void>
-  }
   harness: {
     testMode: boolean
     getDevicePreferences: (legacyValue?: unknown) => Promise<{

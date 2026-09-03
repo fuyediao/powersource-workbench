@@ -89,12 +89,6 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
     homepage: 'https://github.com/openai/codex',
   },
   {
-    id: 'blocksuite',
-    name: 'BlockSuite',
-    license: 'MPL-2.0',
-    homepage: 'https://github.com/toeverything/blocksuite',
-  },
-  {
     id: 'univer',
     name: 'Univer',
     license: 'Apache-2.0',
@@ -107,22 +101,10 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
     homepage: 'https://github.com/schedule-x/schedule-x',
   },
   {
-    id: 'monaco',
-    name: 'Monaco Editor',
-    license: 'MIT',
-    homepage: 'https://microsoft.github.io/monaco-editor/',
-  },
-  {
     id: 'mermaid',
     name: 'Mermaid',
     license: 'MIT',
     homepage: 'https://mermaid.js.org/',
-  },
-  {
-    id: 'leaflet',
-    name: 'Leaflet',
-    license: 'BSD-2-Clause',
-    homepage: 'https://leafletjs.com/',
   },
   {
     id: 'i18next',
@@ -135,12 +117,6 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
     name: 'supabase-js',
     license: 'MIT',
     homepage: 'https://github.com/supabase/supabase-js',
-  },
-  {
-    id: 'yjs',
-    name: 'Yjs',
-    license: 'MIT',
-    homepage: 'https://github.com/yjs/yjs',
   },
   {
     id: 'mui',
@@ -196,21 +172,17 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
  * Direct production dependencies already described in {@link BUNDLED_OPEN_SOURCE_NOTICES}.
  */
 const BUNDLED_NPM_NAMES = new Set([
-  '@blocksuite/affine',
   '@supabase/supabase-js',
   'axios',
   'echarts',
   'highlight.js',
   'i18next',
   'katex',
-  'leaflet',
   'mermaid',
-  'monaco-editor',
   'preact',
   'react',
   'react-dom',
   'react-i18next',
-  'yjs',
 ])
 
 /**

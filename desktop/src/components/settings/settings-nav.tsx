@@ -28,7 +28,6 @@ import {
   UserCogIcon,
   UserIcon,
   UsersIcon,
-  AuraMarkdownIcon,
 } from '@/icons/AllIcons'
 
 interface IndicatorBox {
@@ -82,7 +81,6 @@ function buildNavItems(
     page: { label: t('settings.sections.page'), Icon: PageIcon },
     widgets: { label: t('settings.sections.widgets'), Icon: SortIcon },
     background: { label: t('settings.sections.background'), Icon: ImageIcon },
-    aura: { label: t('settings.sections.aura'), Icon: AuraMarkdownIcon },
     feedback: { label: t('settings.sections.feedback'), Icon: LucideMegaphoneIcon },
     openSource: { label: t('settings.sections.openSource'), Icon: OpenSourceIcon },
     groupManagement: {

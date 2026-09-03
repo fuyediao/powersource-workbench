@@ -148,7 +148,7 @@ export function mergeLocaleFile(
   jsonValue: unknown,
 ): void {
   const language = LOCALE_FOLDERS[folder]
-  if (!language || rest.startsWith('clash/')) {
+  if (!language) {
     return
   }
   const segments = rest.split('/').map((segment) => namespaceFromFileStem(segment))

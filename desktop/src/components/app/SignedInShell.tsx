@@ -26,7 +26,7 @@ const SettingsPage = lazy(async () => {
   return { default: module.SettingsPage }
 })
 
-/** Feature hosts (Chat / Folio / Univer / …) load when a feature tab is active. */
+/** Feature hosts (Ask / Mail / Calendar / Harness) load when a feature tab is active. */
 const FeaturePage = lazy(async () => {
   const module = await import('@/pages/feature-page')
   return { default: module.FeaturePage }
@@ -48,7 +48,7 @@ interface SignedInShellProps {
   onOpenFeature: (feature: FeatureTabId) => void
   onBrowserTabTitle: (tabId: TitleBarTabId, title: string, faviconUrl: string) => void
   onSignOut: () => Promise<void>
-  /** Generation per tab id; bumping remounts Settings / feature / Folio pages. */
+  /** Generation per tab id; bumping remounts Settings / feature pages. */
   tabReloadEpoch?: Record<string, number>
 }
 

@@ -6,7 +6,6 @@ const MENU_NAVIGATE_TARGETS = [
   'harness',
   'mail',
   'calendar',
-  'aura',
 ] as const
 
 /**

@@ -6,29 +6,13 @@ import {
 } from '@/utils/home/icon'
 import { isFunctionsCategory } from '@/constants/rail-categories'
 import {
-  AdminAppsIcon,
   ArtificialIntelligenceIcon,
-  AuraMarkdownIcon,
   CalendarIcon,
-  ClashIcon,
-  FolioIcon,
   HarnessIcon,
-  KanbanIcon,
-  LucideBookOpenIcon,
-  LucideClipboardCheckIcon,
-  LucidePackageIcon,
-  LucideStoreIcon,
   MailIcon,
-  MapIcon,
-  MessageSquareIcon,
-  NexdotWordmarkIcon,
   NextorchBrandIcon,
   PowersourceBrandIcon,
   SettingsIcon,
-  UniverDocsIcon,
-  UniverSheetsIcon,
-  UniverSlidesIcon,
-  UsersIcon,
 } from '@/icons/AllIcons'
 import type { AppItem } from '@/types/library'
 
@@ -52,10 +36,6 @@ const FUNCTION_SVG_ICONS: Record<string, FunctionSvgConfig> = {
     Icon: ArtificialIntelligenceIcon,
     iconClass: 'size-6 sm:size-7 text-brand',
   },
-  'function-messages': {
-    Icon: MessageSquareIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
   'function-mail': {
     Icon: MailIcon,
     iconClass: 'size-6 sm:size-7 text-brand',
@@ -64,64 +44,8 @@ const FUNCTION_SVG_ICONS: Record<string, FunctionSvgConfig> = {
     Icon: CalendarIcon,
     iconClass: 'size-6 sm:size-7 text-brand',
   },
-  'function-kanban': {
-    Icon: KanbanIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-map': {
-    Icon: MapIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-admin': {
-    Icon: AdminAppsIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-orders': {
-    Icon: LucidePackageIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-products': {
-    Icon: LucideBookOpenIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-nexdot-app': {
-    Icon: LucideStoreIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-te-admin': {
-    Icon: LucideClipboardCheckIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-team': {
-    Icon: UsersIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
   'function-settings': {
     Icon: SettingsIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-aura': {
-    Icon: AuraMarkdownIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-folio': {
-    Icon: FolioIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-docs': {
-    Icon: UniverDocsIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-sheets': {
-    Icon: UniverSheetsIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-slides': {
-    Icon: UniverSlidesIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
-  'function-clash': {
-    Icon: ClashIcon,
     iconClass: 'size-6 sm:size-7 text-brand',
   },
   'function-harness': {
@@ -140,37 +64,17 @@ const FUNCTION_SVG_ICONS: Record<string, FunctionSvgConfig> = {
     Icon: PowersourceBrandIcon,
     iconClass: 'h-[72%] w-[72%]',
   },
-  'function-nexdot': {
-    Icon: NexdotWordmarkIcon,
-    iconClass: 'h-[62%] w-[62%] text-brand',
-  },
 }
 
 const FUNCTION_SVG_ICONS_COMPACT: Record<string, string> = {
   'function-ask': 'size-3.5 sm:size-4 text-brand',
-  'function-messages': 'size-3.5 sm:size-4 text-brand',
   'function-mail': 'size-3.5 sm:size-4 text-brand',
   'function-calendar': 'size-3.5 sm:size-4 text-brand',
-  'function-kanban': 'size-3.5 sm:size-4 text-brand',
-  'function-map': 'size-3.5 sm:size-4 text-brand',
-  'function-admin': 'size-3.5 sm:size-4 text-brand',
-  'function-orders': 'size-3.5 sm:size-4 text-brand',
-  'function-products': 'size-3.5 sm:size-4 text-brand',
-  'function-nexdot-app': 'size-3.5 sm:size-4 text-brand',
-  'function-te-admin': 'size-3.5 sm:size-4 text-brand',
-  'function-team': 'size-3.5 sm:size-4 text-brand',
   'function-settings': 'size-3.5 sm:size-4 text-brand',
-  'function-aura': 'size-3.5 sm:size-4 text-brand',
-  'function-folio': 'size-3.5 sm:size-4 text-brand',
-  'function-docs': 'size-3.5 sm:size-4 text-brand',
-  'function-sheets': 'size-3.5 sm:size-4 text-brand',
-  'function-slides': 'size-3.5 sm:size-4 text-brand',
-  'function-clash': 'size-3.5 sm:size-4 text-brand',
   'function-harness': 'size-3.5 sm:size-4 text-brand',
   'function-nextorch': 'h-[70%] w-auto text-brand',
   'function-oa': 'h-[78%] w-[78%]',
   'function-erp': 'h-[78%] w-[78%]',
-  'function-nexdot': 'h-[68%] w-[68%] text-brand',
 }
 
 /**

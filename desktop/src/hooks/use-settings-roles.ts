@@ -80,7 +80,6 @@ export function useSettingsRoles(userId: string | null | undefined): SettingsRol
       page: true,
       widgets: true,
       background: true,
-      aura: true,
       feedback: true,
       openSource: true,
       groupManagement: isSystemAdmin,

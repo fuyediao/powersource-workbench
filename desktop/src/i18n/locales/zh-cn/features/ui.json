@@ -1,8 +1,4 @@
 {
-  "auraLoadError": "Markdown 编辑器启动失败。",
-  "auraNew": "新建",
-  "clashCoreFailed": "Clash 核心未能启动。",
-  "clashLoadError": "无法加载 Clash。",
   "placeholderBody": "占位页面 — 稍后接入对应 Workbench 功能。",
   "unauthorizedBody": "您没有此功能的访问权限。"
 }

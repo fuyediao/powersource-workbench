@@ -106,7 +106,6 @@ export const FEATURE_TO_DESKTOP_ENTRY: Record<FeatureTabId, DesktopFunctionKey> 
   chat: 'desktop_chat',
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
-  aura: 'desktop_aura',
   harness: 'desktop_agent',
 }
 
@@ -115,7 +114,6 @@ export const FUNCTION_APP_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> =
   'function-ask': 'desktop_chat',
   'function-mail': 'desktop_mail',
   'function-calendar': 'desktop_calendar',
-  'function-aura': 'desktop_aura',
   'function-harness': 'desktop_agent',
 }
 
@@ -124,7 +122,6 @@ export const GO_MENU_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> = {
   chat: 'desktop_chat',
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
-  aura: 'desktop_aura',
   harness: 'desktop_agent',
 }
 

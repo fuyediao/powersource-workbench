@@ -1,14 +1,11 @@
 import type { ComponentType, SVGProps } from 'react'
 import {
   isFeatureTabId,
-  isFolioPageTabId,
   type FeatureTabId,
 } from '@/constants/feature-tabs'
 import {
   ArtificialIntelligenceIcon,
-  AuraMarkdownIcon,
   CalendarIcon,
-  FolioIcon,
   GlobeIcon,
   HarnessIcon,
   MailIcon,
@@ -23,7 +20,6 @@ const FEATURE_TAB_ICONS: Record<FeatureTabId, SvgIcon> = {
   chat: ArtificialIntelligenceIcon,
   mail: MailIcon,
   calendar: CalendarIcon,
-  aura: AuraMarkdownIcon,
   harness: HarnessIcon,
 }
 
@@ -38,9 +34,6 @@ export function titleBarIconForTab(tabId: string): SvgIcon | null {
   }
   if (isFeatureTabId(tabId)) {
     return FEATURE_TAB_ICONS[tabId]
-  }
-  if (isFolioPageTabId(tabId)) {
-    return FolioIcon
   }
   if (isBrowserTabId(tabId)) {
     return GlobeIcon

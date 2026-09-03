@@ -1,13 +1,11 @@
 import {
   isFeatureTabId,
-  isFolioPageTabId,
   type FeatureTabId,
 } from '@/constants/feature-tabs'
 
 /**
  * Locale folders needed for login, Home chrome, title bar, menus, and Spotlight.
  * `home` covers Home aside widgets (also used as Settings Page labels).
- * Title-bar labels for Settings and untitled Folio tabs load with the shell.
  * `settings/updates` is required for the blocking auto-update overlay (any tab).
  * `ask-ai` covers the companion sidebar on every tab. `chat/model-selector`
  * is the model-name list that sidebar shares with Chat (not the rest of `chat`).
@@ -44,17 +42,11 @@ export const SHELL_LOCALE_PREFIXES = [
 
 /**
  * Extra locale folders for each feature tab (beyond {@link SHELL_LOCALE_PREFIXES}).
- * Map reuses Chat favorites / location strings (`chat.tabs.*`, `chat.favorites.*`).
- * Clash reuses the shared rail mode control (`admin.sidebar.mode.*`). Mail
- * keeps its own three-mode control and is not on this native Sidebar menu.
- * Docs / Sheets / Slides also load `admin/sidebar` for the same four-state
- * control. Settings also loads Aura preference strings for the Editor section.
  */
 const FEATURE_LOCALE_PREFIXES: Record<FeatureTabId, readonly string[]> = {
   chat: ['chat'],
   mail: ['mail'],
   calendar: ['calendar'],
-  aura: ['aura'],
   harness: ['harness'],
 }
 
@@ -75,22 +67,14 @@ export function uniqueLocalePrefixes(prefixes: readonly string[]): string[] {
 export function localePrefixesForScreen(screen: string): string[] {
   const shell = [...SHELL_LOCALE_PREFIXES]
   if (screen === 'home') {
-    return uniqueLocalePrefixes([
-      ...shell,
-      'admin/follow-ups',
-      'admin/follow-up-timeline',
-    ])
+    return uniqueLocalePrefixes(shell)
   }
   if (screen === 'settings') {
     return uniqueLocalePrefixes([
       ...shell,
       'settings',
       'admin/sidebar',
-      'aura/preferences',
     ])
-  }
-  if (isFolioPageTabId(screen)) {
-    return uniqueLocalePrefixes([...shell, 'folio'])
   }
   if (isFeatureTabId(screen)) {
     return uniqueLocalePrefixes([...shell, ...FEATURE_LOCALE_PREFIXES[screen]])

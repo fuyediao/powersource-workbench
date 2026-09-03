@@ -47,25 +47,13 @@
         "./src/lib/schedule-x/drag-and-drop/types/core.d.ts"
       ],
       "@schedule-x/resize": ["./src/lib/schedule-x/resize/types/core.d.ts"],
-      "@schedule-x/shared": ["./src/lib/schedule-x/shared/types/core.d.ts"],
-      "@clash-verge/app": ["./src/types/clash-verge-app.d.ts"],
-      "@clash-verge/settings": ["./src/types/clash-verge-settings.d.ts"]
+      "@schedule-x/shared": ["./src/lib/schedule-x/shared/types/core.d.ts"]
     }
   },
   "include": ["src"],
   "exclude": [
     "src/lib/schedule-x",
-    "src/lib/mihomo",
-    "src/lib/codex",
-    "src/components/clash",
-    "src/components/settings/sections/clash",
-    "src/hooks/clash",
-    "src/pages/clash",
-    "src/services/clash",
-    "src/types/clash",
-    "src/utils/clash",
-    "src/providers/clash",
-    "src/constants/clash-app-version.ts"
+    "src/lib/codex"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

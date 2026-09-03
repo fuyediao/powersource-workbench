@@ -14,7 +14,6 @@ import {
   HOME_APP_ORDER_IPC_CHANNEL,
   HOME_LIBRARY_IPC_CHANNEL,
   HOME_SETTINGS_IPC_CHANNEL,
-  OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
   WINDOW_IPC_CHANNEL,
@@ -79,11 +78,6 @@ import {
   type HomeMarketAssetDto,
   type HomeSettingsRecord,
 } from '../shared/home-settings'
-import {
-  clearOpportunityBoardLayout,
-  getOpportunityBoardLayout,
-  setOpportunityBoardLayout,
-} from './opportunity-board-layout'
 import {
   getOaErpCredentials,
   setOaErpCredentials,
@@ -657,31 +651,6 @@ export function registerIpcHandlers(): void {
         )
       }
       throw new Error(`Unknown home settings method: ${method}`)
-    },
-  )
-
-  ipcMain.handle(
-    OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
-    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
-      if (method === 'get') {
-        return getOpportunityBoardLayout(
-          requiredString(args[0], 'Opportunity board layout user id'),
-        )
-      }
-      if (method === 'set') {
-        setOpportunityBoardLayout(
-          requiredString(args[0], 'Opportunity board layout user id'),
-          requiredString(args[1], 'Opportunity board layout JSON'),
-        )
-        return null
-      }
-      if (method === 'clear') {
-        clearOpportunityBoardLayout(
-          requiredString(args[0], 'Opportunity board layout user id'),
-        )
-        return null
-      }
-      throw new Error(`Unknown opportunity board layout method: ${method}`)
     },
   )
 

@@ -30,7 +30,6 @@ import { useClawdBridgeReporter } from '@/hooks/use-clawd-bridge'
 import { useLoadingTimer } from '@/hooks/use-loading-timer'
 import {
   AiIcon,
-  AuraMarkdownIcon,
   ChevronDownIcon,
   CloseIcon,
   CpuIcon,
@@ -44,7 +43,6 @@ import type { ChatMessage } from '@/types/chat'
 import { loadAskAiMode, saveAskAiMode } from '@/utils/chat/ask-ai-mode'
 import { useAiModelAllowlist } from '@/hooks/use-ai-model-allowlist'
 import { filterEnabledAiModels } from '@/utils/settings/ai-model-allowlist'
-import { exportMarkdownToAura } from '@/utils/aura/aura-document-request'
 import { resolveUserDisplayName } from '@/utils/shared/user-profile'
 
 const PANEL_MENU =
@@ -375,16 +373,6 @@ export function AskAiPanel({ user, pageLabel, getExcludeRightPx }: AskAiPanelPro
                         plain: t('askAi.codePlain'),
                       }}
                     />
-                  </div>
-                  <div className="flex gap-0.5">
-                    <button
-                      type="button"
-                      onClick={() => exportMarkdownToAura(msg.content)}
-                      className="rounded-lg p-1.5 text-muted transition-colors hover:bg-zinc-950/5 hover:text-ink dark:hover:bg-white/10"
-                      title={t('askAi.exportToAura')}
-                    >
-                      <AuraMarkdownIcon className="size-3.5" aria-hidden />
-                    </button>
                   </div>
                 </div>
               ),

@@ -8,11 +8,6 @@ import {
 import { AdminAppsIcon } from '@/icons/AllIcons'
 import { StatusLoading } from '@/components/common/status-loading'
 
-const AuraPage = lazy(async () => {
-  const module = await import('@/pages/aura-page')
-  return { default: module.AuraPage }
-})
-
 const ChatPage = lazy(async () => {
   const module = await import('@/pages/chat-page')
   return { default: module.ChatPage }
@@ -72,14 +67,6 @@ export function FeaturePage({
     return (
       <FeatureSuspense>
         <ChatPage userId={userId} user={user} />
-      </FeatureSuspense>
-    )
-  }
-
-  if (feature === 'aura') {
-    return (
-      <FeatureSuspense>
-        <AuraPage userId={userId} />
       </FeatureSuspense>
     )
   }

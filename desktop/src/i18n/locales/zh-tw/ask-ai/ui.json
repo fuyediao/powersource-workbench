@@ -21,7 +21,6 @@
   "codeDownload": "下載為 .txt",
   "codePlain": "程式碼",
   "codeMapData": "地圖資料（JSON）",
-  "exportToAura": "匯出 Markdown 到 Aura",
   "captureFailed": "無法擷取畫面，已只送出文字問題。",
   "needApiKey": "請先在設定中加入此模型的 API 金鑰再開始對話。",
   "providers": {

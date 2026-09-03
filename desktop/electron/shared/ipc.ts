@@ -208,9 +208,6 @@ export const HOME_LIBRARY_IPC_CHANNEL = 'workbench:home-library'
 /** IPC channel for Home / Settings appearance, widgets, and wallpapers (local SQLite). */
 export const HOME_SETTINGS_IPC_CHANNEL = 'workbench:home-settings'
 
-/** IPC channel for Admin Opportunities board layout (local SQLite). */
-export const OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL = 'workbench:opportunity-board-layout'
-
 /** IPC channel for Settings OA/ERP credentials (local SQLite). */
 export const OA_ERP_CREDENTIALS_IPC_CHANNEL = 'workbench:oa-erp-credentials'
 
@@ -274,7 +271,6 @@ export const MENU_FEATURE_IDS = [
   'harness',
   'mail',
   'calendar',
-  'aura',
 ] as const
 
 /** Go-menu feature id. */
