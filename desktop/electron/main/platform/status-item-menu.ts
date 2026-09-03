@@ -1,4 +1,5 @@
 import { Menu, type MenuItemConstructorOptions } from 'electron'
+import { APP_DISPLAY_NAME } from '../../shared/app-identity'
 import type { ApplicationMenuLabels } from '../../shared/ipc'
 import {
   AGENT_OVERLAY_ACCELERATOR,
@@ -17,12 +18,12 @@ export type StatusItemLabels = Pick<
 
 /** Fallback labels before the renderer syncs app i18n. */
 export const DEFAULT_STATUS_ITEM_LABELS: StatusItemLabels = {
-  openApp: 'Open GeoCRM',
+  openApp: `Open ${APP_DISPLAY_NAME}`,
   agentOverlay: 'Ask Agent',
   spotlight: 'Spotlight',
   settings: 'Settings…',
   signOut: 'Sign out',
-  quit: 'Quit GeoCRM',
+  quit: `Quit ${APP_DISPLAY_NAME}`,
 }
 
 interface StatusItemMenuOptions {

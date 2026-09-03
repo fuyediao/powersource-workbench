@@ -74,7 +74,7 @@ async function cronRequest<T>(
 ): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new HarnessScheduleApiError('The GeoCRM API is not configured.', 0)
+    throw new HarnessScheduleApiError('The PowerSource Workbench API is not configured.', 0)
   }
   if (!isSupabaseConfigured || !supabase) {
     throw new HarnessScheduleApiError('Supabase is not configured.', 0)
@@ -105,7 +105,7 @@ async function cronRequest<T>(
     if (err instanceof Error && err.name === 'AbortError') {
       throw err
     }
-    throw new HarnessScheduleApiError('The GeoCRM API could not be reached.', 0)
+    throw new HarnessScheduleApiError('The PowerSource Workbench API could not be reached.', 0)
   }
 
   if (!response.ok) {

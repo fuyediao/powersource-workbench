@@ -13,9 +13,6 @@ import {
   HarnessIcon,
   MailIcon,
   SettingsIcon,
-  UniverDocsIcon,
-  UniverSheetsIcon,
-  UniverSlidesIcon,
 } from '@/icons/AllIcons'
 import { isBrowserTabId } from '@/utils/settings/link-open-preference'
 
@@ -27,10 +24,6 @@ const FEATURE_TAB_ICONS: Record<FeatureTabId, SvgIcon> = {
   mail: MailIcon,
   calendar: CalendarIcon,
   aura: AuraMarkdownIcon,
-  folio: FolioIcon,
-  docs: UniverDocsIcon,
-  sheets: UniverSheetsIcon,
-  slides: UniverSlidesIcon,
   harness: HarnessIcon,
 }
 

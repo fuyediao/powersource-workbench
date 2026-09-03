@@ -4,6 +4,11 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Set the desktop display name to PowerSource Workbench (window, menu, tray, and installer).
+- Replaced remaining GeoCRM product labels in the live desktop UI with PowerSource Workbench.
+- Removed Folio, Docs, Sheets, and Slides from Home, Go menu, and feature tabs.
+- Opened sign-in in a compact window and the Workbench shell in a separate window after login.
+- Replaced the GeoCRM map-pin system icons (window, tray, installer, and Mac icon set) with the POWERSOURCE Workbench brand mark.
 - Centered the login mark and title, and removed the sign-in subtitle.
 - Replaced the login mark with the POWERSOURCE OA / ERP brand SVG.
 - Removed Messages, Board, Map, Admin, Orders, Products, NEXDOT, T&E Admin, Team, and Clash from Home, Go menu, and Settings.

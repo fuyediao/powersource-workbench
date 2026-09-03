@@ -66,6 +66,12 @@ export const TAB_TRANSFER_RECEIVE_EVENT = 'geocrm:tab-transfer-receive'
  */
 export const APP_WINDOW_HIDE_HOME_ARG = '--geocrm-hide-home'
 
+/**
+ * Renderer argv flag: this BrowserWindow is the compact sign-in window, not
+ * the main Workbench shell.
+ */
+export const APP_WINDOW_LOGIN_ARG = '--workbench-login'
+
 /** Closable title-bar tab categories that can be torn off into another window. */
 export const TAB_TRANSFER_KINDS = ['settings', 'feature', 'browser', 'folio'] as const
 
@@ -256,10 +262,6 @@ export const MENU_FEATURE_IDS = [
   'mail',
   'calendar',
   'aura',
-  'folio',
-  'docs',
-  'sheets',
-  'slides',
 ] as const
 
 /** Go-menu feature id. */

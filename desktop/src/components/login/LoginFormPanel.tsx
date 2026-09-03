@@ -232,7 +232,7 @@ export function LoginFormPanel({
           <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-white shadow-sm dark:bg-zinc-900">
             <MapExplorerIcon className="size-7" />
           </div>
-          <span>GeoCRM</span>
+          <span>PowerSource Workbench</span>
         </div>
 
         <div className="mb-6 text-center">

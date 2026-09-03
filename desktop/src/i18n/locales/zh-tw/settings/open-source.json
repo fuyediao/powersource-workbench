@@ -1,5 +1,5 @@
 {
-  "intro": "GeoCRM 使用開源軟體。本頁先列出內嵌與執行時期元件，再列出桌面版隨附的全部直接 npm 正式依賴。各專案仍歸原作者所有，並依所示授權條款使用。",
+  "intro": "PowerSource Workbench 使用開源軟體。本頁先列出內嵌與執行時期元件，再列出桌面版隨附的全部直接 npm 正式依賴。各專案仍歸原作者所有，並依所示授權條款使用。",
   "licenseLabel": "授權：{{license}}",
   "homepage": "專案首頁",
   "searchPlaceholder": "依名稱或授權搜尋",

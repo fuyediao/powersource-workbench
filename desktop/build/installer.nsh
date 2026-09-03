@@ -1,4 +1,4 @@
-; GeoCRM NSIS extras. electron-builder includes this before MUI pages.
+; PowerSource Workbench NSIS extras. electron-builder includes this before MUI pages.
 ; Welcome/finish use installerSidebar.bmp; instfiles uses installerHeader.bmp.
 ; The language dialog (English / Trad. Chinese / Simp. Chinese) is enabled via
 ; displayLanguageSelector. The choice is stored as a Settings locale.

@@ -61,7 +61,7 @@ async function harnessLibraryRequest<T>(
 ): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base || !isSupabaseConfigured || !supabase) {
-    throw new Error('The GeoCRM API is not configured.')
+    throw new Error('The PowerSource Workbench API is not configured.')
   }
   const { data, error } = await supabase.auth.getSession()
   const accessToken = data.session?.access_token

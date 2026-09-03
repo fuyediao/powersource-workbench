@@ -55,7 +55,7 @@ function resolveInitialLanguage(): AppLanguage {
  */
 function updateDocumentLanguage(language: string): void {
   document.documentElement.lang = language
-  document.title = 'GeoCRM'
+  document.title = i18n.t('desktopMenu.productName', { defaultValue: 'PowerSource Workbench' })
 }
 
 const initialLanguage = resolveInitialLanguage()

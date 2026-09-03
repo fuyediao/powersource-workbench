@@ -29,7 +29,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
   }
 
   return (
-    <main className="login-page auth-gate">
+    <main className="login-page login-page--window auth-gate">
       <section className="login-form-panel">
         <form className="login-card" onSubmit={(event) => void handleSubmit(event)}>
           <div className="login-header">

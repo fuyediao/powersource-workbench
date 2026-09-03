@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Tray, nativeImage } from 'electron'
 import fs from 'node:fs'
 import path from 'node:path'
+import { APP_DISPLAY_NAME } from '../../../shared/app-identity'
 import type { ApplicationMenuLabels } from '../../../shared/ipc'
 import { OPEN_SETTINGS_EVENT, SIGN_OUT_EVENT } from '../../../shared/ipc'
 import {
@@ -135,7 +136,7 @@ export function createDarwinTray(
   getWindowRef = getWindow
   const image = createMacTrayImage(iconDir)
   tray = new Tray(image.isEmpty() ? nativeImage.createEmpty() : image)
-  tray.setToolTip('GeoCRM')
+  tray.setToolTip(APP_DISPLAY_NAME)
   // macOS menu-bar extra: left click opens the menu (`setContextMenu`).
   // Windows keeps right-click for the menu and left-click to show the window.
   refreshDarwinTrayMenu()

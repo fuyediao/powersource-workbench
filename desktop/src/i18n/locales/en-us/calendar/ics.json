@@ -1,7 +1,7 @@
 {
   "import": "Import ICS…",
   "export": "Export ICS…",
-  "exportName": "GeoCRM Calendar",
+  "exportName": "PowerSource Workbench Calendar",
   "importEmpty": "No events found in that ICS file.",
   "importNoCalendar": "Create a calendar before importing.",
   "importDone": "Imported {{count}} event(s).",

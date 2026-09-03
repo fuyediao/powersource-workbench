@@ -12,6 +12,20 @@
   background: radial-gradient(circle at 70% 20%, #dfeff3, transparent 48%);
 }
 
+.login-page--window .login-form-panel {
+  padding: 20px 28px 28px;
+}
+
+.login-page--window .login-card {
+  width: 100%;
+  padding: 8px 4px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
 .login-card {
   width: min(420px, 100%);
   padding: 38px;
@@ -104,6 +118,12 @@
   border-color: #353b3e;
   background: #1b1f21e8;
   box-shadow: 0 30px 80px #00000038;
+}
+
+.dark .login-page--window .login-card {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
 }
 
 .dark .login-icon {

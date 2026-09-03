@@ -1,5 +1,5 @@
 {
-  "intro": "GeoCRM includes open-source software. This page lists in-tree and runtime components, then every direct npm production dependency shipped with the desktop app. Each project remains the property of its authors and is used under the license shown.",
+  "intro": "PowerSource Workbench includes open-source software. This page lists in-tree and runtime components, then every direct npm production dependency shipped with the desktop app. Each project remains the property of its authors and is used under the license shown.",
   "licenseLabel": "License: {{license}}",
   "homepage": "Homepage",
   "searchPlaceholder": "Search by name or license",

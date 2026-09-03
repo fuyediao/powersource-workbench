@@ -113,13 +113,7 @@ function loadPersistedTitleTabs(): PersistedTitleTabs | null {
               : undefined,
         }))
       : []
-    const folioTabs = Array.isArray(parsed.folioTabs)
-      ? parsed.folioTabs.filter(
-          (tab): tab is FolioTabState => Boolean(tab) && typeof tab === 'object' &&
-            typeof tab.id === 'string' && isFolioPageTabId(tab.id) &&
-            typeof tab.pageId === 'string' && typeof tab.title === 'string',
-        )
-      : []
+    const folioTabs: FolioTabState[] = []
     const browserIds = new Set(browserTabs.map((tab) => tab.id))
     const openTabs = stripHomeTab(
       parsed.openTabs.filter(

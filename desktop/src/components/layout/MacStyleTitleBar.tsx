@@ -64,6 +64,8 @@ interface MacStyleTitleBarProps {
   showAskAi?: boolean
   askAiOpen?: boolean
   onAskAiClick?: () => void
+  /** Compact sign-in chrome: no pin, no maximize. */
+  compactChrome?: boolean
 }
 
 interface SortableTitleTabProps {
@@ -82,6 +84,7 @@ interface TrafficLightClusterProps {
   onClose: () => void
   onMinimize: () => void
   onMaximize: () => void
+  showMaximize?: boolean
 }
 
 /** Viewport-space point where a tab drag ended. */
@@ -409,6 +412,7 @@ function TrafficLightCluster({
   onClose,
   onMinimize,
   onMaximize,
+  showMaximize = true,
 }: TrafficLightClusterProps) {
   const closeColor = focused ? CLOSE_ACTIVE : INACTIVE
   const minimizeColor = focused ? MINIMIZE_ACTIVE : INACTIVE
@@ -463,6 +467,7 @@ function TrafficLightCluster({
           />
         </svg>
       </button>
+      {showMaximize ? (
       <button
         type="button"
         className="title-bar-traffic grid size-3.5 place-items-center rounded-full"
@@ -494,6 +499,7 @@ function TrafficLightCluster({
           )}
         </svg>
       </button>
+      ) : null}
     </div>
   )
 }
@@ -602,6 +608,7 @@ export function MacStyleTitleBar({
   showAskAi = false,
   askAiOpen = false,
   onAskAiClick,
+  compactChrome = false,
 }: MacStyleTitleBarProps) {
   const { t } = useTranslation()
   const bridge = window.geocrm?.window
@@ -708,6 +715,7 @@ export function MacStyleTitleBar({
           onMaximize={() => {
             void bridge.maximize().then(setMaximized)
           }}
+          showMaximize={!compactChrome}
         />
       ) : null}
 
@@ -760,7 +768,7 @@ export function MacStyleTitleBar({
       <div
         className="ml-2 flex min-w-0 flex-1 items-center self-stretch"
         onDoubleClick={
-          paintTrafficLights
+          paintTrafficLights && !compactChrome
             ? () => {
                 void bridge.maximize().then(setMaximized)
               }
@@ -773,7 +781,7 @@ export function MacStyleTitleBar({
               focused ? 'text-ink' : 'text-muted'
             }`}
           >
-            GeoCRM
+            {t('desktopMenu.productName')}
           </span>
         ) : null}
       </div>
@@ -794,6 +802,7 @@ export function MacStyleTitleBar({
             <span className="title-bar-ask-ai-label max-w-24 truncate">{t('askAi.title')}</span>
           </button>
         ) : null}
+        {compactChrome ? null : (
         <button
           type="button"
           title={t('titleBar.alwaysOnTop')}
@@ -810,6 +819,7 @@ export function MacStyleTitleBar({
         >
           <PinIcon className="size-3.5" />
         </button>
+        )}
       </div>
       {tabMenu ? (
         <TitleBarTabContextMenu

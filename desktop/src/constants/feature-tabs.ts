@@ -5,10 +5,6 @@ export const FEATURE_TAB_IDS = [
   'mail',
   'calendar',
   'aura',
-  'folio',
-  'docs',
-  'sheets',
-  'slides',
 ] as const
 
 /** Title-bar / deep-link id for a GeoCRM feature page. */
@@ -73,7 +69,6 @@ export type GeocrmSearchTarget =
   | { kind: 'home' }
   | { kind: 'settings' }
   | { kind: 'feature'; id: FeatureTabId }
-  | { kind: 'folio-page'; pageId: string }
 
 /**
  * Resolves a search query to an in-app page when it is a known `geocrm://` link.
@@ -97,11 +92,6 @@ export function parseGeocrmSearchTarget(text: string): GeocrmSearchTarget | null
   }
   const featureId = featureTabFromDeepLinkId(id)
   if (featureId) {
-    if (featureId === 'folio') {
-      const pageMatch = /^geocrm:\s*\/\/\s*folio\/([^/?#]+)/i.exec(text.trim())
-      const pageId = pageMatch?.[1]?.trim()
-      if (pageId) return { kind: 'folio-page', pageId }
-    }
     return { kind: 'feature', id: featureId }
   }
   return null
@@ -119,7 +109,6 @@ export function geocrmSearchTargetLabelKey(target: GeocrmSearchTarget): string {
   if (target.kind === 'settings') {
     return 'functions.apps.settings'
   }
-  if (target.kind === 'folio-page') return FEATURE_TAB_LABEL_KEY.folio
   return FEATURE_TAB_LABEL_KEY[target.id]
 }
 
@@ -185,8 +174,4 @@ export const FEATURE_TAB_LABEL_KEY: Record<FeatureTabId, string> = {
   mail: 'functions.apps.mail',
   calendar: 'functions.apps.calendar',
   aura: 'functions.apps.aura',
-  folio: 'functions.apps.folio',
-  docs: 'functions.apps.docs',
-  sheets: 'functions.apps.sheets',
-  slides: 'functions.apps.slides',
 }

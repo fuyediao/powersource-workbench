@@ -57,6 +57,7 @@ import {
 import { checkForDesktopUpdate } from './app-updates'
 import { installDesktopUpdate } from './app-update-install'
 import { isAuxiliaryWindow } from './auxiliary-windows'
+import { applyRendererSignedIn } from './login-window'
 import { readInstallLanguage } from './install-language'
 
 const netHandlers = {
@@ -224,9 +225,13 @@ function replyInstallLanguage(event: IpcMainEvent): void {
 export function registerIpcHandlers(): void {
   ipcMain.on(INSTALL_LANGUAGE_SYNC_CHANNEL, replyInstallLanguage)
 
-  ipcMain.handle(AUTH_IPC_CHANNEL, async (_event, method: string) => {
+  ipcMain.handle(AUTH_IPC_CHANNEL, async (_event, method: string, ...args: unknown[]) => {
     if (method === 'openGoogleSignIn') {
       await openGoogleSignIn()
+      return
+    }
+    if (method === 'setSignedIn') {
+      await applyRendererSignedIn(args[0] === true)
       return
     }
     throw new Error(`Unknown auth method: ${method}`)

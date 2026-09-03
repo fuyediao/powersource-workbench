@@ -18,16 +18,16 @@ const RESUME_CHECK_COOLDOWN_MS = 30 * 60 * 1000
 
 const NOTIFICATION_TEXT: Record<AppMenuLanguage, { title: string; body: (version: string) => string }> = {
   en: {
-    title: 'GeoCRM update available',
-    body: (version) => `Version ${version} is ready to install. Click to open GeoCRM.`,
+    title: 'PowerSource Workbench update available',
+    body: (version) => `Version ${version} is ready to install. Click to open PowerSource Workbench.`,
   },
   'zh-TW': {
-    title: 'GeoCRM 有新版本',
-    body: (version) => `新版本 ${version} 已可安裝，點擊開啟 GeoCRM。`,
+    title: 'PowerSource Workbench 有新版本',
+    body: (version) => `新版本 ${version} 已可安裝，點擊開啟 PowerSource Workbench。`,
   },
   'zh-CN': {
-    title: 'GeoCRM 有新版本',
-    body: (version) => `新版本 ${version} 已可安装，点击打开 GeoCRM。`,
+    title: 'PowerSource Workbench 有新版本',
+    body: (version) => `新版本 ${version} 已可安装，点击打开 PowerSource Workbench。`,
   },
 }
 

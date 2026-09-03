@@ -472,10 +472,10 @@ async function createXlsx(content: Record<string, unknown>): Promise<Buffer> {
 async function createPptx(content: Record<string, unknown>): Promise<Buffer> {
   const presentation = new PptxGenJS()
   presentation.layout = 'LAYOUT_WIDE'
-  presentation.author = 'GeoCRM Harness'
+  presentation.author = 'PowerSource Workbench Harness'
   presentation.subject = typeof content.subject === 'string' ? content.subject : ''
   presentation.title = typeof content.title === 'string' ? content.title : ''
-  presentation.company = 'GeoCRM'
+  presentation.company = 'PowerSource Workbench'
   presentation.lang = 'en-US'
   presentation.theme = {
     headFontFace: 'Aptos Display',

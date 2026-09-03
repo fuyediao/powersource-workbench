@@ -1,5 +1,5 @@
 /**
- * Notable open-source components shipped with GeoCRM Electron.
+ * Notable open-source components shipped with Workbench.
  * Package names, SPDX licenses, and homepages stay in source (not i18n).
  */
 export interface OpenSourceNotice {
@@ -24,7 +24,7 @@ export interface OpenSourceNpmNotice {
 export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
   {
     id: 'geocrm',
-    name: 'GeoCRM Electron',
+    name: 'PowerSource Workbench',
     license: 'AGPL-3.0',
     homepage: '',
   },

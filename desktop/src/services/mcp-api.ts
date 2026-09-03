@@ -82,7 +82,7 @@ async function mcpRequest<T>(
 ): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new McpApiError('The GeoCRM API is not configured.', 0)
+    throw new McpApiError('The PowerSource Workbench API is not configured.', 0)
   }
   if (!isSupabaseConfigured || !supabase) {
     throw new McpApiError('Supabase is not configured.', 0)
@@ -113,7 +113,7 @@ async function mcpRequest<T>(
     if (err instanceof Error && err.name === 'AbortError') {
       throw err
     }
-    throw new McpApiError('The GeoCRM API could not be reached.', 0)
+    throw new McpApiError('The PowerSource Workbench API could not be reached.', 0)
   }
 
   if (!response.ok) {

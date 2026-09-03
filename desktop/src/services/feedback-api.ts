@@ -189,7 +189,7 @@ export async function submitFeedback(payload: FeedbackSubmitPayload): Promise<vo
         osModel,
         message,
         locale: payload.locale.trim() || undefined,
-        source: 'GeoCRM Electron Settings',
+        source: 'PowerSource Workbench Settings',
         images: images.length > 0 ? images : undefined,
       }),
       mode: 'cors',

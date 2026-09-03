@@ -192,7 +192,7 @@ async function applyInstaller(filePath: string): Promise<AppliedInstaller> {
 async function installMacDmg(dmgPath: string): Promise<'mac-replaced' | 'mac-opened'> {
   const destApp = path.resolve(process.execPath, '../../..')
   if (!destApp.endsWith('.app')) {
-    throw new Error('Could not locate the GeoCRM.app bundle to replace.')
+    throw new Error('Could not locate the PowerSource Workbench.app bundle to replace.')
   }
   const mount = path.join(os.tmpdir(), `geocrm-dmg-${process.pid}`)
   await fs.rm(mount, { recursive: true, force: true })
@@ -228,7 +228,7 @@ async function findAppBundle(mount: string): Promise<string> {
   const entries = await fs.readdir(mount, { withFileTypes: true })
   const match = entries.find((entry) => entry.isDirectory() && entry.name.endsWith('.app'))
   if (!match) {
-    throw new Error('The disk image does not contain a GeoCRM.app bundle.')
+    throw new Error('The disk image does not contain a PowerSource Workbench.app bundle.')
   }
   return path.join(mount, match.name)
 }
@@ -275,18 +275,18 @@ function finishInstall(filePath: string, applied: AppliedInstaller): void {
  * @returns Safe file name.
  */
 function safeInstallerName(fileName: string, downloadUrl: string): string {
-  const raw = path.basename(fileName.trim() || lastPathSegment(downloadUrl) || 'GeoCRM-update')
+  const raw = path.basename(fileName.trim() || lastPathSegment(downloadUrl) || 'PowerSource-Workbench-update')
   const cleaned = raw.replace(/[^a-zA-Z0-9._-]/g, '_')
   if (INSTALLER_EXT.test(cleaned)) {
     return cleaned
   }
   if (process.platform === 'darwin') {
-    return `${cleaned || 'GeoCRM-update'}.dmg`
+    return `${cleaned || 'PowerSource-Workbench-update'}.dmg`
   }
   if (process.platform === 'win32') {
-    return `${cleaned || 'GeoCRM-update'}.exe`
+    return `${cleaned || 'PowerSource-Workbench-update'}.exe`
   }
-  return `${cleaned || 'GeoCRM-update'}.zip`
+  return `${cleaned || 'PowerSource-Workbench-update'}.zip`
 }
 
 /**

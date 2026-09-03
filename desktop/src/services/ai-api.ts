@@ -112,7 +112,7 @@ async function aiRequest<T>(
       err instanceof Error && err.message.trim() ? ` (${err.message.trim()})` : ''
     throw new AiApiError(
       'network_error',
-      `The GeoCRM API could not be reached.${detail}`,
+      `The PowerSource Workbench API could not be reached.${detail}`,
       0,
     )
   }

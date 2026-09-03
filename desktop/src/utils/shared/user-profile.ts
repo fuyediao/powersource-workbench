@@ -64,5 +64,5 @@ export function resolveUserDisplayName(
   if (email.includes('@')) {
     return email.split('@')[0] || email
   }
-  return email || 'GeoCRM'
+  return email || 'PowerSource Workbench'
 }

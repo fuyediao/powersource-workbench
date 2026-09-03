@@ -7,7 +7,6 @@ import {
 } from '@/constants/feature-tabs'
 import { AdminAppsIcon } from '@/icons/AllIcons'
 import { StatusLoading } from '@/components/common/status-loading'
-import { isOfficeFeatureId } from '@/constants/office-folder'
 
 const AuraPage = lazy(async () => {
   const module = await import('@/pages/aura-page')
@@ -24,16 +23,6 @@ const MailPage = lazy(async () => {
   return { default: module.MailPage }
 })
 
-const OfficeWorkspacePageLazy = lazy(async () => {
-  const module = await import('@/pages/office-workspace-page')
-  return { default: module.OfficeWorkspacePage }
-})
-
-const FolioPageLazy = lazy(async () => {
-  const module = await import('@/pages/folio-page')
-  return { default: module.FolioPage }
-})
-
 const CalendarPageLazy = lazy(async () => {
   const module = await import('@/pages/calendar-page')
   return { default: module.CalendarPage }
@@ -48,7 +37,6 @@ interface FeaturePageProps {
   feature: FeatureTabId
   userId: string
   user: User
-  folioPageId?: string | null
   /**
    * Opens another feature tab.
    * @param feature - Feature tab id.
@@ -77,7 +65,6 @@ export function FeaturePage({
   feature,
   userId,
   user,
-  folioPageId = null,
 }: FeaturePageProps) {
   const { t } = useTranslation()
 
@@ -105,14 +92,6 @@ export function FeaturePage({
     )
   }
 
-  if (feature === 'folio') {
-    return (
-      <FeatureSuspense>
-        <FolioPageLazy userId={userId} user={user} initialPageId={folioPageId} />
-      </FeatureSuspense>
-    )
-  }
-
   if (feature === 'calendar') {
     return (
       <FeatureSuspense>
@@ -125,14 +104,6 @@ export function FeaturePage({
     return (
       <FeatureSuspense>
         <HarnessPageLazy userId={userId} />
-      </FeatureSuspense>
-    )
-  }
-
-  if (isOfficeFeatureId(feature)) {
-    return (
-      <FeatureSuspense>
-        <OfficeWorkspacePageLazy kind={feature} userId={userId} user={user} />
       </FeatureSuspense>
     )
   }

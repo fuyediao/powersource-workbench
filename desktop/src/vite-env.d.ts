@@ -608,10 +608,6 @@ interface ApplicationMenuState {
     | 'mail'
     | 'calendar'
     | 'aura'
-    | 'folio'
-    | 'docs'
-    | 'sheets'
-    | 'slides'
   >
   auraLabels?: AuraMenuLabels
   auraView?: AuraViewState
@@ -646,10 +642,6 @@ type MenuNavigateTarget =
   | 'mail'
   | 'calendar'
   | 'aura'
-  | 'folio'
-  | 'docs'
-  | 'sheets'
-  | 'slides'
 
 type MenuFileAction = 'open' | 'save' | 'close-tab'
 
@@ -748,6 +740,8 @@ interface GeocrmWindowBridge {
   usesNativeApplicationMenu: boolean
   /** False on torn-off windows (no Home launcher in the caption). */
   showHomeLauncher: boolean
+  /** True in the compact sign-in window. */
+  isLoginWindow: boolean
   minimize: () => Promise<void>
   maximize: () => Promise<boolean>
   close: () => Promise<void>
@@ -798,6 +792,7 @@ interface LegacyOfficeWorkspaceFile {
 interface GeocrmBridge {
   auth: {
     openGoogleSignIn: () => Promise<void>
+    setSignedIn: (signedIn: boolean) => Promise<void>
     onSession: (listener: (payload: AuthSessionPayload) => void) => () => void
   }
   net: {

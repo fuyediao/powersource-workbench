@@ -11,7 +11,7 @@ import {
 import { GlassOpacityProvider } from '@/hooks/glass-opacity-context'
 import { PageWidgetsProvider } from '@/hooks/page-widgets-context'
 import { WidgetToolsProvider } from '@/hooks/use-widget-tools'
-import type { BrowserTabState, FolioTabState } from '@/hooks/use-title-tabs'
+import type { BrowserTabState } from '@/hooks/use-title-tabs'
 import { useTabSlideDirection } from '@/hooks/use-tab-slide-direction'
 import { HomePage } from '@/pages/home'
 import { StatusLoading } from '@/components/common/status-loading'
@@ -44,7 +44,6 @@ interface SignedInShellProps {
   /** Closable title-bar tabs currently open (keeps Feature/Settings trees alive while hidden). */
   openTabs: TitleBarTabId[]
   browserTabs: BrowserTabState[]
-  folioTabs: FolioTabState[]
   onOpenSettings: () => void
   onOpenFeature: (feature: FeatureTabId) => void
   onBrowserTabTitle: (tabId: TitleBarTabId, title: string, faviconUrl: string) => void
@@ -99,7 +98,6 @@ export function SignedInShell({
   screen,
   openTabs,
   browserTabs,
-  folioTabs,
   onOpenSettings,
   onOpenFeature,
   onBrowserTabTitle,
@@ -199,25 +197,6 @@ export function SignedInShell({
                     ))}
                   </ShellSuspense>
                 ) : null}
-                {folioTabs.map((tab) => {
-                  const active = screen === tab.id
-                  return (
-                    <div
-                      key={`${tab.id}:${tabReloadEpoch[tab.id] ?? 0}`}
-                      className="h-full min-h-0"
-                      hidden={!active}
-                    >
-                      <ShellSuspense>
-                        <FeaturePage
-                          feature="folio"
-                          userId={user.id}
-                          user={user}
-                          folioPageId={tab.pageId}
-                        />
-                      </ShellSuspense>
-                    </div>
-                  )
-                })}
               </div>
             </WidgetToolsProvider>
           </PageWidgetsProvider>

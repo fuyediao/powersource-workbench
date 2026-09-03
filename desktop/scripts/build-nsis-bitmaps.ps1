@@ -10,15 +10,16 @@ $headerPath = Join-Path $root 'build\installerHeader.bmp'
 $sidebarPath = Join-Path $root 'build\installerSidebar.bmp'
 
 if (-not (Test-Path $iconPath)) {
-  throw "Missing GeoCRM icon: $iconPath"
+  throw "Missing Workbench icon: $iconPath"
 }
 
 New-Item -ItemType Directory -Force -Path (Join-Path $root 'build') | Out-Null
 
-$mint = [System.Drawing.Color]::FromArgb(69, 200, 141)
+$gold = [System.Drawing.Color]::FromArgb(206, 165, 62)
 $canvas = [System.Drawing.Color]::FromArgb(248, 250, 252)
 $ink = [System.Drawing.Color]::FromArgb(15, 23, 42)
 $white = [System.Drawing.Color]::White
+$crimson = [System.Drawing.Color]::FromArgb(179, 56, 43)
 
 $icon = [System.Drawing.Image]::FromFile($iconPath)
 try {
@@ -35,12 +36,12 @@ try {
     try {
       $brush = New-Object System.Drawing.SolidBrush $ink
       try {
-        $hg.DrawString('GeoCRM', $font, $brush, 58, 18)
+        $hg.DrawString('Workbench', $font, $brush, 58, 18)
       }
       finally { $brush.Dispose() }
     }
     finally { $font.Dispose() }
-    $accent = New-Object System.Drawing.SolidBrush $mint
+    $accent = New-Object System.Drawing.SolidBrush $gold
     try {
       $hg.FillRectangle($accent, 0, 54, 150, 3)
     }
@@ -53,7 +54,7 @@ try {
   $sidebar = New-Object System.Drawing.Bitmap 164, 314, ([System.Drawing.Imaging.PixelFormat]::Format24bppRgb)
   $sg = [System.Drawing.Graphics]::FromImage($sidebar)
   try {
-    $sg.Clear($mint)
+    $sg.Clear($crimson)
     $sg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
     $sg.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
     $sg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
@@ -66,7 +67,7 @@ try {
       $format = New-Object System.Drawing.StringFormat
       $format.Alignment = [System.Drawing.StringAlignment]::Center
       try {
-        $sg.DrawString('GeoCRM', $titleFont, $whiteBrush, (New-Object System.Drawing.RectangleF 0, 198, 164, 28), $format)
+        $sg.DrawString('Workbench', $titleFont, $whiteBrush, (New-Object System.Drawing.RectangleF 0, 198, 164, 28), $format)
         $sg.DrawString('Desktop', $captionFont, $whiteBrush, (New-Object System.Drawing.RectangleF 0, 226, 164, 20), $format)
       }
       finally {

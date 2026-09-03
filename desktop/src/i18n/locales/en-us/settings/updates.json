@@ -14,6 +14,6 @@
   "stepInstall": "Install",
   "stepRestart": "Restart",
   "forceTitle": "Update required",
-  "forceBody": "GeoCRM {{latestVersion}} is required to continue. You have {{version}}. The app will download, install, and restart.",
+  "forceBody": "PowerSource Workbench {{latestVersion}} is required to continue. You have {{version}}. The app will download, install, and restart.",
   "close": "Close"
 }

@@ -7,10 +7,6 @@ const MENU_NAVIGATE_TARGETS = [
   'mail',
   'calendar',
   'aura',
-  'folio',
-  'docs',
-  'sheets',
-  'slides',
 ] as const
 
 /**

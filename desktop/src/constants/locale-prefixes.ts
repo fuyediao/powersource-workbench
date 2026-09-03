@@ -40,7 +40,6 @@ export const SHELL_LOCALE_PREFIXES = [
   'widget-tools',
   'settings/title',
   'settings/updates',
-  'folio/untitled',
 ] as const
 
 /**
@@ -56,10 +55,6 @@ const FEATURE_LOCALE_PREFIXES: Record<FeatureTabId, readonly string[]> = {
   mail: ['mail'],
   calendar: ['calendar'],
   aura: ['aura'],
-  folio: ['folio'],
-  docs: ['office', 'admin/sidebar'],
-  sheets: ['office', 'admin/sidebar'],
-  slides: ['office', 'admin/sidebar'],
   harness: ['harness'],
 }
 

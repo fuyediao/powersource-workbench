@@ -71,9 +71,6 @@ function geocrmTargetUrl(target: GeocrmSearchTarget): string {
   if (target.kind === 'settings') {
     return 'geocrm://settings'
   }
-  if (target.kind === 'folio-page') {
-    return `geocrm://folio/${target.pageId}`
-  }
   return `geocrm://${target.id}`
 }
 

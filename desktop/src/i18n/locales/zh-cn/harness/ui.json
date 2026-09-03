@@ -62,11 +62,11 @@
     "subtitle": "探索覆盖商业、创作、技术与研究工作流的专业 AI 工具。",
     "searchPlaceholder": "搜索工具",
     "myAssistants": "我的工具",
-    "myAssistantsSubtitle": "与你的 GeoCRM 账号同步的工具。",
+    "myAssistantsSubtitle": "与你的 PowerSource Workbench 账号同步的工具。",
     "create": "创建",
     "categories": "工具分类",
     "featured": "精选",
-    "featuredSubtitle": "本周推荐的 GeoCRM 工具。",
+    "featuredSubtitle": "本周推荐的 PowerSource Workbench 工具。",
     "searchResults": "搜索结果",
     "emptySearch": "找不到符合搜索条件的工具。",
     "emptyMine": "你还没有创建工具。",
@@ -149,7 +149,7 @@
     },
     "connectors": {
       "title": "连接器", "subtitle": "将 Harness 连接到业务服务与 MCP 服务。", "custom": "自定义连接器",
-      "geocrm": "使用登录会话直接访问 GeoCRM 客户、商机、活动与业务背景。",
+      "geocrm": "使用登录会话直接访问 PowerSource Workbench 客户、商机、活动与业务背景。",
       "dropbox": "授权后搜索并引用 Dropbox 文件。", "gmail": "授权后搜索、读取、撰写并整理 Gmail。",
       "googleCalendar": "授权后查看并管理 Google 日历活动。", "googleDrive": "授权后搜索并引用 Google Drive 文件。",
       "microsoftTeams": "授权后使用 Microsoft Teams 对话与协作内容。", "outlookCalendar": "授权后查看并管理 Outlook 日历活动。",
@@ -167,7 +167,7 @@
       "productivity": "整理销售工作、会议、文件与 CRM 数据。"
     },
     "creator": {
-      "geocrm": "作者：GeoCRM",
+      "geocrm": "作者：PowerSource Workbench",
       "you": "作者：你"
     },
     "creatorForm": {
@@ -361,7 +361,7 @@
     "empty": "尚无技能。",
     "emptyEntries": "此分类暂无项目。",
     "newEntry": "新增项目",
-    "unavailable": "连接 GeoCRM API 后才会存到你的账号。",
+    "unavailable": "连接 PowerSource Workbench API 后才会存到你的账号。",
     "generator": {
       "title": "描述你想创建的内容",
       "hint": "所选模型会生成可编辑草稿；确认前不会保存。",
@@ -472,7 +472,7 @@
     "create": "建立",
     "searchPlaceholder": "搜索已排程任务",
     "empty": "尚无已排程任务。",
-    "sampleNotice": "示范任务。连接 GeoCRM API 后才会存到你的账号。",
+    "sampleNotice": "示范任务。连接 PowerSource Workbench API 后才会存到你的账号。",
     "nextRun": "下次",
     "runNow": "立刻运行",
     "pause": "暂停",

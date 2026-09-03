@@ -393,7 +393,7 @@ export function HomePage({
       onOpenSettings()
       return
     }
-    onOpenFeature(target.kind === 'folio-page' ? 'folio' : target.id)
+    onOpenFeature(target.id)
   }
 
   return (

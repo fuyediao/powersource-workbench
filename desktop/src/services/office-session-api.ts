@@ -53,7 +53,7 @@ export async function fetchOnlyOfficeSession(
 ): Promise<OnlyOfficeSessionConfig> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new OfficeSessionError('The GeoCRM API is not configured.', 0)
+    throw new OfficeSessionError('The PowerSource Workbench API is not configured.', 0)
   }
   if (!isSupabaseConfigured || !supabase) {
     throw new OfficeSessionError('Supabase is not configured.', 0)

@@ -50,6 +50,7 @@ import {
   TAB_TRANSFER_IPC_CHANNEL,
   TAB_TRANSFER_RECEIVE_EVENT,
   APP_WINDOW_HIDE_HOME_ARG,
+  APP_WINDOW_LOGIN_ARG,
   type TabTransferPayload,
   isAppWindowPeer,
   type AppWindowPeer,
@@ -158,6 +159,15 @@ contextBridge.exposeInMainWorld('geocrm', {
      */
     openGoogleSignIn: (): Promise<void> =>
       ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'openGoogleSignIn') as Promise<void>,
+
+    /**
+     * Tells the main process whether this renderer has a Workbench session so
+     * it can switch between the compact login window and the main shell.
+     * @param signedIn - True when a session is active.
+     * @returns Nothing.
+     */
+    setSignedIn: (signedIn: boolean): Promise<void> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'setSignedIn', signedIn) as Promise<void>,
 
     /**
      * Subscribes to OAuth deep-link token payloads from the main process.
@@ -607,6 +617,8 @@ contextBridge.exposeInMainWorld('geocrm', {
      * launcher; closing the last tab closes the window).
      */
     showHomeLauncher: !process.argv.includes(APP_WINDOW_HIDE_HOME_ARG),
+    /** True in the compact sign-in window (no Home, tabs, Ask AI, or pin). */
+    isLoginWindow: process.argv.includes(APP_WINDOW_LOGIN_ARG),
     /**
      * Minimizes the current window.
      * @returns Nothing.

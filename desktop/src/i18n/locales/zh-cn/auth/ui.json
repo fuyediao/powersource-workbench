@@ -1,7 +1,7 @@
 {
-  "desktopBridgeUnavailable": "GeoCRM 桌面桥接不可用。请在桌面应用中打开此页面。",
+  "desktopBridgeUnavailable": "PowerSource Workbench 桌面桥接不可用。请在桌面应用中打开此页面。",
   "emailLabel": "邮箱",
-  "emailNotAllowed": "此 Google 账号无法使用 GeoCRM。",
+  "emailNotAllowed": "此 Google 账号无法使用 PowerSource Workbench。",
   "emailPlaceholder": "请输入您的邮箱",
   "emailRequired": "请输入邮箱",
   "employeeIdInvalid": "请输入有效工号(PS####）。",

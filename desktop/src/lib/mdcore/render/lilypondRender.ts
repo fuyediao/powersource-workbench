@@ -30,6 +30,6 @@ export const lilypondRender = (
     el.setAttribute('data-processed', 'true')
     el.className = 'aura-reset--error'
     el.innerHTML =
-      'LilyPond preview is not available in GeoCRM. Export the block and render with LilyPond locally.'
+      'LilyPond preview is not available in PowerSource Workbench. Export the block and render with LilyPond locally.'
   })
 }

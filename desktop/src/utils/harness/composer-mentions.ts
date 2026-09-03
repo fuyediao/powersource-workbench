@@ -119,7 +119,7 @@ export function mentionsInText(
 }
 
 /**
- * Builds the `@` picker catalog: GeoCRM, local MCP, then hosted connectors.
+ * Builds the `@` picker catalog: Workbench, local MCP, then hosted connectors.
  * @param mcpServers - Configured MCP profiles.
  * @param mcpStatus - Runtime status for those profiles.
  * @param connectors - Hosted connectors from Codex.
@@ -135,7 +135,7 @@ export function buildMentionCatalog(
   const rows: ComposerMentionOption[] = [
     {
       id: 'geocrm',
-      name: 'GeoCRM',
+      name: 'PowerSource Workbench',
       path: '',
       kind: 'geocrm',
       callable: true,

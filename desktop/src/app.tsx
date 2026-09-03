@@ -24,7 +24,6 @@ import { subscribeOpenMailRequest } from '@/utils/mail/mail-compose-request'
 import { subscribeOpenCalendarRequest } from '@/utils/calendar/calendar-event-request'
 import { isAgentOverlayFallbackChord } from '@/utils/agent-overlay/agent-overlay-shortcut'
 import { isSpotlightFallbackChord } from '@/utils/spotlight/spotlight-shortcut'
-import { subscribeOpenOfficeRequest } from '@/utils/office/office-document-request'
 import { subscribeOpenAuraRequest } from '@/utils/aura/aura-document-request'
 import { migrateLegacyOfficeWorkspace } from '@/office/office-workspace-legacy-migration'
 import {
@@ -32,6 +31,64 @@ import {
   requestAskAiSearch,
   subscribeAskAiSearch,
 } from '@/utils/ask-ai/ask-ai-search-request'
+
+/**
+ * Compact sign-in window: form only, no Home / tabs / Ask AI.
+ * @returns Login window root.
+ */
+function LoginWindowApp() {
+  const auth = useAuth()
+  const customTitleBar = Boolean(window.geocrm?.window?.usesCustomTitleBar)
+  const signedIn = Boolean(auth.session?.user)
+  const localeReady = useEnsureLocalePrefixes('home', [])
+
+  useApplicationMenu({
+    signedIn: false,
+    screen: 'home',
+    localeReady,
+    onNavigate: () => undefined,
+    onCloseTab: () => undefined,
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('has-custom-title-bar', customTitleBar)
+    return () => {
+      document.documentElement.classList.remove('has-custom-title-bar')
+    }
+  }, [customTitleBar])
+
+  useEffect(() => {
+    if (auth.loading) {
+      return
+    }
+    void window.geocrm?.auth.setSignedIn?.(signedIn)
+  }, [auth.loading, signedIn])
+
+  const body =
+    auth.loading || !localeReady || signedIn ? (
+      <div className="auth-gate h-full min-h-dvh bg-canvas">
+        <StatusLoading />
+      </div>
+    ) : (
+      <LoginPage
+        error={auth.error}
+        loading={auth.isActionLoading}
+        onLogin={auth.login}
+      />
+    )
+
+  return (
+    <>
+      <MacStyleTitleBar compactChrome />
+      <div className={customTitleBar ? 'pt-10' : undefined}>
+        <div className={`flex ${customTitleBar ? 'h-[calc(100dvh-2.5rem)]' : 'min-h-dvh'}`}>
+          <div className="min-h-0 min-w-0 flex-1 overflow-hidden">{body}</div>
+        </div>
+      </div>
+      <RequiredAppUpdateGate />
+    </>
+  )
+}
 
 /**
  * Parks native WebContentsView panes that would cover Home / other features.
@@ -47,9 +104,9 @@ function hideForeignNativePanes(screen: string): void {
 /**
  * Auth gate + caption overlay (Windows traffic lights / macOS hidden title bar).
  * Signed-in UI lives in {@link SignedInShell}.
- * @returns Application root.
+ * @returns Main shell root.
  */
-export default function App() {
+function MainWindowApp() {
   const auth = useAuth()
   const customTitleBar = Boolean(window.geocrm?.window?.usesCustomTitleBar)
   const showHomeLauncher = window.geocrm?.window?.showHomeLauncher !== false
@@ -151,6 +208,13 @@ export default function App() {
   }, [customTitleBar])
 
   useEffect(() => {
+    if (auth.loading) {
+      return
+    }
+    void window.geocrm?.auth.setSignedIn?.(signedIn)
+  }, [auth.loading, signedIn])
+
+  useEffect(() => {
     if (!signedIn) {
       setAskAiOpen(false)
     }
@@ -163,18 +227,6 @@ export default function App() {
     }
     hideForeignNativePanes(tabs.screen)
   }, [signedIn, tabs.screen])
-
-  useEffect(() => {
-    if (!signedIn) return
-    const open = (event: Event) => {
-      const detail = (event as CustomEvent<{ pageId?: unknown; title?: unknown }>).detail
-      if (typeof detail?.pageId === 'string') {
-        tabs.openFolioPage(detail.pageId, typeof detail.title === 'string' ? detail.title : '')
-      }
-    }
-    window.addEventListener('geocrm:open-folio-page', open)
-    return () => window.removeEventListener('geocrm:open-folio-page', open)
-  }, [signedIn, tabs])
 
   useEffect(() => {
     if (!signedIn) {
@@ -192,16 +244,6 @@ export default function App() {
     }
     void migrateLegacyOfficeWorkspace(auth.session.user.id)
   }, [signedIn, auth.session?.user.id])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-    return subscribeOpenOfficeRequest((kind) => {
-      hideForeignNativePanes(kind)
-      tabs.openFeature(kind)
-    })
-  }, [signedIn, tabs])
 
   useEffect(() => {
     if (!signedIn) {
@@ -367,11 +409,6 @@ export default function App() {
           tabs.openSettings()
           return
         }
-        if (target.kind === 'folio-page') {
-          hideForeignNativePanes('folio')
-          tabs.openFolioPage(target.pageId)
-          return
-        }
         hideForeignNativePanes(target.id)
         tabs.openFeature(target.id)
         return
@@ -389,11 +426,9 @@ export default function App() {
     )
   } else if (!auth.session?.user) {
     body = (
-      <LoginPage
-        error={auth.error}
-        loading={auth.isActionLoading}
-        onLogin={auth.login}
-      />
+      <div className="auth-gate h-full min-h-dvh bg-canvas">
+        <StatusLoading />
+      </div>
     )
   } else {
     body = (
@@ -402,7 +437,6 @@ export default function App() {
         screen={tabs.screen}
         openTabs={tabs.openTabs}
         browserTabs={tabs.browserTabs}
-        folioTabs={tabs.folioTabs}
         onOpenSettings={tabs.openSettings}
         onOpenFeature={tabs.openFeature}
         onBrowserTabTitle={tabs.setBrowserTabTitle}
@@ -471,4 +505,15 @@ export default function App() {
       <RequiredAppUpdateGate />
     </>
   )
+}
+
+/**
+ * Picks the compact login window or the main Workbench shell.
+ * @returns Window root.
+ */
+export default function App() {
+  if (window.geocrm?.window?.isLoginWindow) {
+    return <LoginWindowApp />
+  }
+  return <MainWindowApp />
 }

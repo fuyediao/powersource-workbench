@@ -95,13 +95,13 @@ import { quitWindowsApp, updateWindowsTrayMenu } from './platform/windows/tray'
 import { toggleSpotlight } from './spotlight'
 
 const DEFAULT_LABELS: ApplicationMenuLabels = {
-  about: 'About GeoCRM',
-  hide: 'Hide GeoCRM',
+  about: `About ${APP_DISPLAY_NAME}`,
+  hide: `Hide ${APP_DISPLAY_NAME}`,
   hideOthers: 'Hide Others',
   showAll: 'Show All',
-  quit: 'Quit GeoCRM',
+  quit: `Quit ${APP_DISPLAY_NAME}`,
   spotlight: 'Spotlight',
-  openApp: 'Open GeoCRM',
+  openApp: `Open ${APP_DISPLAY_NAME}`,
   agentOverlay: 'Ask Agent',
   signOut: 'Sign out',
   file: 'File',

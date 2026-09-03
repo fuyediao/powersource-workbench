@@ -4,12 +4,14 @@ import path from 'node:path'
 import { APP_DISPLAY_NAME } from '../shared/app-identity'
 import { AUTH_DEEP_LINK_SCHEME } from '../shared/ipc'
 import { setupAgentOverlay, teardownAgentOverlay } from './agent-overlay'
+import { configureAppWindows } from './app-windows'
 import {
-  appWindows,
-  configureAppWindows,
-  createAppWindow,
-  focusedAppWindow,
-} from './app-windows'
+  configureLoginWindow,
+  createLoginWindow,
+  getForegroundWindow,
+  setLoginSilentStart,
+  showOrCreateSessionWindow,
+} from './login-window'
 import { startAppUpdateScheduler } from './app-update-scheduler'
 import { setupApplicationMenu } from './application-menu'
 import { setupClashHost, teardownClashHost } from './clash'
@@ -18,7 +20,7 @@ import { destroyAllInAppBrowserPanes, setupInAppBrowser } from './in-app-browser
 import { flushPendingAuthDeepLink, handleAuthDeepLink, registerIpcHandlers } from './ipc'
 import { loadMainProcessEnv } from './load-env'
 import { shouldStartHidden, syncLoginItemFromStore } from './login-launch'
-import { getPlatformShell, showBrowserWindow } from './platform'
+import { getPlatformShell } from './platform'
 import { setupSpotlight, teardownSpotlight } from './spotlight'
 import { registerTabTransferIpc } from './tab-transfer'
 
@@ -61,7 +63,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 // If `npm run dev` exits immediately, quit the old Electron in the Dock first.
 if (!app.requestSingleInstanceLock()) {
   console.error(
-    '[geocrm] Another GeoCRM Electron instance is already running. Quit it, then retry.',
+    '[workbench] Another PowerSource Workbench instance is already running. Quit it, then retry.',
   )
   app.quit()
   process.exit(0)
@@ -89,12 +91,7 @@ function consumeDeepLinkFromArgv(argv: string[]): void {
  * @returns Nothing.
  */
 async function showOrCreateAppWindow(): Promise<void> {
-  const live = appWindows()
-  if (live.length > 0) {
-    showBrowserWindow(focusedAppWindow())
-    return
-  }
-  await createAppWindow()
+  await showOrCreateSessionWindow()
 }
 
 app.whenReady().then(async () => {
@@ -105,7 +102,13 @@ app.whenReady().then(async () => {
     publicDir: process.env.VITE_PUBLIC!,
     harnessE2EMode,
   })
-  setupApplicationMenu(() => focusedAppWindow())
+  configureLoginWindow({
+    preload,
+    indexHtml,
+    devServerUrl: VITE_DEV_SERVER_URL,
+    publicDir: process.env.VITE_PUBLIC!,
+  })
+  setupApplicationMenu(() => getForegroundWindow())
 
   // Allow renderer getUserMedia / microphone (voice), geolocation (map /
   // weather), and HTML fullscreen (OnlyOffice slideshow "Full screen" calls
@@ -147,17 +150,17 @@ app.whenReady().then(async () => {
   registerHarnessIpc()
   registerTabTransferIpc()
   syncLoginItemFromStore()
-  platformShell.onAppReady(process.env.VITE_PUBLIC!, () => focusedAppWindow())
+  platformShell.onAppReady(process.env.VITE_PUBLIC!, () => getForegroundWindow())
   setupInAppBrowser()
-  setupClashHost({ getMainWindow: () => focusedAppWindow() })
-  startAppUpdateScheduler(() => focusedAppWindow())
+  setupClashHost({ getMainWindow: () => getForegroundWindow() })
+  startAppUpdateScheduler(() => getForegroundWindow())
   // Register Spotlight / Agent overlay IPC before the renderer loads — App.tsx
   // calls setEnabled on mount.
   setupSpotlight({
     preload,
     viteDevServerUrl: VITE_DEV_SERVER_URL,
     indexHtml,
-    getMainWindow: () => focusedAppWindow(),
+    getMainWindow: () => getForegroundWindow(),
   })
   setupAgentOverlay({
     preload,
@@ -165,7 +168,8 @@ app.whenReady().then(async () => {
     indexHtml,
   })
   const startHidden = shouldStartHidden()
-  await createAppWindow({ show: !startHidden })
+  setLoginSilentStart(startHidden)
+  await createLoginWindow({ show: !startHidden })
   consumeDeepLinkFromArgv(process.argv)
   flushPendingAuthDeepLink()
 })

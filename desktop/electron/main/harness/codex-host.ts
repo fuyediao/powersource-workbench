@@ -61,7 +61,7 @@ interface PermissionProfile {
 /** Client identity reported to the workflow process. */
 const CLIENT_INFO = {
   name: 'geocrm_harness',
-  title: 'GeoCRM Harness',
+  title: 'PowerSource Workbench Harness',
   version: '1',
 }
 
@@ -589,7 +589,7 @@ export class CodexHost {
     if (provider && options.apiBaseUrl && options.accessToken) {
       config.model_provider = 'geocrm-harness'
       config['model_providers.geocrm-harness'] = {
-        name: 'GeoCRM Harness',
+        name: 'PowerSource Workbench Harness',
         base_url: `${options.apiBaseUrl.replace(/\/$/, '')}/ai/harness`,
         env_key: 'GEOCRM_HARNESS_TOKEN',
         wire_api: 'responses',

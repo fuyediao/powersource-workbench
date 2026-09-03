@@ -52,7 +52,7 @@ interface OpenMeteoForecastResponse {
  */
 async function netCall<T>(method: string, ...args: unknown[]): Promise<T> {
   if (!window.geocrm?.net?.invoke) {
-    throw new Error('GeoCRM net bridge is unavailable.')
+    throw new Error('PowerSource Workbench net bridge is unavailable.')
   }
   return window.geocrm.net.invoke(method, ...args) as Promise<T>
 }

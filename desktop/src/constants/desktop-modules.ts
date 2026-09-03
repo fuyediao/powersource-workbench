@@ -107,10 +107,6 @@ export const FEATURE_TO_DESKTOP_ENTRY: Record<FeatureTabId, DesktopFunctionKey> 
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
   aura: 'desktop_aura',
-  folio: 'desktop_folio',
-  docs: 'desktop_docs',
-  sheets: 'desktop_sheets',
-  slides: 'desktop_slides',
   harness: 'desktop_agent',
 }
 
@@ -120,10 +116,6 @@ export const FUNCTION_APP_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> =
   'function-mail': 'desktop_mail',
   'function-calendar': 'desktop_calendar',
   'function-aura': 'desktop_aura',
-  'function-folio': 'desktop_folio',
-  'function-docs': 'desktop_docs',
-  'function-sheets': 'desktop_sheets',
-  'function-slides': 'desktop_slides',
   'function-harness': 'desktop_agent',
 }
 
@@ -133,10 +125,6 @@ export const GO_MENU_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> = {
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
   aura: 'desktop_aura',
-  folio: 'desktop_folio',
-  docs: 'desktop_docs',
-  sheets: 'desktop_sheets',
-  slides: 'desktop_slides',
   harness: 'desktop_agent',
 }
 

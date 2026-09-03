@@ -40,7 +40,7 @@ async function memoryRequest<T>(
 ): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base || !isSupabaseConfigured || !supabase) {
-    throw new Error('The GeoCRM API is not configured.')
+    throw new Error('The PowerSource Workbench API is not configured.')
   }
   const { data, error } = await supabase.auth.getSession()
   const accessToken = data.session?.access_token
@@ -99,7 +99,7 @@ export async function completeHarnessMemoryReview(
 ): Promise<string> {
   const base = resolveApiBaseUrl()
   if (!base || !isSupabaseConfigured || !supabase) {
-    throw new Error('The GeoCRM API is not configured.')
+    throw new Error('The PowerSource Workbench API is not configured.')
   }
   const { data, error } = await supabase.auth.getSession()
   const accessToken = data.session?.access_token
@@ -194,7 +194,7 @@ export function formatTranscriptForReview(items: HarnessItem[]): string {
         lines.push(`Tool (${item.status}): ${item.server}/${item.tool}`)
         break
       case 'crmToolCall':
-        lines.push(`GeoCRM (${item.status}): ${item.tool}`)
+        lines.push(`PowerSource Workbench (${item.status}): ${item.tool}`)
         break
       default:
         break

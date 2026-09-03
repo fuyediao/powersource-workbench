@@ -44,7 +44,7 @@ if (process.platform !== 'darwin') {
 }
 
 if (!fs.existsSync(sourcePng)) {
-  throw new Error(`Missing GeoCRM Default icon: ${sourcePng}`)
+  throw new Error(`Missing Workbench icon: ${sourcePng}`)
 }
 
 fs.mkdirSync(path.join(electronRoot, 'build'), { recursive: true })

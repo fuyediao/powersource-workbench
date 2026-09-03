@@ -32,7 +32,7 @@ async function authHeaders(): Promise<Record<string, string>> {
 /** Lists user-created tools from the signed-in Harness cloud profile. */
 export async function fetchHarnessExperts(): Promise<HarnessCloudExpert[]> {
   const base = resolveApiBaseUrl()
-  if (!base) throw new Error('The GeoCRM API is not configured.')
+  if (!base) throw new Error('The PowerSource Workbench API is not configured.')
   const result = await requestJson<{ personal?: HarnessCloudExpert[] }>(`${base}/ai/harness/experts`, {
     headers: await authHeaders(),
   })
@@ -42,7 +42,7 @@ export async function fetchHarnessExperts(): Promise<HarnessCloudExpert[]> {
 /** Creates or replaces one user-created cloud tool. */
 export async function saveHarnessExpert(expert: HarnessCloudExpert): Promise<HarnessCloudExpert> {
   const base = resolveApiBaseUrl()
-  if (!base) throw new Error('The GeoCRM API is not configured.')
+  if (!base) throw new Error('The PowerSource Workbench API is not configured.')
   return requestJson<HarnessCloudExpert>(`${base}/ai/harness/experts/${encodeURIComponent(expert.id)}`, {
     method: 'PUT',
     headers: await authHeaders(),
@@ -53,7 +53,7 @@ export async function saveHarnessExpert(expert: HarnessCloudExpert): Promise<Har
 /** Deletes one user-created cloud tool. */
 export async function deleteHarnessExpert(id: string): Promise<void> {
   const base = resolveApiBaseUrl()
-  if (!base) throw new Error('The GeoCRM API is not configured.')
+  if (!base) throw new Error('The PowerSource Workbench API is not configured.')
   await requestJson<void>(`${base}/ai/harness/experts/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: await authHeaders(),

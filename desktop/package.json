@@ -1,11 +1,11 @@
 {
   "name": "geocrm-electron",
-  "productName": "GeoCRM",
+  "productName": "PowerSource Workbench",
   "version": "0.1.7-beta",
   "private": true,
-  "description": "GeoCRM Electron desktop app",
+  "description": "PowerSource Workbench Electron desktop app",
   "license": "AGPL-3.0",
-  "author": "GeoCRM",
+  "author": "PowerSource",
   "type": "module",
   "main": "dist-electron/main/index.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "rebuild:native": "node scripts/rebuild-node-pty.mjs",
     "test:harness": "vitest run electron/main/harness/first-party-tools.test.ts electron/main/harness/local-tool-input.test.ts electron/main/harness/office-tools.test.ts electron/shared/harness-work-agent.test.ts src/services/harness-deliberation.test.ts src/utils/harness/office-tool-result.test.ts src/services/harness-tool-generator.test.ts src/services/harness-memory-api.test.ts src/utils/settings/harness-prefs.test.ts src/constants/harness-sales-assistants.test.ts src/utils/home/home-app-order.test.ts src/utils/clawd-bridge/map-activity.test.ts src/utils/harness/canvas-document.test.ts src/utils/harness/harness-attachments.test.ts src/utils/harness/composer-mentions.test.ts src/utils/harness/reasoning-effort.test.ts src/utils/harness/utility-layout.test.ts",
     "test:harness:e2e": "npm run build:vite && playwright test --config playwright.harness.config.ts",
+    "icons:rasterize": "node scripts/render-workbench-icons.mjs",
     "icons:icns": "node scripts/build-mac-icns.mjs",
     "icons:mac": "node scripts/sync-mac-app-icon.mjs",
     "icons:nsis": "node scripts/build-nsis-bitmaps.mjs",

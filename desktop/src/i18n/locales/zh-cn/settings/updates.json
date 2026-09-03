@@ -14,6 +14,6 @@
   "stepInstall": "安装",
   "stepRestart": "重新启动",
   "forceTitle": "必须更新",
-  "forceBody": "必须安装 GeoCRM {{latestVersion}} 才能继续使用（当前为 {{version}}）。应用会自动下载、安装并重新启动。",
+  "forceBody": "必须安装 PowerSource Workbench {{latestVersion}} 才能继续使用（当前为 {{version}}）。应用会自动下载、安装并重新启动。",
   "close": "关闭"
 }

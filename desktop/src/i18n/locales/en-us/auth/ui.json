@@ -1,7 +1,7 @@
 {
-  "desktopBridgeUnavailable": "The GeoCRM desktop bridge is unavailable. Open this page in the desktop app.",
+  "desktopBridgeUnavailable": "The PowerSource Workbench desktop bridge is unavailable. Open this page in the desktop app.",
   "emailLabel": "Email",
-  "emailNotAllowed": "This Google account is not allowed to use GeoCRM.",
+  "emailNotAllowed": "This Google account is not allowed to use PowerSource Workbench.",
   "emailPlaceholder": "Enter your email",
   "emailRequired": "Email is required",
   "employeeIdInvalid": "Enter a valid employee ID (PS####).",

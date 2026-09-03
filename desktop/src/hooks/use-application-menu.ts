@@ -375,10 +375,10 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
       mail: t(FEATURE_TAB_LABEL_KEY.mail),
       calendar: t(FEATURE_TAB_LABEL_KEY.calendar),
       aura: t(FEATURE_TAB_LABEL_KEY.aura),
-      folio: t(FEATURE_TAB_LABEL_KEY.folio),
-      docs: t(FEATURE_TAB_LABEL_KEY.docs),
-      sheets: t(FEATURE_TAB_LABEL_KEY.sheets),
-      slides: t(FEATURE_TAB_LABEL_KEY.slides),
+      folio: t('functions.apps.folio'),
+      docs: t('functions.apps.docs'),
+      sheets: t('functions.apps.sheets'),
+      slides: t('functions.apps.slides'),
       harness: t(FEATURE_TAB_LABEL_KEY.harness),
       language: t('desktopMenu.language'),
       languageEn: t('desktopMenu.languageEn'),
@@ -523,7 +523,7 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
       folioLabels: isFolioScreen(screen) && localeReady
         ? {
             scope: t('folio.menu.scope'),
-            folio: t(FEATURE_TAB_LABEL_KEY.folio),
+            folio: t('functions.apps.folio'),
             personal: t('folio.scope.personal'),
             group: t('folio.scope.group'),
             groupsMenu: t('folio.scope.groupsMenu'),
@@ -538,7 +538,13 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
         isOfficeScreen(screen) && localeReady
           ? {
               scope: t('office.menu.scope'),
-              office: t(FEATURE_TAB_LABEL_KEY[screen as 'docs' | 'sheets' | 'slides']),
+              office: t(
+                screen === 'sheets'
+                  ? 'functions.apps.sheets'
+                  : screen === 'slides'
+                    ? 'functions.apps.slides'
+                    : 'functions.apps.docs',
+              ),
               personal: t('office.menu.personal'),
               group: t('office.menu.group'),
               groupsMenu: t('office.menu.groupsMenu'),

@@ -3,7 +3,7 @@
   "modeQuick": "快速",
   "modeThink": "思考",
   "mapSearch": "地图",
-  "placeholder": "问问 GeoCRM 任何问题...",
+  "placeholder": "问问 PowerSource Workbench 任何问题...",
   "sendButton": "发送消息",
   "stopAnswering": "停止回答",
   "stopped": "你已让系统停止这条回答",
@@ -12,7 +12,7 @@
   "voiceStop": "停止录音并转成文字",
   "voiceTranscribing": "转写中…",
   "voiceNeedsGemini": "语音输入需要在「设置 → AI」中配置 Gemini API 密钥。",
-  "voiceMicDenied": "麦克风权限被拒绝。请允许 GeoCRM 使用麦克风后再试。",
+  "voiceMicDenied": "麦克风权限被拒绝。请允许 PowerSource Workbench 使用麦克风后再试。",
   "voiceTooShort": "录音太短。请再说久一点，然后再点一次麦克风。",
   "voiceEmpty": "未检测到语音，请再试一次。",
   "voiceFailed": "语音转文字失败，请再试一次。"

@@ -24,6 +24,6 @@
   "copy": "Copy",
   "copied": "Copied",
   "copyFailed": "Could not copy. Try again.",
-  "unavailableTitle": "GeoCRM API not configured",
-  "unavailableBody": "Set the GeoCRM API origin before enabling Model Context Protocol access."
+  "unavailableTitle": "PowerSource Workbench API not configured",
+  "unavailableBody": "Set the PowerSource Workbench API origin before enabling Model Context Protocol access."
 }

@@ -7,7 +7,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const APP_DISPLAY_NAME = 'GeoCRM'
+const APP_DISPLAY_NAME = 'PowerSource Workbench'
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 
 if (process.platform !== 'darwin') {

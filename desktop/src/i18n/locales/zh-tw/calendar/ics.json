@@ -1,7 +1,7 @@
 {
   "import": "匯入 ICS…",
   "export": "匯出 ICS…",
-  "exportName": "GeoCRM 日曆",
+  "exportName": "PowerSource Workbench 日曆",
   "importEmpty": "這個 ICS 檔沒有找到事件。",
   "importNoCalendar": "請先新增日曆再匯入。",
   "importDone": "已匯入 {{count}} 個事件。",

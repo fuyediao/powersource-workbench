@@ -24,6 +24,6 @@
   "copy": "複製",
   "copied": "已複製",
   "copyFailed": "無法複製，請再試一次。",
-  "unavailableTitle": "尚未設定 GeoCRM API",
-  "unavailableBody": "請先設定 GeoCRM API 位址，才能啟用模型上下文協議存取。"
+  "unavailableTitle": "尚未設定 PowerSource Workbench API",
+  "unavailableBody": "請先設定 PowerSource Workbench API 位址，才能啟用模型上下文協議存取。"
 }

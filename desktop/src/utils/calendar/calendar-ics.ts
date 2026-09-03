@@ -289,7 +289,7 @@ export function serializeIcs(events: IcsEventDraft[], calendarName?: string): st
   const lines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//GeoCRM//Calendar//EN',
+    'PRODID:-//PowerSource Workbench//Calendar//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
   ]

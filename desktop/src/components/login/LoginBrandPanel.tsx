@@ -24,7 +24,7 @@ export function LoginBrandPanel({
           <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-white dark:bg-zinc-950">
             <MapExplorerIcon className="size-7" />
           </div>
-          <span>GeoCRM</span>
+          <span>PowerSource Workbench</span>
         </div>
       </div>
 
