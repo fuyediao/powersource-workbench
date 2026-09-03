@@ -17,6 +17,18 @@ export interface HomeWallpaperItemDto {
   thumbUrl: string
 }
 
+/** How signed-in http(s) links open. Null means the user has not saved a value yet. */
+export type HomeOpenLinksMode = 'inApp' | 'external'
+
+/**
+ * Parses a stored Open links preference.
+ * @param value - Raw JSON value.
+ * @returns Mode, or null when unset or invalid.
+ */
+export function parseHomeOpenLinksMode(value: unknown): HomeOpenLinksMode | null {
+  return value === 'inApp' || value === 'external' ? value : null
+}
+
 /** Persisted Home / Settings row (one per signed-in user). */
 export interface HomeSettingsRecord {
   searchEngine: string
@@ -43,6 +55,7 @@ export interface HomeSettingsRecord {
   showFocus: boolean
   showApps: boolean
   peekApps: boolean
+  openLinksMode: HomeOpenLinksMode | null
   currencyFrom: string
   currencyTo: string
   weatherLatitude: number | null

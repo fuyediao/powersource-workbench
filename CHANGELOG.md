@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Stored the Settings Open links preference in local SQLite with Home settings, and migrated the previous localStorage value once.
 - Showed the PS Workbench wordmark beside the sign-in mark.
 - Added username and password placeholders on the compact sign-in form.
 - Used Workbench in everyday desktop chrome and kept PowerSource Workbench for the installer, About panel, and legal copy.

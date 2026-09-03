@@ -4,9 +4,11 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
+import { fetchOpenLinksMode, saveOpenLinksMode } from '@/utils/home/library-api'
 import { openExternalUrl } from '@/utils/shared/api'
 import { setAppOpenUrlHandler } from '@/utils/shared/open-app-url'
 import {
@@ -30,26 +32,52 @@ interface LinkOpenProviderProps {
   children: ReactNode
   /** Opens an http(s) URL as a Chrome-style in-app browser tab. */
   onOpenInApp: (url: string) => void
+  /** Signed-in user id; when set, Open links is stored in Home SQLite. */
+  userId?: string | null
 }
 
 /**
  * Provides signed-in link opening (in-app webview tab vs system browser).
  * Login / OAuth continue to use {@link openExternalUrl} directly.
- * @param props - Children and in-app open handler from title tabs.
+ * @param props - Children, in-app open handler, and optional user id.
  * @returns Context provider.
  */
-export function LinkOpenProvider({ children, onOpenInApp }: LinkOpenProviderProps) {
+export function LinkOpenProvider({ children, onOpenInApp, userId }: LinkOpenProviderProps) {
   const [mode, setModeState] = useState<LinkOpenMode>(() => loadLinkOpenMode())
+  const userEditedRef = useRef(false)
+
+  useEffect(() => {
+    userEditedRef.current = false
+    if (!userId) {
+      return
+    }
+    let cancelled = false
+    void fetchOpenLinksMode(userId).then((next) => {
+      if (!cancelled && !userEditedRef.current) {
+        setModeState(next)
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [userId])
 
   /**
    * Updates and persists the link-open mode.
    * @param next - Target mode.
    * @returns Nothing.
    */
-  const setMode = useCallback((next: LinkOpenMode): void => {
-    setModeState(next)
-    saveLinkOpenMode(next)
-  }, [])
+  const setMode = useCallback(
+    (next: LinkOpenMode): void => {
+      userEditedRef.current = true
+      setModeState(next)
+      saveLinkOpenMode(next)
+      if (userId) {
+        void saveOpenLinksMode(userId, next)
+      }
+    },
+    [userId],
+  )
 
   /**
    * Opens a URL according to the current preference.

@@ -464,6 +464,7 @@ export default function SpotlightPage() {
 
   return (
     <LinkOpenProvider
+      userId={userId}
       onOpenInApp={(url) => {
         void window.workbench?.spotlight?.openInMain?.(url)
       }}

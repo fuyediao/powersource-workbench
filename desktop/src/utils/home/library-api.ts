@@ -20,6 +20,12 @@ import {
 import { clampIconRadius, DEFAULT_ICON_RADIUS } from '@/utils/appearance/icon-radius'
 import { clampSearchRadius, DEFAULT_SEARCH_RADIUS } from '@/utils/appearance/search-radius'
 import { createWallpaperThumbnail } from '@/utils/appearance/wallpaper-thumb'
+import {
+  isLinkOpenMode,
+  loadLinkOpenMode,
+  saveLinkOpenMode,
+  type LinkOpenMode,
+} from '@/utils/settings/link-open-preference'
 
 export interface SearchHistoryItem {
   id: string
@@ -513,6 +519,36 @@ export async function savePageWidgets(
     showApps: next.showApps,
     peekApps: false,
   })
+  return next
+}
+
+/**
+ * Loads the Open links preference from Home SQLite.
+ * Migrates a leftover localStorage value once when the row has no mode yet.
+ * @param userId - Signed-in user id.
+ * @returns Stored mode (defaults to in-app).
+ */
+export async function fetchOpenLinksMode(userId: string): Promise<LinkOpenMode> {
+  const settings = await homeSettings().getSettings(userId)
+  if (isLinkOpenMode(settings.openLinksMode)) {
+    saveLinkOpenMode(settings.openLinksMode)
+    return settings.openLinksMode
+  }
+  const legacy = loadLinkOpenMode()
+  await homeSettings().patchSettings(userId, { openLinksMode: legacy })
+  return legacy
+}
+
+/**
+ * Saves the Open links preference to Home SQLite and the localStorage cache.
+ * @param userId - Signed-in user id.
+ * @param mode - Target mode.
+ * @returns Stored mode.
+ */
+export async function saveOpenLinksMode(userId: string, mode: LinkOpenMode): Promise<LinkOpenMode> {
+  const next = isLinkOpenMode(mode) ? mode : 'inApp'
+  saveLinkOpenMode(next)
+  await homeSettings().patchSettings(userId, { openLinksMode: next })
   return next
 }
 

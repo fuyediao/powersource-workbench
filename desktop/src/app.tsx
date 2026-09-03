@@ -491,7 +491,7 @@ function MainWindowApp() {
 
   if (signedIn) {
     return (
-      <LinkOpenProvider onOpenInApp={openBrowserTab}>
+      <LinkOpenProvider userId={auth.session?.user?.id ?? null} onOpenInApp={openBrowserTab}>
         {shell}
         <RequiredAppUpdateGate />
       </LinkOpenProvider>

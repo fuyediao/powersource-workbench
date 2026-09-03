@@ -22,7 +22,7 @@ const DEFAULT_RAILS: AsideWidgetRails = {
 }
 
 /**
- * Loads and updates home widget visibility and aside rails, persisting to Supabase.
+ * Loads and updates home widget visibility and aside rails, persisting to local SQLite.
  * @param userId - Signed-in user id, or null while unauthenticated.
  * @returns Visibility flags, left/right orders, and setters.
  */
@@ -83,7 +83,7 @@ export function usePageWidgets(userId: string | null): {
 
   useEffect(() => {
     /**
-     * Flushes debounced visibility / order writes to Supabase immediately.
+     * Flushes debounced visibility / order writes to local SQLite immediately.
      * @returns Nothing.
      */
     function flushPendingSave(): void {

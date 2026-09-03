@@ -100,6 +100,7 @@ export default function AgentOverlayPage() {
 
   return (
     <LinkOpenProvider
+      userId={userId}
       onOpenInApp={(url) => {
         void window.workbench?.spotlight?.openInMain?.(url)
         hideAgentOverlayWindow()

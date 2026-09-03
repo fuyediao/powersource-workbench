@@ -72,7 +72,11 @@ import {
   saveHomeMarketAssets,
   setHomeTodoDone,
 } from './home-settings'
-import type { HomeMarketAssetDto, HomeSettingsRecord } from '../shared/home-settings'
+import {
+  parseHomeOpenLinksMode,
+  type HomeMarketAssetDto,
+  type HomeSettingsRecord,
+} from '../shared/home-settings'
 import {
   clearOpportunityBoardLayout,
   getOpportunityBoardLayout,
@@ -303,6 +307,10 @@ function parseHomeSettingsPatch(value: unknown): Partial<HomeSettingsRecord> {
     if (Array.isArray(raw[key])) {
       ;(patch as Record<string, unknown>)[key] = raw[key]
     }
+  }
+  const openLinksMode = parseHomeOpenLinksMode(raw.openLinksMode)
+  if (openLinksMode) {
+    patch.openLinksMode = openLinksMode
   }
   return patch
 }

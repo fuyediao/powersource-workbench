@@ -1,11 +1,21 @@
-/** localStorage key for Electron in-app vs system-browser link opening. */
+/** localStorage cache for Electron in-app vs system-browser link opening. */
 export const LINK_OPEN_PREFERENCE_KEY = 'workbench.electron.openLinksInApp'
 
 /** How http(s) links open after sign-in (login / OAuth stay external). */
 export type LinkOpenMode = 'external' | 'inApp'
 
 /**
- * Reads the persisted link-open preference (defaults to in-app).
+ * Returns whether a value is a stored Open links mode.
+ * @param value - Candidate value.
+ * @returns True for `inApp` or `external`.
+ */
+export function isLinkOpenMode(value: unknown): value is LinkOpenMode {
+  return value === 'inApp' || value === 'external'
+}
+
+/**
+ * Reads the cached link-open preference (defaults to in-app).
+ * Signed-in Settings persist the same value in Home SQLite.
  * @returns Current mode.
  */
 export function loadLinkOpenMode(): LinkOpenMode {
@@ -17,7 +27,7 @@ export function loadLinkOpenMode(): LinkOpenMode {
 }
 
 /**
- * Persists the link-open preference on this device.
+ * Writes the link-open cache used before SQLite loads and in unsigned windows.
  * @param mode - Target mode.
  * @returns Nothing.
  */
