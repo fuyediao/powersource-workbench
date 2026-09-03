@@ -1,7 +1,6 @@
 {
   "app": {
-    "name": "PowerSource 工作台",
-    "tagline": "集团共用的统一工作空间"
+    "name": "PowerSource 工作台"
   },
   "auth": {
     "title": "欢迎回来",
@@ -10,14 +9,6 @@
     "password": "密码",
     "signIn": "登录",
     "signingIn": "正在登录…",
-    "activate": "启用邀请",
-    "activationTitle": "启用账号",
-    "activationSubtitle": "输入系统管理员提供的邀请码。",
-    "invitationCode": "邀请码",
-    "confirmPassword": "确认密码",
-    "activating": "正在启用…",
-    "backToSignIn": "返回登录",
-    "passwordMismatch": "两次输入的密码不一致。",
     "signOut": "退出登录"
   },
   "nav": {

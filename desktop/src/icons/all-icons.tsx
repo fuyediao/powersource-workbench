@@ -1,5 +1,4 @@
 export {
-  ArrowLeft,
   Check,
   ChevronRight,
   Copy,

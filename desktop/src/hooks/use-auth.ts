@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
-  activateInvitation as activateInvitationRequest,
   loadSession,
   signIn as signInRequest,
   signOut as signOutRequest,
@@ -16,7 +15,7 @@ interface AuthState {
 }
 
 /**
- * Manages the Workbench invitation-based authentication lifecycle.
+ * Manages the Workbench password authentication lifecycle.
  * @returns Authentication state and account actions.
  */
 export function useAuth() {
@@ -47,21 +46,6 @@ export function useAuth() {
     }
   }, [])
 
-  const activate = useCallback(
-    async (code: string, username: string, password: string): Promise<boolean> => {
-      setState((current) => ({ ...current, error: '', loading: true }))
-      try {
-        const user = await activateInvitationRequest(code, username, password)
-        setState({ error: '', loading: false, user })
-        return true
-      } catch (error) {
-        setState({ error: apiErrorMessage(error), loading: false, user: null })
-        return false
-      }
-    },
-    [],
-  )
-
   const logout = useCallback(async (): Promise<void> => {
     try {
       await signOutRequest()
@@ -71,5 +55,5 @@ export function useAuth() {
     }
   }, [])
 
-  return { ...state, activate, login, logout }
+  return { ...state, login, logout }
 }

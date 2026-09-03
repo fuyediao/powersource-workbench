@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Removed invitation activation from the login form so signed-out users see only username and password sign-in.
+- Removed the left branding panel from the login screen.
 - Added the standalone PowerSource Workbench Electron shell.
 - Migrated the desktop, search, and settings experiences without CRM modules.
 - Added invitation activation and password-only account login.

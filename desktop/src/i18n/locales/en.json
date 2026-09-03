@@ -1,7 +1,6 @@
 {
   "app": {
-    "name": "PowerSource Workbench",
-    "tagline": "One workspace for the entire group"
+    "name": "PowerSource Workbench"
   },
   "auth": {
     "title": "Welcome back",
@@ -10,14 +9,6 @@
     "password": "Password",
     "signIn": "Sign in",
     "signingIn": "Signing in…",
-    "activate": "Activate invitation",
-    "activationTitle": "Activate your account",
-    "activationSubtitle": "Enter the invitation code supplied by the system administrator.",
-    "invitationCode": "Invitation code",
-    "confirmPassword": "Confirm password",
-    "activating": "Activating…",
-    "backToSignIn": "Back to sign in",
-    "passwordMismatch": "Passwords do not match.",
     "signOut": "Sign out"
   },
   "nav": {

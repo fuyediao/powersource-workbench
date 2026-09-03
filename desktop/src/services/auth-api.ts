@@ -102,27 +102,6 @@ export async function signIn(username: string, password: string): Promise<Workbe
 }
 
 /**
- * Activates a one-time invitation and signs into the new Supabase account.
- * @param invitationCode - One-time invitation code.
- * @param username - Reserved Workbench username.
- * @param password - New account password.
- * @returns The authenticated Workbench user.
- */
-export async function activateInvitation(
-  invitationCode: string,
-  username: string,
-  password: string,
-): Promise<WorkbenchUser> {
-  const normalizedUsername = normalizeUsername(username)
-  await supabaseFunctionsApi.post('/activate-work-invitation', {
-    invitationCode,
-    password,
-    username: normalizedUsername,
-  })
-  return signIn(normalizedUsername, password)
-}
-
-/**
  * Loads the current account from Supabase Auth using a persisted session.
  * @returns The authenticated Workbench user.
  */

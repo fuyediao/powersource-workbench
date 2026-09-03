@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Removed invitation activation from the desktop login form so the signed-out screen is password-only.
+- Removed the left branding panel from the desktop login screen.
 - Created the PowerSource Workbench desktop foundation.
 - Migrated only the desktop, settings, and local search product areas from the GeoCRM design baseline.
 - Removed CRM-specific navigation, data models, modules, and the previous permission editor from the new product boundary.

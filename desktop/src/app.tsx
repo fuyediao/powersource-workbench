@@ -12,7 +12,7 @@ export default function App() {
     return <div className="loading-screen"><span /></div>
   }
   if (!auth.user) {
-    return <LoginPage error={auth.error} loading={auth.loading} onActivate={auth.activate} onLogin={auth.login} />
+    return <LoginPage error={auth.error} loading={auth.loading} onLogin={auth.login} />
   }
   return <AppShell user={auth.user} onSignOut={auth.logout} />
 }
