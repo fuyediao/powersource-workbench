@@ -62,9 +62,6 @@ def configure(replace: bool = False) -> None:
 
     supabase_url = f"https://supabase.{domain}"
     api_url = f"https://api.{domain}"
-    existing_supabase = read_env(SUPABASE_ENV) if SUPABASE_ENV.exists() else {}
-    admin_username = existing_supabase.get("WORKBENCH_ADMIN_USERNAME", "").strip() or "admin"
-    admin_password = existing_supabase.get("WORKBENCH_ADMIN_PASSWORD", "").strip()
 
     write_private_env(
         DESKTOP_ENV,
@@ -86,16 +83,15 @@ def configure(replace: bool = False) -> None:
         ],
         replace,
     )
-    supabase_lines = [
-        f"SUPABASE_URL={supabase_url}",
-        f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
-        f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
-        f"WORKBENCH_ADMIN_USERNAME={admin_username}",
-        "WORKBENCH_ADMIN_DISPLAY_NAME=Super Administrator",
-    ]
-    if admin_password:
-        supabase_lines.append(f"WORKBENCH_ADMIN_PASSWORD={admin_password}")
-    write_private_env(SUPABASE_ENV, supabase_lines, replace)
+    write_private_env(
+        SUPABASE_ENV,
+        [
+            f"SUPABASE_URL={supabase_url}",
+            f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
+            f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
+        ],
+        replace,
+    )
     print("Created Workbench .work environment files without printing credential values.")
 
 

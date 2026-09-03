@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Set the first super-admin username to `ps0000`. The password is stored in Auth only, not in local `.env` files.
 - Removed leftover local binaries, empty backend folders, unused Electron locale IPC, unused i18n keys, and the unused invitation Edge Functions.
 - Added the root `npm run dev:electron` script so the desktop starts from the repository root.
 - Pointed login and workspace data at the Workbench `powersource.work` VPS. GeoCRM on `powersource.app` remains a behavior reference only.

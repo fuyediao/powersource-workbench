@@ -9,7 +9,7 @@ func TestValidUsername(t *testing.T) {
 		value string
 		want  bool
 	}{
-		{name: "super admin", value: "contact", want: true},
+		{name: "super admin", value: "ps0000", want: true},
 		{name: "member", value: "team.user", want: true},
 		{name: "email is not a username", value: "contact@geocrm.org", want: false},
 		{name: "too short", value: "ab", want: false},

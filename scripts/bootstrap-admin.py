@@ -1,49 +1,39 @@
-"""Create the first Workbench super-admin username on the .work Auth host."""
+"""Create or rename the Workbench super-admin username on the .work Auth host.
+
+Passwords are written only to Auth. They are not stored in local .env files.
+"""
 
 from __future__ import annotations
 
+import argparse
 import json
-import secrets
 from pathlib import Path
 
-from vps_ssh import connect_ssh, read_env
+from vps_ssh import connect_ssh
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-SUPABASE_ENV = REPOSITORY_ROOT / "supabase" / ".env"
-
-
-def persist_admin_password(password: str) -> None:
-    """Write the generated administrator password into the ignored env file."""
-    lines: list[str] = []
-    replaced = False
-    for raw in SUPABASE_ENV.read_text(encoding="utf-8").splitlines():
-        if raw.startswith("WORKBENCH_ADMIN_PASSWORD="):
-            lines.append(f"WORKBENCH_ADMIN_PASSWORD={password}")
-            replaced = True
-        else:
-            lines.append(raw)
-    if not replaced:
-        lines.append(f"WORKBENCH_ADMIN_PASSWORD={password}")
-    SUPABASE_ENV.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
-    SUPABASE_ENV.chmod(0o600)
+DEFAULT_USERNAME = "ps0000"
+DEFAULT_DISPLAY_NAME = "Super Administrator"
 
 
-def bootstrap() -> None:
+def parse_arguments() -> argparse.Namespace:
+    """Parse the one-time administrator bootstrap options."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--username", default=DEFAULT_USERNAME, help="Workbench username")
+    parser.add_argument("--password", required=True, help="Auth password; stored only in the database")
+    parser.add_argument("--display-name", default=DEFAULT_DISPLAY_NAME, help="Profile display name")
+    return parser.parse_args()
+
+
+def bootstrap(username: str, password: str, display_name: str) -> None:
     """Create or refresh the Workbench super-admin username on .work Auth."""
-    if not SUPABASE_ENV.exists():
-        raise RuntimeError("Run scripts/configure-local-env.py before bootstrapping the administrator")
-    settings = read_env(SUPABASE_ENV)
-    username = settings.get("WORKBENCH_ADMIN_USERNAME", "").strip().lower() or "admin"
-    display_name = settings.get("WORKBENCH_ADMIN_DISPLAY_NAME", "Super Administrator").strip() or "Super Administrator"
-    password = settings.get("WORKBENCH_ADMIN_PASSWORD", "").strip()
+    username = username.strip().lower()
     if len(username) < 3:
-        raise RuntimeError("WORKBENCH_ADMIN_USERNAME is not a valid Workbench username")
+        raise RuntimeError("The Workbench username is invalid")
     if not password:
-        password = secrets.token_urlsafe(24)
-        persist_admin_password(password)
+        raise RuntimeError("A database password is required")
 
     payload = json.dumps({
-        "display_name": display_name,
+        "display_name": display_name.strip() or DEFAULT_DISPLAY_NAME,
         "password": password,
         "username": username,
     })
@@ -70,7 +60,7 @@ def bootstrap() -> None:
 
     if code != 0:
         raise RuntimeError(err.strip() or out.strip() or "remote bootstrap failed")
-    print(out.strip() or "Bootstrapped the Workbench super-admin username. The password is in supabase/.env.")
+    print(out.strip() or "Bootstrapped the Workbench super-admin username in Auth.")
 
 
 def remote_bootstrap_source() -> str:
@@ -121,23 +111,31 @@ if not key:
     raise SystemExit("missing SERVICE_ROLE_KEY")
 base = "http://127.0.0.1:8000"
 
-user = None
-for page in range(1, 11):
-    listed = request_json(
-        base + "/auth/v1/admin/users?" + urllib.parse.urlencode({"page": page, "per_page": 200}),
+def find_user(match_username):
+    for page in range(1, 11):
+        listed = request_json(
+            base + "/auth/v1/admin/users?" + urllib.parse.urlencode({"page": page, "per_page": 200}),
+            key,
+            "GET",
+        )
+        users = listed.get("users") if isinstance(listed, dict) else None
+        if not isinstance(users, list) or not users:
+            return None
+        for item in users:
+            metadata = item.get("app_metadata") if isinstance(item, dict) else None
+            if isinstance(metadata, dict) and str(metadata.get("username", "")).lower() == match_username:
+                return item
+    return None
+
+user = find_user(username)
+if user is None:
+    existing_profile = request_json(
+        base + "/rest/v1/work_profiles?" + urllib.parse.urlencode({"role": "eq.super_admin", "select": "id,username"}),
         key,
         "GET",
     )
-    users = listed.get("users") if isinstance(listed, dict) else None
-    if not isinstance(users, list) or not users:
-        break
-    for item in users:
-        metadata = item.get("app_metadata") if isinstance(item, dict) else None
-        if isinstance(metadata, dict) and str(metadata.get("username", "")).lower() == username:
-            user = item
-            break
-    if user is not None:
-        break
+    if isinstance(existing_profile, list) and existing_profile:
+        user = request_json(base + "/auth/v1/admin/users/" + str(existing_profile[0]["id"]), key, "GET")
 
 metadata = {"display_name": display_name, "role": "super_admin", "username": username}
 if user is None:
@@ -179,9 +177,10 @@ if isinstance(existing, list) and existing:
     request_json(base + "/rest/v1/work_profiles?id=eq." + user_id, key, "PATCH", payload, "return=minimal")
 else:
     request_json(base + "/rest/v1/work_profiles", key, "POST", payload, "return=minimal")
-print("Bootstrapped the Workbench super-admin username. The password is in supabase/.env.")
+print("Bootstrapped the Workbench super-admin username in Auth.")
 '''
 
 
 if __name__ == "__main__":
-    bootstrap()
+    arguments = parse_arguments()
+    bootstrap(arguments.username, arguments.password, arguments.display_name)

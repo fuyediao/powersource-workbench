@@ -15,7 +15,7 @@ The production host is `https://api.powersource.work` on the Workbench VPS. It t
 | `POST` | `/auth/invitations` | Super admin or system admin creates a one-time invite. |
 | `GET` | `/health` | Liveness. |
 
-Login accepts a username only. Email is rejected. The first super administrator is the `admin` username created by `scripts/bootstrap-admin.py`.
+Login accepts a username only. Email is rejected. The first super administrator is the `ps0000` username created by `scripts/bootstrap-admin.py`. The password is stored only in Auth.
 
 ## Deploy
 
