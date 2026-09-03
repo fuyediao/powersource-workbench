@@ -1,8 +1,7 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { User } from '@supabase/supabase-js'
 import type { BackgroundError } from '@/hooks/use-background'
-import { useDesktopModuleAccess } from '@/hooks/use-desktop-module-access'
 import { useSettingsRoles } from '@/hooks/use-settings-roles'
 import { useSidebarMode } from '@/hooks/use-sidebar-mode'
 import { useSidebarRailMenuHost } from '@/hooks/use-sidebar-rail-menu'
@@ -32,25 +31,12 @@ import { GroupInfoSection } from '@/components/settings/sections/group-info-sect
 import { GroupManagementSection } from '@/components/settings/sections/group-management-section'
 import { UserManagementSection } from '@/components/settings/sections/user-management-section'
 import { GlobalLeadersSection } from '@/components/settings/sections/global-leaders-section'
-import { DesktopAccessSection } from '@/components/settings/sections/desktop-access-section'
-import { DesktopWritesSection } from '@/components/settings/sections/desktop-writes-section'
 import { AuraSection } from '@/components/settings/sections/aura-section'
 import { OaErpSection } from '@/components/settings/sections/oa-erp-section'
 import { FeedbackSection } from '@/components/settings/sections/feedback-section'
 import { OpenSourceSection } from '@/components/settings/sections/open-source-section'
 import { McpSection } from '@/components/settings/sections/mcp-section'
 import { subscribeSettingsSectionRequest } from '@/utils/settings/settings-section-request'
-
-/**
- * GeoCRM Settings "Clash" section, loaded through the same type-erased boundary as the Clash
- * island (`@clash-verge/app`): `tsconfig.json` resolves this specifier to a `ComponentType`
- * stub for type-checking, while `vite.config.ts` aliases it to the real implementation for the
- * bundle. Keeps Clash Verge's vendored, loosely-typed hooks out of the strict app-wide typecheck.
- */
-const ClashSection = lazy(async () => {
-  const module = await import('@clash-verge/settings')
-  return { default: module.ClashSection }
-})
 
 interface SettingsPanelProps {
   theme: Theme
@@ -186,7 +172,6 @@ export function SettingsPanel({
 }: SettingsPanelProps) {
   const { t } = useTranslation()
   const roles = useSettingsRoles(userId)
-  const desktopAccess = useDesktopModuleAccess(userId)
   const sidebar = useSidebarMode({
     storageKey: 'geocrm-electron-settings-sidebar-mode',
     defaultMode: 'expanded',
@@ -194,14 +179,7 @@ export function SettingsPanel({
   const [section, setSection] = useState<SettingsSection>(() => loadPersistedSettingsSection())
   const [sectionSlide, setSectionSlide] = useState<'up' | 'down' | null>(null)
 
-  const visibleSections = useMemo(() => {
-    return roles.visibleSections.filter((id) => {
-      if (id === 'clash' && !desktopAccess.isEntryAllowed('desktop_clash')) {
-        return false
-      }
-      return true
-    })
-  }, [roles.visibleSections, desktopAccess])
+  const visibleSections = roles.visibleSections
 
   useEffect(() => {
     if (!visibleSections.includes(section) && visibleSections.length > 0) {
@@ -358,12 +336,6 @@ export function SettingsPanel({
         )
       case 'aura':
         return <AuraSection />
-      case 'clash':
-        return (
-          <Suspense fallback={null}>
-            <ClashSection />
-          </Suspense>
-        )
       case 'oaErp':
         return <OaErpSection userId={userId} />
       case 'feedback':
@@ -381,18 +353,9 @@ export function SettingsPanel({
         )
       case 'globalLeaders':
         return <GlobalLeadersSection />
-      case 'desktopAccess':
-        return <DesktopAccessSection />
       case 'groupAdmin':
         return roles.currentGroup ? (
           <GroupAdminSection groupId={roles.currentGroup.id} onRefresh={roles.refresh} />
-        ) : null
-      case 'desktopWrites':
-        return roles.currentGroup ? (
-          <DesktopWritesSection
-            groupId={roles.currentGroup.id}
-            groupAdminId={roles.currentGroup.groupAdminId}
-          />
         ) : null
       case 'groupInfo':
         return roles.currentGroup ? (

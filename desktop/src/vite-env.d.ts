@@ -42,23 +42,13 @@ interface ApplicationMenuLabels {
   home: string
   settings: string
   chat: string
-  messages: string
   mail: string
   calendar: string
-  kanban: string
-  map: string
-  admin: string
-  orders: string
-  products: string
-  nexdot: string
-  teAdmin: string
-  team: string
   aura: string
   folio: string
   docs: string
   sheets: string
   slides: string
-  clash: string
   harness: string
   language: string
   languageEn: string
@@ -615,23 +605,13 @@ interface ApplicationMenuState {
   allowedGoFeatures?: Array<
     | 'chat'
     | 'harness'
-    | 'messages'
     | 'mail'
     | 'calendar'
-    | 'kanban'
-    | 'map'
-    | 'admin'
-    | 'orders'
-    | 'products'
-    | 'nexdot'
-    | 'teAdmin'
-    | 'team'
     | 'aura'
     | 'folio'
     | 'docs'
     | 'sheets'
     | 'slides'
-    | 'clash'
   >
   auraLabels?: AuraMenuLabels
   auraView?: AuraViewState
@@ -663,23 +643,13 @@ type MenuNavigateTarget =
   | 'settings'
   | 'chat'
   | 'harness'
-  | 'messages'
   | 'mail'
   | 'calendar'
-  | 'kanban'
-  | 'map'
-  | 'admin'
-  | 'orders'
-  | 'products'
-  | 'nexdot'
-  | 'teAdmin'
-  | 'team'
   | 'aura'
   | 'folio'
   | 'docs'
   | 'sheets'
   | 'slides'
-  | 'clash'
 
 type MenuFileAction = 'open' | 'save' | 'close-tab'
 

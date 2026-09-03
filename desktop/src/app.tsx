@@ -27,9 +27,6 @@ import { isSpotlightFallbackChord } from '@/utils/spotlight/spotlight-shortcut'
 import { subscribeOpenOfficeRequest } from '@/utils/office/office-document-request'
 import { subscribeOpenAuraRequest } from '@/utils/aura/aura-document-request'
 import { migrateLegacyOfficeWorkspace } from '@/office/office-workspace-legacy-migration'
-import { subscribeOpenClashRequest } from '@/utils/clash-page-request'
-import { subscribeOpenOrdersRequest } from '@/utils/orders/orders-open-request'
-import { subscribeOpenKanbanRequest } from '@/utils/kanban/kanban-open-request'
 import {
   parseAskAiSearchUrl,
   requestAskAiSearch,
@@ -44,9 +41,7 @@ function hideForeignNativePanes(screen: string): void {
   if (!isBrowserTabId(screen)) {
     void window.geocrm?.browser?.invoke?.('hideAll')
   }
-  if (screen !== 'clash') {
-    void window.geocrm?.clash?.invoke?.('hide')
-  }
+  void window.geocrm?.clash?.invoke?.('hide')
 }
 
 /**
@@ -235,36 +230,6 @@ export default function App() {
     return subscribeOpenCalendarRequest(() => {
       hideForeignNativePanes('calendar')
       tabs.openFeature('calendar')
-    })
-  }, [signedIn, tabs])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-    return subscribeOpenClashRequest(() => {
-      hideForeignNativePanes('clash')
-      tabs.openFeature('clash')
-    })
-  }, [signedIn, tabs])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-    return subscribeOpenOrdersRequest(() => {
-      hideForeignNativePanes('orders')
-      tabs.openFeature('orders')
-    })
-  }, [signedIn, tabs])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-    return subscribeOpenKanbanRequest(() => {
-      hideForeignNativePanes('kanban')
-      tabs.openFeature('kanban')
     })
   }, [signedIn, tabs])
 

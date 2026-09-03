@@ -9,7 +9,6 @@ import { OpportunitiesBoardPane } from '@/components/admin/opportunities-board-p
 import { DashboardPane } from '@/components/kanban/dashboard-pane'
 import { SalesBoardPane } from '@/components/kanban/sales-board-pane'
 import { KANBAN_NAV_GROUPS } from '@/constants/admin-modules'
-import type { FeatureTabId } from '@/constants/feature-tabs'
 import { writeAdminActivePath } from '@/utils/admin-active-path'
 import {
   consumePendingKanbanPath,
@@ -21,22 +20,16 @@ import { isOpportunityListPath } from '@/utils/opportunity-list-routes'
 interface KanbanPageProps {
   userId: string
   user: User
-  /**
-   * Opens another feature tab (e.g. Admin for opportunity detail).
-   * @param feature - Feature tab id.
-   */
-  onOpenFeature: (feature: FeatureTabId) => void
 }
 
 /**
- * 看板 page host with Admin-style sidebar chrome.
- * @param props - Signed-in user and feature navigation.
+ * Board page host with Admin-style sidebar chrome.
+ * @param props - Signed-in user.
  * @returns Kanban shell UI.
  */
 export function KanbanPage({
   userId,
   user: _user,
-  onOpenFeature,
 }: KanbanPageProps) {
   const [requestedPath, setRequestedPath] = useState<string | null>(
     () => consumePendingKanbanPath(),
@@ -59,9 +52,8 @@ export function KanbanPage({
         return
       }
       writeAdminActivePath(path)
-      onOpenFeature('admin')
     },
-    [onOpenFeature],
+    [],
   )
 
   return (

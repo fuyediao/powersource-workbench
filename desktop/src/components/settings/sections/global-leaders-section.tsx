@@ -2,29 +2,17 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDialogPresence } from '@/hooks/use-dialog-presence'
 import {
-  CheckIcon,
-  ChevronDownIcon,
   CrownIcon,
   PlusIcon,
   SearchIcon,
   TrashIcon,
 } from '@/icons/AllIcons'
-import {
-  DESKTOP_MODULE_KEYS,
-  DESKTOP_MODULE_LABEL_KEYS,
-  type DesktopModuleKey,
-} from '@/constants/desktop-modules'
 import { searchProfilesForAdmin } from '@/services/group-management-api'
 import {
   appointGlobalLeader,
   listGlobalLeaders,
   revokeGlobalLeader,
-  type GlobalLeaderEntry,
 } from '@/services/global-leaders-api'
-import {
-  fetchGlobalLeaderDesktopModuleAccessBatch,
-  setGlobalLeaderDesktopModuleAccess,
-} from '@/services/global-leader-desktop-access-api'
 import type { ProfileSnippet } from '@/services/groups-api'
 
 /**
@@ -107,14 +95,13 @@ function InlineConfirmDialog({
 
 /**
  * System-admin Global Leaders: appoint an existing user as a cross-group
- * reader, list appointed leaders with revoke, and edit each leader's
- * desktop Function entry keys via an expandable brand-chip grid.
+ * reader and list appointed leaders with revoke.
  * @returns Global Leaders settings section.
  */
 export function GlobalLeadersSection() {
   const { t } = useTranslation()
 
-  const [leaders, setLeaders] = useState<GlobalLeaderEntry[]>([])
+  const [leaders, setLeaders] = useState<Awaited<ReturnType<typeof listGlobalLeaders>>>([])
   const [isLoading, setIsLoading] = useState(true)
 
   const [showAppointModal, setShowAppointModal] = useState(false)
@@ -130,30 +117,16 @@ export function GlobalLeadersSection() {
   const [revokeUserId, setRevokeUserId] = useState<string | null>(null)
   const [isRevoking, setIsRevoking] = useState(false)
 
-  const [expandedUserId, setExpandedUserId] = useState<string | null>(null)
-  const [desktopKeysByUser, setDesktopKeysByUser] = useState<Map<string, Set<DesktopModuleKey>>>(
-    () => new Map(),
-  )
-  const [pendingDesktopKeys, setPendingDesktopKeys] = useState<Set<DesktopModuleKey>>(new Set())
-  const [isSavingDesktop, setIsSavingDesktop] = useState(false)
-  const [desktopSaveError, setDesktopSaveError] = useState<string | null>(null)
-  const [desktopSaveSuccess, setDesktopSaveSuccess] = useState(false)
-
   const existingLeaderIds = new Set(leaders.map((entry) => entry.userId))
 
   /**
-   * Reloads the appointed global leader roster and desktop entry keys.
+   * Reloads the appointed global leader roster.
    * @returns Nothing.
    */
   async function loadLeaders(): Promise<void> {
     setIsLoading(true)
     try {
-      const rows = await listGlobalLeaders()
-      setLeaders(rows)
-      const desktopMap = await fetchGlobalLeaderDesktopModuleAccessBatch(
-        rows.map((row) => row.userId),
-      )
-      setDesktopKeysByUser(desktopMap)
+      setLeaders(await listGlobalLeaders())
     } finally {
       setIsLoading(false)
     }
@@ -238,77 +211,8 @@ export function GlobalLeadersSection() {
     setIsRevoking(false)
     setRevokeUserId(null)
     if (ok) {
-      if (expandedUserId === revokeUserId) {
-        setExpandedUserId(null)
-      }
       await loadLeaders()
     }
-  }
-
-  /**
-   * Expands (or collapses) the module whitelist editor for a leader row.
-   * @param entry - Target leader entry.
-   * @returns Nothing.
-   */
-  function toggleExpanded(entry: GlobalLeaderEntry): void {
-    if (expandedUserId === entry.userId) {
-      setExpandedUserId(null)
-      return
-    }
-    setExpandedUserId(entry.userId)
-    setPendingDesktopKeys(new Set(desktopKeysByUser.get(entry.userId) ?? []))
-    setDesktopSaveError(null)
-    setDesktopSaveSuccess(false)
-  }
-
-  /**
-   * Toggles a single desktop entry key in the pending selection.
-   * @param key - Desktop module key.
-   */
-  function toggleDesktopKey(key: DesktopModuleKey): void {
-    setPendingDesktopKeys((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) {
-        next.delete(key)
-      } else {
-        next.add(key)
-      }
-      return next
-    })
-    setDesktopSaveSuccess(false)
-  }
-
-  /**
-   * Persists the pending desktop entry whitelist for the expanded leader.
-   * @returns Nothing.
-   */
-  async function handleSaveDesktopModules(): Promise<void> {
-    if (!expandedUserId) {
-      return
-    }
-    setIsSavingDesktop(true)
-    setDesktopSaveError(null)
-    setDesktopSaveSuccess(false)
-    const ok = await setGlobalLeaderDesktopModuleAccess(
-      expandedUserId,
-      Array.from(pendingDesktopKeys),
-    )
-    if (ok) {
-      setDesktopSaveSuccess(true)
-      setDesktopKeysByUser((prev) => {
-        const next = new Map(prev)
-        next.set(expandedUserId, new Set(pendingDesktopKeys))
-        return next
-      })
-      window.setTimeout(() => setDesktopSaveSuccess(false), 3000)
-    } else {
-      setDesktopSaveError(
-        t('settings.globalLeaders.desktopAccess.saveError', {
-          defaultValue: 'Failed to save desktop access',
-        }),
-      )
-    }
-    setIsSavingDesktop(false)
   }
 
   return (
@@ -339,128 +243,27 @@ export function GlobalLeadersSection() {
           </p>
         ) : (
           <ul className="space-y-2">
-            {leaders.map((entry) => {
-              const isExpanded = expandedUserId === entry.userId
-              return (
-                <li key={entry.userId} className="rounded-2xl border border-zinc-950/10 bg-zinc-950/5 dark:border-white/10 dark:bg-white/5">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    className="flex items-center gap-3 p-4"
-                    onClick={() => toggleExpanded(entry)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        toggleExpanded(entry)
-                      }
-                    }}
-                  >
-                    <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand/15 text-brand">
-                      <CrownIcon className="size-5" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-bold text-brand">{profileLabel(entry.profile)}</p>
-                      <p className="truncate text-xs text-muted">{entry.profile?.email ?? entry.userId}</p>
-                      <p className="text-xs text-muted">
-                        {t('settings.globalLeaders.list.moduleCount', {
-                          count: desktopKeysByUser.get(entry.userId)?.size ?? 0,
-                          defaultValue: `${desktopKeysByUser.get(entry.userId)?.size ?? 0} desktop key(s)`,
-                        })}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="shrink-0 rounded-xl p-2 text-rose-500 transition hover:bg-rose-500/10"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        setRevokeUserId(entry.userId)
-                      }}
-                    >
-                      <TrashIcon className="size-4" />
-                    </button>
-                    <ChevronDownIcon
-                      className={`size-4 shrink-0 text-muted transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                    />
-                  </div>
-
-                  {isExpanded ? (
-                    <div className="space-y-3 border-t border-zinc-950/10 p-4 dark:border-white/10">
-                        <p className="text-xs font-semibold text-muted">
-                          {t('settings.globalLeaders.desktopAccess.title', {
-                            defaultValue: 'Desktop Functions',
-                          })}
-                        </p>
-                        <p className="text-xs text-muted">
-                          {t('settings.globalLeaders.desktopAccess.description', {
-                            defaultValue:
-                              'Electron Home Function and map-layer entry keys for this leader (manual; not synced from website modules).',
-                          })}
-                        </p>
-                        <button
-                          type="button"
-                          className="text-xs font-semibold text-brand underline decoration-brand/40 underline-offset-2"
-                          onClick={() =>
-                            setPendingDesktopKeys((prev) =>
-                              DESKTOP_MODULE_KEYS.every((key) => prev.has(key))
-                                ? new Set()
-                                : new Set(DESKTOP_MODULE_KEYS),
-                            )
-                          }
-                        >
-                          {t('settings.globalLeaders.desktopAccess.selectAll', {
-                            defaultValue: 'Select all desktop keys',
-                          })}
-                        </button>
-                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                          {DESKTOP_MODULE_KEYS.map((key) => {
-                            const selected = pendingDesktopKeys.has(key)
-                            return (
-                              <button
-                                type="button"
-                                key={key}
-                                onClick={() => toggleDesktopKey(key)}
-                                className={`flex items-center gap-1.5 rounded-2xl border px-3 py-2 text-left text-xs font-semibold transition ${
-                                  selected
-                                    ? 'border-brand/60 bg-brand text-brand-fg'
-                                    : 'border-zinc-950/10 bg-white/60 text-muted hover:border-brand/40 dark:border-white/10 dark:bg-zinc-950/40'
-                                }`}
-                              >
-                                {selected ? <CheckIcon className="size-3.5 shrink-0" /> : null}
-                                <span className="truncate">
-                                  {t(DESKTOP_MODULE_LABEL_KEYS[key], { defaultValue: key })}
-                                </span>
-                              </button>
-                            )
-                          })}
-                        </div>
-                        {desktopSaveSuccess ? (
-                          <p className="text-sm font-semibold text-brand">
-                            {t('settings.globalLeaders.desktopAccess.saveSuccess', {
-                              defaultValue: 'Desktop access saved',
-                            })}
-                          </p>
-                        ) : null}
-                        {desktopSaveError ? (
-                          <p className="text-sm font-semibold text-rose-500">{desktopSaveError}</p>
-                        ) : null}
-                        <button
-                          type="button"
-                          disabled={isSavingDesktop}
-                          className="rounded-2xl bg-brand px-4 py-2 text-sm font-bold text-brand-fg disabled:opacity-50"
-                          onClick={() => void handleSaveDesktopModules()}
-                        >
-                          {isSavingDesktop
-                            ? t('settings.globalLeaders.desktopAccess.saving', {
-                                defaultValue: 'Saving…',
-                              })
-                            : t('settings.globalLeaders.desktopAccess.save', {
-                                defaultValue: 'Save desktop access',
-                              })}
-                        </button>
-                    </div>
-                  ) : null}
-                </li>
-              )
-            })}
+            {leaders.map((entry) => (
+              <li
+                key={entry.userId}
+                className="flex items-center gap-3 rounded-2xl border border-zinc-950/10 bg-zinc-950/5 p-4 dark:border-white/10 dark:bg-white/5"
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand/15 text-brand">
+                  <CrownIcon className="size-5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-bold text-brand">{profileLabel(entry.profile)}</p>
+                  <p className="truncate text-xs text-muted">{entry.profile?.email ?? entry.userId}</p>
+                </div>
+                <button
+                  type="button"
+                  className="shrink-0 rounded-xl p-2 text-rose-500 transition hover:bg-rose-500/10"
+                  onClick={() => setRevokeUserId(entry.userId)}
+                >
+                  <TrashIcon className="size-4" />
+                </button>
+              </li>
+            ))}
           </ul>
         )}
       </div>

@@ -14,12 +14,10 @@ import type { Theme } from '@/hooks/use-theme'
 import {
   AdminAppsIcon,
   BrainIcon,
-  ClashIcon,
   CodeIcon,
   CrownIcon,
   OpenSourceIcon,
   ImageIcon,
-  KeyIcon,
   LucideMegaphoneIcon,
   MoonIcon,
   PageIcon,
@@ -85,7 +83,6 @@ function buildNavItems(
     widgets: { label: t('settings.sections.widgets'), Icon: SortIcon },
     background: { label: t('settings.sections.background'), Icon: ImageIcon },
     aura: { label: t('settings.sections.aura'), Icon: AuraMarkdownIcon },
-    clash: { label: t('settings.sections.clash'), Icon: ClashIcon },
     feedback: { label: t('settings.sections.feedback'), Icon: LucideMegaphoneIcon },
     openSource: { label: t('settings.sections.openSource'), Icon: OpenSourceIcon },
     groupManagement: {
@@ -100,15 +97,7 @@ function buildNavItems(
       label: t('settings.sections.globalLeaders'),
       Icon: CrownIcon,
     },
-    desktopAccess: {
-      label: t('settings.sections.desktopAccess'),
-      Icon: AdminAppsIcon,
-    },
     groupAdmin: { label: t('settings.sections.groupAdmin'), Icon: UsersIcon },
-    desktopWrites: {
-      label: t('settings.sections.desktopWrites'),
-      Icon: KeyIcon,
-    },
     groupInfo: { label: t('settings.sections.groupInfo'), Icon: UsersIcon },
   }
 

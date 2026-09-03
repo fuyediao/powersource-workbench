@@ -21,7 +21,6 @@ import type { AppItem, Category } from '@/types/library'
 import { useSettingsRoles } from '@/hooks/use-settings-roles'
 import { useDesktopModuleAccess } from '@/hooks/use-desktop-module-access'
 import { useHomeAppOrder } from '@/hooks/use-home-app-order'
-import { writeAdminActivePath } from '@/utils/admin-active-path'
 
 type CategorySlide = 'up' | 'down'
 
@@ -251,7 +250,7 @@ export function HomePage({
 }: HomePageProps) {
   const { t } = useTranslation()
   const pageWidgets = useSharedPageWidgets()
-  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showSchedule, showMail, showFocus, showApps, peekApps } =
+  const { showWeather, showMarkets, showNews, showTodo, showCurrency, showSchedule, showMail, showApps, peekApps } =
     pageWidgets.widgets
   const asideVisibility: Record<AsideWidgetId, boolean> = {
     weather: showWeather,
@@ -261,7 +260,7 @@ export function HomePage({
     news: showNews,
     schedule: showSchedule,
     mail: showMail,
-    focus: showFocus,
+    focus: false,
   }
   const leftOrder = pageWidgets.asideRails.left
   const rightOrder = pageWidgets.asideRails.right
@@ -304,13 +303,12 @@ export function HomePage({
   }
 
   /**
-   * Opens Admin on a CRM path from a home widget shortcut.
-   * @param path - Absolute Admin path.
+   * Admin shortcuts are removed from this Workbench shell.
+   * @param _path - Absolute Admin path (ignored).
    * @returns Nothing.
    */
-  function openAdminFromWidget(path: string): void {
-    writeAdminActivePath(path)
-    onOpenFeature('admin')
+  function openAdminFromWidget(_path: string): void {
+    return
   }
   const [categorySlide, setCategorySlide] = useState<CategorySlide | null>(null)
   const [exitingPanel, setExitingPanel] = useState<ExitingCategoryPanel | null>(null)

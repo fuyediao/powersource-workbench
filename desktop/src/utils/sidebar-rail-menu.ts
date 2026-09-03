@@ -9,13 +9,7 @@ import type { SidebarMode } from '@/hooks/use-sidebar-mode'
 
 /** Title-bar screens that host the shared Sidebar native menus. */
 export const SIDEBAR_CONTROL_SCREENS = [
-  'clash',
   'settings',
-  'admin',
-  'kanban',
-  'products',
-  'nexdot',
-  'teAdmin',
 ] as const
 
 /** Native sidebar-control commands (Expanded / Collapsed / Hover / Hide). */

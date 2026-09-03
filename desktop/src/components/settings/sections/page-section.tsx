@@ -53,7 +53,6 @@ export function PageSection({
   showCurrency,
   showSchedule,
   showMail,
-  showFocus,
   showApps,
   peekApps,
   onSetShowWeather,
@@ -63,7 +62,6 @@ export function PageSection({
   onSetShowCurrency,
   onSetShowSchedule,
   onSetShowMail,
-  onSetShowFocus,
   onSetShowApps,
 }: PageSectionProps) {
   const { t } = useTranslation()
@@ -179,16 +177,6 @@ export function PageSection({
           <span>{t('home.aside.mailReminder')}</span>
           <span className="text-xs font-bold opacity-80">
             {showMail ? t('settings.widgetVisible') : t('settings.widgetHidden')}
-          </span>
-        </button>
-        <button
-          type="button"
-          className={widgetRowClass(showFocus)}
-          onClick={() => onSetShowFocus(!showFocus)}
-        >
-          <span>{t('home.aside.businessFocus')}</span>
-          <span className="text-xs font-bold opacity-80">
-            {showFocus ? t('settings.widgetVisible') : t('settings.widgetHidden')}
           </span>
         </button>
       </div>

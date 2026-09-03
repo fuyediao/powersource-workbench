@@ -2,23 +2,13 @@
 export const FEATURE_TAB_IDS = [
   'chat',
   'harness',
-  'messages',
   'mail',
   'calendar',
-  'kanban',
-  'map',
-  'admin',
-  'orders',
-  'products',
-  'nexdot',
-  'teAdmin',
-  'team',
   'aura',
   'folio',
   'docs',
   'sheets',
   'slides',
-  'clash',
 ] as const
 
 /** Title-bar / deep-link id for a GeoCRM feature page. */
@@ -26,16 +16,12 @@ export type FeatureTabId = (typeof FEATURE_TAB_IDS)[number]
 
 /**
  * Maps a lowercase `geocrm://` host segment to a feature tab id.
- * `te-admin` is the deep-link host; the tab id is camelCase `teAdmin`.
  * Artificial Intelligence accepts product hosts (`artificial-intelligence`, `chat`, `ask`, `ai`).
  * Harness accepts `harness` and the legacy `agent` host.
  * @param id - Lowercased deep-link host.
  * @returns Feature tab id, or null.
  */
 function featureTabFromDeepLinkId(id: string): FeatureTabId | null {
-  if (id === 'te-admin') {
-    return 'teAdmin'
-  }
   if (
     id === 'artificial-intelligence' ||
     id === 'artificialintelligence' ||
@@ -196,21 +182,11 @@ export function featureTabFromUrl(url: string): FeatureTabId | null {
 export const FEATURE_TAB_LABEL_KEY: Record<FeatureTabId, string> = {
   chat: 'functions.apps.ask',
   harness: 'functions.apps.harness',
-  messages: 'functions.apps.messages',
   mail: 'functions.apps.mail',
   calendar: 'functions.apps.calendar',
-  kanban: 'functions.apps.kanban',
-  map: 'functions.apps.map',
-  admin: 'functions.apps.admin',
-  orders: 'functions.apps.orders',
-  products: 'functions.apps.products',
-  nexdot: 'functions.apps.nexdotApp',
-  teAdmin: 'functions.apps.teAdmin',
-  team: 'functions.apps.team',
   aura: 'functions.apps.aura',
   folio: 'functions.apps.folio',
   docs: 'functions.apps.docs',
   sheets: 'functions.apps.sheets',
   slides: 'functions.apps.slides',
-  clash: 'functions.apps.clash',
 }

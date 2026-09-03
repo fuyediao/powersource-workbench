@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ShieldIcon } from '@/icons/AllIcons'
+import { PowersourceBrandIcon } from '@/icons/AllIcons'
 
 interface LoginPageProps {
   error: string | null
@@ -32,9 +32,10 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
     <main className="login-page auth-gate">
       <section className="login-form-panel">
         <form className="login-card" onSubmit={(event) => void handleSubmit(event)}>
-          <div className="login-icon"><ShieldIcon width={26} height={26} /></div>
-          <h2>{t('auth.title')}</h2>
-          <p className="muted">{t('auth.subtitle')}</p>
+          <div className="login-header">
+            <div className="login-icon"><PowersourceBrandIcon width={32} height={32} /></div>
+            <h2>{t('auth.title')}</h2>
+          </div>
           <label>
             <span>{t('auth.username')}</span>
             <input

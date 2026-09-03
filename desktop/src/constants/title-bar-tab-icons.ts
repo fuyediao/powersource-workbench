@@ -5,27 +5,17 @@ import {
   type FeatureTabId,
 } from '@/constants/feature-tabs'
 import {
-  AdminAppsIcon,
   ArtificialIntelligenceIcon,
   AuraMarkdownIcon,
   CalendarIcon,
-  ClashIcon,
   FolioIcon,
   GlobeIcon,
   HarnessIcon,
-  KanbanIcon,
-  LucideBookOpenIcon,
-  LucideClipboardCheckIcon,
-  LucidePackageIcon,
-  LucideStoreIcon,
   MailIcon,
-  MapIcon,
-  MessageSquareIcon,
   SettingsIcon,
   UniverDocsIcon,
   UniverSheetsIcon,
   UniverSlidesIcon,
-  UsersIcon,
 } from '@/icons/AllIcons'
 import { isBrowserTabId } from '@/utils/settings/link-open-preference'
 
@@ -34,23 +24,13 @@ type SvgIcon = ComponentType<SVGProps<SVGSVGElement>>
 /** Same glyphs as Home Function tiles, sized for the caption strip. */
 const FEATURE_TAB_ICONS: Record<FeatureTabId, SvgIcon> = {
   chat: ArtificialIntelligenceIcon,
-  messages: MessageSquareIcon,
   mail: MailIcon,
   calendar: CalendarIcon,
-  kanban: KanbanIcon,
-  map: MapIcon,
-  admin: AdminAppsIcon,
-  orders: LucidePackageIcon,
-  products: LucideBookOpenIcon,
-  nexdot: LucideStoreIcon,
-  teAdmin: LucideClipboardCheckIcon,
-  team: UsersIcon,
   aura: AuraMarkdownIcon,
   folio: FolioIcon,
   docs: UniverDocsIcon,
   sheets: UniverSheetsIcon,
   slides: UniverSlidesIcon,
-  clash: ClashIcon,
   harness: HarnessIcon,
 }
 

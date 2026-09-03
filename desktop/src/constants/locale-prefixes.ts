@@ -53,23 +53,13 @@ export const SHELL_LOCALE_PREFIXES = [
  */
 const FEATURE_LOCALE_PREFIXES: Record<FeatureTabId, readonly string[]> = {
   chat: ['chat'],
-  messages: [],
   mail: ['mail'],
   calendar: ['calendar'],
-  kanban: ['kanban', 'admin'],
-  map: ['map', 'chat'],
-  admin: ['admin'],
-  orders: ['orders', 'admin'],
-  products: ['products', 'admin'],
-  nexdot: ['nexdot', 'admin'],
-  teAdmin: ['te-admin', 'admin'],
-  team: ['admin', 'team'],
   aura: ['aura'],
   folio: ['folio'],
   docs: ['office', 'admin/sidebar'],
   sheets: ['office', 'admin/sidebar'],
   slides: ['office', 'admin/sidebar'],
-  clash: ['admin/sidebar'],
   harness: ['harness'],
 }
 

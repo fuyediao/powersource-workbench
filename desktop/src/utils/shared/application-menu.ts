@@ -4,23 +4,13 @@ const MENU_NAVIGATE_TARGETS = [
   'settings',
   'chat',
   'harness',
-  'messages',
   'mail',
   'calendar',
-  'kanban',
-  'map',
-  'admin',
-  'orders',
-  'products',
-  'nexdot',
-  'teAdmin',
-  'team',
   'aura',
   'folio',
   'docs',
   'sheets',
   'slides',
-  'clash',
 ] as const
 
 /**

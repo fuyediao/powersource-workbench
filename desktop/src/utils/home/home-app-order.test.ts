@@ -6,7 +6,7 @@ describe('migrateHomeAppOrderIds', () => {
     expect(
       migrateHomeAppOrderIds([
         'function-ask',
-        'function-messages',
+        'function-mail',
         'function-clash',
         'function-harness',
         'function-settings',
@@ -14,7 +14,7 @@ describe('migrateHomeAppOrderIds', () => {
     ).toEqual([
       'function-ask',
       'function-harness',
-      'function-messages',
+      'function-mail',
       'function-clash',
       'function-settings',
     ])
@@ -24,16 +24,16 @@ describe('migrateHomeAppOrderIds', () => {
     expect(
       migrateHomeAppOrderIds([
         'function-ask',
-        'function-messages',
-        'function-harness',
         'function-mail',
+        'function-harness',
+        'function-calendar',
         'function-settings',
       ]),
     ).toEqual([
       'function-ask',
-      'function-messages',
-      'function-harness',
       'function-mail',
+      'function-harness',
+      'function-calendar',
       'function-settings',
     ])
   })
@@ -44,12 +44,12 @@ describe('applySavedHomeAppOrder', () => {
     const catalog = [
       { id: 'function-ask' },
       { id: 'function-harness' },
-      { id: 'function-messages' },
+      { id: 'function-mail' },
     ]
     expect(applySavedHomeAppOrder(catalog, []).map((app) => app.id)).toEqual([
       'function-ask',
       'function-harness',
-      'function-messages',
+      'function-mail',
     ])
   })
 })

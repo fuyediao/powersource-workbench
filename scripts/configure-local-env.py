@@ -10,7 +10,6 @@ from vps_ssh import connect_ssh, read_env, run_ssh
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 VPS_ENV = REPOSITORY_ROOT / ".env.vps"
 DESKTOP_ENV = REPOSITORY_ROOT / "desktop" / ".env"
-SUPABASE_ENV = REPOSITORY_ROOT / "supabase" / ".env"
 BACKEND_ENV = REPOSITORY_ROOT / "backend" / ".env"
 
 REMOTE_SUPABASE_ENV = "/opt/supabase-project/.env"
@@ -45,7 +44,7 @@ def load_remote_supabase_env() -> dict[str, str]:
 
 
 def configure(replace: bool = False) -> None:
-    """Create desktop, backend, and bootstrap environment files for .work."""
+    """Create desktop and backend environment files for .work."""
     if not VPS_ENV.exists():
         raise RuntimeError(f"Missing VPS environment file: {VPS_ENV}")
 
@@ -79,15 +78,6 @@ def configure(replace: bool = False) -> None:
             "PORT=3001",
             f"SUPABASE_URL={supabase_url}",
             f"SUPABASE_ANON_KEY={publishable_key}",
-            f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
-        ],
-        replace,
-    )
-    write_private_env(
-        SUPABASE_ENV,
-        [
-            f"SUPABASE_URL={supabase_url}",
-            f"SUPABASE_PUBLISHABLE_KEY={publishable_key}",
             f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
         ],
         replace,

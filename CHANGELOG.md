@@ -4,6 +4,11 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Centered the login mark and title, and removed the sign-in subtitle.
+- Replaced the login mark with the POWERSOURCE OA / ERP brand SVG.
+- Removed unused `supabase/.env` and `supabase/.env.example`. Desktop and Go already keep their own environment files.
+- Removed Messages, Board, Map, Admin, Orders, Products, NEXDOT, T&E Admin, Team, and Clash from the desktop Home grid and Go menu.
+- Removed desktop Function access and write-grant permission editors. Remaining apps are open to every signed-in user.
 - Replaced GeoCRM email, Google, and OTP login with Workbench username and password sign-in through `workbench-api`, while keeping Supabase sessions for the copied desktop shell.
 - Updated desktop env to two lines: `VITE_DEPLOYMENT_DOMAIN=powersource.work` and `VITE_SUPABASE_PUBLISHABLE_KEY`, deriving API and Supabase URLs in code.
 - Replaced the slim Workbench Electron shell with a full copy of the GeoCRM Electron source tree, including bundled libraries and the example environment file.

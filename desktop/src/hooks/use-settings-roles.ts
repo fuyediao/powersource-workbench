@@ -81,15 +81,12 @@ export function useSettingsRoles(userId: string | null | undefined): SettingsRol
       widgets: true,
       background: true,
       aura: true,
-      clash: true,
       feedback: true,
       openSource: true,
       groupManagement: isSystemAdmin,
       userManagement: isSystemAdmin,
       globalLeaders: isSystemAdmin,
-      desktopAccess: isSystemAdmin,
       groupAdmin: isGroupAdmin,
-      desktopWrites: isGroupAdmin,
       groupInfo: isRegularUser && currentGroup !== null,
     }
     return SECTION_ORDER.filter((id) => show[id])

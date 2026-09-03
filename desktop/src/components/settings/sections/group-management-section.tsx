@@ -6,25 +6,11 @@ import {
   CheckIcon,
   CloseIcon,
   CrownIcon,
-  KeyIcon,
   PlusIcon,
   SearchIcon,
   TrashIcon,
   UsersIcon,
 } from '@/icons/AllIcons'
-import { DesktopMemberWriteGrantsModal } from '@/components/settings/desktop-member-write-grants-modal'
-import {
-  DESKTOP_WRITE_DOMAIN_ENTRY,
-  DESKTOP_WRITE_DOMAINS,
-  type DesktopWriteDomain,
-  type DesktopWriteGrantKey,
-} from '@/constants/desktop-modules'
-import { fetchDesktopModuleAccessForGroup } from '@/services/group-desktop-module-access-api'
-import {
-  fetchDesktopGroupWriteGrantSummaries,
-  summarizeDesktopWriteGrantKeys,
-  type DesktopWriteGrantSummary,
-} from '@/services/group-desktop-writes-api'
 import {
   addGroupAdmin,
   addUserToGroupByUserIdForGroup,
@@ -355,13 +341,6 @@ export function GroupManagementSection() {
   const [togglingAdminUserId, setTogglingAdminUserId] = useState<string | null>(null)
   const [toggleAdminError, setToggleAdminError] = useState<string | null>(null)
 
-  /** Desktop write domains open for the active group (entry keys). */
-  const [detailOpenDomains, setDetailOpenDomains] = useState<DesktopWriteDomain[]>([])
-  const [writeGrantSummaries, setWriteGrantSummaries] = useState<
-    Map<string, DesktopWriteGrantSummary>
-  >(new Map())
-  const [writeGrantsUserId, setWriteGrantsUserId] = useState<string | null>(null)
-
   const existingAdminIds = new Set(groupAdmins.map((entry) => entry.userId))
   const pendingInvitationGroups = tempManagedGroups.filter((group) => Boolean(group.pendingAdminEmail?.trim()))
   const unassignedTempGroups = tempManagedGroups.filter((group) => !group.pendingAdminEmail?.trim())
@@ -654,22 +633,12 @@ export function GroupManagementSection() {
         setGroupNameDraft(group.name)
         setGroupDescDraft(group.description ?? '')
       }
-      const [members, invitations, entryKeys] = await Promise.all([
+      const [members, invitations] = await Promise.all([
         fetchGroupMembersForAdmin(groupId, group?.groupAdminId ?? null),
         getPendingMemberInvitationsForGroup(groupId),
-        fetchDesktopModuleAccessForGroup(groupId),
       ])
-      const domains = DESKTOP_WRITE_DOMAINS.filter((domain) =>
-        DESKTOP_WRITE_DOMAIN_ENTRY[domain].some((entry) => entryKeys.has(entry)),
-      )
-      setDetailOpenDomains(domains)
       setDetailMembers(sortMembersAdminsFirst(members))
       setDetailInvitations(invitations)
-      const summaries =
-        domains.length > 0
-          ? await fetchDesktopGroupWriteGrantSummaries(groupId, domains)
-          : new Map<string, DesktopWriteGrantSummary>()
-      setWriteGrantSummaries(summaries)
     } finally {
       setIsLoadingDetail(false)
     }
@@ -862,37 +831,6 @@ export function GroupManagementSection() {
       member.user?.full_name ||
       member.userId
     )
-  }
-
-  /**
-   * Opens the desktop write-grants modal for a non-admin member.
-   * @param member - Target member.
-   */
-  function openWriteGrantsEditor(member: DetailMember): void {
-    if (member.isGroupAdmin) {
-      return
-    }
-    setWriteGrantsUserId(member.userId)
-  }
-
-  /**
-   * Closes the desktop write-grants modal.
-   */
-  function closeWriteGrantsEditor(): void {
-    setWriteGrantsUserId(null)
-  }
-
-  /**
-   * Refreshes in-list summaries after a successful write-grant save.
-   * @param userId - Member whose grants changed.
-   * @param grants - Saved grant set.
-   */
-  function handleWriteGrantsSaved(userId: string, grants: Set<DesktopWriteGrantKey>): void {
-    setWriteGrantSummaries((prev) => {
-      const next = new Map(prev)
-      next.set(userId, summarizeDesktopWriteGrantKeys(grants))
-      return next
-    })
   }
 
   /**
@@ -1184,7 +1122,6 @@ export function GroupManagementSection() {
             ) : (
               <ul className="space-y-2">
                 {detailMembers.map((member) => {
-                  const summary = writeGrantSummaries.get(member.userId)
                   return (
                     <li
                       key={member.id}
@@ -1205,30 +1142,8 @@ export function GroupManagementSection() {
                               </span>
                             ) : null}
                           </div>
-                          {!member.isGroupAdmin ? (
-                            <p className="mt-0.5 text-xs text-muted">
-                              {t('settings.desktopWrites.summary', {
-                                insert: summary?.insert ?? 0,
-                                update: summary?.update ?? 0,
-                                delete: summary?.delete ?? 0,
-                                defaultValue: `Create ${summary?.insert ?? 0} · Edit ${summary?.update ?? 0} · Delete ${summary?.delete ?? 0}`,
-                              })}
-                            </p>
-                          ) : null}
                         </div>
                         <div className="flex shrink-0 items-center gap-1">
-                          {!member.isGroupAdmin ? (
-                            <button
-                              type="button"
-                              title={t('settings.desktopWrites.manageButton', {
-                                defaultValue: 'Manage',
-                              })}
-                              className="rounded-xl p-2 text-brand transition hover:bg-brand/10"
-                              onClick={() => openWriteGrantsEditor(member)}
-                            >
-                              <KeyIcon className="size-4" />
-                            </button>
-                          ) : null}
                           <button
                             type="button"
                             disabled={togglingAdminUserId === member.userId}
@@ -1617,25 +1532,6 @@ export function GroupManagementSection() {
             </div>
           </div>
         </div>
-      ) : null}
-
-      {activeGroupId ? (
-        <DesktopMemberWriteGrantsModal
-          open={writeGrantsUserId !== null}
-          groupId={activeGroupId}
-          userId={writeGrantsUserId}
-          memberLabel={
-            writeGrantsUserId
-              ? (() => {
-                  const row = detailMembers.find((m) => m.userId === writeGrantsUserId)
-                  return row ? detailMemberLabel(row) : writeGrantsUserId
-                })()
-              : ''
-          }
-          openDomains={detailOpenDomains}
-          onClose={closeWriteGrantsEditor}
-          onSaved={handleWriteGrantsSaved}
-        />
       ) : null}
 
       {groupInfoModalPresence.mounted ? (

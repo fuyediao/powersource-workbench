@@ -3224,7 +3224,7 @@ function buildDarwinTemplate(state: ApplicationMenuState): MenuItemConstructorOp
     ...(auraActive && auraLabels ? buildAuraMenus(auraLabels, auraView) : []),
     ...(auraActive && auraWordCount ? [buildAuraWordCountMenu(auraWordCount)] : []),
     ...(mapActive && mapLabels
-      ? buildMapMenus(labels.map, mapLabels, mapView)
+      ? buildMapMenus('Map', mapLabels, mapView)
       : []),
     ...(mailActive && mailLabels ? buildMailMenus(mailLabels, mailView) : []),
     ...(folioActive && folioLabels ? buildFolioMenus(folioLabels, folioView) : []),

@@ -13,15 +13,12 @@ export type SettingsSection =
   | 'widgets'
   | 'background'
   | 'aura'
-  | 'clash'
   | 'feedback'
   | 'openSource'
   | 'groupManagement'
   | 'userManagement'
   | 'globalLeaders'
-  | 'desktopAccess'
   | 'groupAdmin'
-  | 'desktopWrites'
   | 'groupInfo'
 
 /**
@@ -39,16 +36,13 @@ export const SECTION_ORDER: SettingsSection[] = [
   'page',
   'widgets',
   'aura',
-  'clash',
   'oaErp',
   'feedback',
   'openSource',
   'groupManagement',
   'userManagement',
   'globalLeaders',
-  'desktopAccess',
   'groupAdmin',
-  'desktopWrites',
   'groupInfo',
 ]
 
@@ -66,7 +60,6 @@ export const DEFAULT_VISIBLE_SECTIONS: SettingsSection[] = [
   'page',
   'widgets',
   'aura',
-  'clash',
   'oaErp',
   'feedback',
   'openSource',
@@ -77,9 +70,7 @@ export const ADMIN_SETTINGS_SECTIONS: readonly SettingsSection[] = [
   'groupManagement',
   'userManagement',
   'globalLeaders',
-  'desktopAccess',
   'groupAdmin',
-  'desktopWrites',
   'groupInfo',
 ]
 
@@ -130,6 +121,9 @@ function normalizePersistedSection(value: string): SettingsSection | null {
     return 'ai'
   }
   if (value === 'deskPet') {
+    return 'profile'
+  }
+  if (value === 'clash' || value === 'desktopAccess' || value === 'desktopWrites') {
     return 'profile'
   }
   return isSettingsSection(value) ? value : null

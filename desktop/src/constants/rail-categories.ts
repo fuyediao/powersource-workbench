@@ -24,27 +24,17 @@ export function isFunctionsCategory(categoryId: string): boolean {
 /**
  * Manual Beta badge switches for built-in Functions (feature tiles only).
  * Set `true` to show the badge; `false` to hide it.
- * Site tiles (OA / ERP / NEXTORCH / …) are not included.
+ * Site tiles (OA / ERP / NEXTORCH) are not included.
  */
 export const FUNCTION_BETA_FLAGS = {
   'function-ask': false,
-  'function-messages': true,
   'function-mail': false,
   'function-calendar': false,
-  'function-kanban': false,
-  'function-map': false,
-  'function-admin': false,
-  'function-orders': false,
-  'function-products': false,
-  'function-nexdot-app': false,
-  'function-te-admin': false,
-  'function-team': false,
   'function-aura': false,
   'function-folio': false,
   'function-docs': false,
   'function-sheets': false,
   'function-slides': false,
-  'function-clash': false,
   'function-harness': true,
   'function-settings': false,
 } as const satisfies Record<string, boolean>
@@ -60,8 +50,7 @@ function withBetaFlag(app: AppItem): AppItem {
 }
 
 /**
- * Built-in GeoCRM feature placeholders.
- * Shown above the Functions panel divider.
+ * Built-in Workbench feature tiles shown above the Functions panel divider.
  */
 export const FUNCTION_FEATURE_APPS: AppItem[] = [
   {
@@ -79,172 +68,95 @@ export const FUNCTION_FEATURE_APPS: AppItem[] = [
     name: 'functions.apps.harness',
   },
   {
-    id: 'function-messages',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 2,
-    url: 'geocrm://messages',
-    name: 'functions.apps.messages',
-  },
-  {
     id: 'function-mail',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 3,
+    position: 2,
     url: 'geocrm://mail',
     name: 'functions.apps.mail',
   },
   {
     id: 'function-calendar',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 4,
+    position: 3,
     url: 'geocrm://calendar',
     name: 'functions.apps.calendar',
   },
   {
-    id: 'function-kanban',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 5,
-    url: 'geocrm://kanban',
-    name: 'functions.apps.kanban',
-  },
-  {
-    id: 'function-map',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 6,
-    url: 'geocrm://map',
-    name: 'functions.apps.map',
-  },
-  {
-    id: 'function-admin',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 7,
-    url: 'geocrm://admin',
-    name: 'functions.apps.admin',
-  },
-  {
-    id: 'function-orders',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 8,
-    url: 'geocrm://orders',
-    name: 'functions.apps.orders',
-  },
-  {
-    id: 'function-products',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 9,
-    url: 'geocrm://products',
-    name: 'functions.apps.products',
-  },
-  {
-    id: 'function-nexdot-app',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 10,
-    url: 'geocrm://nexdot',
-    name: 'functions.apps.nexdotApp',
-  },
-  {
-    id: 'function-te-admin',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 11,
-    url: 'geocrm://te-admin',
-    name: 'functions.apps.teAdmin',
-  },
-  {
-    id: 'function-team',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 12,
-    url: 'geocrm://team',
-    name: 'functions.apps.team',
-  },
-  {
     id: 'function-aura',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 13,
+    position: 4,
     url: 'geocrm://aura',
     name: 'functions.apps.aura',
   },
   {
     id: 'function-folio',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 14,
+    position: 5,
     url: 'geocrm://folio',
     name: 'functions.apps.folio',
   },
   {
     id: 'function-docs',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 15,
+    position: 6,
     url: 'geocrm://docs',
     name: 'functions.apps.docs',
   },
   {
     id: 'function-sheets',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 16,
+    position: 7,
     url: 'geocrm://sheets',
     name: 'functions.apps.sheets',
   },
   {
     id: 'function-slides',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 17,
+    position: 8,
     url: 'geocrm://slides',
     name: 'functions.apps.slides',
   },
   {
-    id: 'function-clash',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 18,
-    url: 'geocrm://clash',
-    name: 'functions.apps.clash',
-  },
-  {
     id: 'function-settings',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 19,
+    position: 9,
     url: 'geocrm://settings',
     name: 'functions.apps.settings',
   },
 ].map(withBetaFlag)
 
 /**
- * Built-in external site tiles (OA / ERP / NEXTORCH / NEXDOT).
+ * Built-in external site tiles (OA / ERP / NEXTORCH).
  * Shown below the Functions panel divider.
  */
 export const FUNCTION_SITE_APPS: AppItem[] = [
   {
     id: 'function-oa',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 4,
+    position: 0,
     url: 'geocrm://oa',
     name: 'functions.apps.oa',
   },
   {
     id: 'function-erp',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 5,
+    position: 1,
     url: 'geocrm://erp',
     name: 'functions.apps.erp',
   },
   {
     id: 'function-nextorch',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 6,
+    position: 2,
     url: 'https://www.nextorch.com/',
     name: 'functions.apps.nextorch',
   },
   {
     id: 'function-nextorch-te',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 7,
+    position: 3,
     url: 'geocrm://te',
     name: 'functions.apps.nextorchTe',
-  },
-  {
-    id: 'function-nexdot',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 8,
-    url: 'https://nexdot.app',
-    name: 'functions.apps.nexdot',
   },
 ]
 
