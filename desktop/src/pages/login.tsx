@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PowersourceBrandIcon } from '@/icons/AllIcons'
+import { readLastUsername } from '@/utils/workbench-session'
 
 interface LoginPageProps {
   error: string | null
@@ -17,6 +18,23 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
   const { t } = useTranslation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [usernameReady, setUsernameReady] = useState(false)
+
+  useEffect(() => {
+    let active = true
+    void readLastUsername().then((storedUsername) => {
+      if (!active) {
+        return
+      }
+      if (storedUsername) {
+        setUsername(storedUsername)
+      }
+      setUsernameReady(true)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
 
   /**
    * Submits the username and password sign-in form.
@@ -40,6 +58,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
             <span>{t('auth.username')}</span>
             <input
               autoComplete="username"
+              autoFocus={usernameReady && username.length === 0}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               required
@@ -49,6 +68,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
             <span>{t('auth.passwordLabel')}</span>
             <input
               autoComplete="current-password"
+              autoFocus={usernameReady && username.length > 0}
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}

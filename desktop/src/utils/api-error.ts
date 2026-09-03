@@ -1,6 +1,8 @@
 import axios from 'axios'
 import i18n from '@/i18n'
 
+export { isInvalidSessionError } from '@/utils/session-error'
+
 /**
  * Converts a stable API error code into localized user-facing text.
  * @param error - Unknown thrown request error.

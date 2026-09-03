@@ -4,6 +4,10 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Loaded Home weather, FX, stock and crypto quotes, news, and search suggestions from workbench-api `/start/*` instead of calling those third-party APIs from the renderer.
+- Stored Home and Settings appearance (theme, widgets, wallpapers, opacities, search engine, weather, currency, todos, and search history) in local SQLite instead of company Supabase.
+- Cached sign-in tokens in main-process SQLite so quitting after login still restores the session, and kept the last username on the login form.
+- Stored Home website tiles in local SQLite instead of the company Supabase catalog so the apps grid loads without cloud tables.
 - Removed Clash / Mihomo from desktop start, packaging, and IPC so `npm run dev` no longer builds or launches the proxy sidecar.
 - Fixed the compact login window crashing on Windows when platform chrome was still undefined (circular import).
 - Renamed remaining GeoCRM internal identifiers to Workbench (`workbench://`, `window.workbench`, IPC, and package id). Display name stays PowerSource Workbench.

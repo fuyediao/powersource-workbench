@@ -1,9 +1,9 @@
 import type { AppItem, Category } from '@/types/library'
 
-/** Virtual rail category for built-in Workbench features (not stored in Supabase). */
+/** Virtual rail category for built-in Workbench features (not stored in SQLite). */
 export const FUNCTIONS_CATEGORY_ID = 'functions'
 
-/** Persisted rail category for user websites (Supabase). */
+/** Persisted rail category for user websites (local SQLite). */
 export const WEBSITES_CATEGORY_ID = 'websites'
 
 /** Rail entry for Functions (frontend-only). */

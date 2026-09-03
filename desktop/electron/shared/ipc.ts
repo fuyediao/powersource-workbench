@@ -13,6 +13,13 @@ export const NET_IPC_CHANNEL = 'workbench:net'
 /** IPC channel for auth helpers (open Google OAuth). */
 export const AUTH_IPC_CHANNEL = 'workbench:auth'
 
+/** Tokens cached in the main process so a destroyed login window cannot drop them. */
+export interface StoredAuthSessionPayload {
+  accessToken: string
+  expiresAt: number
+  refreshToken: string
+}
+
 /** Event pushed from main when the OAuth deep link returns tokens. */
 export const AUTH_SESSION_EVENT = 'workbench:auth-session'
 
@@ -194,6 +201,12 @@ export const OFFICE_WORKSPACE_LEGACY_IPC_CHANNEL = 'workbench:office-workspace-l
 
 /** IPC channel for Home Apps tile order (local SQLite). */
 export const HOME_APP_ORDER_IPC_CHANNEL = 'workbench:home-app-order'
+
+/** IPC channel for Home website catalog and per-user layouts (local SQLite). */
+export const HOME_LIBRARY_IPC_CHANNEL = 'workbench:home-library'
+
+/** IPC channel for Home / Settings appearance, widgets, and wallpapers (local SQLite). */
+export const HOME_SETTINGS_IPC_CHANNEL = 'workbench:home-settings'
 
 /** IPC channel for Admin Opportunities board layout (local SQLite). */
 export const OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL = 'workbench:opportunity-board-layout'

@@ -9,6 +9,7 @@ import { APP_WINDOW_LOGIN_ARG } from '../shared/ipc'
 import { hideNonDarwinMenuBar } from './application-menu'
 import { appWindows, createAppWindow, destroyAllAppWindows, focusedAppWindow } from './app-windows'
 import { isLoginWindowId, markLoginWindowId, unmarkLoginWindowId } from './login-window-flag'
+import { getStoredAuthSession } from './auth-session-store'
 import { getPlatformShell, showBrowserWindow, type PlatformShell } from './platform'
 
 /**
@@ -171,7 +172,8 @@ export async function createLoginWindow(seed?: { show?: boolean }): Promise<Brow
  * @returns Nothing.
  */
 export async function showOrCreateSessionWindow(): Promise<void> {
-  if (rendererSignedIn) {
+  if (rendererSignedIn || getStoredAuthSession()) {
+    rendererSignedIn = true
     const live = appWindows()
     if (live.length > 0) {
       showBrowserWindow(live.find((win) => win.isFocused()) ?? live[live.length - 1] ?? null)
@@ -181,6 +183,23 @@ export async function showOrCreateSessionWindow(): Promise<void> {
     return
   }
   await createLoginWindow({ show: true })
+}
+
+/**
+ * Opens the shell when this machine already has a cached session, otherwise
+ * the compact sign-in window.
+ * @param seed - Initial visibility.
+ * @returns Nothing.
+ */
+export async function openInitialSessionWindow(seed?: { show?: boolean }): Promise<void> {
+  if (getStoredAuthSession()) {
+    rendererSignedIn = true
+    if (appWindows().length === 0) {
+      await createAppWindow({ show: seed?.show ?? true })
+    }
+    return
+  }
+  await createLoginWindow(seed)
 }
 
 /**

@@ -10,6 +10,7 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
+	"github.com/fuyediao/powersource-workbench/backend/internal/start"
 )
 
 // New builds the Workbench API handler.
@@ -27,5 +28,6 @@ func New(env config.Env) http.Handler {
 	r.Post("/auth/logout", authHandler.Logout)
 	r.Get("/auth/me", authHandler.Me)
 	r.Post("/auth/invitations", authHandler.CreateInvitation)
+	r.Mount("/start", start.New().Routes())
 	return r
 }

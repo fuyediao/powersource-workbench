@@ -789,10 +789,21 @@ interface LegacyOfficeWorkspaceFile {
   updatedAt: number
 }
 
+interface StoredAuthSessionPayload {
+  accessToken: string
+  expiresAt: number
+  refreshToken: string
+}
+
 interface WorkbenchBridge {
   auth: {
     openGoogleSignIn: () => Promise<void>
     setSignedIn: (signedIn: boolean) => Promise<void>
+    getStoredSession: () => Promise<StoredAuthSessionPayload | null>
+    setStoredSession: (session: StoredAuthSessionPayload) => Promise<void>
+    clearStoredSession: () => Promise<void>
+    getLastUsername: () => Promise<string>
+    setLastUsername: (username: string) => Promise<void>
     onSession: (listener: (payload: AuthSessionPayload) => void) => () => void
   }
   net: {
@@ -805,6 +816,83 @@ interface WorkbenchBridge {
   homeAppOrder: {
     get: (userId: string) => Promise<string[]>
     set: (userId: string, appIds: string[]) => Promise<void>
+  }
+  homeLibrary: {
+    listCategories: () => Promise<
+      import('../electron/shared/home-library').HomeLibraryCategoryDto[]
+    >
+    listCategoryApps: (
+      userId: string,
+      categoryId: string,
+    ) => Promise<import('../electron/shared/home-library').HomeLibraryAppDto[]>
+    createApp: (
+      userId: string,
+      categoryId: string,
+      fields: { url: string; name: string },
+    ) => Promise<import('../electron/shared/home-library').HomeLibraryAppDto>
+    linkSite: (
+      userId: string,
+      categoryId: string,
+      siteId: string,
+    ) => Promise<import('../electron/shared/home-library').HomeLibraryAppDto>
+    saveOrder: (userId: string, categoryId: string, itemIds: string[]) => Promise<void>
+    removeApp: (
+      userId: string,
+      categoryId: string,
+      siteId: string,
+    ) => Promise<import('../electron/shared/home-library').HomeLibraryAppDto[]>
+    searchSites: (
+      userId: string,
+      categoryId: string,
+      query: string,
+    ) => Promise<import('../electron/shared/home-library').HomeLibrarySiteHitDto[]>
+  }
+  homeSettings: {
+    getSettings: (
+      userId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeSettingsRecord>
+    patchSettings: (
+      userId: string,
+      patch: Partial<import('../electron/shared/home-settings').HomeSettingsRecord>,
+    ) => Promise<import('../electron/shared/home-settings').HomeSettingsRecord>
+    listWallpapers: (
+      userId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeWallpaperItemDto[]>
+    addWallpaper: (
+      userId: string,
+      bytes: ArrayBuffer,
+      mimeType: string,
+      thumbBytes: ArrayBuffer | null,
+    ) => Promise<import('../electron/shared/home-settings').HomeWallpaperItemDto>
+    removeWallpaper: (userId: string, wallpaperId: string) => Promise<string | null>
+    listTodos: (
+      userId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeTodoItemDto[]>
+    createTodo: (
+      userId: string,
+      text: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeTodoItemDto>
+    setTodoDone: (userId: string, todoId: string, done: boolean) => Promise<void>
+    deleteTodo: (userId: string, todoId: string) => Promise<void>
+    listMarketAssets: (
+      userId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeMarketAssetDto[]>
+    saveMarketAssets: (
+      userId: string,
+      assets: import('../electron/shared/home-settings').HomeMarketAssetDto[],
+    ) => Promise<import('../electron/shared/home-settings').HomeMarketAssetDto[]>
+    listSearchHistory: (
+      userId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeSearchHistoryItemDto[]>
+    recordSearchHistory: (
+      userId: string,
+      query: string,
+      engine: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeSearchHistoryItemDto[]>
+    deleteSearchHistory: (
+      userId: string,
+      historyId: string,
+    ) => Promise<import('../electron/shared/home-settings').HomeSearchHistoryItemDto[]>
   }
   opportunityBoardLayout: {
     get: (userId: string) => Promise<string | null>

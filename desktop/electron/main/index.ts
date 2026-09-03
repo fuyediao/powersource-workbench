@@ -7,8 +7,8 @@ import { setupAgentOverlay, teardownAgentOverlay } from './agent-overlay'
 import { configureAppWindows } from './app-windows'
 import {
   configureLoginWindow,
-  createLoginWindow,
   getForegroundWindow,
+  openInitialSessionWindow,
   setLoginSilentStart,
   showOrCreateSessionWindow,
 } from './login-window'
@@ -20,6 +20,10 @@ import { flushPendingAuthDeepLink, handleAuthDeepLink, registerIpcHandlers } fro
 import { loadMainProcessEnv } from './load-env'
 import { shouldStartHidden, syncLoginItemFromStore } from './login-launch'
 import { getPlatformShell } from './platform'
+import {
+  attachHomeWallpaperProtocol,
+  registerHomeWallpaperScheme,
+} from './home-wallpaper-protocol'
 import { setupSpotlight, teardownSpotlight } from './spotlight'
 import { registerTabTransferIpc } from './tab-transfer'
 
@@ -38,6 +42,7 @@ function enableGpuPerformanceSwitches(): void {
 }
 
 enableGpuPerformanceSwitches()
+registerHomeWallpaperScheme()
 app.setName(APP_DISPLAY_NAME)
 
 /**
@@ -145,6 +150,7 @@ app.whenReady().then(async () => {
   } else {
     app.setAsDefaultProtocolClient(AUTH_DEEP_LINK_SCHEME)
   }
+  attachHomeWallpaperProtocol()
   registerIpcHandlers()
   registerHarnessIpc()
   registerTabTransferIpc()
@@ -167,7 +173,7 @@ app.whenReady().then(async () => {
   })
   const startHidden = shouldStartHidden()
   setLoginSilentStart(startHidden)
-  await createLoginWindow({ show: !startHidden })
+  await openInitialSessionWindow({ show: !startHidden })
   consumeDeepLinkFromArgv(process.argv)
   flushPendingAuthDeepLink()
 })

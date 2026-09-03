@@ -33,8 +33,8 @@ interface LibraryState {
 }
 
 /**
- * Merges the virtual Functions tab in front of Supabase website categories.
- * @param dbCategories - Categories loaded from the library database.
+ * Merges the virtual Functions tab in front of local website categories.
+ * @param dbCategories - Categories loaded from the Home library SQLite store.
  * @returns Rail categories for the UI.
  */
 function mergeRailCategories(dbCategories: Category[]): Category[] {
@@ -51,7 +51,7 @@ function mergeRailCategories(dbCategories: Category[]): Category[] {
 }
 
 /**
- * Connects React state to the Supabase library for Websites.
+ * Connects React state to the local SQLite library for Websites.
  * Functions is a frontend-only rail tab with code-defined tiles.
  * @param userId - Authenticated user id, or null while unavailable.
  * @param categoryId - Currently selected category.
@@ -266,7 +266,7 @@ export function useLibrary(userId: string | null, categoryId: string): LibrarySt
   /**
    * Creates an app in the active website category.
    * @param fields - New app fields.
-   * @returns Resolves when Supabase accepts the create.
+   * @returns Resolves when SQLite accepts the create.
    */
   async function createItem(fields: CreateAppFields): Promise<void> {
     if (!userId || isFunctionsCategory(categoryId)) {
@@ -287,7 +287,7 @@ export function useLibrary(userId: string | null, categoryId: string): LibrarySt
   /**
    * Unlinks an app from the active website category.
    * @param appId - Site id to remove from this category.
-   * @returns Resolves when Supabase accepts the remove.
+   * @returns Resolves when SQLite accepts the remove.
    */
   async function removeItem(appId: string): Promise<void> {
     if (!userId || isFunctionsCategory(categoryId)) {
@@ -302,7 +302,7 @@ export function useLibrary(userId: string | null, categoryId: string): LibrarySt
   /**
    * Links an existing site into the active website category.
    * @param siteId - Existing site id.
-   * @returns Resolves when Supabase accepts the link.
+   * @returns Resolves when SQLite accepts the link.
    */
   async function linkItem(siteId: string): Promise<void> {
     if (!userId || isFunctionsCategory(categoryId)) {

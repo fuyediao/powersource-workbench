@@ -3,8 +3,13 @@ import type { Session, User } from '@supabase/supabase-js'
 import i18n from '@/i18n'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { loadSession, signIn as signInRequest, signOut as signOutRequest } from '@/services/auth-api'
-import { persistAuthSession, readAuthSession } from '@/utils/workbench-session'
+import {
+  hydrateAuthSession,
+  persistAuthSession,
+  readAuthSession,
+} from '@/utils/workbench-session'
 import { apiErrorMessage } from '@/utils/api-error'
+import { isInvalidSessionError } from '@/utils/session-error'
 import { clearMailPrefs } from '@/utils/mail/mail-prefs'
 
 export interface AuthState {
@@ -20,8 +25,23 @@ export interface AuthState {
 }
 
 /**
+ * Writes refreshed Supabase tokens back to the machine cache.
+ * @param nextSession - Active Supabase session.
+ * @returns Nothing.
+ */
+async function persistSupabaseSession(nextSession: Session): Promise<void> {
+  await persistAuthSession({
+    accessToken: nextSession.access_token,
+    refreshToken: nextSession.refresh_token,
+    expiresAt: nextSession.expires_at
+      ? nextSession.expires_at * 1000
+      : Date.now() + 3_600_000,
+  })
+}
+
+/**
  * Applies persisted Workbench tokens to the Supabase client.
- * @returns The active Supabase session or null when tokens are invalid.
+ * @returns The active Supabase session or null when tokens are unusable.
  */
 async function applyStoredSession(): Promise<Session | null> {
   if (!supabase) {
@@ -36,12 +56,15 @@ async function applyStoredSession(): Promise<Session | null> {
     access_token: stored.accessToken,
     refresh_token: stored.refreshToken,
   })
-  if (error || !data.session) {
-    persistAuthSession(null)
+  if (data.session) {
+    return data.session
+  }
+  if (error && isInvalidSessionError(error)) {
+    await persistAuthSession(null)
     await supabase.auth.signOut()
     return null
   }
-  return data.session
+  return null
 }
 
 /**
@@ -66,23 +89,37 @@ export function useAuth(): AuthState {
 
     void (async () => {
       try {
-        if (readAuthSession()) {
-          await loadSession()
-          const nextSession = await applyStoredSession()
-          if (active) {
-            setSession(nextSession)
-          }
-        } else {
+        const stored = await hydrateAuthSession()
+        if (!stored) {
           await client.auth.signOut()
           if (active) {
             setSession(null)
           }
+          return
         }
-      } catch {
-        persistAuthSession(null)
-        await client.auth.signOut()
+        try {
+          await loadSession()
+        } catch (restoreError) {
+          if (isInvalidSessionError(restoreError)) {
+            await persistAuthSession(null)
+            await client.auth.signOut()
+            if (active) {
+              setSession(null)
+            }
+            return
+          }
+        }
+        const nextSession = await applyStoredSession()
         if (active) {
-          setSession(null)
+          setSession(nextSession)
+        }
+      } catch (restoreError) {
+        if (isInvalidSessionError(restoreError)) {
+          await persistAuthSession(null)
+          await client.auth.signOut()
+          if (active) {
+            setSession(null)
+          }
         }
       } finally {
         if (active) {
@@ -91,9 +128,18 @@ export function useAuth(): AuthState {
       }
     })()
 
-    const { data: listener } = client.auth.onAuthStateChange((_event, nextSession) => {
-      if (active) {
+    const { data: listener } = client.auth.onAuthStateChange((event, nextSession) => {
+      if (!active) {
+        return
+      }
+      if (nextSession) {
         setSession(nextSession)
+        setLoading(false)
+        void persistSupabaseSession(nextSession)
+        return
+      }
+      if (event === 'SIGNED_OUT' && !readAuthSession()) {
+        setSession(null)
         setLoading(false)
       }
     })

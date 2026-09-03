@@ -11,6 +11,18 @@ import {
   type HarnessStartTurnExtras,
 } from '../shared/harness'
 import { INSTALL_LANGUAGE_SYNC_CHANNEL } from '../shared/install-language'
+import type {
+  HomeLibraryAppDto,
+  HomeLibraryCategoryDto,
+  HomeLibrarySiteHitDto,
+} from '../shared/home-library'
+import type {
+  HomeMarketAssetDto,
+  HomeSearchHistoryItemDto,
+  HomeSettingsRecord,
+  HomeTodoItemDto,
+  HomeWallpaperItemDto,
+} from '../shared/home-settings'
 import {
   CLAWD_BRIDGE_IPC_CHANNEL,
   type ClawdBridgeActivity,
@@ -21,6 +33,7 @@ import {
   APP_UPDATE_AVAILABLE_EVENT,
   APP_UPDATE_PROGRESS_EVENT,
   AUTH_IPC_CHANNEL,
+  type StoredAuthSessionPayload,
   AUTH_SESSION_EVENT,
   MENU_AURA_EVENT,
   MENU_AURA_LIBRARY_EVENT,
@@ -52,6 +65,8 @@ import {
   type AppWindowPeer,
   OFFICE_WORKSPACE_LEGACY_IPC_CHANNEL,
   HOME_APP_ORDER_IPC_CHANNEL,
+  HOME_LIBRARY_IPC_CHANNEL,
+  HOME_SETTINGS_IPC_CHANNEL,
   OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
@@ -166,6 +181,45 @@ contextBridge.exposeInMainWorld('workbench', {
       ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'setSignedIn', signedIn) as Promise<void>,
 
     /**
+     * Reads the machine-local session cache (survives login-window destroy).
+     * @returns Stored tokens, or null.
+     */
+    getStoredSession: (): Promise<StoredAuthSessionPayload | null> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'getStoredSession') as Promise<
+        StoredAuthSessionPayload | null
+      >,
+
+    /**
+     * Writes the machine-local session cache before the login window is torn down.
+     * @param session - Tokens to keep.
+     * @returns Nothing.
+     */
+    setStoredSession: (session: StoredAuthSessionPayload): Promise<void> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'setStoredSession', session) as Promise<void>,
+
+    /**
+     * Clears cached tokens. Last username is kept.
+     * @returns Nothing.
+     */
+    clearStoredSession: (): Promise<void> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'clearStoredSession') as Promise<void>,
+
+    /**
+     * Reads the last successful username for the login form.
+     * @returns Username, or an empty string.
+     */
+    getLastUsername: (): Promise<string> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'getLastUsername') as Promise<string>,
+
+    /**
+     * Remembers the last successful username.
+     * @param username - Workbench username.
+     * @returns Nothing.
+     */
+    setLastUsername: (username: string): Promise<void> =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNEL, 'setLastUsername', username) as Promise<void>,
+
+    /**
      * Subscribes to OAuth deep-link token payloads from the main process.
      * @param listener - Callback with access/refresh tokens (or error).
      * @returns Unsubscribe function.
@@ -241,6 +295,298 @@ contextBridge.exposeInMainWorld('workbench', {
      */
     set: (userId: string, appIds: string[]): Promise<void> =>
       ipcRenderer.invoke(HOME_APP_ORDER_IPC_CHANNEL, 'set', userId, appIds) as Promise<void>,
+  },
+  homeLibrary: {
+    /**
+     * Lists Home website categories from local SQLite.
+     * @returns Ordered categories.
+     */
+    listCategories: (): Promise<HomeLibraryCategoryDto[]> =>
+      ipcRenderer.invoke(HOME_LIBRARY_IPC_CHANNEL, 'listCategories') as Promise<
+        HomeLibraryCategoryDto[]
+      >,
+    /**
+     * Lists one user's websites in a category.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @returns Ordered apps.
+     */
+    listCategoryApps: (userId: string, categoryId: string): Promise<HomeLibraryAppDto[]> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'listCategoryApps',
+        userId,
+        categoryId,
+      ) as Promise<HomeLibraryAppDto[]>,
+    /**
+     * Creates a local site and links it into the user's category.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @param fields - URL and display name.
+     * @returns Created app.
+     */
+    createApp: (
+      userId: string,
+      categoryId: string,
+      fields: { url: string; name: string },
+    ): Promise<HomeLibraryAppDto> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'createApp',
+        userId,
+        categoryId,
+        fields,
+      ) as Promise<HomeLibraryAppDto>,
+    /**
+     * Links an existing local site into the user's category.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @param siteId - Site id.
+     * @returns Linked app.
+     */
+    linkSite: (userId: string, categoryId: string, siteId: string): Promise<HomeLibraryAppDto> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'linkSite',
+        userId,
+        categoryId,
+        siteId,
+      ) as Promise<HomeLibraryAppDto>,
+    /**
+     * Saves website order for one user category.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @param itemIds - Ordered site ids.
+     * @returns Nothing.
+     */
+    saveOrder: (userId: string, categoryId: string, itemIds: string[]): Promise<void> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'saveOrder',
+        userId,
+        categoryId,
+        itemIds,
+      ) as Promise<void>,
+    /**
+     * Unlinks a site from the user's category.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @param siteId - Site id.
+     * @returns Remaining apps.
+     */
+    removeApp: (
+      userId: string,
+      categoryId: string,
+      siteId: string,
+    ): Promise<HomeLibraryAppDto[]> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'removeApp',
+        userId,
+        categoryId,
+        siteId,
+      ) as Promise<HomeLibraryAppDto[]>,
+    /**
+     * Searches the local site catalog.
+     * @param userId - Auth user id.
+     * @param categoryId - Category id.
+     * @param query - Search text.
+     * @returns Matching sites not already in the category.
+     */
+    searchSites: (
+      userId: string,
+      categoryId: string,
+      query: string,
+    ): Promise<HomeLibrarySiteHitDto[]> =>
+      ipcRenderer.invoke(
+        HOME_LIBRARY_IPC_CHANNEL,
+        'searchSites',
+        userId,
+        categoryId,
+        query,
+      ) as Promise<HomeLibrarySiteHitDto[]>,
+  },
+  homeSettings: {
+    /**
+     * Loads Home / Settings appearance and widget prefs from local SQLite.
+     * @param userId - Auth user id.
+     * @returns Stored settings, or product defaults.
+     */
+    getSettings: (userId: string): Promise<HomeSettingsRecord> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'getSettings', userId) as Promise<
+        HomeSettingsRecord
+      >,
+    /**
+     * Merges a Home / Settings patch into local SQLite.
+     * @param userId - Auth user id.
+     * @param patch - Fields to overwrite.
+     * @returns Stored settings after the merge.
+     */
+    patchSettings: (
+      userId: string,
+      patch: Partial<HomeSettingsRecord>,
+    ): Promise<HomeSettingsRecord> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'patchSettings',
+        userId,
+        patch,
+      ) as Promise<HomeSettingsRecord>,
+    /**
+     * Lists local wallpaper files for one user.
+     * @param userId - Auth user id.
+     * @returns Wallpaper items with custom-protocol URLs.
+     */
+    listWallpapers: (userId: string): Promise<HomeWallpaperItemDto[]> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'listWallpapers', userId) as Promise<
+        HomeWallpaperItemDto[]
+      >,
+    /**
+     * Writes a wallpaper file and makes it active.
+     * @param userId - Auth user id.
+     * @param bytes - Full image bytes.
+     * @param mimeType - Image MIME type.
+     * @param thumbBytes - Optional thumbnail bytes.
+     * @returns Created wallpaper item.
+     */
+    addWallpaper: (
+      userId: string,
+      bytes: ArrayBuffer,
+      mimeType: string,
+      thumbBytes: ArrayBuffer | null,
+    ): Promise<HomeWallpaperItemDto> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'addWallpaper',
+        userId,
+        bytes,
+        mimeType,
+        thumbBytes,
+      ) as Promise<HomeWallpaperItemDto>,
+    /**
+     * Deletes one wallpaper file.
+     * @param userId - Auth user id.
+     * @param wallpaperId - Wallpaper row id.
+     * @returns Custom-protocol URL for the new active wallpaper, or null.
+     */
+    removeWallpaper: (userId: string, wallpaperId: string): Promise<string | null> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'removeWallpaper',
+        userId,
+        wallpaperId,
+      ) as Promise<string | null>,
+    /**
+     * Loads local todos for one user.
+     * @param userId - Auth user id.
+     * @returns Todo items.
+     */
+    listTodos: (userId: string): Promise<HomeTodoItemDto[]> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'listTodos', userId) as Promise<
+        HomeTodoItemDto[]
+      >,
+    /**
+     * Creates a local todo.
+     * @param userId - Auth user id.
+     * @param text - Todo text.
+     * @returns Created todo.
+     */
+    createTodo: (userId: string, text: string): Promise<HomeTodoItemDto> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'createTodo', userId, text) as Promise<
+        HomeTodoItemDto
+      >,
+    /**
+     * Updates whether a local todo is completed.
+     * @param userId - Auth user id.
+     * @param todoId - Todo id.
+     * @param done - Completed flag.
+     * @returns Nothing.
+     */
+    setTodoDone: (userId: string, todoId: string, done: boolean): Promise<void> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'setTodoDone',
+        userId,
+        todoId,
+        done,
+      ) as Promise<void>,
+    /**
+     * Deletes a local todo.
+     * @param userId - Auth user id.
+     * @param todoId - Todo id.
+     * @returns Nothing.
+     */
+    deleteTodo: (userId: string, todoId: string): Promise<void> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'deleteTodo', userId, todoId) as Promise<void>,
+    /**
+     * Loads the local markets-widget selection.
+     * @param userId - Auth user id.
+     * @returns Selected assets.
+     */
+    listMarketAssets: (userId: string): Promise<HomeMarketAssetDto[]> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'listMarketAssets', userId) as Promise<
+        HomeMarketAssetDto[]
+      >,
+    /**
+     * Replaces the local markets-widget selection.
+     * @param userId - Auth user id.
+     * @param assets - Selected assets.
+     * @returns Stored assets.
+     */
+    saveMarketAssets: (
+      userId: string,
+      assets: HomeMarketAssetDto[],
+    ): Promise<HomeMarketAssetDto[]> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'saveMarketAssets',
+        userId,
+        assets,
+      ) as Promise<HomeMarketAssetDto[]>,
+    /**
+     * Loads local Home search history.
+     * @param userId - Auth user id.
+     * @returns History items.
+     */
+    listSearchHistory: (userId: string): Promise<HomeSearchHistoryItemDto[]> =>
+      ipcRenderer.invoke(HOME_SETTINGS_IPC_CHANNEL, 'listSearchHistory', userId) as Promise<
+        HomeSearchHistoryItemDto[]
+      >,
+    /**
+     * Records a Home search query locally.
+     * @param userId - Auth user id.
+     * @param query - Search text.
+     * @param engine - Engine id.
+     * @returns Updated history.
+     */
+    recordSearchHistory: (
+      userId: string,
+      query: string,
+      engine: string,
+    ): Promise<HomeSearchHistoryItemDto[]> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'recordSearchHistory',
+        userId,
+        query,
+        engine,
+      ) as Promise<HomeSearchHistoryItemDto[]>,
+    /**
+     * Deletes one local search-history row.
+     * @param userId - Auth user id.
+     * @param historyId - Row id.
+     * @returns Updated history.
+     */
+    deleteSearchHistory: (
+      userId: string,
+      historyId: string,
+    ): Promise<HomeSearchHistoryItemDto[]> =>
+      ipcRenderer.invoke(
+        HOME_SETTINGS_IPC_CHANNEL,
+        'deleteSearchHistory',
+        userId,
+        historyId,
+      ) as Promise<HomeSearchHistoryItemDto[]>,
   },
   opportunityBoardLayout: {
     /**

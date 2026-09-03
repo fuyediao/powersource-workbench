@@ -38,6 +38,18 @@ func WriteCode(w http.ResponseWriter, status int, code string) {
 	WriteJSON(w, status, map[string]string{"code": code})
 }
 
+// WriteError writes a {"error": message} JSON body with the given status.
+func WriteError(w http.ResponseWriter, status int, message string) {
+	WriteJSON(w, status, map[string]string{"error": message})
+}
+
+// WriteText writes a plain-text response with the given status.
+func WriteText(w http.ResponseWriter, status int, text string) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(status)
+	_, _ = w.Write([]byte(text))
+}
+
 // DecodeJSON reads a JSON object from the request body.
 func DecodeJSON(r *http.Request, v any) error {
 	defer func() { _, _ = io.Copy(io.Discard, r.Body) }()

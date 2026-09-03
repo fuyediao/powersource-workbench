@@ -1,6 +1,7 @@
 import type { InvitationResult, WorkbenchUser } from '@/types/auth'
 import {
   persistAuthSession,
+  persistLastUsername,
   readAuthSession,
   workbenchApi,
   type StoredAuthSession,
@@ -18,13 +19,13 @@ interface AuthSessionResponse {
  * @param response - Login or refresh payload.
  * @returns The stored session.
  */
-function persistTokenResponse(response: AuthSessionResponse): StoredAuthSession {
+async function persistTokenResponse(response: AuthSessionResponse): Promise<StoredAuthSession> {
   const session = {
     accessToken: response.accessToken,
     expiresAt: Date.now() + response.expiresIn * 1000,
     refreshToken: response.refreshToken,
   }
-  persistAuthSession(session)
+  await persistAuthSession(session)
   return session
 }
 
@@ -34,8 +35,12 @@ function persistTokenResponse(response: AuthSessionResponse): StoredAuthSession 
  */
 async function ensureSession(): Promise<StoredAuthSession> {
   const session = readAuthSession()
-  if (!session) throw new Error('invalid_session')
-  if (session.expiresAt > Date.now() + 30_000) return session
+  if (!session) {
+    throw new Error('invalid_session')
+  }
+  if (session.expiresAt > Date.now() + 30_000) {
+    return session
+  }
   const response = await workbenchApi.post<AuthSessionResponse>('/auth/refresh', {
     refreshToken: session.refreshToken,
   })
@@ -49,11 +54,13 @@ async function ensureSession(): Promise<StoredAuthSession> {
  * @returns The authenticated Workbench user.
  */
 export async function signIn(username: string, password: string): Promise<WorkbenchUser> {
+  const trimmed = username.trim()
   const response = await workbenchApi.post<AuthSessionResponse>('/auth/login', {
-    username: username.trim(),
+    username: trimmed,
     password,
   })
-  persistTokenResponse(response.data)
+  await persistTokenResponse(response.data)
+  await persistLastUsername(trimmed)
   return response.data.user
 }
 
@@ -82,7 +89,7 @@ export async function signOut(): Promise<void> {
       })
     }
   } finally {
-    persistAuthSession(null)
+    await persistAuthSession(null)
   }
 }
 

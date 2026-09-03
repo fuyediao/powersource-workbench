@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { suggestEngineFor, type SearchEngine } from '@/types/search'
 import type { MarketAssetDto } from '@/utils/home/library-api'
 
@@ -34,16 +33,6 @@ export interface WeatherDto {
   timezone: string
 }
 
-interface OpenMeteoForecastResponse {
-  timezone?: string
-  current?: {
-    temperature_2m?: number
-    relative_humidity_2m?: number
-    weather_code?: number
-    wind_speed_10m?: number
-  }
-}
-
 /**
  * Invokes a network proxy method in the Electron main process.
  * @param method - Handler name.
@@ -71,67 +60,17 @@ export async function openExternalUrl(url: string): Promise<void> {
 }
 
 /**
- * Loads current weather for a coordinate via Open-Meteo (no API key).
+ * Loads current weather for a coordinate via workbench-api.
  * @param latitude - Degrees north.
  * @param longitude - Degrees east.
  * @returns Current conditions.
  */
 export async function fetchWeather(latitude: number, longitude: number): Promise<WeatherDto> {
-  const response = await axios.get<OpenMeteoForecastResponse>(
-    'https://api.open-meteo.com/v1/forecast',
-    {
-      params: {
-        latitude,
-        longitude,
-        current: 'temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m',
-        timezone: 'auto',
-        wind_speed_unit: 'kmh',
-      },
-      timeout: 8000,
-      headers: { Accept: 'application/json' },
-    },
-  )
-  const current = response.data.current
-  if (
-    !current ||
-    typeof current.temperature_2m !== 'number' ||
-    typeof current.weather_code !== 'number'
-  ) {
-    throw new Error('Weather response incomplete')
-  }
-  return {
-    temperatureC: current.temperature_2m,
-    humidity: typeof current.relative_humidity_2m === 'number' ? current.relative_humidity_2m : 0,
-    windSpeedKmh: typeof current.wind_speed_10m === 'number' ? current.wind_speed_10m : 0,
-    weatherCode: current.weather_code,
-    timezone: response.data.timezone ?? 'auto',
-  }
-}
-
-interface BigDataCloudReverseResponse {
-  city?: string
-  locality?: string
-  principalSubdivision?: string
-  countryName?: string
+  return netCall<WeatherDto>('fetchWeather', latitude, longitude)
 }
 
 /**
- * Maps an app locale to a BigDataCloud locality language code.
- * @param language - App UI language.
- * @returns Provider language tag.
- */
-function placeLanguage(language: string): string {
-  if (language === 'zh-TW') {
-    return 'zh-TW'
-  }
-  if (language === 'zh-CN') {
-    return 'zh'
-  }
-  return 'en'
-}
-
-/**
- * Resolves a human-readable place name for coordinates (no API key).
+ * Resolves a human-readable place name for coordinates via workbench-api.
  * @param latitude - Degrees north.
  * @param longitude - Degrees east.
  * @param language - App UI language for localized names.
@@ -142,31 +81,8 @@ export async function fetchPlaceName(
   longitude: number,
   language: string,
 ): Promise<string | null> {
-  const response = await axios.get<BigDataCloudReverseResponse>(
-    'https://api.bigdatacloud.net/data/reverse-geocode-client',
-    {
-      params: {
-        latitude,
-        longitude,
-        localityLanguage: placeLanguage(language),
-      },
-      timeout: 8000,
-      headers: { Accept: 'application/json' },
-    },
-  )
-  const city = response.data.city?.trim() || response.data.locality?.trim()
-  const region = response.data.principalSubdivision?.trim()
-  if (city && region && city !== region) {
-    return `${city}, ${region}`
-  }
-  if (city) {
-    return city
-  }
-  if (region) {
-    return region
-  }
-  const country = response.data.countryName?.trim()
-  return country || null
+  const place = await netCall<string | null>('fetchPlaceName', latitude, longitude, language)
+  return typeof place === 'string' && place.trim() ? place : null
 }
 
 export interface PlaceSearchHitDto {
@@ -177,36 +93,8 @@ export interface PlaceSearchHitDto {
   longitude: number
 }
 
-interface OpenMeteoGeocodeResult {
-  id?: number
-  name?: string
-  latitude?: number
-  longitude?: number
-  admin1?: string
-  country?: string
-}
-
-interface OpenMeteoGeocodeResponse {
-  results?: OpenMeteoGeocodeResult[]
-}
-
 /**
- * Maps an app locale to an Open-Meteo geocoding language code.
- * @param language - App UI language.
- * @returns Provider language tag.
- */
-function geocodeLanguage(language: string): string {
-  if (language === 'zh-TW') {
-    return 'zh_tw'
-  }
-  if (language === 'zh-CN') {
-    return 'zh'
-  }
-  return 'en'
-}
-
-/**
- * Searches cities / places via Open-Meteo geocoding (no API key).
+ * Searches cities / places via workbench-api.
  * @param query - Free-text place name.
  * @param language - App UI language for localized names.
  * @returns Matching places.
@@ -219,40 +107,7 @@ export async function searchPlaces(
   if (!trimmed) {
     return []
   }
-  const response = await axios.get<OpenMeteoGeocodeResponse>(
-    'https://geocoding-api.open-meteo.com/v1/search',
-    {
-      params: {
-        name: trimmed,
-        count: 8,
-        language: geocodeLanguage(language),
-        format: 'json',
-      },
-      timeout: 8000,
-      headers: { Accept: 'application/json' },
-    },
-  )
-  return (response.data.results ?? [])
-    .filter(
-      (row): row is OpenMeteoGeocodeResult & { name: string; latitude: number; longitude: number } =>
-        typeof row.name === 'string' &&
-        typeof row.latitude === 'number' &&
-        typeof row.longitude === 'number',
-    )
-    .map((row) => {
-      const region = row.admin1?.trim()
-      const country = row.country?.trim()
-      const detailParts = [region, country].filter(
-        (part): part is string => Boolean(part) && part !== row.name,
-      )
-      return {
-        id: String(row.id ?? `${row.latitude},${row.longitude}`),
-        name: row.name.trim(),
-        detail: detailParts.join(', '),
-        latitude: row.latitude,
-        longitude: row.longitude,
-      }
-    })
+  return netCall<PlaceSearchHitDto[]>('searchPlaces', trimmed, language)
 }
 
 /**
@@ -329,14 +184,6 @@ export interface CurrencyCatalogEntry {
   kind: 'fiat' | 'crypto'
 }
 
-const CURRENCY_API_BASE =
-  'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1'
-
-interface CurrencyApiResponse {
-  date?: string
-  [base: string]: string | Record<string, number> | undefined
-}
-
 let currencyCatalogPromise: Promise<CurrencyCatalogEntry[]> | null = null
 
 /**
@@ -367,32 +214,13 @@ export function normalizeCurrencyCode(code: string): CurrencyCode | null {
 }
 
 /**
- * Loads the full fiat + crypto catalog from the public FX feed (cached).
+ * Loads the full fiat + crypto catalog via workbench-api (cached).
  * @returns Catalog entries sorted by code.
  */
 export async function fetchCurrencyCatalog(): Promise<CurrencyCatalogEntry[]> {
   if (!currencyCatalogPromise) {
-    currencyCatalogPromise = axios
-      .get<Record<string, string>>(`${CURRENCY_API_BASE}/currencies.json`, {
-        timeout: 10_000,
-        headers: { Accept: 'application/json' },
-      })
-      .then((response) =>
-        Object.entries(response.data)
-          .map(([raw, name]) => {
-            const code = normalizeCurrencyCode(raw)
-            if (!code) {
-              return null
-            }
-            return {
-              code,
-              name: typeof name === 'string' && name.trim() ? name.trim() : code,
-              kind: isFiatCurrencyCode(code) ? ('fiat' as const) : ('crypto' as const),
-            }
-          })
-          .filter((entry): entry is CurrencyCatalogEntry => entry !== null)
-          .sort((a, b) => a.code.localeCompare(b.code)),
-      )
+    currencyCatalogPromise = netCall<CurrencyCatalogEntry[]>('fetchCurrencyCatalog')
+      .then((entries) => (Array.isArray(entries) ? entries : []))
       .catch((error: unknown) => {
         currencyCatalogPromise = null
         throw error
@@ -425,7 +253,7 @@ export function filterCurrencyCatalog(
 }
 
 /**
- * Converts an amount between two currencies via a free public FX feed.
+ * Converts an amount between two currencies via workbench-api.
  * @param amount - Source amount.
  * @param from - Source currency code.
  * @param to - Target currency code.
@@ -451,32 +279,5 @@ export async function fetchCurrencyConvert(
       date: new Date().toISOString().slice(0, 10),
     }
   }
-  const base = source.toLowerCase()
-  const quote = target.toLowerCase()
-  const response = await axios.get<CurrencyApiResponse>(
-    `${CURRENCY_API_BASE}/currencies/${base}.json`,
-    {
-      timeout: 8000,
-      headers: { Accept: 'application/json' },
-    },
-  )
-  const table = response.data[base]
-  const unitRate =
-    table && typeof table === 'object' && typeof table[quote] === 'number'
-      ? table[quote]
-      : null
-  if (unitRate === null) {
-    throw new Error('Currency response incomplete')
-  }
-  return {
-    amount,
-    from: source,
-    to: target,
-    rate: unitRate,
-    result: amount * unitRate,
-    date:
-      typeof response.data.date === 'string'
-        ? response.data.date
-        : new Date().toISOString().slice(0, 10),
-  }
+  return netCall<CurrencyConvertDto>('fetchCurrencyConvert', amount, source, target)
 }

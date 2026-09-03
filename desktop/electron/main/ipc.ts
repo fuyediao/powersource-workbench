@@ -12,6 +12,8 @@ import {
   NET_IPC_CHANNEL,
   OFFICE_WORKSPACE_LEGACY_IPC_CHANNEL,
   HOME_APP_ORDER_IPC_CHANNEL,
+  HOME_LIBRARY_IPC_CHANNEL,
+  HOME_SETTINGS_IPC_CHANNEL,
   OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
@@ -31,11 +33,46 @@ import {
 import { fetchSuggestions } from './net/suggest'
 import { fetchMarketQuotes, searchMarketAssets } from './net/markets'
 import { fetchNewsBriefing } from './net/news'
+import { fetchCurrencyCatalog, fetchCurrencyConvert } from './net/currency'
+import { fetchPlaceName, fetchWeather, searchPlaces } from './net/weather'
 import {
   exportLegacyOfficeWorkspaceFiles,
   retireLegacyOfficeWorkspace,
 } from './office-workspace-legacy-export'
+import {
+  clearStoredAuthSession,
+  getLastUsername,
+  getStoredAuthSession,
+  setLastUsername,
+  setStoredAuthSession,
+} from './auth-session-store'
 import { getHomeAppOrder, setHomeAppOrder } from './home-app-order'
+import {
+  createHomeLibraryApp,
+  linkHomeLibrarySite,
+  listHomeLibraryCategories,
+  listHomeLibraryCategoryApps,
+  removeHomeLibraryApp,
+  saveHomeLibraryCategoryOrder,
+  searchHomeLibrarySites,
+} from './home-library'
+import {
+  addHomeWallpaper,
+  createHomeTodo,
+  deleteHomeSearchHistory,
+  deleteHomeTodo,
+  getHomeSettings,
+  listHomeMarketAssets,
+  listHomeSearchHistory,
+  listHomeTodos,
+  listHomeWallpapers,
+  patchHomeSettings,
+  recordHomeSearchHistory,
+  removeHomeWallpaper,
+  saveHomeMarketAssets,
+  setHomeTodoDone,
+} from './home-settings'
+import type { HomeMarketAssetDto, HomeSettingsRecord } from '../shared/home-settings'
 import {
   clearOpportunityBoardLayout,
   getOpportunityBoardLayout,
@@ -88,6 +125,48 @@ const netHandlers = {
    * @returns Feed items.
    */
   fetchNewsBriefing: async () => fetchNewsBriefing(1),
+
+  /**
+   * Loads current weather for a coordinate.
+   * @param latitude - Degrees north.
+   * @param longitude - Degrees east.
+   * @returns Current conditions.
+   */
+  fetchWeather: async (latitude: number, longitude: number) => fetchWeather(latitude, longitude),
+
+  /**
+   * Reverse-geocodes a coordinate.
+   * @param latitude - Degrees north.
+   * @param longitude - Degrees east.
+   * @param language - App UI language.
+   * @returns Place label, or null.
+   */
+  fetchPlaceName: async (latitude: number, longitude: number, language: string) =>
+    fetchPlaceName(latitude, longitude, language),
+
+  /**
+   * Searches cities and places.
+   * @param query - Free-text place name.
+   * @param language - App UI language.
+   * @returns Matching places.
+   */
+  searchPlaces: async (query: string, language: string) => searchPlaces(query, language),
+
+  /**
+   * Loads the fiat and crypto FX catalog.
+   * @returns Catalog entries.
+   */
+  fetchCurrencyCatalog: async () => fetchCurrencyCatalog(),
+
+  /**
+   * Converts an amount between two currencies.
+   * @param amount - Source amount.
+   * @param from - Source currency code.
+   * @param to - Target currency code.
+   * @returns Conversion result.
+   */
+  fetchCurrencyConvert: async (amount: number, from: string, to: string) =>
+    fetchCurrencyConvert(amount, from, to),
 } as const
 
 /**
@@ -123,6 +202,142 @@ function requiredStringArray(value: unknown, label: string): string[] {
     throw new Error(`${label} must be an array.`)
   }
   return value.map((item) => requiredString(item, label))
+}
+
+/**
+ * Reads an ArrayBuffer (or view) received over IPC.
+ * @param value - Candidate bytes.
+ * @param label - Field label used in errors.
+ * @returns Copy as Uint8Array.
+ */
+function requiredBytes(value: unknown, label: string): Uint8Array {
+  if (value instanceof Uint8Array) {
+    return value
+  }
+  if (value instanceof ArrayBuffer) {
+    return new Uint8Array(value)
+  }
+  throw new Error(`${label} is required.`)
+}
+
+/**
+ * Reads optional thumbnail bytes received over IPC.
+ * @param value - Candidate bytes, or null.
+ * @returns Copy as Uint8Array, or null.
+ */
+function optionalBytes(value: unknown): Uint8Array | null {
+  if (value == null) {
+    return null
+  }
+  return requiredBytes(value, 'Wallpaper thumbnail')
+}
+
+/**
+ * Picks known Home settings fields from an IPC payload.
+ * @param value - Partial settings object.
+ * @returns Typed patch.
+ */
+function parseHomeSettingsPatch(value: unknown): Partial<HomeSettingsRecord> {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Home settings payload is required.')
+  }
+  const raw = value as Record<string, unknown>
+  const patch: Partial<HomeSettingsRecord> = {}
+  const stringKeys: (keyof HomeSettingsRecord)[] = [
+    'searchEngine',
+    'appearanceTheme',
+    'accentHue',
+    'clockAccentHue',
+    'currencyFrom',
+    'currencyTo',
+    'weatherPlace',
+    'weatherSource',
+    'backgroundPath',
+  ]
+  for (const key of stringKeys) {
+    if (typeof raw[key] === 'string' || raw[key] === null) {
+      ;(patch as Record<string, unknown>)[key] = raw[key]
+    }
+  }
+  const numberKeys: (keyof HomeSettingsRecord)[] = [
+    'panelOpacity',
+    'searchPanelOpacity',
+    'backgroundOpacity',
+    'accentShade',
+    'clockAccentShade',
+    'iconRadius',
+    'searchRadius',
+    'wallpaperRotateSeconds',
+    'weatherLatitude',
+    'weatherLongitude',
+  ]
+  for (const key of numberKeys) {
+    if (typeof raw[key] === 'number' || raw[key] === null) {
+      ;(patch as Record<string, unknown>)[key] = raw[key]
+    }
+  }
+  const boolKeys: (keyof HomeSettingsRecord)[] = [
+    'wallpaperRotateEnabled',
+    'showWeather',
+    'showMarkets',
+    'showNews',
+    'showTodo',
+    'showCurrency',
+    'showSchedule',
+    'showMail',
+    'showFocus',
+    'showApps',
+    'peekApps',
+  ]
+  for (const key of boolKeys) {
+    if (typeof raw[key] === 'boolean') {
+      ;(patch as Record<string, unknown>)[key] = raw[key]
+    }
+  }
+  const arrayKeys: (keyof HomeSettingsRecord)[] = [
+    'asideWidgetOrderLeft',
+    'asideWidgetOrderRight',
+    'asideWidgetOrder',
+  ]
+  for (const key of arrayKeys) {
+    if (Array.isArray(raw[key])) {
+      ;(patch as Record<string, unknown>)[key] = raw[key]
+    }
+  }
+  return patch
+}
+
+/**
+ * Parses a market-asset list from IPC.
+ * @param value - Candidate array.
+ * @returns Sanitized assets.
+ */
+function parseMarketAssets(value: unknown): HomeMarketAssetDto[] {
+  if (!Array.isArray(value)) {
+    throw new Error('Market assets must be an array.')
+  }
+  return value.flatMap((item) => {
+    if (!item || typeof item !== 'object') {
+      return []
+    }
+    const record = item as Record<string, unknown>
+    if (
+      typeof record.id !== 'string'
+      || typeof record.symbol !== 'string'
+      || typeof record.name !== 'string'
+      || (record.kind !== 'crypto' && record.kind !== 'stock')
+    ) {
+      return []
+    }
+    return [
+      {
+        id: record.id,
+        symbol: record.symbol,
+        name: record.name,
+        kind: record.kind,
+      },
+    ]
+  })
 }
 
 /** Deep link received before any BrowserWindow existed. */
@@ -207,6 +422,37 @@ export function registerIpcHandlers(): void {
       await applyRendererSignedIn(args[0] === true)
       return
     }
+    if (method === 'getStoredSession') {
+      return getStoredAuthSession()
+    }
+    if (method === 'setStoredSession') {
+      const payload = args[0]
+      if (!payload || typeof payload !== 'object') {
+        throw new Error('Auth session payload is required.')
+      }
+      const record = payload as {
+        accessToken?: unknown
+        expiresAt?: unknown
+        refreshToken?: unknown
+      }
+      setStoredAuthSession({
+        accessToken: requiredString(record.accessToken, 'Auth access token'),
+        refreshToken: requiredString(record.refreshToken, 'Auth refresh token'),
+        expiresAt: typeof record.expiresAt === 'number' ? record.expiresAt : 0,
+      })
+      return
+    }
+    if (method === 'clearStoredSession') {
+      clearStoredAuthSession()
+      return
+    }
+    if (method === 'getLastUsername') {
+      return getLastUsername()
+    }
+    if (method === 'setLastUsername') {
+      setLastUsername(requiredString(args[0], 'Auth username'))
+      return
+    }
     throw new Error(`Unknown auth method: ${method}`)
   })
 
@@ -246,6 +492,151 @@ export function registerIpcHandlers(): void {
         return null
       }
       throw new Error(`Unknown home app order method: ${method}`)
+    },
+  )
+
+  ipcMain.handle(
+    HOME_LIBRARY_IPC_CHANNEL,
+    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
+      if (method === 'listCategories') {
+        return listHomeLibraryCategories()
+      }
+      if (method === 'listCategoryApps') {
+        return listHomeLibraryCategoryApps(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+        )
+      }
+      if (method === 'createApp') {
+        const fields = args[2]
+        if (!fields || typeof fields !== 'object') {
+          throw new Error('Home library app fields are required.')
+        }
+        const record = fields as { url?: unknown; name?: unknown }
+        return createHomeLibraryApp(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+          {
+            url: requiredString(record.url, 'Home library url'),
+            name: requiredString(record.name, 'Home library name'),
+          },
+        )
+      }
+      if (method === 'linkSite') {
+        return linkHomeLibrarySite(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+          requiredString(args[2], 'Home library site id'),
+        )
+      }
+      if (method === 'saveOrder') {
+        saveHomeLibraryCategoryOrder(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+          requiredStringArray(args[2], 'Home library site id'),
+        )
+        return null
+      }
+      if (method === 'removeApp') {
+        return removeHomeLibraryApp(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+          requiredString(args[2], 'Home library site id'),
+        )
+      }
+      if (method === 'searchSites') {
+        if (typeof args[2] !== 'string') {
+          throw new Error('Home library search is required.')
+        }
+        return searchHomeLibrarySites(
+          requiredString(args[0], 'Home library user id'),
+          requiredString(args[1], 'Home library category id'),
+          args[2],
+        )
+      }
+      throw new Error(`Unknown home library method: ${method}`)
+    },
+  )
+
+  ipcMain.handle(
+    HOME_SETTINGS_IPC_CHANNEL,
+    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
+      if (method === 'getSettings') {
+        return getHomeSettings(requiredString(args[0], 'Home settings user id'))
+      }
+      if (method === 'patchSettings') {
+        return patchHomeSettings(
+          requiredString(args[0], 'Home settings user id'),
+          parseHomeSettingsPatch(args[1]),
+        )
+      }
+      if (method === 'listWallpapers') {
+        return listHomeWallpapers(requiredString(args[0], 'Home settings user id'))
+      }
+      if (method === 'addWallpaper') {
+        return addHomeWallpaper(
+          requiredString(args[0], 'Home settings user id'),
+          requiredBytes(args[1], 'Wallpaper bytes'),
+          requiredString(args[2], 'Wallpaper MIME type'),
+          optionalBytes(args[3]),
+        )
+      }
+      if (method === 'removeWallpaper') {
+        return removeHomeWallpaper(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Wallpaper id'),
+        )
+      }
+      if (method === 'listTodos') {
+        return listHomeTodos(requiredString(args[0], 'Home settings user id'))
+      }
+      if (method === 'createTodo') {
+        return createHomeTodo(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Todo text'),
+        )
+      }
+      if (method === 'setTodoDone') {
+        setHomeTodoDone(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Todo id'),
+          args[2] === true,
+        )
+        return null
+      }
+      if (method === 'deleteTodo') {
+        deleteHomeTodo(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Todo id'),
+        )
+        return null
+      }
+      if (method === 'listMarketAssets') {
+        return listHomeMarketAssets(requiredString(args[0], 'Home settings user id'))
+      }
+      if (method === 'saveMarketAssets') {
+        return saveHomeMarketAssets(
+          requiredString(args[0], 'Home settings user id'),
+          parseMarketAssets(args[1]),
+        )
+      }
+      if (method === 'listSearchHistory') {
+        return listHomeSearchHistory(requiredString(args[0], 'Home settings user id'))
+      }
+      if (method === 'recordSearchHistory') {
+        return recordHomeSearchHistory(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Search query'),
+          requiredString(args[2], 'Search engine'),
+        )
+      }
+      if (method === 'deleteSearchHistory') {
+        return deleteHomeSearchHistory(
+          requiredString(args[0], 'Home settings user id'),
+          requiredString(args[1], 'Search history id'),
+        )
+      }
+      throw new Error(`Unknown home settings method: ${method}`)
     },
   )
 
