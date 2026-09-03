@@ -35,5 +35,7 @@
   "signOut": "Sign out",
   "title": "Welcome back",
   "username": "Username",
-  "welcomeBack": "Welcome back!"
+  "usernamePlaceholder": "Enter your username",
+  "welcomeBack": "Welcome back!",
+  "wordmark": "PS Workbench"
 }

@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Showed the PS Workbench wordmark beside the sign-in mark.
+- Added username and password placeholders on the compact sign-in form.
 - Used Workbench in everyday chrome (window, tray, menu, title bar) and kept PowerSource Workbench for the installer, About panel, and legal copy.
 - Loaded Home weather, FX, stock and crypto quotes, news, and search suggestions from workbench-api `/start/*` instead of calling those third-party APIs from the renderer.
 - Stored Home and Settings appearance (theme, widgets, wallpapers, opacities, search engine, weather, currency, todos, and search history) in local SQLite instead of company Supabase.

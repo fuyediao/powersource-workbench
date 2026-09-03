@@ -35,5 +35,7 @@
   "signOut": "登出",
   "title": "欢迎回来",
   "username": "用户名",
-  "welcomeBack": "欢迎回来！"
+  "usernamePlaceholder": "请输入用户名",
+  "welcomeBack": "欢迎回来！",
+  "wordmark": "PS Workbench"
 }

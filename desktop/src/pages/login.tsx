@@ -51,7 +51,10 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
       <section className="login-form-panel">
         <form className="login-card" onSubmit={(event) => void handleSubmit(event)}>
           <div className="login-header">
-            <div className="login-icon"><PowersourceBrandIcon width={32} height={32} /></div>
+            <div className="login-brand">
+              <div className="login-icon"><PowersourceBrandIcon width={32} height={32} /></div>
+              <p className="login-wordmark">{t('auth.wordmark')}</p>
+            </div>
             <h2>{t('auth.title')}</h2>
           </div>
           <label>
@@ -59,6 +62,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
             <input
               autoComplete="username"
               autoFocus={usernameReady && username.length === 0}
+              placeholder={t('auth.usernamePlaceholder')}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               required
@@ -70,6 +74,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
               autoComplete="current-password"
               autoFocus={usernameReady && username.length > 0}
               type="password"
+              placeholder={t('auth.passwordPlaceholder')}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
