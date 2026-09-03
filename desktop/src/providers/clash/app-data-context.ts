@@ -8,7 +8,7 @@ import type { ProxyViewV1 } from '@/types/clash/proxy-view'
  * one, `useAppRefreshers` in another). A string key on `globalThis` keeps a
  * single context identity so Home cards still see `AppDataProvider`.
  */
-const CLASH_APP_DATA_CONTEXTS_KEY = '__geocrmClashAppDataContexts'
+const CLASH_APP_DATA_CONTEXTS_KEY = '__workbenchClashAppDataContexts'
 
 export interface ProxiesContextType {
   proxyView: ProxyViewV1 | undefined

@@ -111,7 +111,7 @@
   },
   "form": {
     "companyName": "公司名稱",
-    "companyNamePlaceholder": "例：GeoCRM 科技",
+    "companyNamePlaceholder": "例：Workbench 科技",
     "selectCompany": "請選擇公司",
     "searchCompanyPlaceholder": "搜尋公司名稱或編號...",
     "companyPickerClose": "關閉公司選單",

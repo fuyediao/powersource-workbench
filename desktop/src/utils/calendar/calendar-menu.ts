@@ -221,7 +221,7 @@ function emitSnapshot(): void {
  * @returns True on macOS with a native application menu.
  */
 export function usesNativeCalendarMenu(): boolean {
-  return Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  return Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 }
 
 /**

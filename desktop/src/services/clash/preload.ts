@@ -6,18 +6,18 @@ import {
   resolveLanguage,
 } from './i18n'
 
-const GEOCRM_LANGUAGE_KEY = 'geocrm-language'
+const WORKBENCH_LANGUAGE_KEY = 'workbench-language'
 
 /**
- * Reads GeoCRM's persisted UI language so Clash matches the host locale.
+ * Reads Workbench's persisted UI language so Clash matches the host locale.
  * @returns Clash language code, or undefined when unset.
  */
-function getGeocrmHostLanguage(): string | undefined {
+function getWorkbenchHostLanguage(): string | undefined {
   if (typeof window === 'undefined') {
     return undefined
   }
   try {
-    const saved = window.localStorage.getItem(GEOCRM_LANGUAGE_KEY)
+    const saved = window.localStorage.getItem(WORKBENCH_LANGUAGE_KEY)
     return saved ? resolveLanguage(saved) : undefined
   } catch {
     return undefined
@@ -79,7 +79,7 @@ const preloadLanguage = async (
   vergeConfig?: IVergeConfig | null,
   loadConfig: () => Promise<IVergeConfig | null> = preloadConfig,
 ) => {
-  const hostLanguage = getGeocrmHostLanguage()
+  const hostLanguage = getWorkbenchHostLanguage()
   if (hostLanguage) {
     return hostLanguage
   }

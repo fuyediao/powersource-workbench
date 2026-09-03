@@ -7,11 +7,11 @@ import {
   writeAdminActivePath,
 } from '@/utils/admin-active-path'
 
-const OPEN_EVENT = 'geocrm:open-kanban'
-const PATH_EVENT = 'geocrm:kanban-path'
+const OPEN_EVENT = 'workbench:open-kanban'
+const PATH_EVENT = 'workbench:kanban-path'
 
 /** Sidebar mode + active-path storage for the Kanban Function. */
-export const KANBAN_SIDEBAR_MODE_KEY = 'geocrm-electron-kanban-sidebar-mode'
+export const KANBAN_SIDEBAR_MODE_KEY = 'workbench-electron-kanban-sidebar-mode'
 
 const KANBAN_ROOTS = ['/kanban/workbench', '/kanban/opportunities', '/kanban/sales'] as const
 

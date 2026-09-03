@@ -97,7 +97,7 @@ export function groupVisibleSettingsSections(
 }
 
 /** sessionStorage key for the last selected Settings sidebar section. */
-export const SETTINGS_SECTION_SESSION_KEY = 'geocrm.electron.settingsSection.v1'
+export const SETTINGS_SECTION_SESSION_KEY = 'workbench.electron.settingsSection.v1'
 
 /**
  * Whether a value is a known Settings section id.

@@ -205,7 +205,7 @@ function officeKindIcon(kind: OfficeFeatureId, className: string): ReactNode {
 export function OfficeLibrarySidebar(props: OfficeLibrarySidebarProps) {
   const { t, i18n } = useTranslation()
   const asideRef = useRef<HTMLElement>(null)
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const hoverOverlay = props.mode === 'hover'
   const collapsed = !props.expanded
   const sensors = useSensors(

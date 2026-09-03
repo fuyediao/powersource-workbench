@@ -404,7 +404,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         }
         const ics = serializeIcs(drafts, t('calendar.ics.exportName'))
         downloadBlob(
-          `geocrm-calendar-${new Date().toISOString().slice(0, 10)}.ics`,
+          `workbench-calendar-${new Date().toISOString().slice(0, 10)}.ics`,
           new Blob([ics], { type: 'text/calendar;charset=utf-8' }),
         )
       } catch (err) {

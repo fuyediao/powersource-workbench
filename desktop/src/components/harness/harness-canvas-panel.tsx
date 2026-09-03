@@ -73,7 +73,7 @@ export function HarnessCanvasPanel({ cwd, active }: HarnessCanvasPanelProps) {
    * @returns True when no save is needed or the save succeeds.
    */
   const saveDraft = useCallback(async (): Promise<boolean> => {
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     const path = selectedPathRef.current
     if (!dirtyRef.current || !path) return true
     if (!bridge?.writeCanvasFile) {
@@ -107,7 +107,7 @@ export function HarnessCanvasPanel({ cwd, active }: HarnessCanvasPanelProps) {
    * @returns Nothing.
    */
   const loadFile = useCallback(async (path: string): Promise<void> => {
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     if (!bridge?.readWorkspaceFile) return
     if (!(await saveDraft())) return
     const generation = ++refreshGenerationRef.current
@@ -131,7 +131,7 @@ export function HarnessCanvasPanel({ cwd, active }: HarnessCanvasPanelProps) {
 
   /** Reloads the Canvas folder and selected file without overwriting unsaved edits. */
   const refresh = useCallback(async (showLoading = false): Promise<void> => {
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     if (!bridge?.listWorkspace || !bridge.readWorkspaceFile) {
       setError(t('harness.utility.unavailable'))
       setLoading(false)
@@ -205,7 +205,7 @@ export function HarnessCanvasPanel({ cwd, active }: HarnessCanvasPanelProps) {
   }, [dirty, draft, saveDraft])
 
   useEffect(() => {
-    const subscribe = window.geocrm?.harness?.onCanvasConsole
+    const subscribe = window.workbench?.harness?.onCanvasConsole
     if (!subscribe) return
     return subscribe((entry) => {
       const level: CanvasConsoleLevel = entry.level === 'warning' ? 'warn' : entry.level
@@ -220,7 +220,7 @@ export function HarnessCanvasPanel({ cwd, active }: HarnessCanvasPanelProps) {
   const activeContent = dirty ? draft : (preview?.content ?? '')
 
   useEffect(() => {
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     const host = previewHostRef.current
     if (!bridge?.showCanvasPreview || !bridge.hideCanvasPreview || !active || view !== 'preview' || kind !== 'html' || !host) {
       void bridge?.hideCanvasPreview?.()

@@ -487,7 +487,7 @@ export function HarnessComposer({
    * @returns Nothing.
    */
   const addFiles = useCallback(async (): Promise<void> => {
-    const paths = (await window.geocrm?.harness?.pickFiles()) ?? []
+    const paths = (await window.workbench?.harness?.pickFiles()) ?? []
     setDropError('')
     setAttachments((current) => {
       const known = new Set(current.map((item) => item.path))
@@ -504,7 +504,7 @@ export function HarnessComposer({
    * @returns Nothing.
    */
   const addFolder = useCallback(async (): Promise<void> => {
-    const folder = await window.geocrm?.harness?.pickAttachmentFolder()
+    const folder = await window.workbench?.harness?.pickAttachmentFolder()
     if (folder) {
       setDropError('')
       setAttachments((current) =>

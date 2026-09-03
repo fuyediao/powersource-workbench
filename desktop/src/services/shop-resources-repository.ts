@@ -1,6 +1,6 @@
 /**
  * Supabase CRUD for shop Resources CMS (image ZIP packs, PDF documents, blog posts).
- * Admin UI: GeoCRM /admin/obm?tab=resources.
+ * Admin UI: Workbench /admin/obm?tab=resources.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

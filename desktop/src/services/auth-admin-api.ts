@@ -1,11 +1,11 @@
 /**
- * GeoCRM system-admin user management API (geocrm-api `/auth/admin/*`).
+ * Workbench system-admin user management API (workbench-api `/auth/admin/*`).
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 
-/** Minimum password length enforced by geocrm-api. */
+/** Minimum password length enforced by workbench-api. */
 export const AUTH_ADMIN_PASSWORD_MIN_LENGTH = 8
 
 /** Employee-id format accepted by create/edit forms (PS####). */
@@ -56,7 +56,7 @@ export interface UpdateAuthUserInput {
 }
 
 /**
- * Returns true when the unified GeoCRM API origin is configured.
+ * Returns true when the unified Workbench API origin is configured.
  * @returns Whether auth-admin calls can run.
  */
 export function isAuthAdminApiConfigured(): boolean {
@@ -64,7 +64,7 @@ export function isAuthAdminApiConfigured(): boolean {
 }
 
 /**
- * Supabase access token for authenticated geocrm-api calls.
+ * Supabase access token for authenticated workbench-api calls.
  * @returns Access token or null when not signed in.
  */
 async function getToken(): Promise<string | null> {
@@ -104,12 +104,12 @@ async function getToken(): Promise<string | null> {
 }
 
 /**
- * Authenticated JSON fetch to geocrm-api.
+ * Authenticated JSON fetch to workbench-api.
  * @param path - Absolute API path (e.g. `/auth/admin/users`).
  * @param init - Fetch init options.
  * @returns Parsed JSON body.
  */
-async function geocrmFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+async function workbenchFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base) {
     throw new Error('VITE_DEPLOYMENT_DOMAIN is not configured')
@@ -134,7 +134,7 @@ async function geocrmFetch<T>(path: string, init: RequestInit = {}): Promise<T> 
       res = await runFetch(token)
     } catch (e) {
       const reason = e instanceof Error ? e.message : 'Network error'
-      throw new Error(`${reason}. Cannot reach geocrm-api (${base}).`)
+      throw new Error(`${reason}. Cannot reach workbench-api (${base}).`)
     }
     if (res.status !== 401 || !supabase) {
       break
@@ -165,7 +165,7 @@ export async function listAuthUsers(
     query.set('search', params.search.trim())
   }
 
-  const data = await geocrmFetch<{ users: AuthAdminUser[]; page: number; per_page: number }>(
+  const data = await workbenchFetch<{ users: AuthAdminUser[]; page: number; per_page: number }>(
     `/auth/admin/users?${query.toString()}`,
   )
   return { users: data.users ?? [], page: data.page, perPage: data.per_page }
@@ -177,7 +177,7 @@ export async function listAuthUsers(
  * @returns Created user.
  */
 export async function createAuthUser(input: CreateAuthUserInput): Promise<AuthAdminUser> {
-  const data = await geocrmFetch<{ user: AuthAdminUser }>(`/auth/admin/users`, {
+  const data = await workbenchFetch<{ user: AuthAdminUser }>(`/auth/admin/users`, {
     method: 'POST',
     body: JSON.stringify({
       email: input.email,
@@ -208,7 +208,7 @@ export async function updateAuthUser(id: string, input: UpdateAuthUserInput): Pr
     body.banned = input.banned
   }
 
-  const data = await geocrmFetch<{ user: AuthAdminUser }>(`/auth/admin/users/${encodeURIComponent(id)}`, {
+  const data = await workbenchFetch<{ user: AuthAdminUser }>(`/auth/admin/users/${encodeURIComponent(id)}`, {
     method: 'PATCH',
     body: JSON.stringify(body),
   })
@@ -220,7 +220,7 @@ export async function updateAuthUser(id: string, input: UpdateAuthUserInput): Pr
  * @param id - Supabase auth user id.
  */
 export async function inviteAuthUser(id: string): Promise<void> {
-  await geocrmFetch<{ ok: boolean }>(`/auth/admin/users/${encodeURIComponent(id)}/invite`, {
+  await workbenchFetch<{ ok: boolean }>(`/auth/admin/users/${encodeURIComponent(id)}/invite`, {
     method: 'POST',
   })
 }
@@ -230,7 +230,7 @@ export async function inviteAuthUser(id: string): Promise<void> {
  * @param id - Supabase auth user id.
  */
 export async function deleteAuthUser(id: string): Promise<void> {
-  await geocrmFetch<{ ok: boolean }>(`/auth/admin/users/${encodeURIComponent(id)}`, {
+  await workbenchFetch<{ ok: boolean }>(`/auth/admin/users/${encodeURIComponent(id)}`, {
     method: 'DELETE',
   })
 }

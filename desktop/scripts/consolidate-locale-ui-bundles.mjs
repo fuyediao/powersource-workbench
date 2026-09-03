@@ -3,7 +3,7 @@
  * per namespace (merged into the parent by load-locales). Skips `mail`
  * (already thematic) and leaves existing object files untouched.
  *
- * Run from geocrm-electron: `node scripts/consolidate-locale-ui-bundles.mjs`
+ * Run from workbench-electron: `node scripts/consolidate-locale-ui-bundles.mjs`
  */
 
 import fs from 'node:fs'

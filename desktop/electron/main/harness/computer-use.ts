@@ -169,7 +169,7 @@ async function captureWindow(target: HarnessComputerTarget): Promise<ComputerUse
   if (source && !source.thumbnail.isEmpty()) {
     return capturePayload(source.thumbnail.toPNG(), resolved.bounds)
   }
-  const path = await screen.captureRegion(`geocrm-harness-window-${Date.now()}`, {
+  const path = await screen.captureRegion(`workbench-harness-window-${Date.now()}`, {
     left: resolved.bounds.x,
     top: resolved.bounds.y,
     width: resolved.bounds.width,

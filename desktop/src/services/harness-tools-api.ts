@@ -1,10 +1,10 @@
 /**
- * First-party GeoCRM tools for Harness, via geocrm-api
+ * First-party Workbench tools for Harness, via workbench-api
  * `/ai/harness/tools/{tool}`.
  *
  * These reuse the same CRM implementation and desktop ACL as the public MCP
  * transport: group-scoped reads plus `group_desktop_writes_*` for mutations.
- * Harness never mints a `gcrm_mcp_` key and never speaks MCP to reach GeoCRM;
+ * Harness never mints a `gcrm_mcp_` key and never speaks MCP to reach Workbench;
  * mail and calendar come from the same signed-in session as those Home tiles.
  */
 
@@ -21,7 +21,7 @@ export interface HarnessToolResult {
 }
 
 /**
- * Reports whether the GeoCRM API origin is configured.
+ * Reports whether the Workbench API origin is configured.
  * @returns True when tool calls can run.
  */
 export function isHarnessToolsApiConfigured(): boolean {
@@ -29,7 +29,7 @@ export function isHarnessToolsApiConfigured(): boolean {
 }
 
 /**
- * Runs one GeoCRM tool as the signed-in user.
+ * Runs one Workbench tool as the signed-in user.
  * @param tool - Tool name, e.g. `search_records`.
  * @param args - Tool arguments.
  * @returns Tool payload and error flag.
@@ -58,7 +58,7 @@ export async function callHarnessTool(
     body: JSON.stringify({ arguments: args }),
   })
   if (!response.ok) {
-    throw new Error(`GeoCRM tool call failed (${response.status})`)
+    throw new Error(`Workbench tool call failed (${response.status})`)
   }
   return (await response.json()) as HarnessToolResult
 }

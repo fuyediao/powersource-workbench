@@ -18,7 +18,7 @@ const clashRoutes: RouteObject[] = [
 ]
 
 /**
- * Memory router so Clash navigation does not rewrite the GeoCRM window URL.
+ * Memory router so Clash navigation does not rewrite the Workbench window URL.
  * @param initialPath - First Clash island route (`/` home, `/logs`, …).
  * @returns Clash router instance.
  */

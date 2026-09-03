@@ -1,7 +1,7 @@
 /**
- * Registry of full GeoCRM application windows.
+ * Registry of full Workbench application windows.
  *
- * Every window created here is a GeoCRM shell (title-bar tabs, Ask AI, pin).
+ * Every window created here is a Workbench shell (title-bar tabs, Ask AI, pin).
  * The first window and dock-created windows also have a Home launcher;
  * windows spawned by tab tear-off omit it. Spotlight and the Agent overlay
  * are separate auxiliary panels and never enter this registry (see
@@ -86,7 +86,7 @@ function buildAdditionalArguments(seed?: AppWindowSeed): string[] {
 }
 
 /**
- * Creates one full GeoCRM shell window (Home, title-bar tabs, Ask AI, pin).
+ * Creates one full Workbench shell window (Home, title-bar tabs, Ask AI, pin).
  * @param seed - Optional screen position and initial visibility.
  * @returns The new window, after its renderer has finished loading.
  */

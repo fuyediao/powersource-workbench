@@ -262,9 +262,9 @@
   "workflowError": {
     "generic": "T&E 工作流请求失败。请刷新，并仅在当前状态允许时重试。",
     "genericWithCode": "T&E 工作流请求失败（{{code}}）。请刷新后再执行操作。",
-    "api_not_configured": "尚未配置 GeoCRM API。",
+    "api_not_configured": "尚未配置 Workbench API。",
     "authentication_required": "当前登录会话不可用，请重新登录。",
-    "network_error": "无法连接 GeoCRM API，请刷新后再重试。",
+    "network_error": "无法连接 Workbench API，请刷新后再重试。",
     "erp_response_unknown": "ERP 响应结果未知。请刷新，并在尝试处于待处理状态时切勿重试。",
     "invalid_status": "工作流状态已变化，请刷新申请后继续。",
     "invalid_product": "请从当前有效的 T&E 目录中选择至少一个不重复产品。",

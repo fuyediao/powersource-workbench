@@ -44,7 +44,7 @@ export function HarnessFilesPanel({ cwd }: HarnessFilesPanelProps) {
     setError('')
     setPreview(null)
     try {
-      const bridge = window.geocrm?.harness
+      const bridge = window.workbench?.harness
       if (!bridge?.listWorkspace) throw new Error(t('harness.utility.unavailable'))
       setEntries(await bridge.listWorkspace(cwd, relativePath))
       setDirectory(relativePath)
@@ -64,7 +64,7 @@ export function HarnessFilesPanel({ cwd }: HarnessFilesPanelProps) {
     setLoading(true)
     setError('')
     try {
-      const bridge = window.geocrm?.harness
+      const bridge = window.workbench?.harness
       if (!bridge?.readWorkspaceFile) throw new Error(t('harness.utility.unavailable'))
       setPreview(await bridge.readWorkspaceFile(cwd, relativePath))
     } catch (reason) {

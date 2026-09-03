@@ -9,10 +9,10 @@ import { ensureClashDirs } from './store'
 
 const execFileAsync = promisify(execFile)
 
-const LAUNCHD_LABEL = 'com.geocrm.mihomo'
+const LAUNCHD_LABEL = 'com.workbench.mihomo'
 const LAUNCHD_PLIST_PATH = `/Library/LaunchDaemons/${LAUNCHD_LABEL}.plist`
 const WINDOWS_SERVICE_NAME = 'GeoCrmMihomo'
-const SYSTEMD_UNIT_NAME = 'geocrm-mihomo.service'
+const SYSTEMD_UNIT_NAME = 'workbench-mihomo.service'
 const SYSTEMD_UNIT_PATH = `/etc/systemd/system/${SYSTEMD_UNIT_NAME}`
 
 /** Persisted "keep using the unprivileged sidecar" acknowledgement (`continue_with_sidecar`). */
@@ -156,7 +156,7 @@ export async function installService(): Promise<void> {
 
   if (process.platform === 'linux') {
     const unit = `[Unit]
-Description=GeoCRM Mihomo (privileged, TUN-capable)
+Description=Workbench Mihomo (privileged, TUN-capable)
 After=network.target
 
 [Service]
@@ -276,7 +276,7 @@ export async function isServiceRunning(): Promise<boolean> {
 /**
  * Whether this Electron process itself is already elevated (root/administrator), matching
  * `app_is_admin`. Electron never launches elevated on its own; this only ever reports true
- * when the user explicitly ran GeoCRM with `sudo`/an admin shell.
+ * when the user explicitly ran Workbench with `sudo`/an admin shell.
  */
 export async function isProcessElevated(): Promise<boolean> {
   if (process.platform === 'win32') {

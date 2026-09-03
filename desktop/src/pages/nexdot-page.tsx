@@ -24,7 +24,7 @@ export function NexdotPage({ userId }: NexdotPageProps) {
       userId={userId}
       entryKey="desktop_nexdot"
       navGroups={NEXDOT_NAV_GROUPS}
-      storageKey="geocrm-electron-nexdot-sidebar-mode"
+      storageKey="workbench-electron-nexdot-sidebar-mode"
       titleKey="nexdot.sidebar.title"
     >
       {({ path, moduleKey, writes, navigate }) => (

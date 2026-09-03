@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 /** Argv flag registered with the OS login item for silent (tray-only) starts. */
-export const HIDDEN_LAUNCH_ARG = '--geocrm-hidden'
+export const HIDDEN_LAUNCH_ARG = '--workbench-hidden'
 
 export interface LoginLaunchSettings {
   openAtLogin: boolean
@@ -53,7 +53,7 @@ function writeStore(settings: LoginLaunchSettings): void {
 }
 
 /**
- * Extra argv for login-item relaunch (`--geocrm-hidden`, plus the main entry in dev).
+ * Extra argv for login-item relaunch (`--workbench-hidden`, plus the main entry in dev).
  * @param silent - Whether silent launch is requested.
  * @returns Argument list (may be empty).
  */
@@ -74,7 +74,7 @@ function extraLoginArgs(silent: boolean): string[] {
 /**
  * Applies OS login-item registration from app preferences.
  * Packaged macOS omits `path` (SMAppService / Login Items). Windows and Electron
- * dev pass `process.execPath` plus argv so silent launch can use `--geocrm-hidden`.
+ * dev pass `process.execPath` plus argv so silent launch can use `--workbench-hidden`.
  * @param settings - Desired open-at-login / silent flags.
  * @returns Nothing.
  */
@@ -170,7 +170,7 @@ function darwinLaunchedAtLogin(): boolean {
 
 /**
  * Whether this process should keep the main window hidden (tray only).
- * True for `--geocrm-hidden`, or macOS silent launch when started at login.
+ * True for `--workbench-hidden`, or macOS silent launch when started at login.
  * @returns True to start hidden.
  */
 export function shouldStartHidden(): boolean {

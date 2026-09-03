@@ -1,5 +1,5 @@
-const OPEN_EVENT = 'geocrm:open-clash'
-const PATH_EVENT = 'geocrm:clash-path'
+const OPEN_EVENT = 'workbench:open-clash'
+const PATH_EVENT = 'workbench:clash-path'
 
 const CLASH_PATHS = ['/', '/proxies', '/profile', '/connections', '/rules', '/logs', '/unlock'] as const
 
@@ -17,7 +17,7 @@ export function isClashPagePath(value: string): value is ClashPagePath {
 }
 
 /**
- * Opens the GeoCRM Clash title-bar tab and navigates the Clash island to `path`.
+ * Opens the Workbench Clash title-bar tab and navigates the Clash island to `path`.
  * Safe to call from Settings (Clash may be unmounted); the path is queued until mount.
  * @param path - Clash memory-router path (default home).
  * @returns Nothing.

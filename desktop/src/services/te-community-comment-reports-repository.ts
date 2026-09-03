@@ -1,5 +1,5 @@
 /**
- * Maps `public.te_community_comment_reports` for GeoCRM admin moderation.
+ * Maps `public.te_community_comment_reports` for Workbench admin moderation.
  */
 
 import type {

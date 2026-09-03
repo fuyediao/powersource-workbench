@@ -215,7 +215,7 @@ function TitleBarTabContextMenu({
 
   useEffect(() => {
     let cancelled = false
-    const listPeers = window.geocrm?.tabs?.listPeerWindows
+    const listPeers = window.workbench?.tabs?.listPeerWindows
     if (!listPeers) {
       return
     }
@@ -611,7 +611,7 @@ export function MacStyleTitleBar({
   compactChrome = false,
 }: MacStyleTitleBarProps) {
   const { t } = useTranslation()
-  const bridge = window.geocrm?.window
+  const bridge = window.workbench?.window
   const paintTrafficLights = Boolean(bridge?.usesCustomTrafficLights)
   const [maximized, setMaximized] = useState(false)
   const [fullScreen, setFullScreen] = useState(false)

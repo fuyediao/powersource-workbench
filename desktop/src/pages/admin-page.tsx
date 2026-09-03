@@ -34,7 +34,7 @@ export function AdminPage({ userId }: AdminPageProps) {
       userId={userId}
       entryKey="desktop_admin"
       navGroups={ADMIN_CRM_NAV_GROUPS}
-      storageKey="geocrm-electron-admin-sidebar-mode"
+      storageKey="workbench-electron-admin-sidebar-mode"
       titleKey="admin.sidebar.title"
     >
       {({ path, moduleKey, writes, navigate }) => {

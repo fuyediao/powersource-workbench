@@ -173,7 +173,7 @@ export function AdminSidebar({
   onFocusOut,
 }: AdminSidebarProps) {
   const { t } = useTranslation()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const asideRef = useRef<HTMLElement>(null)
   const allItemPaths = useMemo(
     () => groups.flatMap((group) => group.map((item) => item.path)),

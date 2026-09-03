@@ -1,5 +1,5 @@
 /**
- * Stand-in for `@tauri-apps/*` when Clash Verge runs inside GeoCRM Electron.
+ * Stand-in for `@tauri-apps/*` when Clash Verge runs inside Workbench Electron.
  * Real window/file/updater APIs are no-ops; `invoke` goes through the host bridge.
  * `emit` / `listen` use the in-renderer bus (frontend-to-frontend events).
  */
@@ -23,7 +23,7 @@ async function unlistenStub(): Promise<Unlisten> {
  * @returns Bridge result.
  */
 export async function invoke<T>(cmd: string, args?: Record<string, unknown>): Promise<T> {
-  const bridge = window.geocrmClash
+  const bridge = window.workbenchClash
   if (!bridge?.invoke) {
     throw new Error(`Clash host bridge is missing (${cmd})`)
   }
@@ -53,7 +53,7 @@ export function join(...segments: string[]): Promise<string> {
  * @returns Display name.
  */
 export async function getName(): Promise<string> {
-  return 'GeoCRM'
+  return 'Workbench'
 }
 
 /**
@@ -204,7 +204,7 @@ export async function exists(): Promise<boolean> {
 }
 
 /**
- * Reads a text file (unavailable in the GeoCRM island).
+ * Reads a text file (unavailable in the Workbench island).
  * @returns Empty string.
  */
 export async function readTextFile(): Promise<string> {
@@ -218,7 +218,7 @@ export type CheckOptions = Record<string, unknown>
 export type Update = null
 
 /**
- * Clash auto-updater is disabled in GeoCRM.
+ * Clash auto-updater is disabled in Workbench.
  * @returns No update.
  */
 export async function check(_options?: CheckOptions): Promise<Update> {

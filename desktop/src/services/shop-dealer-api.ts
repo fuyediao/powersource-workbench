@@ -1,5 +1,5 @@
 /**
- * geocrm-api shop dealer admin client for Electron (list/detail/addresses).
+ * workbench-api shop dealer admin client for Electron (list/detail/addresses).
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
@@ -54,7 +54,7 @@ export interface ShopDealerAddressInput {
 }
 
 /**
- * Whether geocrm-api is configured for dealer admin calls.
+ * Whether workbench-api is configured for dealer admin calls.
  * @returns True when deployment domain is set.
  */
 export function isShopDealerApiConfigured(): boolean {
@@ -62,7 +62,7 @@ export function isShopDealerApiConfigured(): boolean {
 }
 
 /**
- * Supabase access token for authenticated geocrm-api calls.
+ * Supabase access token for authenticated workbench-api calls.
  * @returns Access token or null when not signed in.
  */
 async function getToken(): Promise<string | null> {
@@ -85,8 +85,8 @@ function withWorkspaceGroup(path: string, workspaceGroupId: string): string {
 }
 
 /**
- * Authenticated fetch to geocrm-api shop admin dealer routes.
- * @param path - Absolute API path under geocrm-api.
+ * Authenticated fetch to workbench-api shop admin dealer routes.
+ * @param path - Absolute API path under workbench-api.
  * @param workspaceGroupId - Target groups.id.
  * @param init - Fetch init.
  * @returns Parsed JSON body.
@@ -116,7 +116,7 @@ async function shopAdminFetch<T>(
     res = await fetch(`${base}${urlPath}`, { ...init, headers, mode: 'cors' })
   } catch (e) {
     const reason = e instanceof Error ? e.message : 'Network error'
-    throw new Error(`${reason}. Cannot reach geocrm-api.`)
+    throw new Error(`${reason}. Cannot reach workbench-api.`)
   }
 
   const body = (await res.json().catch(() => ({}))) as {

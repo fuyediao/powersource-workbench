@@ -2,7 +2,7 @@
 @import '../lib/schedule-x/theme-default/lib/index.css';
 
 /*
- * Bridge Schedule-X tokens to GeoCRM Appearance (--brand / --canvas / --ink / --muted).
+ * Bridge Schedule-X tokens to Workbench Appearance (--brand / --canvas / --ink / --muted).
  * Light defaults; dark mode via html.dark (and Schedule-X isDark class on the host).
  */
 
@@ -42,7 +42,7 @@
 
 html.dark .calendar-page,
 .calendar-page .is-dark {
-  /* Keep GeoCRM brand tokens; Schedule-X `.is-dark` otherwise injects purple MD3 defaults. */
+  /* Keep Workbench brand tokens; Schedule-X `.is-dark` otherwise injects purple MD3 defaults. */
   --sx-color-primary: var(--brand);
   --sx-color-on-primary: var(--brand-fg, #fff);
   --sx-color-primary-container: color-mix(in oklab, var(--brand) 28%, var(--canvas));

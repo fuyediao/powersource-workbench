@@ -25,7 +25,7 @@ async function refreshRemoteProfile(item: ClashProfileItem): Promise<void> {
   if (!item.url) {
     return
   }
-  const response = await fetch(item.url, { headers: { 'User-Agent': 'clash-verge/GeoCRM' } })
+  const response = await fetch(item.url, { headers: { 'User-Agent': 'clash-verge/Workbench' } })
   if (!response.ok) {
     throw new Error(`Update failed (${response.status})`)
   }

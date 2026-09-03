@@ -28,7 +28,7 @@ export async function tryPowersourceAutoLogin(
   if (!system || !userId.trim()) {
     return 'skip'
   }
-  const invoke = window.geocrm?.browser?.invoke
+  const invoke = window.workbench?.browser?.invoke
   if (!invoke) {
     return 'skip'
   }

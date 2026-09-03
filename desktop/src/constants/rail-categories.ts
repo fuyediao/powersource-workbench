@@ -1,6 +1,6 @@
 import type { AppItem, Category } from '@/types/library'
 
-/** Virtual rail category for built-in GeoCRM features (not stored in Supabase). */
+/** Virtual rail category for built-in Workbench features (not stored in Supabase). */
 export const FUNCTIONS_CATEGORY_ID = 'functions'
 
 /** Persisted rail category for user websites (Supabase). */
@@ -53,42 +53,42 @@ export const FUNCTION_FEATURE_APPS: AppItem[] = [
     id: 'function-ask',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 0,
-    url: 'geocrm://artificial-intelligence',
+    url: 'workbench://artificial-intelligence',
     name: 'functions.apps.ask',
   },
   {
     id: 'function-harness',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 1,
-    url: 'geocrm://harness',
+    url: 'workbench://harness',
     name: 'functions.apps.harness',
   },
   {
     id: 'function-mail',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 2,
-    url: 'geocrm://mail',
+    url: 'workbench://mail',
     name: 'functions.apps.mail',
   },
   {
     id: 'function-calendar',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 3,
-    url: 'geocrm://calendar',
+    url: 'workbench://calendar',
     name: 'functions.apps.calendar',
   },
   {
     id: 'function-aura',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 4,
-    url: 'geocrm://aura',
+    url: 'workbench://aura',
     name: 'functions.apps.aura',
   },
   {
     id: 'function-settings',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 5,
-    url: 'geocrm://settings',
+    url: 'workbench://settings',
     name: 'functions.apps.settings',
   },
 ].map(withBetaFlag)
@@ -102,14 +102,14 @@ export const FUNCTION_SITE_APPS: AppItem[] = [
     id: 'function-oa',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 0,
-    url: 'geocrm://oa',
+    url: 'workbench://oa',
     name: 'functions.apps.oa',
   },
   {
     id: 'function-erp',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 1,
-    url: 'geocrm://erp',
+    url: 'workbench://erp',
     name: 'functions.apps.erp',
   },
   {
@@ -123,7 +123,7 @@ export const FUNCTION_SITE_APPS: AppItem[] = [
     id: 'function-nextorch-te',
     categoryId: FUNCTIONS_CATEGORY_ID,
     position: 3,
-    url: 'geocrm://te',
+    url: 'workbench://te',
     name: 'functions.apps.nextorchTe',
   },
 ]

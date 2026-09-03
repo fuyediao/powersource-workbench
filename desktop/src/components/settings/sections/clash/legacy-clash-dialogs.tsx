@@ -19,9 +19,9 @@ export interface LegacyClashDialogsRef {
  * Mounts the five Clash sub-editors that keep their original Material UI chrome:
  * TUN, system proxy, DNS, backup, and the read-only runtime config viewer. Each is
  * high-risk, self-contained business logic (native routing validation, WebDAV
- * credentials, YAML rendering) that the settings-to-GeoCRM plan scopes out of the
+ * credentials, YAML rendering) that the settings-to-Workbench plan scopes out of the
  * Tailwind rewrite; only the Clash i18n context is supplied via
- * {@link LegacyClashDialogHost} so their copy still resolves correctly inside GeoCRM.
+ * {@link LegacyClashDialogHost} so their copy still resolves correctly inside Workbench.
  * @param props - Imperative ref exposing an `open*` method per dialog.
  * @returns Hidden dialog hosts (each renders its own modal chrome when opened).
  */

@@ -1,26 +1,26 @@
 /** OAuth deep-link scheme for Electron (must be on GoTrue allow-list). */
-export const AUTH_DEEP_LINK_SCHEME = 'com.geocrm.electron'
+export const AUTH_DEEP_LINK_SCHEME = 'com.workbench.electron'
 
-/** OAuth deep-link host. Full URI: com.geocrm.electron://login-callback */
+/** OAuth deep-link host. Full URI: com.workbench.electron://login-callback */
 export const AUTH_DEEP_LINK_HOST = 'login-callback'
 
 /** Full deep-link URI used as `next` for GET /auth/google. */
 export const AUTH_DEEP_LINK_URI = `${AUTH_DEEP_LINK_SCHEME}://${AUTH_DEEP_LINK_HOST}`
 
 /** IPC channel for network proxy method dispatch. */
-export const NET_IPC_CHANNEL = 'geocrm:net'
+export const NET_IPC_CHANNEL = 'workbench:net'
 
 /** IPC channel for auth helpers (open Google OAuth). */
-export const AUTH_IPC_CHANNEL = 'geocrm:auth'
+export const AUTH_IPC_CHANNEL = 'workbench:auth'
 
 /** Event pushed from main when the OAuth deep link returns tokens. */
-export const AUTH_SESSION_EVENT = 'geocrm:auth-session'
+export const AUTH_SESSION_EVENT = 'workbench:auth-session'
 
 /** IPC channel for frameless window controls (minimize / maximize / close). */
-export const WINDOW_IPC_CHANNEL = 'geocrm:window'
+export const WINDOW_IPC_CHANNEL = 'workbench:window'
 
 /** IPC channel for Ask AI page capture (window minus the sidebar). */
-export const ASK_AI_IPC_CHANNEL = 'geocrm:ask-ai'
+export const ASK_AI_IPC_CHANNEL = 'workbench:ask-ai'
 
 /** JPEG screenshot of the main content (no Ask AI sidebar). */
 export type AskAiCaptureResult = {
@@ -31,40 +31,40 @@ export type AskAiCaptureResult = {
 }
 
 /** Event when maximized state changes. */
-export const WINDOW_MAXIMIZED_EVENT = 'geocrm:window-maximized'
+export const WINDOW_MAXIMIZED_EVENT = 'workbench:window-maximized'
 
 /** Event when the BrowserWindow gains or loses focus. */
-export const WINDOW_FOCUS_EVENT = 'geocrm:window-focus'
+export const WINDOW_FOCUS_EVENT = 'workbench:window-focus'
 
 /** Event when native fullscreen starts or ends (macOS Spaces / F11). */
-export const WINDOW_FULLSCREEN_EVENT = 'geocrm:window-fullscreen'
+export const WINDOW_FULLSCREEN_EVENT = 'workbench:window-fullscreen'
 
 /** IPC channel for Spotlight window control (toggle / hide / resize / openInMain). */
-export const SPOTLIGHT_IPC_CHANNEL = 'geocrm:spotlight'
+export const SPOTLIGHT_IPC_CHANNEL = 'workbench:spotlight'
 
 /** Event pushed to the Spotlight renderer when the window is shown (focus the input). */
-export const SPOTLIGHT_SHOWN_EVENT = 'geocrm:spotlight-shown'
+export const SPOTLIGHT_SHOWN_EVENT = 'workbench:spotlight-shown'
 
 /** IPC channel for the always-on-top Agent overlay (toggle / hide / setEnabled). */
-export const AGENT_OVERLAY_IPC_CHANNEL = 'geocrm:agent-overlay'
+export const AGENT_OVERLAY_IPC_CHANNEL = 'workbench:agent-overlay'
 
 /** Event pushed to the Agent overlay renderer when the window is shown (focus the composer). */
-export const AGENT_OVERLAY_SHOWN_EVENT = 'geocrm:agent-overlay-shown'
+export const AGENT_OVERLAY_SHOWN_EVENT = 'workbench:agent-overlay-shown'
 
 /** Event pushed to the main renderer to open a URL as an in-app browser tab. */
-export const OPEN_URL_IN_APP_EVENT = 'geocrm:open-url-in-app'
+export const OPEN_URL_IN_APP_EVENT = 'workbench:open-url-in-app'
 
 /** IPC channel for Chrome-style title-bar tab tear-off / merge between app windows. */
-export const TAB_TRANSFER_IPC_CHANNEL = 'geocrm:tab-transfer'
+export const TAB_TRANSFER_IPC_CHANNEL = 'workbench:tab-transfer'
 
 /** Event pushed to a renderer window that just received a torn-off / merged tab. */
-export const TAB_TRANSFER_RECEIVE_EVENT = 'geocrm:tab-transfer-receive'
+export const TAB_TRANSFER_RECEIVE_EVENT = 'workbench:tab-transfer-receive'
 
 /**
  * Renderer argv flag: this BrowserWindow was spawned by tab tear-off / Open in
  * new window, so the caption omits the Home launcher.
  */
-export const APP_WINDOW_HIDE_HOME_ARG = '--geocrm-hide-home'
+export const APP_WINDOW_HIDE_HOME_ARG = '--workbench-hide-home'
 
 /**
  * Renderer argv flag: this BrowserWindow is the compact sign-in window, not
@@ -104,7 +104,7 @@ export function isAppWindowPeer(value: unknown): value is AppWindowPeer {
 }
 
 /**
- * Serialized title-bar tab moved between GeoCRM app windows (Chrome-style tab
+ * Serialized title-bar tab moved between Workbench app windows (Chrome-style tab
  * tear-off / merge). `id` matches the title-bar tab id on both sides so a
  * browser tab's native `WebContentsView` pane can be found and reparented
  * instead of recreated.
@@ -142,21 +142,21 @@ export function isTabTransferPayload(value: unknown): value is TabTransferPayloa
 }
 
 /** IPC channel for in-app browser WebContentsView panes (attach / bounds / navigate). */
-export const BROWSER_IPC_CHANNEL = 'geocrm:browser'
+export const BROWSER_IPC_CHANNEL = 'workbench:browser'
 
 /** Event pushed when an in-app browser pane URL / title / history changes. */
-export const BROWSER_NAV_EVENT = 'geocrm:browser-nav'
+export const BROWSER_NAV_EVENT = 'workbench:browser-nav'
 
 /** Event pushed to the main renderer to open the Settings title-bar tab. */
-export const OPEN_SETTINGS_EVENT = 'geocrm:open-settings'
+export const OPEN_SETTINGS_EVENT = 'workbench:open-settings'
 
 /** Event pushed to the main renderer to sign out the current session. */
-export const SIGN_OUT_EVENT = 'geocrm:sign-out'
+export const SIGN_OUT_EVENT = 'workbench:sign-out'
 
 /** Event when the native application menu asks to switch UI language. */
-export const MENU_LANGUAGE_EVENT = 'geocrm:menu-language'
+export const MENU_LANGUAGE_EVENT = 'workbench:menu-language'
 
-/** UI languages offered in the macOS GeoCRM application menu. */
+/** UI languages offered in the macOS Workbench application menu. */
 export const APP_MENU_LANGUAGES = ['en', 'zh-TW', 'zh-CN'] as const
 
 /** One of {@link APP_MENU_LANGUAGES}. */
@@ -175,34 +175,34 @@ export function isAppMenuLanguage(value: unknown): value is AppMenuLanguage {
 }
 
 /** IPC channel for macOS application-menu state (labels + current screen). */
-export const MENU_IPC_CHANNEL = 'geocrm:menu'
+export const MENU_IPC_CHANNEL = 'workbench:menu'
 
 /** Event when the native application menu asks to open a page. */
-export const MENU_NAVIGATE_EVENT = 'geocrm:menu-navigate'
+export const MENU_NAVIGATE_EVENT = 'workbench:menu-navigate'
 
 /** Event when the native application menu asks for a File action. */
-export const MENU_FILE_EVENT = 'geocrm:menu-file'
+export const MENU_FILE_EVENT = 'workbench:menu-file'
 
 /** Event when the native application menu runs an Aura editor command. */
-export const MENU_AURA_EVENT = 'geocrm:menu-aura'
+export const MENU_AURA_EVENT = 'workbench:menu-aura'
 
 /** Event when the native application menu runs an Aura Scope/Library command. */
-export const MENU_AURA_LIBRARY_EVENT = 'geocrm:menu-aura-library'
+export const MENU_AURA_LIBRARY_EVENT = 'workbench:menu-aura-library'
 
 /** IPC channel for the one-shot legacy Docs / Sheets / Slides workspace export (retired Univer editor). */
-export const OFFICE_WORKSPACE_LEGACY_IPC_CHANNEL = 'geocrm:office-workspace-legacy'
+export const OFFICE_WORKSPACE_LEGACY_IPC_CHANNEL = 'workbench:office-workspace-legacy'
 
 /** IPC channel for Home Apps tile order (local SQLite). */
-export const HOME_APP_ORDER_IPC_CHANNEL = 'geocrm:home-app-order'
+export const HOME_APP_ORDER_IPC_CHANNEL = 'workbench:home-app-order'
 
 /** IPC channel for Admin Opportunities board layout (local SQLite). */
-export const OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL = 'geocrm:opportunity-board-layout'
+export const OPPORTUNITY_BOARD_LAYOUT_IPC_CHANNEL = 'workbench:opportunity-board-layout'
 
 /** IPC channel for Settings OA/ERP credentials (local SQLite). */
-export const OA_ERP_CREDENTIALS_IPC_CHANNEL = 'geocrm:oa-erp-credentials'
+export const OA_ERP_CREDENTIALS_IPC_CHANNEL = 'workbench:oa-erp-credentials'
 
 /** IPC channel for the desktop AI model allowlist (Settings → AI → Models, local SQLite). */
-export const AI_MODEL_ALLOWLIST_IPC_CHANNEL = 'geocrm:ai-model-allowlist'
+export const AI_MODEL_ALLOWLIST_IPC_CHANNEL = 'workbench:ai-model-allowlist'
 
 /** One explicit enable/disable override row from the AI model allowlist. */
 export interface AiModelAllowlistRow {
@@ -229,31 +229,31 @@ export type LegacyOfficeWorkspaceFile = {
 }
 
 /** Event when the native application menu runs a Map page command. */
-export const MENU_MAP_EVENT = 'geocrm:menu-map'
+export const MENU_MAP_EVENT = 'workbench:menu-map'
 
 /** Event when the native application menu runs a Mail page command. */
-export const MENU_MAIL_EVENT = 'geocrm:menu-mail'
+export const MENU_MAIL_EVENT = 'workbench:menu-mail'
 
 /** Event when the native application menu runs a Clash page command. */
-export const MENU_CLASH_EVENT = 'geocrm:menu-clash'
+export const MENU_CLASH_EVENT = 'workbench:menu-clash'
 
 /** Event when the native application menu runs an Orders page command. */
-export const MENU_ORDERS_EVENT = 'geocrm:menu-orders'
+export const MENU_ORDERS_EVENT = 'workbench:menu-orders'
 
 /** Event when the native application menu runs a Calendar page command. */
-export const MENU_CALENDAR_EVENT = 'geocrm:menu-calendar'
+export const MENU_CALENDAR_EVENT = 'workbench:menu-calendar'
 
 /** Event when the native application menu runs a Team page command. */
-export const MENU_TEAM_EVENT = 'geocrm:menu-team'
+export const MENU_TEAM_EVENT = 'workbench:menu-team'
 
 /** Event when the native application menu runs a Folio page command. */
-export const MENU_FOLIO_EVENT = 'geocrm:menu-folio'
+export const MENU_FOLIO_EVENT = 'workbench:menu-folio'
 
 /** Event when the native application menu runs an Office page command. */
-export const MENU_OFFICE_EVENT = 'geocrm:menu-office'
+export const MENU_OFFICE_EVENT = 'workbench:menu-office'
 
 /** Event when the native application menu runs a Chat page command. */
-export const MENU_CHAT_EVENT = 'geocrm:menu-chat'
+export const MENU_CHAT_EVENT = 'workbench:menu-chat'
 
 /** Feature pages listed under the Go menu (same ids as title-bar tabs). */
 export const MENU_FEATURE_IDS = [
@@ -1398,7 +1398,7 @@ export function isMenuNavigateTarget(value: string): value is MenuNavigateTarget
 }
 
 /** IPC channel for app metadata / update checks. */
-export const APP_IPC_CHANNEL = 'geocrm:app'
+export const APP_IPC_CHANNEL = 'workbench:app'
 
 /** Result of a desktop update check. */
 export type AppUpdateCheckResult = {
@@ -1419,7 +1419,7 @@ export type AppUpdateCheckResult = {
  * worth acting on (forced updates surface the blocking gate without a
  * restart; non-forced updates are handled by a native OS notification).
  */
-export const APP_UPDATE_AVAILABLE_EVENT = 'geocrm:app-update-available'
+export const APP_UPDATE_AVAILABLE_EVENT = 'workbench:app-update-available'
 
 /** Progress of an in-app desktop installer download / install. */
 export type AppUpdateInstallProgress = {
@@ -1429,7 +1429,7 @@ export type AppUpdateInstallProgress = {
 }
 
 /** Main → renderer progress for {@link AppUpdateInstallProgress}. */
-export const APP_UPDATE_PROGRESS_EVENT = 'geocrm:app-update-progress'
+export const APP_UPDATE_PROGRESS_EVENT = 'workbench:app-update-progress'
 
 /** Launch-at-login / silent-start preferences. */
 export type LoginLaunchSettings = {

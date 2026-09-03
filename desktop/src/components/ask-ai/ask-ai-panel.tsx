@@ -220,7 +220,7 @@ export function AskAiPanel({ user, pageLabel, getExcludeRightPx }: AskAiPanelPro
       let captureWarning: string | null = null
       if (sharing) {
         try {
-          const shot = await window.geocrm?.askAi?.captureMainContent(getExcludeRightPx())
+          const shot = await window.workbench?.askAi?.captureMainContent(getExcludeRightPx())
           if (shot?.data) {
             image = { mimeType: shot.mimeType, data: shot.data }
             screenshotDataUrl = `data:${shot.mimeType};base64,${shot.data}`

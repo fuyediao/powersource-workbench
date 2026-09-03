@@ -1,9 +1,9 @@
 /**
- * Harness Scheduled tasks against geocrm-api `/ai/harness/cron/*`.
+ * Harness Scheduled tasks against workbench-api `/ai/harness/cron/*`.
  *
  * The Go proxy forwards to that user's Hermes profile on the VPS, so office
  * jobs keep firing with this laptop closed. Requests carry the signed-in
- * session; Harness never speaks MCP to reach GeoCRM.
+ * session; Harness never speaks MCP to reach Workbench.
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
@@ -53,7 +53,7 @@ export class HarnessScheduleApiError extends Error {
 }
 
 /**
- * Reports whether the GeoCRM API origin is configured.
+ * Reports whether the Workbench API origin is configured.
  * @returns True when scheduled-task calls can run.
  */
 export function isHarnessScheduleApiConfigured(): boolean {
@@ -61,7 +61,7 @@ export function isHarnessScheduleApiConfigured(): boolean {
 }
 
 /**
- * Authenticated JSON request to geocrm-api `/ai/harness/cron/*`.
+ * Authenticated JSON request to workbench-api `/ai/harness/cron/*`.
  * @param path - Path below `/ai/harness/cron`.
  * @param method - HTTP method.
  * @param options - Optional JSON body and abort signal.

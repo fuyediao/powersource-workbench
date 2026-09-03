@@ -1,13 +1,13 @@
 /**
- * geocrm-api `/office/session` — mints a JWT-signed OnlyOffice editorConfig
+ * workbench-api `/office/session` — mints a JWT-signed OnlyOffice editorConfig
  * for one `office_files` row. The Document Server never sees a Supabase
- * session; geocrm-api re-checks the same ACL the Storage/table RLS enforces.
+ * session; workbench-api re-checks the same ACL the Storage/table RLS enforces.
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 
-/** OnlyOffice editorConfig document/editorConfig payload, JWT-signed by geocrm-api. */
+/** OnlyOffice editorConfig document/editorConfig payload, JWT-signed by workbench-api. */
 export interface OnlyOfficeSessionConfig {
   docServerUrl: string
   config: {
@@ -35,7 +35,7 @@ export class OfficeSessionError extends Error {
 
 /**
  * Reports whether the OnlyOffice session endpoint can be called.
- * @returns True when the GeoCRM API origin is configured.
+ * @returns True when the Workbench API origin is configured.
  */
 export function isOfficeSessionApiConfigured(): boolean {
   return Boolean(resolveApiBaseUrl())

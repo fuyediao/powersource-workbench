@@ -319,7 +319,7 @@ export function FeedbackSection({ userId, fallbackEmail }: FeedbackSectionProps)
   }
 
   /**
-   * Submits the feedback form to geocrm-api.
+   * Submits the feedback form to workbench-api.
    * @returns Nothing.
    */
   async function handleSubmit(): Promise<void> {

@@ -1,7 +1,7 @@
 /**
  * Scheduled-task state for the Harness Scheduled view.
  *
- * Jobs live on the VPS Hermes profile for the signed-in user. When the GeoCRM
+ * Jobs live on the VPS Hermes profile for the signed-in user. When the Workbench
  * API is not configured this falls back to in-memory sample rows so the view
  * can still be exercised locally.
  */

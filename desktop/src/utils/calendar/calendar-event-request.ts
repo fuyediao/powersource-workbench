@@ -9,8 +9,8 @@ export interface CalendarEventDraftRequest {
   description?: string
 }
 
-const OPEN_CALENDAR_EVENT = 'geocrm:open-calendar'
-const CREATE_EVENT = 'geocrm:calendar-create-event'
+const OPEN_CALENDAR_EVENT = 'workbench:open-calendar'
+const CREATE_EVENT = 'workbench:calendar-create-event'
 
 let pendingDraft: CalendarEventDraftRequest | null = null
 

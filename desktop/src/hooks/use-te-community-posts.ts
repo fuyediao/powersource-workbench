@@ -45,7 +45,7 @@ async function attachReportCounts(mapped: TeCommunityPost[]): Promise<TeCommunit
 }
 
 /**
- * Paginated list and moderation actions for `te_community_posts` in GeoCRM admin.
+ * Paginated list and moderation actions for `te_community_posts` in Workbench admin.
  * Reads use the authenticated Supabase client (cross-group SELECT); hide/restore
  * require system/group admin per RLS.
  *

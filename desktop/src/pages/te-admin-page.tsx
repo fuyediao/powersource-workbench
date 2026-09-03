@@ -41,9 +41,9 @@ function teAdminPathOnly(path: string | null): string | null {
 }
 
 /**
- * T&E Admin Home Function (`geocrm://te-admin`): applications / users /
+ * T&E Admin Home Function (`workbench://te-admin`): applications / users /
  * community / marketing / partner departments / media — not the Nextorch
- * `geocrm://te` site picker.
+ * `workbench://te` site picker.
  * @param props - Signed-in user.
  * @returns T&E Admin UI.
  */
@@ -55,7 +55,7 @@ export function TeAdminPage({ userId }: TeAdminPageProps) {
       userId={userId}
       entryKey="desktop_te_admin"
       navGroups={TE_ADMIN_NAV_GROUPS}
-      storageKey="geocrm-electron-te-admin-sidebar-mode"
+      storageKey="workbench-electron-te-admin-sidebar-mode"
       titleKey="teAdmin.sidebar.title"
     >
       {({ path, moduleKey, writes, navigate }) => {

@@ -25,7 +25,7 @@ export interface MarketAssetRequest {
 }
 
 /**
- * Loads quotes for selected market assets via geocrm-api POST /start/markets/quotes.
+ * Loads quotes for selected market assets via workbench-api POST /start/markets/quotes.
  * @param assets - Selected assets.
  * @returns Quotes (empty on failure).
  */
@@ -44,7 +44,7 @@ export async function fetchMarketQuotes(assets: MarketAssetRequest[]): Promise<M
 }
 
 /**
- * Searches market assets via geocrm-api GET /start/markets/search.
+ * Searches market assets via workbench-api GET /start/markets/search.
  * @param query - Search text.
  * @returns Hits (empty on failure).
  */

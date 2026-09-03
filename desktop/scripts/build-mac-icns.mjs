@@ -49,7 +49,7 @@ if (!fs.existsSync(sourcePng)) {
 
 fs.mkdirSync(path.join(electronRoot, 'build'), { recursive: true })
 
-const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'geocrm-icon-'))
+const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'workbench-icon-'))
 const iconsetDir = path.join(tmpRoot, 'icon.iconset')
 fs.mkdirSync(iconsetDir)
 try {

@@ -1,5 +1,5 @@
 /** localStorage key for Ask AI dock width in pixels. */
-export const ASK_AI_WIDTH_KEY = 'geocrm.electron.askAiWidthPx'
+export const ASK_AI_WIDTH_KEY = 'workbench.electron.askAiWidthPx'
 
 /** Default Ask AI sidebar width (22rem at 16px root). */
 export const DEFAULT_ASK_AI_WIDTH_PX = 352

@@ -18,9 +18,9 @@ import {
   YahooIcon,
 } from '@/icons/AllIcons'
 import {
-  geocrmSearchTargetLabelKey,
-  parseGeocrmSearchTarget,
-  type GeocrmSearchTarget,
+  workbenchSearchTargetLabelKey,
+  parseWorkbenchSearchTarget,
+  type WorkbenchSearchTarget,
 } from '@/constants/feature-tabs'
 import { useAuth } from '@/hooks/use-auth'
 import { useAppearance } from '@/hooks/use-appearance'
@@ -56,22 +56,22 @@ const SPOTLIGHT_CHROME_PAD = 32
  * @returns Nothing.
  */
 function hideSpotlightWindow(): void {
-  void window.geocrm?.spotlight?.hide?.()
+  void window.workbench?.spotlight?.hide?.()
 }
 
 /**
- * Builds a `geocrm://` URL for Spotlight to hand off to the main window.
+ * Builds a `workbench://` URL for Spotlight to hand off to the main window.
  * @param target - Parsed in-app page.
  * @returns Deep-link URL.
  */
-function geocrmTargetUrl(target: GeocrmSearchTarget): string {
+function workbenchTargetUrl(target: WorkbenchSearchTarget): string {
   if (target.kind === 'home') {
-    return 'geocrm://home'
+    return 'workbench://home'
   }
   if (target.kind === 'settings') {
-    return 'geocrm://settings'
+    return 'workbench://settings'
   }
-  return `geocrm://${target.id}`
+  return `workbench://${target.id}`
 }
 
 /**
@@ -97,11 +97,11 @@ function SpotlightSearchPanel({ userId }: { userId: string | null }) {
     initialEngine: 'Ask',
     persistEngine: false,
     loadSavedEngine: false,
-    onOpenGeocrmTarget: (target) => {
-      void window.geocrm?.spotlight?.openInMain?.(geocrmTargetUrl(target))
+    onOpenWorkbenchTarget: (target) => {
+      void window.workbench?.spotlight?.openInMain?.(workbenchTargetUrl(target))
     },
     onAskSearch: (searchQuery) => {
-      void window.geocrm?.spotlight?.openInMain?.(askAiSearchUrl(searchQuery))
+      void window.workbench?.spotlight?.openInMain?.(askAiSearchUrl(searchQuery))
     },
   })
   const engines = ALL_ENGINES.filter((item) => getAvailableSearchEngines().includes(item.id))
@@ -154,7 +154,7 @@ function SpotlightSearchPanel({ userId }: { userId: string | null }) {
   }, [query, panelItems.length])
 
   useEffect(() => {
-    return window.geocrm?.spotlight?.onShown?.(() => {
+    return window.workbench?.spotlight?.onShown?.(() => {
       // Remount for enter animation; focus runs in the layout effect below.
       setShowMotionKey((key) => key + 1)
     })
@@ -203,7 +203,7 @@ function SpotlightSearchPanel({ userId }: { userId: string | null }) {
      */
     function reportHeight(): void {
       const height = Math.ceil(column.getBoundingClientRect().height + SPOTLIGHT_CHROME_PAD)
-      void window.geocrm?.spotlight?.resize?.(height)
+      void window.workbench?.spotlight?.resize?.(height)
     }
 
     reportHeight()
@@ -218,9 +218,9 @@ function SpotlightSearchPanel({ userId }: { userId: string | null }) {
    * @returns Localized row text.
    */
   function directRowLabel(text: string): string {
-    const target = parseGeocrmSearchTarget(text)
+    const target = parseWorkbenchSearchTarget(text)
     if (target) {
-      return t('search.openPage', { name: t(geocrmSearchTargetLabelKey(target)) })
+      return t('search.openPage', { name: t(workbenchSearchTargetLabelKey(target)) })
     }
     return t('search.directSearch', { query: text, engine: searchEngineLabel(t, engine) })
   }
@@ -457,7 +457,7 @@ export default function SpotlightPage() {
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.spotlight?.onShown?.(() => {
+    return window.workbench?.spotlight?.onShown?.(() => {
       applyAppearanceFromLocalStorage()
     })
   }, [])
@@ -465,7 +465,7 @@ export default function SpotlightPage() {
   return (
     <LinkOpenProvider
       onOpenInApp={(url) => {
-        void window.geocrm?.spotlight?.openInMain?.(url)
+        void window.workbench?.spotlight?.openInMain?.(url)
       }}
     >
       <div className="flex w-full items-start justify-center overflow-visible bg-transparent px-2 pt-2 pb-4">

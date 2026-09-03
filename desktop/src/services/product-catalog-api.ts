@@ -1,6 +1,6 @@
 /**
  * Supabase reads/writes for the ERP product electronic catalog (`product_catalog`)
- * plus geocrm-api ERP sync (`POST /erp/products/sync`).
+ * plus workbench-api ERP sync (`POST /erp/products/sync`).
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
@@ -439,7 +439,7 @@ export async function updateProductCatalogObmFields(
 }
 
 /**
- * Returns true when the unified GeoCRM API origin is configured.
+ * Returns true when the unified Workbench API origin is configured.
  * @returns Whether product catalog sync can run.
  */
 export function isProductCatalogApiConfigured(): boolean {
@@ -447,7 +447,7 @@ export function isProductCatalogApiConfigured(): boolean {
 }
 
 /**
- * Supabase access token for authenticated geocrm-api calls.
+ * Supabase access token for authenticated workbench-api calls.
  * @returns Access token or null when not signed in.
  */
 async function getToken(): Promise<string | null> {
@@ -487,12 +487,12 @@ async function getToken(): Promise<string | null> {
 }
 
 /**
- * Authenticated JSON fetch to geocrm-api.
+ * Authenticated JSON fetch to workbench-api.
  * @param path - Absolute API path.
  * @param init - Fetch init options.
  * @returns Parsed JSON body.
  */
-async function geocrmFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+async function workbenchFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const base = resolveApiBaseUrl()
   if (!base) {
     throw new Error('VITE_DEPLOYMENT_DOMAIN is not configured')
@@ -517,7 +517,7 @@ async function geocrmFetch<T>(path: string, init: RequestInit = {}): Promise<T> 
       res = await runFetch(token)
     } catch (e) {
       const reason = e instanceof Error ? e.message : 'Network error'
-      throw new Error(`${reason}. Cannot reach geocrm-api (${base}).`)
+      throw new Error(`${reason}. Cannot reach workbench-api (${base}).`)
     }
     if (res.status !== 401 || !supabase) {
       break
@@ -540,7 +540,7 @@ async function geocrmFetch<T>(path: string, init: RequestInit = {}): Promise<T> 
  * @returns Sync counts.
  */
 export async function syncProductCatalog(): Promise<ProductCatalogSyncResult> {
-  const data = await geocrmFetch<{ ok: boolean; result: ProductCatalogSyncResult }>(
+  const data = await workbenchFetch<{ ok: boolean; result: ProductCatalogSyncResult }>(
     '/erp/products/sync',
     { method: 'POST' },
   )

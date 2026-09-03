@@ -9,7 +9,7 @@
   "passwordConfirm": "Confirm password",
   "active": "Active",
   "inactive": "Inactive",
-  "apiNotConfigured": "GeoCRM API is not configured (set VITE_DEPLOYMENT_DOMAIN).",
+  "apiNotConfigured": "Workbench API is not configured (set VITE_DEPLOYMENT_DOMAIN).",
   "errorFieldsRequired": "Username and password are required.",
   "errorPasswordLength": "Password must be at least {{min}} characters.",
   "errorPasswordMismatch": "Passwords do not match.",

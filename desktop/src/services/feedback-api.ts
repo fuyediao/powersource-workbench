@@ -50,7 +50,7 @@ export interface FeedbackSubmitPayload {
 }
 
 /**
- * Returns true when the unified GeoCRM API origin is configured.
+ * Returns true when the unified Workbench API origin is configured.
  * @returns Whether feedback submit can run.
  */
 export function isFeedbackApiConfigured(): boolean {
@@ -162,7 +162,7 @@ export async function readFeedbackImageFile(file: File): Promise<FeedbackImagePa
 }
 
 /**
- * Submits Settings feedback to geocrm-api `POST /feedback/submit`.
+ * Submits Settings feedback to workbench-api `POST /feedback/submit`.
  * @param payload - Form fields plus optional images.
  * @returns Nothing when the provider accepts the message.
  */

@@ -9,7 +9,7 @@
   "passwordConfirm": "确认密码",
   "active": "启用",
   "inactive": "停用",
-  "apiNotConfigured": "未配置 GeoCRM API（请设置 VITE_DEPLOYMENT_DOMAIN）。",
+  "apiNotConfigured": "未配置 Workbench API（请设置 VITE_DEPLOYMENT_DOMAIN）。",
   "errorFieldsRequired": "用户名与密码为必填。",
   "errorPasswordLength": "密码至少 {{min}} 个字符。",
   "errorPasswordMismatch": "两次输入的密码不一致。",

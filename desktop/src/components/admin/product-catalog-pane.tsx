@@ -230,7 +230,7 @@ export function ProductCatalogPane({ onNavigate }: ProductCatalogPaneProps) {
   }
 
   /**
-   * Pulls GetItemStock + GetItemPrice via geocrm-api, then reloads.
+   * Pulls GetItemStock + GetItemPrice via workbench-api, then reloads.
    */
   async function handleSyncErp(): Promise<void> {
     if (syncing || !erpSyncEnabled) {

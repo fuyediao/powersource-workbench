@@ -95,7 +95,7 @@ export function applySavedHomeAppOrder<T extends { id: string }>(
  */
 export async function loadHomeAppOrder(userId: string): Promise<string[]> {
   try {
-    const ids = await window.geocrm.homeAppOrder.get(userId)
+    const ids = await window.workbench.homeAppOrder.get(userId)
     return Array.isArray(ids) ? ids.filter((id) => typeof id === 'string') : []
   } catch {
     return []
@@ -109,5 +109,5 @@ export async function loadHomeAppOrder(userId: string): Promise<string[]> {
  * @returns Nothing.
  */
 export async function saveHomeAppOrder(userId: string, appIds: string[]): Promise<void> {
-  await window.geocrm.homeAppOrder.set(userId, appIds)
+  await window.workbench.homeAppOrder.set(userId, appIds)
 }

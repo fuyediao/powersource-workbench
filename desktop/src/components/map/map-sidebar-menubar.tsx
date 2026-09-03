@@ -75,7 +75,7 @@ export function MapSidebarMenubar({
       ? t('map.menubar.allGroups')
       : (switchableGroups.find((group) => group.id === selectedGroupId)?.name ??
         t('map.menubar.group'))
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 
   /**
    * Positions a floating menu under its trigger.

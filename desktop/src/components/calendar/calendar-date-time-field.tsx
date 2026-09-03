@@ -1,6 +1,6 @@
 /**
  * Brand-themed date / date-time field for calendar event dialogs.
- * Replaces native `datetime-local` so colours and copy follow GeoCRM i18n.
+ * Replaces native `datetime-local` so colours and copy follow Workbench i18n.
  */
 
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'

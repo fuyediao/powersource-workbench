@@ -7,11 +7,11 @@ import {
   writeAdminActivePath,
 } from '@/utils/admin-active-path'
 
-const OPEN_EVENT = 'geocrm:open-orders'
-const PATH_EVENT = 'geocrm:orders-path'
+const OPEN_EVENT = 'workbench:open-orders'
+const PATH_EVENT = 'workbench:orders-path'
 
 /** sessionStorage key for last Orders path (list or detail). */
-export const ORDERS_PATH_STORAGE_KEY = 'geocrm-electron-orders-path'
+export const ORDERS_PATH_STORAGE_KEY = 'workbench-electron-orders-path'
 
 const ORDERS_ROOTS = ['/orders/crm', '/orders/nexdot', '/orders/te'] as const
 

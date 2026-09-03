@@ -29,7 +29,7 @@ export const APPEARANCE_STORAGE_KEYS = [
   SEARCH_RADIUS_KEY,
 ] as const
 
-const APPEARANCE_BROADCAST = 'geocrm-appearance'
+const APPEARANCE_BROADCAST = 'workbench-appearance'
 
 /** Per-renderer id so BroadcastChannel sync ignores the posting window. */
 const APPEARANCE_ORIGIN_ID = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`

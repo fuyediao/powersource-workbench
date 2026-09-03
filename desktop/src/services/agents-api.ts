@@ -1,12 +1,12 @@
 /**
  * Agent (Sales Representative System) admin client for Electron.
- * Wraps the geocrm-api `/proxy/admin/*` contracts used by geocrm-web `proxyApi`.
+ * Wraps the workbench-api `/proxy/admin/*` contracts used by workbench-web `proxyApi`.
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 
-/** Path prefix for proxy-worker routes on the unified geocrm-api host. */
+/** Path prefix for proxy-worker routes on the unified workbench-api host. */
 const PROXY_API_PREFIX = '/proxy'
 
 /** Agent company profile (`proxy_agent_companies`). */
@@ -97,7 +97,7 @@ export interface AgentSalesRepInput {
 }
 
 /**
- * Whether geocrm-api is configured for agent admin calls.
+ * Whether workbench-api is configured for agent admin calls.
  * @returns True when the deployment domain is set.
  */
 export function isAgentApiConfigured(): boolean {
@@ -105,7 +105,7 @@ export function isAgentApiConfigured(): boolean {
 }
 
 /**
- * Supabase access token for authenticated geocrm-api calls.
+ * Supabase access token for authenticated workbench-api calls.
  * @returns Access token, or null when signed out.
  */
 async function getToken(): Promise<string | null> {
@@ -151,7 +151,7 @@ async function agentFetch<T>(
     res = await fetch(`${base}${urlPath}`, { ...init, headers, mode: 'cors' })
   } catch (e) {
     const reason = e instanceof Error ? e.message : 'Network error'
-    throw new Error(`${reason}. Cannot reach geocrm-api.`)
+    throw new Error(`${reason}. Cannot reach workbench-api.`)
   }
 
   const body = (await res.json().catch(() => ({}))) as Record<string, unknown>

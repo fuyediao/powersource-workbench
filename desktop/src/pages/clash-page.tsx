@@ -11,7 +11,7 @@ const ClashVergeApp = lazy(async () => {
  * Starts the Mihomo sidecar when the Clash tile is shown.
  */
 function ensureSidecar(): void {
-  void window.geocrm?.clash?.invoke?.('ensureSidecar')
+  void window.workbench?.clash?.invoke?.('ensureSidecar')
 }
 
 /**

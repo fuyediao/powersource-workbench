@@ -43,7 +43,7 @@ export function mapAskClawdActivity(
  * @returns Nothing.
  */
 export function reportAskClawdActivity(sessionId: string, activity: ClawdAskActivity): void {
-  void window.geocrm?.clawd?.reportActivity({
+  void window.workbench?.clawd?.reportActivity({
     sessionId,
     event: activity.event,
     state: activity.state,

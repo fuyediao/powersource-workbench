@@ -32,7 +32,7 @@ export interface UseSidebarModeReturn {
  * @returns True on darwin with the application menu.
  */
 function nativeMenuAllowsHidden(): boolean {
-  return Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  return Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 }
 
 /**

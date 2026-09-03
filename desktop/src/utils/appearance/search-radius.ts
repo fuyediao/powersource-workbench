@@ -1,5 +1,5 @@
 /** localStorage key for the search bar roundness (0–100 UI percent). */
-export const SEARCH_RADIUS_KEY = 'geocrm-search-radius-pct'
+export const SEARCH_RADIUS_KEY = 'workbench-search-radius-pct'
 
 /** Default roundness % — about `1rem` / previous `rounded-2xl` with the rem mapping below. */
 export const DEFAULT_SEARCH_RADIUS = 50

@@ -47,7 +47,7 @@ const ENTRY_WRITE_DOMAIN: Record<
   desktop_kanban: 'admin',
 }
 
-const DEFAULT_ADMIN_SIDEBAR_MODE_KEY = 'geocrm-electron-admin-sidebar-mode'
+const DEFAULT_ADMIN_SIDEBAR_MODE_KEY = 'workbench-electron-admin-sidebar-mode'
 const DEFAULT_ADMIN_TITLE_KEY = 'admin.sidebar.title'
 
 /** Active pane write flags passed to content renderers. */

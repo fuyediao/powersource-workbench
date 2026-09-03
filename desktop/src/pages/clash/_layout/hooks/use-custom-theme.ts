@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useVerge } from '@/hooks/clash/use-verge'
 import { defaultDarkTheme, defaultTheme } from '@/pages/clash/_theme'
-import { isGeocrmHosted } from '@/services/clash/bridge'
+import { isWorkbenchHosted } from '@/services/clash/bridge'
 import { useSetThemeMode, useThemeMode } from '@/services/clash/states'
 
 const CSS_INJECTION_SCOPE_ROOT = '[data-css-injection-root]'
@@ -112,7 +112,7 @@ function hostedCss(name: string, fallback: string): string {
 }
 
 /**
- * Whether the GeoCRM shell injected `html.dark`.
+ * Whether the Workbench shell injected `html.dark`.
  * @returns Dark flag.
  */
 function hostedIsDark(): boolean {
@@ -120,7 +120,7 @@ function hostedIsDark(): boolean {
 }
 
 export const useCustomTheme = () => {
-  const hosted = isGeocrmHosted()
+  const hosted = isWorkbenchHosted()
   const appWindow: WebviewWindow | null = useMemo(
     () => (hosted ? null : getCurrentWebviewWindow()),
     [hosted],

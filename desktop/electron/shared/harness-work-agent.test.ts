@@ -12,7 +12,7 @@ describe('mergeWorkAgentInstructions', () => {
   })
 
   it('prepends the work-agent block ahead of memory and skills', () => {
-    const merged = mergeWorkAgentInstructions('# Skills\n\n- geocrm-office')
+    const merged = mergeWorkAgentInstructions('# Skills\n\n- workbench-office')
     expect(merged.startsWith(WORK_AGENT_INSTRUCTION_HEADING)).toBe(true)
     expect(merged).toContain('# Skills')
     expect(merged).toContain('write real HTML')

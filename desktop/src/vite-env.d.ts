@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-declare module 'virtual:geocrm-i18n-resources' {
+declare module 'virtual:workbench-i18n-resources' {
   const resources: {
     en: { translation: Record<string, unknown> }
     'zh-TW': { translation: Record<string, unknown> }
@@ -709,7 +709,7 @@ interface AuraLibraryMenuViewState {
   hasSelection: boolean
 }
 
-interface GeocrmMenuBridge {
+interface WorkbenchMenuBridge {
   setState: (state: ApplicationMenuState) => Promise<void>
   onNavigate: (listener: (target: MenuNavigateTarget) => void) => () => void
   onLanguage: (listener: (language: 'en' | 'zh-TW' | 'zh-CN') => void) => () => void
@@ -734,7 +734,7 @@ interface AskAiCaptureResult {
   height: number
 }
 
-interface GeocrmWindowBridge {
+interface WorkbenchWindowBridge {
   usesCustomTitleBar: boolean
   usesCustomTrafficLights: boolean
   usesNativeApplicationMenu: boolean
@@ -789,7 +789,7 @@ interface LegacyOfficeWorkspaceFile {
   updatedAt: number
 }
 
-interface GeocrmBridge {
+interface WorkbenchBridge {
   auth: {
     openGoogleSignIn: () => Promise<void>
     setSignedIn: (signedIn: boolean) => Promise<void>
@@ -961,8 +961,8 @@ interface GeocrmBridge {
   askAi: {
     captureMainContent: (excludeRightPx: number) => Promise<AskAiCaptureResult | null>
   }
-  window: GeocrmWindowBridge
-  menu: GeocrmMenuBridge
+  window: WorkbenchWindowBridge
+  menu: WorkbenchMenuBridge
   spotlight: {
     accelerator: string
     toggle: () => Promise<void>
@@ -970,7 +970,7 @@ interface GeocrmBridge {
     setEnabled: (enabled: boolean) => Promise<void>
     usesGlobalShortcut: () => Promise<boolean>
     resize: (height: number) => Promise<void>
-    /** Opens http(s) in-app or a known `geocrm://` page in the main window. */
+    /** Opens http(s) in-app or a known `workbench://` page in the main window. */
     openInMain: (url: string) => Promise<void>
     onShown: (listener: () => void) => () => void
     onOpenInApp: (listener: (url: string) => void) => () => void
@@ -1036,16 +1036,16 @@ interface GeocrmBridge {
   }
 }
 
-interface GeocrmClashBridge {
+interface WorkbenchClashBridge {
   invoke: (cmd: string, args?: Record<string, unknown>) => Promise<unknown>
   listen: (name: string, handler: (payload: unknown) => void) => () => void
 }
 
 interface Window {
-  /** Typed GeoCRM desktop bridge from preload. */
-  geocrm: GeocrmBridge
+  /** Typed Workbench desktop bridge from preload. */
+  workbench: WorkbenchBridge
   /** Clash Verge invoke/listen when this document is the hosted Clash view. */
-  geocrmClash?: GeocrmClashBridge
+  workbenchClash?: WorkbenchClashBridge
   SpeechRecognition?: new () => SpeechRecognition
   webkitSpeechRecognition?: new () => SpeechRecognition
 }

@@ -1,5 +1,5 @@
 /**
- * Live Sales Board pane for Kanban `/kanban/sales` (GeoCRM Electron design
+ * Live Sales Board pane for Kanban `/kanban/sales` (Workbench Electron design
  * system parity with `DashboardPane` / `OrdersCrmPane` — no standalone CSS).
  */
 
@@ -79,7 +79,7 @@ function monthStartInputValue(): string {
 
 /**
  * Scans `orders` / `shop_orders` over Supabase (RLS), refreshes on Realtime
- * and poll, and renders the board with the shared GeoCRM Electron chrome.
+ * and poll, and renders the board with the shared Workbench Electron chrome.
  * @returns Sales Board pane.
  */
 export function SalesBoardPane() {

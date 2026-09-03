@@ -39,7 +39,7 @@ if (typeof window !== 'undefined' && !window.ResizeObserver) {
 const clashRouter = createClashRouter(consumePendingClashPath() ?? '/')
 
 /**
- * Clash Verge UI mounted inside the GeoCRM Clash tile (same renderer as Aura).
+ * Clash Verge UI mounted inside the Workbench Clash tile (same renderer as Aura).
  * @returns Clash application tree.
  */
 export function ClashVergeApp(): ReactElement {

@@ -1,6 +1,6 @@
 /**
  * Follow-ups (todo list) CRUD against Supabase `follow_ups`.
- * Ported from geocrm-web `useFollowUps` + `followUpsCustomerScope`.
+ * Ported from workbench-web `useFollowUps` + `followUpsCustomerScope`.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
@@ -713,7 +713,7 @@ async function deleteCalendarEventForFollowUp(
       .select('id')
       .eq('created_by', ownerId)
       .eq('start_at', row.scheduled_at)
-      .eq('source', 'geocrm')
+      .eq('source', 'workbench')
       .limit(2)
     if (matchError) {
       console.error('[follow-ups-api] legacy calendar match:', matchError)

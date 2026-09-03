@@ -1,5 +1,5 @@
 /**
- * Chrome-style title-bar tab tear-off / merge between GeoCRM app windows.
+ * Chrome-style title-bar tab tear-off / merge between Workbench app windows.
  *
  * The renderer decides *that* a drag ended outside its own title-bar strip
  * (see `MacStyleTitleBar.tsx`); this module decides *where* the tab lands:

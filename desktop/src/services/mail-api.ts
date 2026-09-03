@@ -1,5 +1,5 @@
 /**
- * geocrm-api `/mail/*` client for the Electron mail workspace.
+ * workbench-api `/mail/*` client for the Electron mail workspace.
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
@@ -53,7 +53,7 @@ async function getToken(): Promise<string | null> {
 }
 
 /**
- * Authenticated JSON request to geocrm-api `/mail/*`.
+ * Authenticated JSON request to workbench-api `/mail/*`.
  * @param path - Absolute path starting with `/mail`.
  * @param init - Fetch init.
  * @returns Parsed JSON.
@@ -82,7 +82,7 @@ async function mailFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
     }
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'Network error'
-    throw new Error(`${reason}. Cannot reach geocrm-api (${base}).`)
+    throw new Error(`${reason}. Cannot reach workbench-api (${base}).`)
   }
   if (!res.ok) {
     const body = (await res.json().catch(() => ({ error: '' }))) as {

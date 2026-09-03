@@ -149,12 +149,12 @@ function agentOverlayInvoke(method: string, ...args: unknown[]): Promise<unknown
 }
 
 /**
- * Typed GeoCRM desktop bridge for the renderer.
+ * Typed Workbench desktop bridge for the renderer.
  */
-contextBridge.exposeInMainWorld('geocrm', {
+contextBridge.exposeInMainWorld('workbench', {
   auth: {
     /**
-     * Opens Google OAuth in the system browser via geocrm-api.
+     * Opens Google OAuth in the system browser via workbench-api.
      * @returns Nothing.
      */
     openGoogleSignIn: (): Promise<void> =>
@@ -592,7 +592,7 @@ contextBridge.exposeInMainWorld('geocrm', {
      * @returns Nothing.
      */
     openExternal: (url: string): Promise<void> =>
-      ipcRenderer.invoke('geocrm:open-external', url) as Promise<void>,
+      ipcRenderer.invoke('workbench:open-external', url) as Promise<void>,
   },
   askAi: {
     /**
@@ -754,7 +754,7 @@ contextBridge.exposeInMainWorld('geocrm', {
       }
     },
     /**
-     * Subscribes when GeoCRM → Language is chosen (including while signed out).
+     * Subscribes when Workbench → Language is chosen (including while signed out).
      * @param listener - Callback with the selected locale.
      * @returns Unsubscribe function.
      */
@@ -970,8 +970,8 @@ contextBridge.exposeInMainWorld('geocrm', {
     resize: (height: number): Promise<void> =>
       spotlightInvoke('resize', height) as Promise<void>,
     /**
-     * Asks the main window to open a URL (in-app tab or `geocrm://` page).
-     * @param url - Absolute http(s) or `geocrm://` URL.
+     * Asks the main window to open a URL (in-app tab or `workbench://` page).
+     * @param url - Absolute http(s) or `workbench://` URL.
      * @returns Nothing.
      */
     openInMain: (url: string): Promise<void> =>
@@ -1288,7 +1288,7 @@ contextBridge.exposeInMainWorld('geocrm', {
 /**
  * Tauri-style invoke/listen used by the hosted Clash Verge document.
  *
- * Main process pushes every Clash event on one IPC channel (`geocrm:clash-event`).
+ * Main process pushes every Clash event on one IPC channel (`workbench:clash-event`).
  * A single `ipcRenderer` listener fans out by event name so React subscriptions
  * cannot trip Node's default maxListeners (10) warning.
  */
@@ -1301,7 +1301,7 @@ let clashEventIpcListener:
   | null = null
 
 /**
- * Ensures one `ipcRenderer.on(geocrm:clash-event)` is bound, then dispatches by name.
+ * Ensures one `ipcRenderer.on(workbench:clash-event)` is bound, then dispatches by name.
  */
 function ensureClashEventIpc(): void {
   if (clashEventIpcListener) {
@@ -1334,7 +1334,7 @@ function releaseClashEventIpcIfIdle(): void {
   clashEventIpcListener = null
 }
 
-contextBridge.exposeInMainWorld('geocrmClash', {
+contextBridge.exposeInMainWorld('workbenchClash', {
   /**
    * Invokes a Clash Verge command in the Electron host.
    * @param cmd - Command name.

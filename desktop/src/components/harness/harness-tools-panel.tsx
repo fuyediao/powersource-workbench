@@ -43,7 +43,7 @@ import {
   type HarnessCloudExpert,
 } from '@/services/harness-experts-api'
 
-const CUSTOM_ASSISTANTS_KEY = 'geocrm.electron.harness.salesAssistants.v1'
+const CUSTOM_ASSISTANTS_KEY = 'workbench.electron.harness.salesAssistants.v1'
 const CATEGORY_ORDER: readonly SalesAssistantCategory[] = [
   'productDesign',
   'technicalEngineering',
@@ -195,7 +195,7 @@ function localizeBuiltIn(
     ...resolveSalesAssistantManifest(assistant),
     name: translate(`harness.tools.assistant.${assistant.id}.name`),
     description: translate(`harness.tools.assistant.${assistant.id}.description`),
-    creator: 'GeoCRM',
+    creator: 'Workbench',
     custom: false,
     executorName: salesAssistantExecutorName(assistant.id),
   }
@@ -243,7 +243,7 @@ function teamProfile(
     id: `team-${teamId}`,
     name: translate(`harness.tools.team.${teamId}.name`),
     description: translate(`harness.tools.team.${teamId}.description`),
-    creator: 'GeoCRM',
+    creator: 'Workbench',
     custom: false,
     featured: false,
     instructions: `Act as a coordinated AI tool group for ${category}. Combine specialist capabilities, reconcile conflicts, and return one evidence-based plan with owners, risks, and next actions.`,
@@ -408,7 +408,7 @@ export function HarnessToolsPanel({ onStartAssistant, selection, canGenerate }: 
     }
   }
 
-  const creatorLabel = (assistant: SalesAssistantProfile): string => assistant.creator === 'user' ? t('harness.tools.creator.you') : t('harness.tools.creator.geocrm')
+  const creatorLabel = (assistant: SalesAssistantProfile): string => assistant.creator === 'user' ? t('harness.tools.creator.you') : t('harness.tools.creator.workbench')
 
   return (
     <main className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-7 lg:px-8">

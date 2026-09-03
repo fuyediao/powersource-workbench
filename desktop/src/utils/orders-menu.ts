@@ -118,7 +118,7 @@ function emitSnapshot(): void {
  * @returns True on macOS with a native application menu.
  */
 export function usesNativeOrdersMenu(): boolean {
-  return Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  return Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 }
 
 /**

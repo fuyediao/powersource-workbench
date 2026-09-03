@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url'
 const electronRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const macosIconDir = path.join(
   electronRoot,
-  '../geocrm-macos-M/geocrm-macos-M/AppIcon.icon',
+  '../workbench-macos-M/workbench-macos-M/AppIcon.icon',
 )
 const destIconDir = path.join(electronRoot, 'build/icon.icon')
 const publicDir = path.join(electronRoot, 'public')

@@ -19,8 +19,8 @@ import { useVerge } from '@/hooks/clash/use-verge'
 import { useWindowDecorations } from '@/hooks/clash/use-window'
 import { useSidebarMode } from '@/hooks/use-sidebar-mode'
 import { useSidebarRailMenuHost } from '@/hooks/use-sidebar-rail-menu'
-import geocrmI18n from '@/i18n'
-import { isGeocrmHosted } from '@/services/clash/bridge'
+import workbenchI18n from '@/i18n'
+import { isWorkbenchHosted } from '@/services/clash/bridge'
 import {
   areLanguageSectionsLoaded,
   clashSectionsForPath,
@@ -61,8 +61,8 @@ function dayjsLocaleForClash(language: string): string {
 }
 
 /**
- * Applies Clash UI + dayjs locale from a GeoCRM or Clash language code.
- * @param rawLanguage - GeoCRM (`en` / `zh-TW` / `zh-CN`) or Clash code.
+ * Applies Clash UI + dayjs locale from a Workbench or Clash language code.
+ * @param rawLanguage - Workbench (`en` / `zh-TW` / `zh-CN`) or Clash code.
  * @param switchLanguage - Clash i18n switcher.
  * @returns Nothing.
  */
@@ -130,7 +130,7 @@ const Layout = () => {
   const location = useLocation()
   const themeReady = useMemo(() => Boolean(theme), [theme])
   const sidebar = useSidebarMode({
-    storageKey: 'geocrm-electron-clash-sidebar-mode',
+    storageKey: 'workbench-electron-clash-sidebar-mode',
     defaultMode: 'hover',
   })
 
@@ -138,7 +138,7 @@ const Layout = () => {
   const [menuContextPosition, setMenuContextPosition] =
     useState<MenuContextPosition | null>(null)
 
-  const hosted = isGeocrmHosted()
+  const hosted = isWorkbenchHosted()
   const { decorated } = useWindowDecorations()
 
   const handleMenuOrderOptimisticUpdate = useCallback(
@@ -267,13 +267,13 @@ const Layout = () => {
 
   useEffect(() => {
     if (hosted) {
-      applyClashLanguage(geocrmI18n.language, switchLanguage)
+      applyClashLanguage(workbenchI18n.language, switchLanguage)
       const onHostLanguageChanged = (lng: string): void => {
         applyClashLanguage(lng, switchLanguage)
       }
-      geocrmI18n.on('languageChanged', onHostLanguageChanged)
+      workbenchI18n.on('languageChanged', onHostLanguageChanged)
       return () => {
-        geocrmI18n.off('languageChanged', onHostLanguageChanged)
+        workbenchI18n.off('languageChanged', onHostLanguageChanged)
       }
     }
 
@@ -303,7 +303,7 @@ const Layout = () => {
       {hosted ? null : customTitlebar}
 
       <div
-        className={`${OS} relative flex h-full min-h-0 overflow-hidden text-ink${hosted ? ' layout--geocrm-hosted' : ''}`}
+        className={`${OS} relative flex h-full min-h-0 overflow-hidden text-ink${hosted ? ' layout--workbench-hosted' : ''}`}
         onContextMenu={(e) => {
           if (
             OS === 'windows' &&

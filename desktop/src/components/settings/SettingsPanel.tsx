@@ -173,7 +173,7 @@ export function SettingsPanel({
   const { t } = useTranslation()
   const roles = useSettingsRoles(userId)
   const sidebar = useSidebarMode({
-    storageKey: 'geocrm-electron-settings-sidebar-mode',
+    storageKey: 'workbench-electron-settings-sidebar-mode',
     defaultMode: 'expanded',
   })
   const [section, setSection] = useState<SettingsSection>(() => loadPersistedSettingsSection())

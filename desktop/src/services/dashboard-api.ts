@@ -1,5 +1,5 @@
 /**
- * Dashboard bundle via Supabase `get_dashboard_bundle` (same RPC as geocrm-web mobile).
+ * Dashboard bundle via Supabase `get_dashboard_bundle` (same RPC as workbench-web mobile).
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

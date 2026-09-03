@@ -30,7 +30,7 @@ import {
   RefreshIcon,
 } from '@/icons/AllIcons'
 import { enrichKolChannelFields } from '@/services/kol-channel-enrich'
-import { isGeocrmApiConfigured } from '@/services/kol-channel-enrichment-api'
+import { isWorkbenchApiConfigured } from '@/services/kol-channel-enrichment-api'
 import {
   createKolChannel,
   deleteKolChannel,
@@ -130,7 +130,7 @@ export function ChannelsPanel({
   const [headerError, setHeaderError] = useState<string | null>(null)
   const [rowErrors, setRowErrors] = useState<Record<string, string>>({})
 
-  const apiReady = isGeocrmApiConfigured()
+  const apiReady = isWorkbenchApiConfigured()
   const hasEnrichable = channels.some((ch) => isEnrichable(ch.platformKey))
   const totalPages = Math.max(1, Math.ceil(channels.length / CHANNELS_PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
@@ -396,7 +396,7 @@ export function ChannelsPanel({
               aria-label={t('admin.kolDetail.refreshYoutubeStatsTitle')}
               title={
                 !apiReady
-                  ? t('admin.kolDetail.refreshYoutubeStatsDisabledGeocrm')
+                  ? t('admin.kolDetail.refreshYoutubeStatsDisabledWorkbench')
                   : t('admin.kolDetail.refreshYoutubeStatsTitle')
               }
               onClick={() => void refreshAll()}
@@ -507,7 +507,7 @@ export function ChannelsPanel({
                       aria-label={t('admin.kolDetail.refreshYoutubeStatsRowTitle')}
                       title={
                         !apiReady
-                          ? t('admin.kolDetail.refreshYoutubeStatsDisabledGeocrm')
+                          ? t('admin.kolDetail.refreshYoutubeStatsDisabledWorkbench')
                           : t('admin.kolDetail.refreshYoutubeStatsRowTitle')
                       }
                       onClick={() => void refreshRow(ch)}

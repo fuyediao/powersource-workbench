@@ -57,7 +57,7 @@ function isPayloadEmpty(payload: TeamRetroBoardPayload): boolean {
  * @returns localStorage key.
  */
 function legacyLocalStorageKey(groupId: string, periodKey: string): string {
-  return `geocrm_team_retro_v1:${groupId}:${periodKey}`
+  return `workbench_team_retro_v1:${groupId}:${periodKey}`
 }
 
 /**

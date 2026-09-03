@@ -109,7 +109,7 @@ export function buildHarnessToolPrompt(
   requirement: string,
 ): string {
   return [
-    'Create one production-ready reusable tool for the GeoCRM Harness.',
+    'Create one production-ready reusable tool for the Workbench Harness.',
     'Return only one JSON object with exactly these keys: name, description, instructions, allowedTools, requiredConnectors, outputMode.',
     'The instructions must be in English and must define activation guidance, operating steps, evidence rules, safety boundaries, and the expected result.',
     'The visible name and description may follow the language used by the user requirement.',

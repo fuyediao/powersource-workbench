@@ -7,7 +7,7 @@
  * replacement). See: https://github.com/electron/electron/issues/42061
  *
  * Multi-window: each pane tracks its own `host` BrowserWindow (there is no single
- * "the main window" — every GeoCRM window is a full shell). `activeTabId` /
+ * "the main window" — every Workbench window is a full shell). `activeTabId` /
  * `lastBounds` are therefore per-host, not module-global. Chrome-style tab
  * tear-off reparents a pane's native view onto a new host instead of destroying
  * and recreating it, so the loaded page and history survive the move.

@@ -1,5 +1,5 @@
 /**
- * Harness memory against geocrm-api `/ai/harness/memory`.
+ * Harness memory against workbench-api `/ai/harness/memory`.
  *
  * The authoritative `MEMORY.md` / `USER.md` live on the user's VPS profile
  * (one directory per `user_id`). The desktop client reads a snapshot before a
@@ -19,7 +19,7 @@ export interface HarnessMemorySnapshot {
 }
 
 /**
- * Reports whether the GeoCRM API origin is configured.
+ * Reports whether the Workbench API origin is configured.
  * @returns True when memory calls can run.
  */
 export function isHarnessMemoryApiConfigured(): boolean {
@@ -112,7 +112,7 @@ export async function completeHarnessMemoryReview(
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
       Accept: 'text/event-stream',
-      'x-geocrm-provider': provider,
+      'x-workbench-provider': provider,
     },
     body: {
       model: modelId,
@@ -140,7 +140,7 @@ export function fetchHarnessMemory(): Promise<HarnessMemorySnapshot> {
 }
 
 /**
- * Applies a desktop-proposed MEMORY.md / USER.md. geocrm-api clamps and writes.
+ * Applies a desktop-proposed MEMORY.md / USER.md. workbench-api clamps and writes.
  * @param snapshot - Proposed file bodies.
  * @returns Nothing.
  */

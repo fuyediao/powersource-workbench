@@ -1,5 +1,5 @@
 /**
- * Follow-up (todo list) types aligned with geocrm-web CRM `FollowUp` models.
+ * Follow-up (todo list) types aligned with workbench-web CRM `FollowUp` models.
  */
 
 /** Interaction channel; matches `follow_up_type_enum`. */

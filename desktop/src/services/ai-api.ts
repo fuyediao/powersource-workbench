@@ -3,7 +3,7 @@ import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import type { ChatMessage } from '@/chat/chat-types'
 import type { ShopLocation } from '@/types/chat'
 
-/** Gateway model slugs used by geocrm-api `/ai/*`. */
+/** Gateway model slugs used by workbench-api `/ai/*`. */
 export type AiGatewayModel = string
 
 /** Server egress IP returned by POST /ai/settings/connectivity. */
@@ -56,7 +56,7 @@ export class AiApiError extends Error {
 }
 
 /**
- * Returns true when the GeoCRM API origin is configured.
+ * Returns true when the Workbench API origin is configured.
  * @returns Whether AI settings API calls can run.
  */
 export function isAiApiConfigured(): boolean {
@@ -64,7 +64,7 @@ export function isAiApiConfigured(): boolean {
 }
 
 /**
- * Authenticated JSON request to geocrm-api `/ai/*`.
+ * Authenticated JSON request to workbench-api `/ai/*`.
  *
  * @param path - Absolute API path (e.g. `/ai/aichat`).
  * @param body - JSON body; omit for GET.
@@ -305,7 +305,7 @@ export async function postAiSettingsConnectivity(): Promise<AiConnectivityRespon
   return aiRequest<AiConnectivityResponse>('/ai/settings/connectivity', {})
 }
 
-/** Trilingual customer / KOL insight payload from geocrm-api. */
+/** Trilingual customer / KOL insight payload from workbench-api. */
 export interface CustomerInsightTrilingual {
   enUs: string
   zhCn: string

@@ -35,7 +35,7 @@ export function OaErpSection({ userId }: OaErpSectionProps) {
   const [saveSuccess, setSaveSuccess] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const feedback = useDialogPresence(saveSuccess || Boolean(saveError), 220)
-  const localStorageAvailable = Boolean(window.geocrm?.oaErpCredentials)
+  const localStorageAvailable = Boolean(window.workbench?.oaErpCredentials)
 
   const fieldClass =
     'w-full rounded-2xl border border-zinc-950/10 bg-white/60 px-4 py-2.5 text-sm text-brand outline-none dark:border-white/10 dark:bg-zinc-950/40' +

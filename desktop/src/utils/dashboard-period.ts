@@ -1,5 +1,5 @@
 /**
- * Sales dashboard trailing period helpers (aligned with geocrm-web).
+ * Sales dashboard trailing period helpers (aligned with workbench-web).
  */
 
 export type DashboardPeriod = 'all' | 'week' | 'month' | 'quarter' | 'year'

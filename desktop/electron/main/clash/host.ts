@@ -13,7 +13,7 @@ export function configureClashHost(options: {
 }
 
 /**
- * WebContents of the GeoCRM main window (Clash UI lives in this renderer).
+ * WebContents of the Workbench main window (Clash UI lives in this renderer).
  * @returns Main-window webContents, or null.
  */
 export function clashHostContents(): Electron.WebContents | null {
@@ -29,7 +29,7 @@ export function clashHostContents(): Electron.WebContents | null {
 }
 
 /**
- * GeoCRM main window (dialog parenting, show/hide for lightweight mode).
+ * Workbench main window (dialog parenting, show/hide for lightweight mode).
  * @returns Main window, or null when destroyed/absent.
  */
 export function clashHostWindow(): BrowserWindow | null {

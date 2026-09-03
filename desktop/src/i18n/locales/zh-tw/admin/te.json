@@ -262,9 +262,9 @@
   "workflowError": {
     "generic": "T&E 工作流程請求失敗。請重新整理，並僅在目前狀態允許時重試。",
     "genericWithCode": "T&E 工作流程請求失敗（{{code}}）。請重新整理後再執行操作。",
-    "api_not_configured": "尚未設定 GeoCRM API。",
+    "api_not_configured": "尚未設定 Workbench API。",
     "authentication_required": "目前登入工作階段不可用，請重新登入。",
-    "network_error": "無法連線 GeoCRM API，請重新整理後再重試。",
+    "network_error": "無法連線 Workbench API，請重新整理後再重試。",
     "erp_response_unknown": "ERP 回應結果未知。請重新整理，並在嘗試處於待處理狀態時切勿重試。",
     "invalid_status": "工作流程狀態已變更，請重新整理申請後繼續。",
     "invalid_product": "請從目前有效的 T&E 目錄中選擇至少一個不重複產品。",

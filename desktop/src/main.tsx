@@ -41,7 +41,7 @@ if (route === 'spotlight') {
 }
 if (route === 'agent') {
   document.documentElement.classList.add('agent-overlay-window')
-  if (!window.geocrm?.window?.usesNativeApplicationMenu) {
+  if (!window.workbench?.window?.usesNativeApplicationMenu) {
     document.documentElement.classList.add('agent-overlay-frameless')
   }
 }
@@ -57,7 +57,7 @@ void i18nReady
           <SpotlightPage />
         ) : route === 'agent' ? (
           <AgentOverlayPage />
-        ) : window.geocrm?.harness?.testMode ? (
+        ) : window.workbench?.harness?.testMode ? (
           <HarnessPage />
         ) : (
           <App />

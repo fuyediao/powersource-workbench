@@ -1,14 +1,14 @@
 /** IPC channel for Ask / Ask AI Clawd state reports. */
-export const CLAWD_BRIDGE_IPC_CHANNEL = 'geocrm:clawd-bridge'
+export const CLAWD_BRIDGE_IPC_CHANNEL = 'workbench:clawd-bridge'
 
-/** First-party Clawd agent id. Must match clawd-on-desk `agents/geocrm.js`. */
-export const CLAWD_GEOCRM_AGENT_ID = 'geocrm'
+/** First-party Clawd agent id. Must match clawd-on-desk `agents/workbench.js`. */
+export const CLAWD_WORKBENCH_AGENT_ID = 'workbench'
 
-/** Marker written by Clawd Install into GeoCRM userData. */
-export const CLAWD_GEOCRM_BRIDGE_MARKER = 'geocrm-clawd-bridge.v1'
+/** Marker written by Clawd Install into Workbench userData. */
+export const CLAWD_WORKBENCH_BRIDGE_MARKER = 'workbench-clawd-bridge.v1'
 
 /** Managed bridge filename inside Electron userData. */
-export const CLAWD_GEOCRM_BRIDGE_FILE = 'clawd-bridge.json'
+export const CLAWD_WORKBENCH_BRIDGE_FILE = 'clawd-bridge.json'
 
 /** One Ask or Ask AI activity snapshot for Clawd `/state`. */
 export type ClawdBridgeActivity = {
@@ -26,7 +26,7 @@ export type ClawdPermissionResult =
   | { kind: 'cancelled' }
 
 /**
- * Returns whether a parsed JSON document is the Clawd-managed GeoCRM bridge.
+ * Returns whether a parsed JSON document is the Clawd-managed Workbench bridge.
  * @param value - File contents.
  * @returns True when Clawd owns the file.
  */
@@ -36,8 +36,8 @@ export function isManagedClawdBridge(value: unknown): boolean {
       && typeof value === 'object'
       && !Array.isArray(value)
       && (value as { app?: unknown }).app === 'clawd-on-desk'
-      && (value as { integration?: unknown }).integration === 'geocrm'
-      && (value as { marker?: unknown }).marker === CLAWD_GEOCRM_BRIDGE_MARKER
+      && (value as { integration?: unknown }).integration === 'workbench'
+      && (value as { marker?: unknown }).marker === CLAWD_WORKBENCH_BRIDGE_MARKER
       && (value as { managed?: unknown }).managed === true,
   )
 }

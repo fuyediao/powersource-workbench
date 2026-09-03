@@ -24,7 +24,7 @@ export function HarnessReviewPanel({ cwd }: HarnessReviewPanelProps) {
     setLoading(true)
     setError('')
     try {
-      const bridge = window.geocrm?.harness
+      const bridge = window.workbench?.harness
       if (!bridge?.readReview) throw new Error(t('harness.utility.unavailable'))
       setSnapshot(await bridge.readReview(cwd))
     } catch (reason) {

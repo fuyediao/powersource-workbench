@@ -1,6 +1,6 @@
 /**
  * Competitor product line CRUD (`competitor_lines`).
- * Ported from geocrm-web `useCompetitorLines`.
+ * Ported from workbench-web `useCompetitorLines`.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

@@ -2,23 +2,23 @@ import { listenRendererEvent } from './renderer-events'
 
 export type ClashInvokeArgs = Record<string, unknown>
 
-type GeocrmClashBridge = {
+type WorkbenchClashBridge = {
   invoke: (cmd: string, args?: ClashInvokeArgs) => Promise<unknown>
   listen: (name: string, handler: (payload: unknown) => void) => () => void
 }
 
 declare global {
   interface Window {
-    geocrmClash?: GeocrmClashBridge
+    workbenchClash?: WorkbenchClashBridge
   }
 }
 
 /**
- * Whether this document is hosted inside GeoCRM Electron.
+ * Whether this document is hosted inside Workbench Electron.
  * @returns True when the Clash preload bridge is present.
  */
-export function isGeocrmHosted(): boolean {
-  return typeof window !== 'undefined' && typeof window.geocrmClash?.invoke === 'function'
+export function isWorkbenchHosted(): boolean {
+  return typeof window !== 'undefined' && typeof window.workbenchClash?.invoke === 'function'
 }
 
 /**
@@ -31,17 +31,17 @@ export async function clashInvoke<T>(
   cmd: string,
   args?: ClashInvokeArgs,
 ): Promise<T> {
-  if (!isGeocrmHosted()) {
+  if (!isWorkbenchHosted()) {
     throw new Error(`Clash host bridge is missing (${cmd})`)
   }
-  return window.geocrmClash!.invoke(cmd, args) as Promise<T>
+  return window.workbenchClash!.invoke(cmd, args) as Promise<T>
 }
 
 /**
  * Subscribes to a Clash event.
  *
  * Renderer `emit` (e.g. Test All → `verge://test-all`) is delivered in-process.
- * Main-process pushes still come through `geocrmClash.listen` when the host is present.
+ * Main-process pushes still come through `workbenchClash.listen` when the host is present.
  *
  * @param name - Event name.
  * @param handler - Payload callback (`{ payload }`, matching Tauri listen).
@@ -56,11 +56,11 @@ export async function clashListen<T>(
   }
   const unlistenLocal = listenRendererEvent(name, onLocal)
 
-  if (!isGeocrmHosted()) {
+  if (!isWorkbenchHosted()) {
     return unlistenLocal
   }
 
-  const unlistenMain = window.geocrmClash!.listen(name, (payload) => {
+  const unlistenMain = window.workbenchClash!.listen(name, (payload) => {
     handler({ payload: payload as T })
   })
 

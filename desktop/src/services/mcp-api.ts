@@ -1,6 +1,6 @@
 /**
  * Settings → Model Context Protocol: multi-key lifecycle plus the master
- * on/off switch against geocrm-api `/mcp/settings/*`. A plaintext key is
+ * on/off switch against workbench-api `/mcp/settings/*`. A plaintext key is
  * returned by the server only once, right after it is minted; it is never
  * persisted client-side.
  */
@@ -61,7 +61,7 @@ export class McpApiError extends Error {
 }
 
 /**
- * Reports whether the GeoCRM API origin is configured.
+ * Reports whether the Workbench API origin is configured.
  * @returns True when MCP settings calls can run.
  */
 export function isMcpApiConfigured(): boolean {
@@ -69,7 +69,7 @@ export function isMcpApiConfigured(): boolean {
 }
 
 /**
- * Authenticated JSON request to geocrm-api `/mcp/settings/*`.
+ * Authenticated JSON request to workbench-api `/mcp/settings/*`.
  * @param path - Path below `/mcp`.
  * @param method - HTTP method.
  * @param options - Optional JSON body and abort signal.
@@ -200,11 +200,11 @@ export function fetchMcpSetupPrompt(
 }
 
 /** Placeholder used when the plaintext MCP key is not on screen. */
-export const MCP_KEY_PLACEHOLDER = '<YOUR_GEOCRM_MCP_KEY>'
+export const MCP_KEY_PLACEHOLDER = '<YOUR_WORKBENCH_MCP_KEY>'
 
 /**
  * Builds a Streamable HTTP MCP client snippet with a Bearer header.
- * Matches the top-level `{ "geocrm": { url, headers } }` shape some clients
+ * Matches the top-level `{ "workbench": { url, headers } }` shape some clients
  * paste (no `mcpServers` wrapper).
  * @param endpoint - Public `/mcp` URL.
  * @param key - Plaintext key, or {@link MCP_KEY_PLACEHOLDER} when unknown.
@@ -213,7 +213,7 @@ export const MCP_KEY_PLACEHOLDER = '<YOUR_GEOCRM_MCP_KEY>'
 export function buildMcpBearerJson(endpoint: string, key: string): string {
   return `${JSON.stringify(
     {
-      geocrm: {
+      workbench: {
         url: endpoint,
         headers: {
           Authorization: `Bearer ${key}`,

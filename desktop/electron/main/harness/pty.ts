@@ -102,7 +102,7 @@ function buildShellEnv(): Record<string, string> {
   }
   env.TERM = 'xterm-256color'
   env.COLORTERM = 'truecolor'
-  env.TERM_PROGRAM = 'GeoCRM'
+  env.TERM_PROGRAM = 'Workbench'
   return env
 }
 

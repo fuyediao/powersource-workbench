@@ -1,9 +1,9 @@
 import type { SettingsSection } from '@/components/settings/settings-types'
 import type { WidgetToolsSection } from '@/components/home/widgets/WidgetToolsPanel'
 
-const OPEN_EVENT = 'geocrm:open-settings'
-const SECTION_EVENT = 'geocrm:settings-section'
-const WIDGET_TOOLS_EVENT = 'geocrm:widget-tools-section'
+const OPEN_EVENT = 'workbench:open-settings'
+const SECTION_EVENT = 'workbench:settings-section'
+const WIDGET_TOOLS_EVENT = 'workbench:widget-tools-section'
 
 const WIDGET_TOOLS_SECTIONS: readonly WidgetToolsSection[] = [
   'order',
@@ -25,7 +25,7 @@ export function isWidgetToolsSection(value: string): value is WidgetToolsSection
 }
 
 /**
- * Opens the GeoCRM Settings title-bar tab, optionally selecting a section
+ * Opens the Workbench Settings title-bar tab, optionally selecting a section
  * and Widgets tools sub-section.
  *
  * @param section - Optional settings section id (e.g. `widgets`).

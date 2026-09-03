@@ -1,5 +1,5 @@
 /**
- * Leaflet map chrome that stays fixed light (matches geocrm-web MapVisualizer).
+ * Leaflet map chrome that stays fixed light (matches workbench-web MapVisualizer).
  * Does not follow app dark / light theme.
  */
 
@@ -82,12 +82,12 @@
 }
 
 /* Marker cluster badges (brand-tinted count bubbles). */
-.geocrm-map-cluster-wrap {
+.workbench-map-cluster-wrap {
   background: transparent !important;
   border: none !important;
 }
 
-.geocrm-map-cluster {
+.workbench-map-cluster {
   display: flex;
   align-items: center;
   justify-content: center;

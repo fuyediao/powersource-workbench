@@ -52,8 +52,8 @@ import {
 import { officeLangFromAppLanguage } from '@/utils/office/office-locale'
 import { univerLocaleFromAppLanguage } from '@/utils/univer/univer-locale'
 
-const SIDEBAR_STORAGE_KEY = 'geocrm-office-sidebar-mode-v1'
-const LEGACY_SIDEBAR_COLLAPSED_KEY = 'geocrm-office-sidebar-collapsed-v1'
+const SIDEBAR_STORAGE_KEY = 'workbench-office-sidebar-mode-v1'
+const LEGACY_SIDEBAR_COLLAPSED_KEY = 'workbench-office-sidebar-collapsed-v1'
 const OFFICE_DROP_MAX_BYTES = 50 * 1024 * 1024
 
 /** Accepted extensions shown in the unsupported-type toast, per Office kind. */

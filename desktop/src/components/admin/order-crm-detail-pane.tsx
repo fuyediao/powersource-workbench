@@ -1,5 +1,5 @@
 /**
- * CRM ERP order detail pane (index row + on-demand SaleOrder from geocrm-api).
+ * CRM ERP order detail pane (index row + on-demand SaleOrder from workbench-api).
  */
 
 import { useEffect, useMemo, useState } from 'react'

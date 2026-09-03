@@ -52,7 +52,7 @@
     "fullName": "Full name",
     "notes": "Notes"
   },
-  "workerNotConfigured": "GeoCRM API is not configured (set VITE_DEPLOYMENT_DOMAIN).",
+  "workerNotConfigured": "Workbench API is not configured (set VITE_DEPLOYMENT_DOMAIN).",
   "noWorkspaceGroup": "No workspace group is available for agency management.",
   "errorLoad": "Failed to load agencies",
   "errorCreate": "Failed to create agency",

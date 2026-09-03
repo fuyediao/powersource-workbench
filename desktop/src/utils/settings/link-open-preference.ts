@@ -1,5 +1,5 @@
 /** localStorage key for Electron in-app vs system-browser link opening. */
-export const LINK_OPEN_PREFERENCE_KEY = 'geocrm.electron.openLinksInApp'
+export const LINK_OPEN_PREFERENCE_KEY = 'workbench.electron.openLinksInApp'
 
 /** How http(s) links open after sign-in (login / OAuth stay external). */
 export type LinkOpenMode = 'external' | 'inApp'

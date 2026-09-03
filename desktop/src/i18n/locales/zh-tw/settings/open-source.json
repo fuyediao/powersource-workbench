@@ -8,7 +8,7 @@
   "npmHeading": "npm 正式依賴",
   "footnote": "間接依賴仍依各自 package.json 所載授權條款。依賴變更後請執行 npm run oss:notices 以更新本清單。",
   "items": {
-    "geocrm": "本桌面應用程式。",
+    "workbench": "本桌面應用程式。",
     "electron": "承載渲染行程的桌面殼層。",
     "chromium": "隨 Electron 一併提供的網頁引擎。",
     "nodejs": "隨 Electron 一併提供的 JavaScript 執行時期。",

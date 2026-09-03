@@ -72,7 +72,7 @@ export interface BuiltInSalesAssistant {
 export interface SalesAssistantProfile extends BuiltInSalesAssistant {
   name: string
   description: string
-  creator: 'GeoCRM' | 'user'
+  creator: 'Workbench' | 'user'
   custom: boolean
   allowedTools: readonly SalesAssistantToolCapability[]
   requiredConnectors: readonly string[]

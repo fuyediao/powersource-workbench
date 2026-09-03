@@ -1,6 +1,6 @@
 /**
  * Opportunities list + CRUD against Supabase `opportunities`.
- * Ported from geocrm-web `useOpportunities` (list / board / CRUD / attachments).
+ * Ported from workbench-web `useOpportunities` (list / board / CRUD / attachments).
  * Collaborators and product lines stay web-only.
  */
 

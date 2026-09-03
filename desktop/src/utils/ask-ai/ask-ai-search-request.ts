@@ -1,4 +1,4 @@
-const EVENT = 'geocrm:ask-ai-search'
+const EVENT = 'workbench:ask-ai-search'
 
 let pendingQuery: string | null = null
 
@@ -37,13 +37,13 @@ export function subscribeAskAiSearch(listener: () => void): () => void {
 }
 
 /**
- * Parses `geocrm://ask-search?q=` from Spotlight (or other windows).
+ * Parses `workbench://ask-search?q=` from Spotlight (or other windows).
  * @param url - Candidate URL.
  * @returns Decoded query, or null.
  */
 export function parseAskAiSearchUrl(url: string): string | null {
   const trimmed = url.trim()
-  const match = /^geocrm:\s*\/\/\s*ask-search(?:\?(.*))?$/i.exec(trimmed)
+  const match = /^workbench:\s*\/\/\s*ask-search(?:\?(.*))?$/i.exec(trimmed)
   if (!match) {
     return null
   }
@@ -58,5 +58,5 @@ export function parseAskAiSearchUrl(url: string): string | null {
  * @returns Deep link.
  */
 export function askAiSearchUrl(query: string): string {
-  return `geocrm://ask-search?q=${encodeURIComponent(query.trim())}`
+  return `workbench://ask-search?q=${encodeURIComponent(query.trim())}`
 }

@@ -45,7 +45,7 @@ export const KOL_PLATFORM_KEYS = [
 
 export type KolPlatformKey = (typeof KOL_PLATFORM_KEYS)[number]
 
-/** Platforms whose profile stats are fetched via geocrm-api + Apify (not YouTube Data API). */
+/** Platforms whose profile stats are fetched via workbench-api + Apify (not YouTube Data API). */
 export const KOL_APIFY_ENRICHABLE_PLATFORM_KEYS = [
   'instagram',
   'tiktok',
@@ -58,7 +58,7 @@ export type KolApifyEnrichablePlatformKey =
   (typeof KOL_APIFY_ENRICHABLE_PLATFORM_KEYS)[number]
 
 /**
- * True when add/update should call Apify enrichment on geocrm-api.
+ * True when add/update should call Apify enrichment on workbench-api.
  * @param key - `kol_channels.platform_key`.
  * @returns Whether the platform is Apify-enrichable.
  */

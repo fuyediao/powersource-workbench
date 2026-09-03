@@ -7,7 +7,7 @@ export interface TeOfficialHandoffResponse {
 }
 
 /**
- * Mints a short-lived Official community handoff URL via geocrm-api.
+ * Mints a short-lived Official community handoff URL via workbench-api.
  * Opens as NEXTORCH Official on the T&E site when the hash code is redeemed.
  *
  * @returns Payload with `openUrl` for in-app or system browser open.
@@ -15,7 +15,7 @@ export interface TeOfficialHandoffResponse {
 export async function mintOfficialCommunityHandoff(): Promise<TeOfficialHandoffResponse> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new Error('The GeoCRM API is not configured.')
+    throw new Error('The Workbench API is not configured.')
   }
   if (!isSupabaseConfigured || !supabase) {
     throw new Error('You must be signed in to open the Official community site.')
@@ -37,7 +37,7 @@ export async function mintOfficialCommunityHandoff(): Promise<TeOfficialHandoffR
       },
     })
   } catch {
-    throw new Error('The GeoCRM API could not be reached.')
+    throw new Error('The Workbench API could not be reached.')
   }
 
   const payload: unknown = await response.json().catch(() => null)

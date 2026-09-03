@@ -212,7 +212,7 @@ interface GroupAdminSectionProps {
 /**
  * Group admin workspace: manage own group's info, members, and invitations.
  * Loads its own data (Vue GroupAdminView parity). Website module/write ACL is
- * edited in geocrm-web; desktop ACL uses Desktop Writes.
+ * edited in workbench-web; desktop ACL uses Desktop Writes.
  * @param props - Current group id and parent refresh callback.
  * @returns Group admin settings section.
  */

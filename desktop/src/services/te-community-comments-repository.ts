@@ -1,5 +1,5 @@
 /**
- * Maps `public.te_community_comments` (+ stats + author) for GeoCRM admin detail.
+ * Maps `public.te_community_comments` (+ stats + author) for Workbench admin detail.
  */
 
 import type { TeCommunityPostAuthor } from '@/services/te-community-posts-repository'

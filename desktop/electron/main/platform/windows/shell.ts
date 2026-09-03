@@ -5,7 +5,7 @@ import type { PlatformShell } from '../types'
 import { createWindowsTray, handleWindowsCloseToTray, isTrayQuitting } from './tray'
 
 /**
- * Windows shell: frameless renderer traffic lights + system tray (geocrm-windows style).
+ * Windows shell: frameless renderer traffic lights + system tray (workbench-windows style).
  */
 export const windowsShell: PlatformShell = {
   usesCustomTitleBar: USES_CUSTOM_TITLE_BAR,

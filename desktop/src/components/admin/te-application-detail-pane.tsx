@@ -545,7 +545,7 @@ export function TeApplicationDetailPane({
   }
 
   /**
-   * Save the Application tab draft via geocrm-api.
+   * Save the Application tab draft via workbench-api.
    */
   async function saveApplication(): Promise<void> {
     const submission = selectedSubmission
@@ -772,7 +772,7 @@ export function TeApplicationDetailPane({
   }
 
   /**
-   * Register the local order tracking number through geocrm-api.
+   * Register the local order tracking number through workbench-api.
    */
   async function saveTracking(): Promise<void> {
     const submission = selectedSubmission

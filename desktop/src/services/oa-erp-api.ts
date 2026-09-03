@@ -41,8 +41,8 @@ export class OaErpApiError extends Error {
  * Returns the preload bridge for local OA/ERP SQLite storage.
  * @returns Bridge, or null when not running inside Electron.
  */
-function oaErpCredentialsBridge(): Window['geocrm']['oaErpCredentials'] | null {
-  return window.geocrm?.oaErpCredentials ?? null
+function oaErpCredentialsBridge(): Window['workbench']['oaErpCredentials'] | null {
+  return window.workbench?.oaErpCredentials ?? null
 }
 
 /**

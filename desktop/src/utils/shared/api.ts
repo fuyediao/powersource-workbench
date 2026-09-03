@@ -51,10 +51,10 @@ interface OpenMeteoForecastResponse {
  * @returns Typed result.
  */
 async function netCall<T>(method: string, ...args: unknown[]): Promise<T> {
-  if (!window.geocrm?.net?.invoke) {
+  if (!window.workbench?.net?.invoke) {
     throw new Error('PowerSource Workbench net bridge is unavailable.')
   }
-  return window.geocrm.net.invoke(method, ...args) as Promise<T>
+  return window.workbench.net.invoke(method, ...args) as Promise<T>
 }
 
 /**
@@ -63,11 +63,11 @@ async function netCall<T>(method: string, ...args: unknown[]): Promise<T> {
  * @returns Nothing.
  */
 export async function openExternalUrl(url: string): Promise<void> {
-  if (!window.geocrm?.shell?.openExternal) {
+  if (!window.workbench?.shell?.openExternal) {
     window.open(url, '_blank', 'noopener,noreferrer')
     return
   }
-  await window.geocrm.shell.openExternal(url)
+  await window.workbench.shell.openExternal(url)
 }
 
 /**

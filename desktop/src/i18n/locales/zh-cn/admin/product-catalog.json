@@ -25,7 +25,7 @@
   "displayNameHint": "可选英文别名，用于 T&E 表单展示（不用于 OBM）。留空则使用 ERP 名称。",
   "displayNamePlaceholder": "例如 TA30D MAX",
   "crmFieldsSectionTitle": "T&E",
-  "crmFieldsHint": "这些字段供 T&E 使用，由 GeoCRM 维护，ERP 同步不会覆盖。",
+  "crmFieldsHint": "这些字段供 T&E 使用，由 Workbench 维护，ERP 同步不会覆盖。",
   "crmFieldsReadOnly": "仅群组管理员与系统管理员可编辑这些字段。",
   "crmFieldsSaved": "已保存。",
   "errorSaveCrmFields": "保存失败。",

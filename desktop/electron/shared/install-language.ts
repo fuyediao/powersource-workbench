@@ -2,7 +2,7 @@
 export const INSTALL_LANGUAGE_FILE = 'install-language.txt'
 
 /** Sync IPC channel used by preload so i18n can read the installer language at init. */
-export const INSTALL_LANGUAGE_SYNC_CHANNEL = 'geocrm:install-language-sync'
+export const INSTALL_LANGUAGE_SYNC_CHANNEL = 'workbench:install-language-sync'
 
 /** Settings locales that the Windows installer may persist. */
 export type InstallAppLanguage = 'en' | 'zh-TW' | 'zh-CN'

@@ -1,5 +1,5 @@
 /**
- * Minimal iCalendar (ICS) import/export for GeoCRM calendar events.
+ * Minimal iCalendar (ICS) import/export for Workbench calendar events.
  * Supports VEVENT SUMMARY, DESCRIPTION, DTSTART/DTEND (date or date-time),
  * RRULE, and EXDATE. Attendees and time zones beyond UTC/Z are best-effort.
  */
@@ -77,7 +77,7 @@ function parseContentLine(
 
 /**
  * Parses DTSTART/DTEND into ISO start/end and all-day flag.
- * Google-style DATE end is exclusive; we convert to inclusive for GeoCRM.
+ * Google-style DATE end is exclusive; we convert to inclusive for Workbench.
  * @param value - Property value.
  * @param params - Property parameters.
  * @returns Instant ISO, allDay, and optional exclusive-date marker.
@@ -297,7 +297,7 @@ export function serializeIcs(events: IcsEventDraft[], calendarName?: string): st
     lines.push(`X-WR-CALNAME:${escapeIcsText(calendarName.trim())}`)
   }
   for (const event of events) {
-    const uid = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}@geocrm`
+    const uid = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}@workbench`
     const start = new Date(event.startAt)
     const end = new Date(event.endAt)
     lines.push('BEGIN:VEVENT')

@@ -21,7 +21,7 @@ export interface ComposerDropItem extends HarnessComposerAttachment {
  * @returns Absolute path, or an empty string when unavailable.
  */
 function droppedFilePath(file: File): string {
-  return window.geocrm?.harness?.getPathForFile?.(file)?.trim() ?? ''
+  return window.workbench?.harness?.getPathForFile?.(file)?.trim() ?? ''
 }
 
 /**

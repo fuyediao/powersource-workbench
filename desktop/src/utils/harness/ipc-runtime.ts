@@ -267,7 +267,7 @@ function parseEvent(value: unknown): HarnessEvent | null {
  * @returns True when Harness IPC is available.
  */
 export function isHarnessHostAvailable(): boolean {
-  return Boolean(window.geocrm?.harness)
+  return Boolean(window.workbench?.harness)
 }
 
 /**
@@ -278,7 +278,7 @@ export function isHarnessHostAvailable(): boolean {
  * @param continuationInstructions - Cloud context used when local resume fails.
  * @param developerInstructions - Frozen VPS Hermes memory snapshot plus skills.
  * @param accessToken - Session JWT for `/ai/harness/*`.
- * @param apiBaseUrl - Public geocrm-api origin.
+ * @param apiBaseUrl - Public workbench-api origin.
  * @param provider - Selected AI provider id.
  * @param modelId - Selected vendor model id.
  * @param approvalMode - Approval profile selected for this thread.
@@ -310,7 +310,7 @@ export function createIpcHarnessRuntime(
   allowedTools: string[] | null = null,
   activeExpert: HarnessActiveExpertConfig | null = null,
 ): HarnessRuntime {
-  const bridge = window.geocrm.harness
+  const bridge = window.workbench.harness
   const listeners = new Set<(event: HarnessEvent) => void>()
   let started: Promise<void> | null = null
   let disposed = false

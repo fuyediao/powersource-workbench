@@ -8,7 +8,7 @@
   "npmHeading": "npm production dependencies",
   "footnote": "Transitive packages keep the licenses declared in their own package.json files. Refresh this npm list with npm run oss:notices after dependency changes.",
   "items": {
-    "geocrm": "This desktop app.",
+    "workbench": "This desktop app.",
     "electron": "Desktop shell that hosts the renderer.",
     "chromium": "Web engine bundled with Electron.",
     "nodejs": "JavaScript runtime bundled with Electron.",

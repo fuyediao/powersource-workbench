@@ -494,14 +494,14 @@ function HarnessWorkspace({
   const parkCanvasWorkspace = useCallback((historyId: string | null): void => {
     setCanvasEpoch((value) => value + 1)
     setCanvasRevision((value) => value + 1)
-    void window.geocrm?.harness?.parkCanvas?.(workFolder, historyId)
+    void window.workbench?.harness?.parkCanvas?.(workFolder, historyId)
   }, [workFolder])
 
   useEffect(() => {
     if (session.turnStatus !== 'idle') return
     const historyId = history.activeHistoryId
     if (!historyId) return
-    void window.geocrm?.harness?.snapshotCanvas?.(workFolder, historyId)
+    void window.workbench?.harness?.snapshotCanvas?.(workFolder, historyId)
   }, [history.activeHistoryId, session.turnStatus, workFolder])
 
   /**
@@ -528,7 +528,7 @@ function HarnessWorkspace({
    * @returns Nothing.
    */
   const handleChooseProject = useCallback(async (): Promise<void> => {
-    const picked = await window.geocrm?.harness?.pickWorkFolder()
+    const picked = await window.workbench?.harness?.pickWorkFolder()
     if (!picked || picked === workFolder) return
     saveHarnessWorkFolder(picked)
     setWorkFolder(picked)
@@ -562,7 +562,7 @@ function HarnessWorkspace({
       session.restore(harnessItemsFromHistory(record))
       setView('task')
       void (async (): Promise<void> => {
-        const bridge = window.geocrm?.harness
+        const bridge = window.workbench?.harness
         if (previousHistoryId && previousHistoryId !== record.id) {
           await bridge?.parkCanvas?.(workFolder, previousHistoryId)
         }

@@ -1,6 +1,6 @@
 /**
  * KOL CRUD + channel management against Supabase `kols` / `kol_channels`.
- * Ported from geocrm-web `useKols` / `useKolChannels`.
+ * Ported from workbench-web `useKols` / `useKolChannels`.
  */
 
 import { fromLoose } from '@/lib/supabase-loose'

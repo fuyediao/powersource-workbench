@@ -29,7 +29,7 @@ interface AiSummaryPanelProps {
   onCustomerUpdated: (next: CustomerDetail) => void
 }
 
-const SESSION_KEY_MODEL = 'geocrm-electron-customer-insight-model'
+const SESSION_KEY_MODEL = 'workbench-electron-customer-insight-model'
 
 /** Compact markdown host styles (web `.ai-summary-md` parity, light theme tokens). */
 const AI_SUMMARY_MD_CLASS =

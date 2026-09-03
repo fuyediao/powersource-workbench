@@ -1,19 +1,19 @@
 /**
- * Calls geocrm-api `/kol/*` routes to enrich KOL channel rows (YouTube + Apify).
+ * Calls workbench-api `/kol/*` routes to enrich KOL channel rows (YouTube + Apify).
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
 import { supabase } from '@/lib/supabase'
 
 /**
- * True when the app can reach geocrm-api (`VITE_DEPLOYMENT_DOMAIN` set).
+ * True when the app can reach workbench-api (`VITE_DEPLOYMENT_DOMAIN` set).
  * @returns Whether an API origin is configured.
  */
-export function isGeocrmApiConfigured(): boolean {
+export function isWorkbenchApiConfigured(): boolean {
   return Boolean(resolveApiBaseUrl())
 }
 
-/** Resolved YouTube / Apify channel stats from geocrm-api. */
+/** Resolved YouTube / Apify channel stats from workbench-api. */
 export interface YoutubeChannelMetaResponse {
   handle: string | null
   followers: number | null
@@ -27,7 +27,7 @@ export interface YoutubeChannelMetaResponse {
 export class KolApifyEnrichmentError extends Error {
   /**
    * @param message - Server error or detail text.
-   * @param status - HTTP status from geocrm-api.
+   * @param status - HTTP status from workbench-api.
    */
   constructor(
     message: string,
@@ -44,7 +44,7 @@ export class KolApifyEnrichmentError extends Error {
 export class KolYoutubeEnrichmentError extends Error {
   /**
    * @param message - Server error or detail text.
-   * @param status - HTTP status from geocrm-api.
+   * @param status - HTTP status from workbench-api.
    */
   constructor(
     message: string,
@@ -56,7 +56,7 @@ export class KolYoutubeEnrichmentError extends Error {
 }
 
 /**
- * Current Supabase access token for geocrm-api auth.
+ * Current Supabase access token for workbench-api auth.
  * @returns Bearer token or null.
  */
 async function getAccessToken(): Promise<string | null> {
@@ -95,7 +95,7 @@ export async function fetchYoutubeChannelMeta(params: {
 }): Promise<YoutubeChannelMetaResponse> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new KolYoutubeEnrichmentError('GeoCRM API URL is not configured', 503)
+    throw new KolYoutubeEnrichmentError('Workbench API URL is not configured', 503)
   }
   const token = await getAccessToken()
   if (!token) {
@@ -149,7 +149,7 @@ export async function fetchYoutubeChannelMeta(params: {
 export type ApifySocialProfileMetaResponse = YoutubeChannelMetaResponse
 
 /**
- * Fetch public profile stats (handle, followers, post/video count) via geocrm-api + Apify.
+ * Fetch public profile stats (handle, followers, post/video count) via workbench-api + Apify.
  * @param params - Parent KOL id, platform key, profile URL.
  * @returns Normalized stats.
  * @throws KolApifyEnrichmentError when the request fails.
@@ -161,7 +161,7 @@ export async function fetchApifySocialProfileMeta(params: {
 }): Promise<ApifySocialProfileMetaResponse> {
   const base = resolveApiBaseUrl()
   if (!base) {
-    throw new KolApifyEnrichmentError('GeoCRM API URL is not configured', 503)
+    throw new KolApifyEnrichmentError('Workbench API URL is not configured', 503)
   }
   const token = await getAccessToken()
   if (!token) {

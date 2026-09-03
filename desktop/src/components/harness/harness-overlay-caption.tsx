@@ -17,7 +17,7 @@ const GLYPH_CLOSE = '#3c0700bf'
  * @returns Nothing.
  */
 function hideOverlay(): void {
-  void window.geocrm?.agentOverlay?.hide?.()
+  void window.workbench?.agentOverlay?.hide?.()
 }
 
 /**
@@ -25,7 +25,7 @@ function hideOverlay(): void {
  * @returns True on Windows / Linux.
  */
 function paintsOverlayCloseLight(): boolean {
-  return !window.geocrm?.window?.usesNativeApplicationMenu
+  return !window.workbench?.window?.usesNativeApplicationMenu
 }
 
 /**

@@ -7,7 +7,7 @@ import {
   type LocaleTree,
 } from '../src/i18n/merge-locale-tree'
 
-const VIRTUAL_ID = 'virtual:geocrm-i18n-resources'
+const VIRTUAL_ID = 'virtual:workbench-i18n-resources'
 const RESOLVED_ID = `\0${VIRTUAL_ID}`
 
 /**
@@ -42,7 +42,7 @@ function buildResourceModule(localesDir: string): string {
   const trees = emptyLocaleTrees()
   const files = listJsonFiles(localesDir)
   if (files.length === 0) {
-    throw new Error(`geocrm locales: no JSON files under ${localesDir}`)
+    throw new Error(`workbench locales: no JSON files under ${localesDir}`)
   }
   for (const file of files) {
     const rel = path.relative(localesDir, file).replaceAll('\\', '/')
@@ -72,15 +72,15 @@ function buildResourceModule(localesDir: string): string {
 function assertForceUpdateKeys(english: LocaleTree): void {
   const settings = english.settings
   if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
-    throw new Error('geocrm locales: missing settings namespace in en-us')
+    throw new Error('workbench locales: missing settings namespace in en-us')
   }
   const updates = (settings as LocaleTree).updates
   if (!updates || typeof updates !== 'object' || Array.isArray(updates)) {
-    throw new Error('geocrm locales: missing settings.updates in en-us')
+    throw new Error('workbench locales: missing settings.updates in en-us')
   }
   const title = (updates as LocaleTree).forceTitle
   if (typeof title !== 'string' || title.length === 0) {
-    throw new Error('geocrm locales: missing settings.updates.forceTitle in en-us')
+    throw new Error('workbench locales: missing settings.updates.forceTitle in en-us')
   }
 }
 
@@ -90,10 +90,10 @@ function assertForceUpdateKeys(english: LocaleTree): void {
  * @param localesDir - Absolute path to `src/i18n/locales`.
  * @returns Vite plugin.
  */
-export function geocrmLocaleResourcesPlugin(localesDir: string): Plugin {
+export function workbenchLocaleResourcesPlugin(localesDir: string): Plugin {
   const localesRoot = path.resolve(localesDir)
   return {
-    name: 'geocrm:locale-resources',
+    name: 'workbench:locale-resources',
     resolveId(id) {
       return id === VIRTUAL_ID ? RESOLVED_ID : null
     },

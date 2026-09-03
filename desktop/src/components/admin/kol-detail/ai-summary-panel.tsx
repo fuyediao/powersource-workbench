@@ -27,7 +27,7 @@ interface AiSummaryPanelProps {
   onKolUpdated: (next: KolDetail) => void
 }
 
-const SESSION_KEY_MODEL = 'geocrm-electron-kol-insight-model'
+const SESSION_KEY_MODEL = 'workbench-electron-kol-insight-model'
 
 /** Compact markdown host styles (customer AI summary parity, light theme). */
 const AI_SUMMARY_MD_CLASS = [

@@ -25,7 +25,7 @@
   "displayNameHint": "Optional English alias shown on the T&E form (not used for OBM). Leave empty to use the ERP name.",
   "displayNamePlaceholder": "e.g. TA30D MAX",
   "crmFieldsSectionTitle": "T&E",
-  "crmFieldsHint": "These fields are for T&E, managed in GeoCRM, and are not overwritten by ERP sync.",
+  "crmFieldsHint": "These fields are for T&E, managed in Workbench, and are not overwritten by ERP sync.",
   "crmFieldsReadOnly": "Only group admins and system admins can edit these fields.",
   "crmFieldsSaved": "Saved.",
   "errorSaveCrmFields": "Failed to save.",

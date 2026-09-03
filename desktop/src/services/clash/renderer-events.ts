@@ -1,7 +1,7 @@
 /**
  * In-renderer event bus for Clash frontend-to-frontend events.
  *
- * Tauri `emit` / `listen` stay in the same webview. Electron `geocrmClash.listen` only
+ * Tauri `emit` / `listen` stay in the same webview. Electron `workbenchClash.listen` only
  * receives main-process pushes, so names such as `verge://test-all` must be delivered here.
  */
 

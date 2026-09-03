@@ -49,7 +49,7 @@ export function FolioMenubar({
   onDelete,
 }: FolioMenubarProps) {
   const { t } = useTranslation()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const [groupMenuOpen, setGroupMenuOpen] = useState(false)
   const [menuPos, setMenuPos] = useState<{ top: number; left: number; width: number }>({
     top: 0,

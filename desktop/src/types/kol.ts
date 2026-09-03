@@ -1,5 +1,5 @@
 /**
- * KOL (Key Opinion Leader) types aligned with geocrm-web Admin KOL models.
+ * KOL (Key Opinion Leader) types aligned with workbench-web Admin KOL models.
  */
 
 /** Tier grade stored in `kols.tier`. */

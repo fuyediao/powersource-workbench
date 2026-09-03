@@ -15,7 +15,7 @@
   Push $R8
   Push $R9
   StrCpy $R8 "$APPDATA\${PRODUCT_NAME}\install-language.txt"
-  IfSilent geocrm_restore_install_language
+  IfSilent workbench_restore_install_language
 
   StrCpy $R9 "en"
   ${If} $LANGUAGE == 1028
@@ -29,13 +29,13 @@
   FileWrite $R7 "$R9"
   FileClose $R7
   CopyFiles /SILENT "$R8" "$INSTDIR\install-language.txt"
-  Goto geocrm_install_language_done
+  Goto workbench_install_language_done
 
-  geocrm_restore_install_language:
-    IfFileExists "$R8" 0 geocrm_install_language_done
+  workbench_restore_install_language:
+    IfFileExists "$R8" 0 workbench_install_language_done
     CopyFiles /SILENT "$R8" "$INSTDIR\install-language.txt"
 
-  geocrm_install_language_done:
+  workbench_install_language_done:
   Pop $R9
   Pop $R8
   Pop $R7

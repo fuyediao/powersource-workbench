@@ -190,7 +190,7 @@ export interface TeAiReviewResponse {
 }
 
 /**
- * Resolve the public geocrm-api origin (Electron has no Vite `/__geocrm-api` proxy).
+ * Resolve the public workbench-api origin (Electron has no Vite `/__workbench-api` proxy).
  *
  * @param action - Workflow operation requesting the URL
  * @returns Configured API origin
@@ -200,7 +200,7 @@ function getBaseUrl(action: TeWorkflowAction): string {
   if (!baseUrl) {
     throw new TeWorkflowApiError({
       code: 'api_not_configured',
-      message: 'The GeoCRM API is not configured.',
+      message: 'The Workbench API is not configured.',
       status: 0,
       action,
     })
@@ -292,7 +292,7 @@ async function responseError(
 }
 
 /**
- * Send an authenticated JSON request to geocrm-api.
+ * Send an authenticated JSON request to workbench-api.
  *
  * @param path - Absolute API path
  * @param action - Workflow operation for error safety semantics
@@ -340,7 +340,7 @@ async function teWorkflowRequest<T>(
   } catch {
     throw new TeWorkflowApiError({
       code: action === 'push' ? 'erp_response_unknown' : 'network_error',
-      message: 'The GeoCRM API could not be reached.',
+      message: 'The Workbench API could not be reached.',
       status: 0,
       action,
     })

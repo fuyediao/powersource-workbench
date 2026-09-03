@@ -1,5 +1,5 @@
 /**
- * Lead (sales lead / pool) types aligned with geocrm-web Admin Leads models.
+ * Lead (sales lead / pool) types aligned with workbench-web Admin Leads models.
  */
 
 import type { LeadExtendedFieldKey } from '@/constants/lead-extended-form'

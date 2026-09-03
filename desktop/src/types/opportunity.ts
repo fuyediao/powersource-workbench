@@ -1,5 +1,5 @@
 /**
- * Opportunity (sales pipeline) types aligned with geocrm-web Admin Opportunities
+ * Opportunity (sales pipeline) types aligned with workbench-web Admin Opportunities
  * models. Electron ships the Freeform board, list, create/edit core fields,
  * exchange rate, and attachments. Collaborators and product lines stay web-only.
  */

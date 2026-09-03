@@ -99,7 +99,7 @@ export function mapTeProductCategoryFromRow(row: Record<string, unknown>): TePro
   const productsRaw = Array.isArray(row.te_evaluation_products) ? row.te_evaluation_products : []
   const products = (productsRaw as Record<string, unknown>[])
     .map(mapProduct)
-    // Hide SKUs deactivated in product_catalog (ERP sync); matches geocrm-api /te/products.
+    // Hide SKUs deactivated in product_catalog (ERP sync); matches workbench-api /te/products.
     .filter((product) => product.isActive)
     .sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name))
 

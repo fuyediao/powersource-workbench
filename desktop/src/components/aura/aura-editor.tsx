@@ -26,7 +26,7 @@ interface AuraEditorProps {
 }
 
 /**
- * GeoCRM Markdown editor shell: menubar, sidebar, and document surface.
+ * Workbench Markdown editor shell: menubar, sidebar, and document surface.
  *
  * @param props - Editor props.
  * @returns Editor shell element.

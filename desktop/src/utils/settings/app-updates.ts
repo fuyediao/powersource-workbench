@@ -27,7 +27,7 @@ export interface AppUpdateInstallProgress {
  * @returns Update-check result; falls back when the Electron bridge is missing.
  */
 export async function checkAppForUpdates(): Promise<AppUpdateCheckResult> {
-  const bridge = window.geocrm?.app
+  const bridge = window.workbench?.app
   if (!bridge?.checkForUpdates) {
     return {
       status: 'unavailable',
@@ -57,11 +57,11 @@ export async function installAppUpdate(downloadUrl: string, fileName?: string): 
   if (!trimmed) {
     throw new Error('Missing installer URL')
   }
-  if (!window.geocrm?.app?.installUpdate) {
+  if (!window.workbench?.app?.installUpdate) {
     await openExternalUrl(trimmed)
     return
   }
-  await window.geocrm.app.installUpdate(trimmed, fileName)
+  await window.workbench.app.installUpdate(trimmed, fileName)
 }
 
 /**
@@ -72,7 +72,7 @@ export async function installAppUpdate(downloadUrl: string, fileName?: string): 
 export function subscribeAppUpdateInstallProgress(
   listener: (progress: AppUpdateInstallProgress) => void,
 ): () => void {
-  return window.geocrm?.app?.onInstallProgress?.(listener) ?? (() => undefined)
+  return window.workbench?.app?.onInstallProgress?.(listener) ?? (() => undefined)
 }
 
 /**
@@ -85,5 +85,5 @@ export function subscribeAppUpdateInstallProgress(
 export function subscribeAppUpdateAvailable(
   listener: (result: AppUpdateCheckResult) => void,
 ): () => void {
-  return window.geocrm?.app?.onUpdateAvailable?.(listener) ?? (() => undefined)
+  return window.workbench?.app?.onUpdateAvailable?.(listener) ?? (() => undefined)
 }

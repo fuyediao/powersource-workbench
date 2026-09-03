@@ -443,7 +443,7 @@ export function registerIpcHandlers(): void {
     },
   )
 
-  ipcMain.handle('geocrm:open-external', async (_event, url: string) => {
+  ipcMain.handle('workbench:open-external', async (_event, url: string) => {
     if (typeof url !== 'string') {
       throw new Error('URL must be a string.')
     }

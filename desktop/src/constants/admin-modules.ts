@@ -152,7 +152,7 @@ export type AdminNavItem = {
 
 /**
  * Path → module key for Function-app gating (flat kebab-case; Electron-only,
- * not geocrm-web routes). CRM stays under `/admin/...`; Orders / Products /
+ * not workbench-web routes). CRM stays under `/admin/...`; Orders / Products /
  * NEXDOT / T&E Admin use their own prefixes. DB `module_key` values may still
  * use the legacy `obm*` names.
  */
@@ -282,7 +282,7 @@ export const NEXDOT_NAV_GROUPS: AdminNavItem[][] = [
   ],
 ]
 
-/** T&E Admin Home Function sidebar (`geocrm://te-admin`; not the Nextorch `geocrm://te` site). */
+/** T&E Admin Home Function sidebar (`workbench://te-admin`; not the Nextorch `workbench://te` site). */
 export const TE_ADMIN_NAV_GROUPS: AdminNavItem[][] = [
   [
     { path: '/te-admin', moduleKey: 'te', labelKey: 'admin.sidebar.te' },

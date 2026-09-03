@@ -3,7 +3,7 @@ import { apiGetJson } from './api-client'
 export type SuggestEngine = 'Google' | 'Bing' | 'Yahoo'
 
 /**
- * Loads search suggestions via geocrm-api GET /start/suggest.
+ * Loads search suggestions via workbench-api GET /start/suggest.
  * @param engine - Active search engine.
  * @param query - Search text.
  * @returns Suggestion strings (empty on failure).

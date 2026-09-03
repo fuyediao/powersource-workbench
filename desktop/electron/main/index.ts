@@ -59,7 +59,7 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, 'public')
   : RENDERER_DIST
 
-// Required so Google OAuth `com.geocrm.electron://` returns to this process.
+// Required so Google OAuth `com.workbench.electron://` returns to this process.
 // If `npm run dev` exits immediately, quit the old Electron in the Dock first.
 if (!app.requestSingleInstanceLock()) {
   console.error(
@@ -71,7 +71,7 @@ if (!app.requestSingleInstanceLock()) {
 
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
-const harnessE2EMode = process.env.GEOCRM_HARNESS_E2E === '1'
+const harnessE2EMode = process.env.WORKBENCH_HARNESS_E2E === '1'
 
 /**
  * Handles a deep-link URL from argv or OS open-url.

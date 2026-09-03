@@ -8,7 +8,7 @@ export interface NewsBriefingItem {
 }
 
 /**
- * Loads news briefing items via geocrm-api GET /start/news.
+ * Loads news briefing items via workbench-api GET /start/news.
  * @param _limit - Unused; API returns one item (kept for call-site compatibility).
  * @returns Briefing items (empty on failure).
  */

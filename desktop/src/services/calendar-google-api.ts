@@ -1,5 +1,5 @@
 /**
- * Google Calendar link / sync against geocrm-api `/calendar/google/*`.
+ * Google Calendar link / sync against workbench-api `/calendar/google/*`.
  */
 
 import { resolveApiBaseUrl } from '@/config/deployment-urls'

@@ -49,7 +49,7 @@ const OS = getSystem()
 const LOG_LEVEL_VALUES = ['debug', 'info', 'warning', 'error', 'silent'] as const
 const ENV_TYPE_VALUES = ['bash', 'fish', 'nushell', 'cmd', 'powershell'] as const
 const TRAY_EVENT_VALUES = ['main_window', 'tray_menu', 'system_proxy', 'tun_mode', 'disable'] as const
-/** Clash start-page ids kept in GeoCRM Settings; `/settings` was removed with the Clash sidebar Settings page. */
+/** Clash start-page ids kept in Workbench Settings; `/settings` was removed with the Clash sidebar Settings page. */
 const START_PAGE_KEYS = ['home', 'proxies', 'profiles', 'connections', 'rules', 'logs', 'unlock'] as const
 
 type DialogKey =
@@ -68,12 +68,12 @@ type DialogKey =
 
 /**
  * Settings → Clash: Tailwind-chrome rebuild of the former Clash sidebar Settings page.
- * Simple toggles/dropdowns are native GeoCRM controls; complex sub-editors (TUN, system
+ * Simple toggles/dropdowns are native Workbench controls; complex sub-editors (TUN, system
  * proxy, DNS, backup, runtime config) stay as legacy MUI dialogs hosted with a scoped
  * Clash i18n provider (see {@link LegacyClashDialogs}). Launch-at-login / silent-start
- * and language / theme live only in GeoCRM Preferences / Appearance, per the migration plan.
+ * and language / theme live only in Workbench Preferences / Appearance, per the migration plan.
  * Wraps the body in {@link AppDataProvider} so mixed-port and the system-proxy dialog
- * can read live Mihomo config (GeoCRM Settings is outside the Clash island tree).
+ * can read live Mihomo config (Workbench Settings is outside the Clash island tree).
  * @returns Clash settings section.
  */
 export function ClashSection() {

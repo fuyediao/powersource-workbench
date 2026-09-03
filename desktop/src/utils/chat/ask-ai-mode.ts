@@ -1,5 +1,5 @@
 /** localStorage key for Ask AI Quick / Think. */
-export const ASK_AI_MODE_KEY = 'geocrm.electron.askAiMode'
+export const ASK_AI_MODE_KEY = 'workbench.electron.askAiMode'
 
 /** Ask composer modes persisted for the companion sidebar. */
 export type AskAiMode = 'quick' | 'think'

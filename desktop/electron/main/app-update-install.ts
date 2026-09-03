@@ -51,7 +51,7 @@ export async function installDesktopUpdate(
 }
 
 /**
- * Whether `url` is a GeoCRM desktop-release host.
+ * Whether `url` is a Workbench desktop-release host.
  * @param raw - Absolute URL.
  * @returns True when the installer may be downloaded.
  */
@@ -118,7 +118,7 @@ async function downloadInstaller(
     throw new Error('Installer download returned an empty body')
   }
   const total = Number(response.headers.get('content-length') || 0)
-  const destDir = path.join(app.getPath('temp'), 'geocrm-updates')
+  const destDir = path.join(app.getPath('temp'), 'workbench-updates')
   await fs.mkdir(destDir, { recursive: true })
   const dest = path.join(destDir, safeInstallerName(fileName, downloadUrl))
   const file = createWriteStream(dest)
@@ -194,7 +194,7 @@ async function installMacDmg(dmgPath: string): Promise<'mac-replaced' | 'mac-ope
   if (!destApp.endsWith('.app')) {
     throw new Error('Could not locate the PowerSource Workbench.app bundle to replace.')
   }
-  const mount = path.join(os.tmpdir(), `geocrm-dmg-${process.pid}`)
+  const mount = path.join(os.tmpdir(), `workbench-dmg-${process.pid}`)
   await fs.rm(mount, { recursive: true, force: true })
   let replaced = false
   try {

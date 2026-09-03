@@ -1,7 +1,7 @@
 {
   "title": "T&E 用户管理",
   "description": "T&E 表单社区账号。",
-  "otpLoginNote": "T&E 社区登录使用由 T&E 邮件服务（Mailu）发送的邮箱一次性验证码，与 GeoCRM Supabase 账号独立，此处不提供密码重置。",
+  "otpLoginNote": "T&E 社区登录使用由 T&E 邮件服务（Mailu）发送的邮箱一次性验证码，与 Workbench Supabase 账号独立，此处不提供密码重置。",
   "errorNotConfigured": "数据库未配置，无法加载用户列表。",
   "errorLoad": "加载社区用户失败，请重试。",
   "errorUpdateStatus": "更新用户状态失败，请重试。",
@@ -65,7 +65,7 @@
     "success": "密码已更新。",
     "error": "无法更新密码，请稍后再试。",
     "noPermission": "仅系统管理员或组管理员可修改社区用户密码。",
-    "apiNotConfigured": "未配置 VITE_DEPLOYMENT_DOMAIN，请部署 geocrm-api 后再重置密码。",
+    "apiNotConfigured": "未配置 VITE_DEPLOYMENT_DOMAIN，请部署 workbench-api 后再重置密码。",
     "forceHint": "用户下次登录时须修改此密码。"
   },
   "avatarSet": "已上传头像",

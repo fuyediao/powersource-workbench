@@ -3,8 +3,8 @@
  * Used when jumping from Home / Kanban shortcuts into Admin or other Functions.
  */
 
-/** Default cache key (matches AdminShell storageKey `geocrm-electron-admin-sidebar-mode`). */
-export const ADMIN_ACTIVE_PATH_STORAGE_KEY = 'geocrm-electron-admin-active-path'
+/** Default cache key (matches AdminShell storageKey `workbench-electron-admin-sidebar-mode`). */
+export const ADMIN_ACTIVE_PATH_STORAGE_KEY = 'workbench-electron-admin-active-path'
 
 /**
  * Derives the path cache key from an Admin sidebar mode localStorage key.

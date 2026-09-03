@@ -1,5 +1,5 @@
 /**
- * Thin Clawd on Desk reporter for GeoCRM Ask and Harness.
+ * Thin Clawd on Desk reporter for Workbench Ask and Harness.
  *
  * Reads `~/.clawd/runtime.json` for the live port. Posts only when Clawd has
  * written a managed `clawd-bridge.json` into this app's userData.
@@ -11,8 +11,8 @@ import http from 'node:http'
 import os from 'node:os'
 import path from 'node:path'
 import {
-  CLAWD_GEOCRM_AGENT_ID,
-  CLAWD_GEOCRM_BRIDGE_FILE,
+  CLAWD_WORKBENCH_AGENT_ID,
+  CLAWD_WORKBENCH_BRIDGE_FILE,
   isManagedClawdBridge,
   parseClawdPermissionResult,
   type ClawdBridgeActivity,
@@ -61,7 +61,7 @@ function runtimePath(): string {
 
 /**
  * Returns whether Clawd Install has placed a managed bridge in userData.
- * @returns True when GeoCRM should post to Clawd.
+ * @returns True when Workbench should post to Clawd.
  */
 export function isClawdBridgeEnabled(): boolean {
   const now = Date.now()
@@ -70,7 +70,7 @@ export function isClawdBridgeEnabled(): boolean {
   }
   let enabled = false
   try {
-    const filePath = path.join(app.getPath('userData'), CLAWD_GEOCRM_BRIDGE_FILE)
+    const filePath = path.join(app.getPath('userData'), CLAWD_WORKBENCH_BRIDGE_FILE)
     const raw = fs.readFileSync(filePath, 'utf8')
     const text = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw
     enabled = isManagedClawdBridge(JSON.parse(text))
@@ -320,8 +320,8 @@ export function reportClawdState(activity: ClawdBridgeActivity): void {
   const state = activity.state.trim()
   if (!sessionId || !event || !state) return
   const body: Record<string, unknown> = {
-    agent_id: CLAWD_GEOCRM_AGENT_ID,
-    hook_source: 'geocrm-bridge',
+    agent_id: CLAWD_WORKBENCH_AGENT_ID,
+    hook_source: 'workbench-bridge',
     session_id: sessionId,
     event,
     state,
@@ -347,7 +347,7 @@ export type ClawdPermissionRequest = {
 
 /**
  * Asks Clawd to Allow or Deny a Harness approval. A no-decision result means
- * GeoCRM should show its native card.
+ * Workbench should show its native card.
  * @param request - Tool name and bounded input.
  * @returns Allow, deny, cancelled, or native fallback.
  */
@@ -358,8 +358,8 @@ export async function requestClawdPermission(
   const toolName = request.toolName.trim() || 'unknown'
   const sessionId = request.sessionId.trim() || 'harness'
   const body: Record<string, unknown> = {
-    agent_id: CLAWD_GEOCRM_AGENT_ID,
-    hook_source: 'geocrm-bridge',
+    agent_id: CLAWD_WORKBENCH_AGENT_ID,
+    hook_source: 'workbench-bridge',
     session_id: sessionId,
     tool_name: toolName,
     tool_input: request.toolInput && typeof request.toolInput === 'object' ? request.toolInput : {},

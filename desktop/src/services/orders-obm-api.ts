@@ -51,7 +51,7 @@ function parsePaymentStatus(raw: unknown): ShopOrderPaymentStatus {
 /**
  * Reads a string field from a JSON address snapshot.
  * @param row - Snapshot object.
- * @param key - Field name (camelCase as stored by geocrm-api).
+ * @param key - Field name (camelCase as stored by workbench-api).
  * @returns Trimmed string or empty.
  */
 function snapshotString(row: Record<string, unknown> | null, key: string): string {

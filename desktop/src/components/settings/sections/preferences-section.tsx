@@ -46,7 +46,7 @@ export function PreferencesSection({ onRestoreDefaults }: PreferencesSectionProp
     let cancelled = false
     void (async () => {
       try {
-        const settings = await window.geocrm.app.getLoginLaunchSettings()
+        const settings = await window.workbench.app.getLoginLaunchSettings()
         if (cancelled) {
           return
         }
@@ -104,7 +104,7 @@ export function PreferencesSection({ onRestoreDefaults }: PreferencesSectionProp
   }): Promise<void> {
     setLaunchBusy(true)
     try {
-      const next = await window.geocrm.app.setLoginLaunchSettings(patch)
+      const next = await window.workbench.app.setLoginLaunchSettings(patch)
       setOpenAtLogin(next.openAtLogin)
       setSilentLaunch(next.silentLaunch)
     } catch {

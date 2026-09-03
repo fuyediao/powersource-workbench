@@ -22,7 +22,7 @@ export interface AuraPageProps {
 }
 
 /**
- * GeoCRM feature page for the Markdown editor (menubar, sidebar, document).
+ * Workbench feature page for the Markdown editor (menubar, sidebar, document).
  * Preferences live under Settings → Aura.
  *
  * @param props - Signed-in user id.
@@ -71,7 +71,7 @@ export function AuraPage({ userId = null }: AuraPageProps) {
     <div className="aura-page flex h-dvh max-h-dvh flex-col overflow-hidden text-ink">
       <div
         key={i18n.language}
-        className="aura-geocrm-host flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-3 sm:gap-4 sm:p-4"
+        className="aura-workbench-host flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-3 sm:gap-4 sm:p-4"
       >
         <AuraEditor documentTitle={title} />
         <ToastHost />

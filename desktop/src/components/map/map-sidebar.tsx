@@ -224,7 +224,7 @@ export function MapSidebar(props: MapSidebarProps) {
   }
 
   const selectedFavorites = filteredFavorites.filter((f) => selectedIds.has(f.id))
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const onShowMultipleRef = useRef(props.onShowMultiple)
   const onRemoveRef = useRef(props.onRemove)
   const onMapSourceChangeRef = useRef(props.onMapSourceChange)

@@ -1,15 +1,15 @@
 /**
  * WYSIWYG core styles (layout / structure).
- * Colors and fonts come from GeoCRM Settings Theme via `aura-host.css`.
+ * Colors and fonts come from Workbench Settings Theme via `aura-host.css`.
  */
 @reference "tailwindcss";
 
-/* Scoped to Aura host — must not affect GeoCRM shell / home. */
-@scope (.aura-geocrm-host) {
+/* Scoped to Aura host — must not affect Workbench shell / home. */
+@scope (.aura-workbench-host) {
 
 /* -------------------------------------------------------------------------- */
 /* Editor chrome tokens (`.aura` / `.aura--dark`)                              */
-/* Host overrides under `.aura-geocrm-host` map onto Settings Theme tokens.    */
+/* Host overrides under `.aura-workbench-host` map onto Settings Theme tokens.    */
 /* -------------------------------------------------------------------------- */
 
 .aura {

@@ -4,11 +4,11 @@ export type MailTemplate = {
   body: string
 }
 
-const SIGNATURE_KEY = 'geocrm-electron-mail-signature'
-const TEMPLATES_KEY = 'geocrm-electron-mail-templates'
-const REMOTE_IMAGES_KEY = 'geocrm-electron-mail-load-remote-images'
-const LIST_WIDTH_KEY = 'geocrm-electron-mail-list-width'
-const ACCOUNT_SELECTION_KEY = 'geocrm-electron-mail-account-selection'
+const SIGNATURE_KEY = 'workbench-electron-mail-signature'
+const TEMPLATES_KEY = 'workbench-electron-mail-templates'
+const REMOTE_IMAGES_KEY = 'workbench-electron-mail-load-remote-images'
+const LIST_WIDTH_KEY = 'workbench-electron-mail-list-width'
+const ACCOUNT_SELECTION_KEY = 'workbench-electron-mail-account-selection'
 
 /** Persisted mailbox switcher selection (unified inbox or a specific account). */
 export type MailAccountSelectionPref = {
@@ -175,7 +175,7 @@ export function saveMailAccountSelectionPref(pref: MailAccountSelectionPref): vo
 }
 
 /**
- * Clears every persisted Mail preference (`geocrm-electron-mail-*` keys).
+ * Clears every persisted Mail preference (`workbench-electron-mail-*` keys).
  * Call on sign-out so a different user signing in on the same machine never
  * inherits the previous user's signature, templates, or mailbox selection.
  */

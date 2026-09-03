@@ -1,5 +1,5 @@
 /**
- * Competitor shop / line types aligned with geocrm-web Admin competitor models.
+ * Competitor shop / line types aligned with workbench-web Admin competitor models.
  */
 
 /** Map marker importance stored in `competitor_shops.importance_level`. */

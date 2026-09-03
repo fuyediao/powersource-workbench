@@ -92,8 +92,8 @@ test('AppDataProvider children can call useAppRefreshers', () => {
 test('clash app-data contexts are stored once on globalThis', () => {
   const bag = (
     globalThis as typeof globalThis & {
-      __geocrmClashAppDataContexts?: { refreshers: unknown }
+      __workbenchClashAppDataContexts?: { refreshers: unknown }
     }
-  ).__geocrmClashAppDataContexts
+  ).__workbenchClashAppDataContexts
   expect(bag?.refreshers).toBe(RefreshersContext)
 })

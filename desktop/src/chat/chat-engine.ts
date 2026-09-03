@@ -1,5 +1,5 @@
 /**
- * Shared chat engine: Ask-mode orchestration via geocrm-api `/ai/aichat`.
+ * Shared chat engine: Ask-mode orchestration via workbench-api `/ai/aichat`.
  */
 
 import { postAiChat } from '@/services/ai-api'

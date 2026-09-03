@@ -4,7 +4,7 @@ import { resolveApiBaseUrl } from '@/config/deployment-urls'
 export const EMPLOYEE_ID_PATTERN = /^PS\d{4}$/i
 
 /**
- * Returns true when the unified GeoCRM API origin is configured.
+ * Returns true when the unified Workbench API origin is configured.
  * @returns Whether employee-id resolve can run.
  */
 export function isAuthPublicApiConfigured(): boolean {
@@ -12,7 +12,7 @@ export function isAuthPublicApiConfigured(): boolean {
 }
 
 /**
- * Resolves an employee id to its account email via geocrm-api.
+ * Resolves an employee id to its account email via workbench-api.
  * @param employeeId - Employee id in PS#### format.
  * @returns Account email, or null when no match / request failed.
  */

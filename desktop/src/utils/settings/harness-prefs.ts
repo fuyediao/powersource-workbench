@@ -4,7 +4,7 @@ import {
 } from '@/utils/harness/utility-layout'
 
 /** Legacy localStorage key imported into SQLite once. */
-export const HARNESS_APPROVAL_MODE_KEY = 'geocrm.electron.harness.approvalMode.v1'
+export const HARNESS_APPROVAL_MODE_KEY = 'workbench.electron.harness.approvalMode.v1'
 
 /**
  * When Harness asks before file or network actions.
@@ -45,11 +45,11 @@ export function saveHarnessApprovalMode(mode: HarnessApprovalMode): void {
 }
 
 /** Legacy localStorage key for third-party MCP servers imported into SQLite once. */
-export const HARNESS_MCP_SERVERS_KEY = 'geocrm.electron.harness.mcpServers.v1'
-export const HARNESS_COMPUTER_USE_ENABLED_KEY = 'geocrm.electron.harness.computerUseEnabled.v1'
+export const HARNESS_MCP_SERVERS_KEY = 'workbench.electron.harness.mcpServers.v1'
+export const HARNESS_COMPUTER_USE_ENABLED_KEY = 'workbench.electron.harness.computerUseEnabled.v1'
 
 /** Legacy localStorage key for the Computer Use target imported into SQLite once. */
-export const HARNESS_COMPUTER_USE_TARGET_KEY = 'geocrm.electron.harness.computerUseTarget.v1'
+export const HARNESS_COMPUTER_USE_TARGET_KEY = 'workbench.electron.harness.computerUseTarget.v1'
 
 /** Reads whether Computer Use is enabled for new Harness threads. */
 export function loadHarnessComputerUseEnabled(): boolean {
@@ -137,8 +137,8 @@ export function saveHarnessComputerUseTarget(
 
 /**
  * One MCP server Harness may connect to.
- * These are always third-party services; GeoCRM data uses the signed-in
- * session instead, so `geocrm` is rejected as a server name.
+ * These are always third-party services; Workbench data uses the signed-in
+ * session instead, so `workbench` is rejected as a server name.
  */
 export interface HarnessMcpServer {
   /** Config key, e.g. `github`. */
@@ -217,8 +217,8 @@ export function parseHarnessCommandLine(input: string): string[] {
   return tokens
 }
 
-/** Reserved name: GeoCRM is never reached over MCP from Harness. */
-const RESERVED_SERVER_NAME = 'geocrm'
+/** Reserved name: Workbench is never reached over MCP from Harness. */
+const RESERVED_SERVER_NAME = 'workbench'
 
 /**
  * Returns whether a server name may be configured.
@@ -240,7 +240,7 @@ export function loadHarnessMcpServers(): HarnessMcpServer[] {
 
 /**
  * Persists the third-party MCP server list on this device.
- * @param servers - Servers to store; `geocrm` is dropped.
+ * @param servers - Servers to store; `workbench` is dropped.
  * @returns Nothing.
  */
 export function saveHarnessMcpServers(servers: HarnessMcpServer[]): void {
@@ -457,7 +457,7 @@ function readStringRecord(value: unknown): Record<string, string> | undefined {
 }
 
 /** Legacy localStorage key for the Harness work folder on this device. */
-export const HARNESS_WORK_FOLDER_KEY = 'geocrm.electron.harness.workFolder.v1'
+export const HARNESS_WORK_FOLDER_KEY = 'workbench.electron.harness.workFolder.v1'
 
 /**
  * Reads the user-chosen Harness work folder.
@@ -549,7 +549,7 @@ function clearLegacyPreferences(): void {
 export function hydrateHarnessDevicePreferences(): Promise<CachedHarnessDevicePreferences> {
   if (hydration) return hydration
   hydration = (async () => {
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     if (!bridge?.getDevicePreferences) return cachedPreferences
     const stored = await bridge.getDevicePreferences(readLegacyPreferences())
     cachedPreferences = {
@@ -565,5 +565,5 @@ export function hydrateHarnessDevicePreferences(): Promise<CachedHarnessDevicePr
 /** Writes the full cached preference document to SQLite. */
 function persistPreferences(preferences: CachedHarnessDevicePreferences): void {
   cachedPreferences = preferences
-  void window.geocrm?.harness?.setDevicePreferences(preferences).catch(() => undefined)
+  void window.workbench?.harness?.setDevicePreferences(preferences).catch(() => undefined)
 }

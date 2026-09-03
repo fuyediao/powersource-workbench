@@ -23,7 +23,7 @@ export async function invokeUwpTool(): Promise<void> {
     '  if ($pfn) { & CheckNetIsolation.exe LoopbackExempt -a -n="$pfn" 2>$null }',
     '}',
   ].join('\r\n')
-  const scriptPath = path.join(os.tmpdir(), `geocrm-uwp-loopback-${Date.now()}.ps1`)
+  const scriptPath = path.join(os.tmpdir(), `workbench-uwp-loopback-${Date.now()}.ps1`)
   fs.writeFileSync(scriptPath, script, 'utf8')
   try {
     await execFileAsync('powershell.exe', [

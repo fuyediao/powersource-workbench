@@ -62,7 +62,7 @@ export function ensureClashDirs(): {
  */
 export function controllerSocketPath(): string {
   if (process.platform === 'win32') {
-    return String.raw`\\.\pipe\geocrm-verge-mihomo`
+    return String.raw`\\.\pipe\workbench-verge-mihomo`
   }
   return path.join(clashDataDir(), 'verge-mihomo.sock')
 }

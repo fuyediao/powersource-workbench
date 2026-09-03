@@ -38,7 +38,7 @@ function syncTerminalSize(fitAddon: FitAddon, sessionId: string): void {
   fitAddon.fit()
   const dimensions = fitAddon.proposeDimensions()
   if (!dimensions || dimensions.cols < 2 || dimensions.rows < 2) return
-  void window.geocrm?.harness.ptyResize(sessionId, dimensions.cols, dimensions.rows)
+  void window.workbench?.harness.ptyResize(sessionId, dimensions.cols, dimensions.rows)
 }
 
 /**
@@ -58,7 +58,7 @@ export function HarnessTerminalPanel({ sessionId, cwd, active }: HarnessTerminal
     const dimensions = fitAddon?.proposeDimensions()
     const cols = dimensions && dimensions.cols >= 2 ? dimensions.cols : 80
     const rows = dimensions && dimensions.rows >= 2 ? dimensions.rows : 24
-    const bridge = window.geocrm?.harness
+    const bridge = window.workbench?.harness
     if (!bridge?.ptySpawn) {
       setError(t('harness.utility.unavailable'))
       return
@@ -95,13 +95,13 @@ export function HarnessTerminalPanel({ sessionId, cwd, active }: HarnessTerminal
     let cancelled = false
     let respawnTimer = 0
     const dataSub = term.onData((data) => {
-      void window.geocrm?.harness.ptyWrite(sessionId, data)
+      void window.workbench?.harness.ptyWrite(sessionId, data)
     })
-    const ptyDataUnsub = window.geocrm?.harness.onPtyData((id, data) => {
+    const ptyDataUnsub = window.workbench?.harness.onPtyData((id, data) => {
       if (id !== sessionId) return
       term.write(data)
     })
-    const ptyExitUnsub = window.geocrm?.harness.onPtyExit((id) => {
+    const ptyExitUnsub = window.workbench?.harness.onPtyExit((id) => {
       if (id !== sessionId || cancelled) return
       window.clearTimeout(respawnTimer)
       respawnTimer = window.setTimeout(() => {
@@ -115,7 +115,7 @@ export function HarnessTerminalPanel({ sessionId, cwd, active }: HarnessTerminal
       dataSub.dispose()
       ptyDataUnsub?.()
       ptyExitUnsub?.()
-      void window.geocrm?.harness.ptyDispose(sessionId)
+      void window.workbench?.harness.ptyDispose(sessionId)
       term.dispose()
       termRef.current = null
       fitRef.current = null

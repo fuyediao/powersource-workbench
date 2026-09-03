@@ -2,9 +2,9 @@
  * Persisted Calendar UI preferences (localStorage).
  */
 
-const VIEW_KEY = 'geocrm-electron-calendar-view'
-const SCOPE_MODE_KEY = 'geocrm-electron-calendar-scope-mode'
-const SCOPE_GROUP_KEY = 'geocrm-electron-calendar-scope-group'
+const VIEW_KEY = 'workbench-electron-calendar-view'
+const SCOPE_MODE_KEY = 'workbench-electron-calendar-scope-mode'
+const SCOPE_GROUP_KEY = 'workbench-electron-calendar-scope-group'
 
 /** Views offered in the Electron Calendar host View menu. */
 export const CALENDAR_VIEW_OPTIONS = [

@@ -23,7 +23,7 @@ function toAuraLang(language: string): AuraLang {
 
 /**
  * Build Aura product options for the editor core.
- * Editor chrome theme follows GeoCRM Settings Theme (`html.dark`).
+ * Editor chrome theme follows Workbench Settings Theme (`html.dark`).
  *
  * @param language - UI language code (e.g. `en`, `zh-TW`) or engine locale.
  * @param markdown - Initial document value.

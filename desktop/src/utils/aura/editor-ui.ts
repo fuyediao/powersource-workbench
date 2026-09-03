@@ -2,7 +2,7 @@
  * Editor UI façade used by the Aura WYSIWYG kernel.
  *
  * Re-exports toast / hint / image-preview store APIs so core modules import
- * one GeoCRM module instead of a ports injection layer.
+ * one Workbench module instead of a ports injection layer.
  */
 import { showToast } from '@/hooks/aura/toast-store'
 import {

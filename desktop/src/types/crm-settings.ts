@@ -1,5 +1,5 @@
 /**
- * Minimal CRM Settings tables/RPCs used by geocrm-electron Settings parity.
+ * Minimal CRM Settings tables/RPCs used by workbench-electron Settings parity.
  * Appended alongside the start-page library tables in Database.
  */
 

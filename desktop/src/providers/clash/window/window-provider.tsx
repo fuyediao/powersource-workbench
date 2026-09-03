@@ -1,7 +1,7 @@
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { isGeocrmHosted } from '@/services/clash/bridge'
+import { isWorkbenchHosted } from '@/services/clash/bridge'
 import debounce from '@/utils/clash/debounce'
 
 import { WindowContext } from './window-context'
@@ -9,7 +9,7 @@ import { WindowContext } from './window-context'
 const noopAsync = async (): Promise<void> => {}
 
 /**
- * Tauri window stand-in when Clash Verge is hosted in GeoCRM Electron.
+ * Tauri window stand-in when Clash Verge is hosted in Workbench Electron.
  * @returns Object matching the methods WindowProvider uses.
  */
 function hostedWindowStub(): ReturnType<typeof getCurrentWindow> {
@@ -45,7 +45,7 @@ function hostedWindowStub(): ReturnType<typeof getCurrentWindow> {
 export const WindowProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const hosted = isGeocrmHosted()
+  const hosted = isWorkbenchHosted()
   const currentWindow = useMemo(
     () => (hosted ? hostedWindowStub() : getCurrentWindow()),
     [hosted],

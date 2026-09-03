@@ -225,7 +225,7 @@ function navToFilters(navId: MailNavId): { folderId?: string; label?: string } {
 }
 
 /**
- * Electron mail workspace state against geocrm-api `/mail/*`.
+ * Electron mail workspace state against workbench-api `/mail/*`.
  * @returns Mailbox, folder, list, and reader controls.
  */
 export function useMail(): UseMailResult {
@@ -472,14 +472,14 @@ export function useMail(): UseMailResult {
         if (cancelled) {
           return
         }
-        void window.geocrm?.app?.setBadgeCount?.(0)
+        void window.workbench?.app?.setBadgeCount?.(0)
         if (
           lastUnread >= 0 &&
           total > lastUnread &&
           typeof Notification !== 'undefined' &&
           Notification.permission === 'granted'
         ) {
-          new Notification('GeoCRM Mail', {
+          new Notification('Workbench Mail', {
             body: i18n.t('mail.notifyNew', { count: total }),
           })
         }
@@ -498,7 +498,7 @@ export function useMail(): UseMailResult {
     return () => {
       cancelled = true
       window.clearInterval(timer)
-      void window.geocrm?.app?.setBadgeCount?.(0)
+      void window.workbench?.app?.setBadgeCount?.(0)
     }
   }, [configured])
 
@@ -729,7 +729,7 @@ export function useMail(): UseMailResult {
       if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const nextUnread = messages.filter((row) => !row.isRead).length
         if (nextUnread > previousUnread) {
-          new Notification('GeoCRM Mail', { body: 'New mail arrived.' })
+          new Notification('Workbench Mail', { body: 'New mail arrived.' })
         }
       } else if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
         void Notification.requestPermission()

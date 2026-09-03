@@ -2,7 +2,7 @@
  * Desktop-only AI model allowlist (Settings → AI → Models) — device SQLite.
  * Stores explicit enable/disable overrides only; models with no row fall back
  * to the renderer's default-enabled set (see `src/utils/settings/ai-model-allowlist.ts`).
- * Website `GET /ai/models?client=web` and geocrm-web pickers never read this file.
+ * Website `GET /ai/models?client=web` and workbench-web pickers never read this file.
  */
 
 import { DatabaseSync, type SQLOutputValue } from 'node:sqlite'

@@ -37,7 +37,7 @@ export interface HarnessHostState {
   developerInstructions: string | null
   /** Session JWT for main-process `/ai/harness/*` calls. */
   accessToken: string | null
-  /** Public geocrm-api origin. */
+  /** Public workbench-api origin. */
   apiBaseUrl: string | null
   /** Working directory for local Codex turns. */
   cwd: string | null
@@ -86,7 +86,7 @@ export function useHarnessHost(userId: string | null): HarnessHostState {
       await hydrateHarnessDevicePreferences()
       let hostAvailable = false
       try {
-        const status = await window.geocrm?.harness?.status()
+        const status = await window.workbench?.harness?.status()
         hostAvailable = Boolean(status?.available)
       } catch {
         hostAvailable = false
@@ -135,7 +135,7 @@ export function useHarnessHost(userId: string | null): HarnessHostState {
       let cwd = loadHarnessWorkFolder() || null
       if (!cwd) {
         try {
-          cwd = (await window.geocrm?.harness?.defaultWorkFolder()) ?? null
+          cwd = (await window.workbench?.harness?.defaultWorkFolder()) ?? null
         } catch {
           cwd = null
         }

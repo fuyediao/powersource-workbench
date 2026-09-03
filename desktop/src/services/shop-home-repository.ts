@@ -1,6 +1,6 @@
 /**
  * Supabase CRUD for shop homepage hero banners and featured product picks.
- * Admin UI: GeoCRM /admin/obm. Consumed by the shop frontend homepage.
+ * Admin UI: Workbench /admin/obm. Consumed by the shop frontend homepage.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

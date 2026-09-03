@@ -99,7 +99,7 @@ export function localePrefixesForScreen(screen: string): string[] {
 }
 
 /** Must match {@link TITLE_TABS_SESSION_KEY} in `use-title-tabs.ts`. */
-const TITLE_TABS_SESSION_KEY = 'geocrm.electron.titleTabs.v1'
+const TITLE_TABS_SESSION_KEY = 'workbench.electron.titleTabs.v1'
 
 /**
  * Locale prefixes for the title-bar screen restored after Ctrl+R.

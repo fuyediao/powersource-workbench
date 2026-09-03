@@ -1,6 +1,6 @@
 /**
  * Desktop Harness memory review: run the user's Settings API key locally,
- * then POST proposed MEMORY.md / USER.md. geocrm-api only clamps and writes.
+ * then POST proposed MEMORY.md / USER.md. workbench-api only clamps and writes.
  */
 
 import { fetchAiKeys, readAiKeysFromLocalStorage, type AiKeysState } from '@/services/ai-keys-api'
@@ -370,7 +370,7 @@ async function completeReview(
 
 /**
  * Reviews a finished transcript with the user's Settings key and writes the
- * proposed files through geocrm-api.
+ * proposed files through workbench-api.
  * @param transcript - Plain-text turn.
  * @param selection - Provider and model used by the completed Harness turn.
  * @returns Nothing.

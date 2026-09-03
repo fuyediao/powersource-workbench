@@ -16,7 +16,7 @@ import { useAsideDock } from '@/hooks/use-aside-dock'
 import { useAsidePair } from '@/hooks/use-aside-pair'
 import { useAsideWidgetFlip } from '@/hooks/use-aside-widget-flip'
 import { isFunctionsCategory, FUNCTION_FEATURE_APPS, getFunctionSiteApps } from '@/constants/rail-categories'
-import type { FeatureTabId, GeocrmSearchTarget } from '@/constants/feature-tabs'
+import type { FeatureTabId, WorkbenchSearchTarget } from '@/constants/feature-tabs'
 import type { AppItem, Category } from '@/types/library'
 import { useSettingsRoles } from '@/hooks/use-settings-roles'
 import { useDesktopModuleAccess } from '@/hooks/use-desktop-module-access'
@@ -382,10 +382,10 @@ export function HomePage({
 
   /**
    * Opens Settings or a Function tab from the home search bar.
-   * @param target - Parsed geocrm:// target from SearchBar.
+   * @param target - Parsed workbench:// target from SearchBar.
    * @returns Nothing.
    */
-  function handleGeocrmTarget(target: GeocrmSearchTarget): void {
+  function handleWorkbenchTarget(target: WorkbenchSearchTarget): void {
     if (target.kind === 'home') {
       return
     }
@@ -407,7 +407,7 @@ export function HomePage({
               <DateTimeDisplay />
             </div>
             <div className="animate-enter enter-delay-3 relative w-full">
-              <SearchBar userId={userId} onOpenGeocrmTarget={handleGeocrmTarget} />
+              <SearchBar userId={userId} onOpenWorkbenchTarget={handleWorkbenchTarget} />
             </div>
           </div>
         </div>
@@ -415,7 +415,7 @@ export function HomePage({
         <div className="pt-10 sm:pt-12">
           <DateTimeDisplay />
           <div className="animate-enter enter-delay-3 relative z-30 mt-7 w-full sm:mt-9">
-            <SearchBar userId={userId} onOpenGeocrmTarget={handleGeocrmTarget} />
+            <SearchBar userId={userId} onOpenWorkbenchTarget={handleWorkbenchTarget} />
           </div>
         </div>
       )}

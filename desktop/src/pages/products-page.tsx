@@ -20,7 +20,7 @@ export function ProductsPage({ userId }: ProductsPageProps) {
       userId={userId}
       entryKey="desktop_products"
       navGroups={PRODUCTS_NAV_GROUPS}
-      storageKey="geocrm-electron-products-sidebar-mode"
+      storageKey="workbench-electron-products-sidebar-mode"
       titleKey="products.sidebar.title"
     >
       {({ path, moduleKey, writes, navigate }) => (

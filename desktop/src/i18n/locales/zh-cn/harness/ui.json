@@ -149,7 +149,7 @@
     },
     "connectors": {
       "title": "连接器", "subtitle": "将 Harness 连接到业务服务与 MCP 服务。", "custom": "自定义连接器",
-      "geocrm": "使用登录会话直接访问 PowerSource Workbench 客户、商机、活动与业务背景。",
+      "workbench": "使用登录会话直接访问 PowerSource Workbench 客户、商机、活动与业务背景。",
       "dropbox": "授权后搜索并引用 Dropbox 文件。", "gmail": "授权后搜索、读取、撰写并整理 Gmail。",
       "googleCalendar": "授权后查看并管理 Google 日历活动。", "googleDrive": "授权后搜索并引用 Google Drive 文件。",
       "microsoftTeams": "授权后使用 Microsoft Teams 对话与协作内容。", "outlookCalendar": "授权后查看并管理 Outlook 日历活动。",
@@ -167,7 +167,7 @@
       "productivity": "整理销售工作、会议、文件与 CRM 数据。"
     },
     "creator": {
-      "geocrm": "作者：PowerSource Workbench",
+      "workbench": "作者：PowerSource Workbench",
       "you": "作者：你"
     },
     "creatorForm": {
@@ -447,7 +447,7 @@
         "stdio": "本机 stdio",
         "streamableHttp": "远端 HTTP"
       },
-      "nameRejected": "只能用英数字、连字符或下划线。「geocrm」为保留字。",
+      "nameRejected": "只能用英数字、连字符或下划线。「workbench」为保留字。",
       "add": "新增服务",
       "remove": "移除"
     },

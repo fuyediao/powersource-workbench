@@ -1,5 +1,5 @@
 /**
- * Maps `public.te_community_accounts` rows for the GeoCRM admin UI.
+ * Maps `public.te_community_accounts` rows for the Workbench admin UI.
  * Never select `password_hash` from the client.
  */
 

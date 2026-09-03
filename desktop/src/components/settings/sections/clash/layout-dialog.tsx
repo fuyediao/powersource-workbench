@@ -43,7 +43,7 @@ type TrayIconKind = 'common' | 'sysproxy' | 'tun'
  * Layout drill-in dialog: UI density, tray behavior, and tray icon overrides.
  *
  * The original Clash "prefer system titlebar", navigation-icon style, and
- * collapse-navbar toggles are dropped here: GeoCRM owns window chrome, and the
+ * collapse-navbar toggles are dropped here: Workbench owns window chrome, and the
  * Clash rail uses the same expand / collapse / hover control as Admin.
  * @param props - Open state and close callback.
  * @returns Layout dialog.

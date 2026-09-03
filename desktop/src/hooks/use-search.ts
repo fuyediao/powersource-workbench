@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
-  isGeocrmSchemeQuery,
-  parseGeocrmSearchTarget,
-  type GeocrmSearchTarget,
+  isWorkbenchSchemeQuery,
+  parseWorkbenchSearchTarget,
+  type WorkbenchSearchTarget,
 } from '@/constants/feature-tabs'
 import { useLinkOpen } from '@/hooks/link-open-context'
 import { fetchSuggestions } from '@/utils/shared/api'
@@ -50,8 +50,8 @@ function resolveAvailableEngine(engine: SearchEngine): SearchEngine {
 }
 
 export type UseSearchOptions = {
-  /** Opens a known `geocrm://` page instead of searching. */
-  onOpenGeocrmTarget?: (target: GeocrmSearchTarget) => void
+  /** Opens a known `workbench://` page instead of searching. */
+  onOpenWorkbenchTarget?: (target: WorkbenchSearchTarget) => void
   /** Ask AI search (Home / Spotlight). */
   onAskSearch?: (query: string) => void
   /** Engine before library load (Spotlight defaults to Ask). */
@@ -80,7 +80,7 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
   refreshHistory: () => void
 } {
   const { openUrl } = useLinkOpen()
-  const onOpenGeocrmTarget = options?.onOpenGeocrmTarget
+  const onOpenWorkbenchTarget = options?.onOpenWorkbenchTarget
   const onAskSearch = options?.onAskSearch
   const persistEngine = options?.persistEngine !== false
   const loadSavedEngine = options?.loadSavedEngine !== false
@@ -122,7 +122,7 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
 
   useEffect(() => {
     const normalized = query.trim()
-    if (!normalized || isGeocrmSchemeQuery(normalized)) {
+    if (!normalized || isWorkbenchSchemeQuery(normalized)) {
       setSuggestions([])
       return
     }
@@ -165,7 +165,7 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
   }
 
   /**
-   * Opens a known `geocrm://` page, Ask AI, or a web search. Deep links are never stored in history.
+   * Opens a known `workbench://` page, Ask AI, or a web search. Deep links are never stored in history.
    * @param overrideQuery - Optional query instead of the input value.
    * @returns Nothing.
    */
@@ -175,10 +175,10 @@ export function useSearch(userId: string | null, options?: UseSearchOptions): {
     if (!normalizedQuery) {
       return
     }
-    if (isGeocrmSchemeQuery(normalizedQuery)) {
-      const target = parseGeocrmSearchTarget(normalizedQuery)
+    if (isWorkbenchSchemeQuery(normalizedQuery)) {
+      const target = parseWorkbenchSearchTarget(normalizedQuery)
       if (target) {
-        onOpenGeocrmTarget?.(target)
+        onOpenWorkbenchTarget?.(target)
         setQuery('')
         return
       }

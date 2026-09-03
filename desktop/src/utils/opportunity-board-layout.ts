@@ -12,7 +12,7 @@ import {
 } from '@/types/opportunity'
 
 /** localStorage key prefix (appended with `:` + userId). */
-export const OPPORTUNITY_BOARD_LAYOUT_KEY = 'geocrm-electron-opportunity-board-layout'
+export const OPPORTUNITY_BOARD_LAYOUT_KEY = 'workbench-electron-opportunity-board-layout'
 
 /** Stage card width on the canvas (px). */
 export const OPPORTUNITY_BOARD_MODULE_WIDTH = 280
@@ -60,9 +60,9 @@ let writeQueue: Promise<void> = Promise.resolve()
  * @returns Bridge, or undefined outside Electron.
  */
 function opportunityBoardLayoutBridge():
-  | Window['geocrm']['opportunityBoardLayout']
+  | Window['workbench']['opportunityBoardLayout']
   | undefined {
-  return window.geocrm?.opportunityBoardLayout
+  return window.workbench?.opportunityBoardLayout
 }
 
 /**

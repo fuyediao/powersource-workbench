@@ -1,9 +1,9 @@
 /**
  * Desktop-only AI model allowlist: which catalog (and local runtime) models
  * appear in Electron pickers. Persisted as sparse overrides in local SQLite
- * via `window.geocrm.aiModelAllowlist`; absent rows fall back to
+ * via `window.workbench.aiModelAllowlist`; absent rows fall back to
  * {@link DEFAULT_ENABLED_MODEL_IDS}. Website `GET /ai/models?client=web` and
- * geocrm-web pickers are unrelated to this file.
+ * workbench-web pickers are unrelated to this file.
  */
 
 import { ELECTRON_FALLBACK_MODELS, type AiCatalogModel } from '@/chat/ai-model-catalog'
@@ -157,7 +157,7 @@ export async function loadAiModelAllowlist(forceRefresh = false): Promise<Map<st
   }
   pendingLoad = (async () => {
     try {
-      const rows = (await window.geocrm?.aiModelAllowlist?.list?.()) ?? []
+      const rows = (await window.workbench?.aiModelAllowlist?.list?.()) ?? []
       const map = rowsToOverrideMap(rows)
       overridesCache = map
       notifyAiModelAllowlistListeners()
@@ -191,7 +191,7 @@ export async function setAiModelAllowlistEnabled(
   overridesCache = next
   notifyAiModelAllowlistListeners()
   try {
-    await window.geocrm?.aiModelAllowlist?.set?.(provider, modelId, enabled)
+    await window.workbench?.aiModelAllowlist?.set?.(provider, modelId, enabled)
   } catch {
     // Optimistic cache already applied; a later refresh reconciles on failure.
   }

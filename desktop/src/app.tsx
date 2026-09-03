@@ -3,7 +3,7 @@ import { SignedInShell } from '@/components/app/SignedInShell'
 import { AskAiSidebar } from '@/components/ask-ai/AskAiSidebar'
 import { MacStyleTitleBar } from '@/components/layout/MacStyleTitleBar'
 import { RequiredAppUpdateGate } from '@/components/settings/required-app-update-gate'
-import { isFeatureTabId, parseGeocrmSearchTarget } from '@/constants/feature-tabs'
+import { isFeatureTabId, parseWorkbenchSearchTarget } from '@/constants/feature-tabs'
 import { isBrowserTabId } from '@/utils/settings/link-open-preference'
 import { LinkOpenProvider } from '@/hooks/link-open-context'
 import { useApplicationMenu } from '@/hooks/use-application-menu'
@@ -38,7 +38,7 @@ import {
  */
 function LoginWindowApp() {
   const auth = useAuth()
-  const customTitleBar = Boolean(window.geocrm?.window?.usesCustomTitleBar)
+  const customTitleBar = Boolean(window.workbench?.window?.usesCustomTitleBar)
   const signedIn = Boolean(auth.session?.user)
   const localeReady = useEnsureLocalePrefixes('home', [])
 
@@ -61,7 +61,7 @@ function LoginWindowApp() {
     if (auth.loading) {
       return
     }
-    void window.geocrm?.auth.setSignedIn?.(signedIn)
+    void window.workbench?.auth.setSignedIn?.(signedIn)
   }, [auth.loading, signedIn])
 
   const body =
@@ -96,9 +96,9 @@ function LoginWindowApp() {
  */
 function hideForeignNativePanes(screen: string): void {
   if (!isBrowserTabId(screen)) {
-    void window.geocrm?.browser?.invoke?.('hideAll')
+    void window.workbench?.browser?.invoke?.('hideAll')
   }
-  void window.geocrm?.clash?.invoke?.('hide')
+  void window.workbench?.clash?.invoke?.('hide')
 }
 
 /**
@@ -108,8 +108,8 @@ function hideForeignNativePanes(screen: string): void {
  */
 function MainWindowApp() {
   const auth = useAuth()
-  const customTitleBar = Boolean(window.geocrm?.window?.usesCustomTitleBar)
-  const showHomeLauncher = window.geocrm?.window?.showHomeLauncher !== false
+  const customTitleBar = Boolean(window.workbench?.window?.usesCustomTitleBar)
+  const showHomeLauncher = window.workbench?.window?.showHomeLauncher !== false
   const signedIn = Boolean(auth.session?.user)
   const tabs = useTitleTabs(signedIn, showHomeLauncher)
   const localeReady = useEnsureLocalePrefixes(
@@ -127,7 +127,7 @@ function MainWindowApp() {
    */
   function reloadTitleBarTab(tabId: string): void {
     if (isBrowserTabId(tabId)) {
-      void window.geocrm?.browser?.invoke?.('reload', tabId)
+      void window.workbench?.browser?.invoke?.('reload', tabId)
       return
     }
     setTabReloadEpoch((prev) => ({ ...prev, [tabId]: (prev[tabId] ?? 0) + 1 }))
@@ -211,7 +211,7 @@ function MainWindowApp() {
     if (auth.loading) {
       return
     }
-    void window.geocrm?.auth.setSignedIn?.(signedIn)
+    void window.workbench?.auth.setSignedIn?.(signedIn)
   }, [auth.loading, signedIn])
 
   useEffect(() => {
@@ -279,7 +279,7 @@ function MainWindowApp() {
     if (!signedIn) {
       return
     }
-    return window.geocrm?.window?.onOpenSettings?.((section) => {
+    return window.workbench?.window?.onOpenSettings?.((section) => {
       hideForeignNativePanes('settings')
       if (section && isSettingsSection(section)) {
         persistSettingsSection(section)
@@ -291,18 +291,18 @@ function MainWindowApp() {
   }, [signedIn, tabs])
 
   useEffect(() => {
-    return window.geocrm?.window?.onSignOut?.(() => {
+    return window.workbench?.window?.onSignOut?.(() => {
       hideForeignNativePanes('home')
       void auth.signOut()
     })
   }, [auth])
 
   useEffect(() => {
-    void window.geocrm?.spotlight?.setEnabled?.(signedIn)
-    void window.geocrm?.agentOverlay?.setEnabled?.(signedIn)
+    void window.workbench?.spotlight?.setEnabled?.(signedIn)
+    void window.workbench?.agentOverlay?.setEnabled?.(signedIn)
     return () => {
-      void window.geocrm?.spotlight?.setEnabled?.(false)
-      void window.geocrm?.agentOverlay?.setEnabled?.(false)
+      void window.workbench?.spotlight?.setEnabled?.(false)
+      void window.workbench?.agentOverlay?.setEnabled?.(false)
     }
   }, [signedIn])
 
@@ -314,12 +314,12 @@ function MainWindowApp() {
     let cancelled = false
     let removeKeyDown: (() => void) | undefined
 
-    void window.geocrm?.spotlight?.usesGlobalShortcut?.().then((usesGlobal) => {
+    void window.workbench?.spotlight?.usesGlobalShortcut?.().then((usesGlobal) => {
       if (cancelled || usesGlobal) {
         // Main process owns the global shortcut — avoid a second toggle from the renderer.
         return
       }
-      const accelerator = window.geocrm?.spotlight?.accelerator ?? 'Alt+Space'
+      const accelerator = window.workbench?.spotlight?.accelerator ?? 'Alt+Space'
       /**
        * In-window shortcut fallback when the OS blocks the global shortcut.
        * @param event - Keyboard event.
@@ -331,7 +331,7 @@ function MainWindowApp() {
         }
         event.preventDefault()
         event.stopPropagation()
-        void window.geocrm?.spotlight?.toggle?.()
+        void window.workbench?.spotlight?.toggle?.()
       }
       window.addEventListener('keydown', handleKeyDown, true)
       removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)
@@ -351,11 +351,11 @@ function MainWindowApp() {
     let cancelled = false
     let removeKeyDown: (() => void) | undefined
 
-    void window.geocrm?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
+    void window.workbench?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
       if (cancelled || usesGlobal) {
         return
       }
-      const accelerator = window.geocrm?.agentOverlay?.accelerator ?? 'Alt+G'
+      const accelerator = window.workbench?.agentOverlay?.accelerator ?? 'Alt+G'
       /**
        * In-window shortcut fallback when the OS blocks the global overlay chord.
        * @param event - Keyboard event.
@@ -367,7 +367,7 @@ function MainWindowApp() {
         }
         event.preventDefault()
         event.stopPropagation()
-        void window.geocrm?.agentOverlay?.toggle?.()
+        void window.workbench?.agentOverlay?.toggle?.()
       }
       window.addEventListener('keydown', handleKeyDown, true)
       removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)
@@ -390,13 +390,13 @@ function MainWindowApp() {
     if (!signedIn) {
       return
     }
-    return window.geocrm?.spotlight?.onOpenInApp?.((url) => {
+    return window.workbench?.spotlight?.onOpenInApp?.((url) => {
       const askQuery = parseAskAiSearchUrl(url)
       if (askQuery) {
         requestAskAiSearch(askQuery)
         return
       }
-      const target = parseGeocrmSearchTarget(url)
+      const target = parseWorkbenchSearchTarget(url)
       if (target) {
         if (target.kind === 'home') {
           if (showHomeLauncher) {
@@ -512,7 +512,7 @@ function MainWindowApp() {
  * @returns Window root.
  */
 export default function App() {
-  if (window.geocrm?.window?.isLoginWindow) {
+  if (window.workbench?.window?.isLoginWindow) {
     return <LoginWindowApp />
   }
   return <MainWindowApp />

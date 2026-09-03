@@ -340,7 +340,7 @@ function useTun(config: Mapping, enable: boolean): Mapping {
 }
 
 /**
- * Reads and merges GeoCRM's persisted DNS config (`dns_config.yaml`) into the profile config,
+ * Reads and merges Workbench's persisted DNS config (`dns_config.yaml`) into the profile config,
  * matching Clash Verge's `apply_dns_settings`.
  * @param config - Profile config.
  * @param enabled - `enable_dns_settings` from the Verge store.
@@ -565,7 +565,7 @@ function readScriptItem(uid: string | undefined, fallbackUid: string): string {
 }
 
 /**
- * Builds the GeoCRM-owned control-plane mapping (mixed-port, controller, secret, listeners),
+ * Builds the Workbench-owned control-plane mapping (mixed-port, controller, secret, listeners),
  * analogous to Clash Verge's separate `Config::clash()` settings layer.
  */
 function buildControlConfig(): Mapping {
@@ -601,7 +601,7 @@ function buildControlConfig(): Mapping {
 }
 
 /**
- * Overlays the GeoCRM control-plane mapping onto a profile config, matching Clash Verge's
+ * Overlays the Workbench control-plane mapping onto a profile config, matching Clash Verge's
  * `merge_default_config` (listener toggles remove rather than merge a disabled port).
  */
 function mergeControlConfig(config: Mapping, control: Mapping): Mapping {

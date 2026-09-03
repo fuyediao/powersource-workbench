@@ -111,7 +111,7 @@
   },
   "form": {
     "companyName": "Company Name",
-    "companyNamePlaceholder": "e.g. GeoCRM Technologies",
+    "companyNamePlaceholder": "e.g. Workbench Technologies",
     "selectCompany": "Select company",
     "searchCompanyPlaceholder": "Search by company name or code...",
     "companyPickerClose": "Close company picker",

@@ -1,6 +1,6 @@
 /**
  * Competitor shop CRUD plus picker helpers for Admin association forms.
- * Ported from geocrm-web `useCompetitorShops`.
+ * Ported from workbench-web `useCompetitorShops`.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

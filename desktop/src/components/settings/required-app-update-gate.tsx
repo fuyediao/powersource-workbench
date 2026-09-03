@@ -25,7 +25,7 @@ export function RequiredAppUpdateGate() {
   useEffect(() => {
     let cancelled = false
     void (async () => {
-      const packaged = await window.geocrm?.app?.isPackaged?.()
+      const packaged = await window.workbench?.app?.isPackaged?.()
       if (cancelled || !packaged) {
         return
       }

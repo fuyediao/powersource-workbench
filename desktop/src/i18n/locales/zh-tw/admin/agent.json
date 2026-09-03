@@ -52,7 +52,7 @@
     "fullName": "姓名",
     "notes": "備註"
   },
-  "workerNotConfigured": "未設定 GeoCRM API（請設定 VITE_DEPLOYMENT_DOMAIN）。",
+  "workerNotConfigured": "未設定 Workbench API（請設定 VITE_DEPLOYMENT_DOMAIN）。",
   "noWorkspaceGroup": "找不到可用於代理商管理的工作群組。",
   "errorLoad": "載入代理商失敗",
   "errorCreate": "建立代理商失敗",

@@ -782,7 +782,7 @@ export function FolioIcon(props: IconProps) {
     }), createElement('path', { d: 'M5 4.5v15A1.5 1.5 0 0 0 6.5 21' }), createElement('path', { d: 'M9 8h7M9 12h7M9 16h4' }));
 }
 // ---------------------------------------------------------------------------
-// Admin CRM sidebar icons (Lucide paths aligned with geocrm-web AdminLayout)
+// Admin CRM sidebar icons (Lucide paths aligned with workbench-web AdminLayout)
 // ---------------------------------------------------------------------------
 /** @returns Lucide users icon (Customers). */
 export function LucideUsersIcon(props: IconProps) {
@@ -1443,7 +1443,7 @@ export function AppleIcon(props: IconProps) {
   }));
 }
 /**
- * GeoCRM map-explorer brand mark (pin + AI sparkle), matching geocrm-web.
+ * Workbench map-explorer brand mark (pin + AI sparkle), matching workbench-web.
  * @param props - SVG props.
  * @returns Brand mark SVG.
  */

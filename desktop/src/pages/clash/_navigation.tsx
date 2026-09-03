@@ -62,7 +62,7 @@ export const navItems: NavigationItem[] = [
 ]
 
 /**
- * Clash routes kept out of the sidebar (opened from GeoCRM Settings → Clash).
+ * Clash routes kept out of the sidebar (opened from Workbench Settings → Clash).
  */
 export const hiddenNavItems: NavigationItem[] = [
   {

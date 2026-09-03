@@ -3,23 +3,23 @@
  *
  * The renderer drives one local `codex app-server` process through these
  * channels. Harness never uses the npm `@openai/codex` CLI, and it never
- * reaches GeoCRM over MCP.
+ * reaches Workbench over MCP.
  */
 
 /** IPC channel for Harness workflow commands (start / turn / approval). */
-export const HARNESS_IPC_CHANNEL = 'geocrm:harness'
+export const HARNESS_IPC_CHANNEL = 'workbench:harness'
 
 /** Event pushed from main to the renderer for one workflow event. */
-export const HARNESS_EVENT = 'geocrm:harness-event'
+export const HARNESS_EVENT = 'workbench:harness-event'
 
 /** Streaming PTY output for one Harness terminal tab. */
-export const HARNESS_PTY_DATA_EVENT = 'geocrm:harness-pty-data'
+export const HARNESS_PTY_DATA_EVENT = 'workbench:harness-pty-data'
 
 /** Exit notification for one Harness terminal tab. */
-export const HARNESS_PTY_EXIT_EVENT = 'geocrm:harness-pty-exit'
+export const HARNESS_PTY_EXIT_EVENT = 'workbench:harness-pty-exit'
 
 /** Console output emitted by the isolated native Canvas preview. */
-export const HARNESS_CANVAS_CONSOLE_EVENT = 'geocrm:harness-canvas-console'
+export const HARNESS_CANVAS_CONSOLE_EVENT = 'workbench:harness-canvas-console'
 
 /** Permission profile chosen in Settings → Harness. */
 export type HarnessApprovalMode = 'askAlways' | 'askIfUnsafe' | 'fullAccess'
@@ -100,7 +100,7 @@ export interface HarnessStartTurnExtras {
   effort?: string | null
 }
 
-/** Codex `turn/start.effort` values GeoCRM will forward. */
+/** Codex `turn/start.effort` values Workbench will forward. */
 export const HARNESS_REASONING_EFFORTS = [
   'none',
   'minimal',
@@ -116,7 +116,7 @@ export const HARNESS_REASONING_EFFORTS = [
 export type HarnessReasoningEffortId = (typeof HARNESS_REASONING_EFFORTS)[number]
 
 /**
- * Returns whether a string is a Codex reasoning effort GeoCRM forwards.
+ * Returns whether a string is a Codex reasoning effort Workbench forwards.
  * @param value - Candidate
  * @returns True when the value is allowed on `turn/start`
  */
@@ -141,7 +141,7 @@ export interface HarnessStartOptions {
   apiKey?: string | null
   /** Model id override. */
   model?: string | null
-  /** Provider id selected from the GeoCRM model catalog. */
+  /** Provider id selected from the Workbench model catalog. */
   provider?: string | null
   /** Provider selected independently for visual desktop control. */
   computerUseProvider?: string | null
@@ -164,10 +164,10 @@ export interface HarnessStartOptions {
   developerInstructions?: string | null
   /** Signed-in session JWT for `/ai/harness/*` from the main process. */
   accessToken?: string | null
-  /** Public geocrm-api origin, e.g. `https://api.example.com`. */
+  /** Public workbench-api origin, e.g. `https://api.example.com`. */
   apiBaseUrl?: string | null
   /**
-   * Third-party MCP servers the workflow may connect to. GeoCRM is never in
+   * Third-party MCP servers the workflow may connect to. Workbench is never in
    * this list: CRM, mail, and calendar use the signed-in session instead.
    */
   mcpServers?: HarnessMcpServerConfig[] | null
@@ -235,7 +235,7 @@ export interface HarnessMcpServerConfig {
 }
 
 /** Reserved server name that must never be configured for Harness. */
-export const HARNESS_RESERVED_MCP_SERVER = 'geocrm'
+export const HARNESS_RESERVED_MCP_SERVER = 'workbench'
 
 /**
  * Reads a string-only record from an untrusted payload.

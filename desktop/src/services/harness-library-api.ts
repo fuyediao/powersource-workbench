@@ -1,5 +1,5 @@
 /**
- * Harness library against geocrm-api `/ai/harness/skills`.
+ * Harness library against workbench-api `/ai/harness/skills`.
  *
  * Skills are Hermes `SKILL.md` folders on the user's VPS profile. The org
  * library is read-only here; personal skills follow the user between machines
@@ -39,7 +39,7 @@ export interface HarnessLibraryEntry {
 }
 
 /**
- * Reports whether the GeoCRM API origin is configured.
+ * Reports whether the Workbench API origin is configured.
  * @returns True when library calls can run.
  */
 export function isHarnessLibraryApiConfigured(): boolean {
@@ -193,7 +193,7 @@ export function formatSkillInstructions(index: HarnessSkillIndex): string {
   return [
     '# Skills',
     '',
-    'These GeoCRM skills are available on the VPS profile. Use one by following its body when the task matches.',
+    'These Workbench skills are available on the VPS profile. Use one by following its body when the task matches.',
     '',
     ...lines,
   ].join('\n')

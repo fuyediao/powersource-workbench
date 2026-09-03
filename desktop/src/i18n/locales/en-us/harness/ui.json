@@ -284,7 +284,7 @@
       "title": "Connectors",
       "subtitle": "Connect Harness to business services and MCP servers.",
       "custom": "Custom connector",
-      "geocrm": "Built-in access to signed-in PowerSource Workbench customers, opportunities, activity, and business context.",
+      "workbench": "Built-in access to signed-in PowerSource Workbench customers, opportunities, activity, and business context.",
       "dropbox": "Search and reference files from Dropbox through an authorized account.",
       "gmail": "Search, read, draft, and organize Gmail through an authorized account.",
       "googleCalendar": "Review and manage Google Calendar events after authorization.",
@@ -325,7 +325,7 @@
       "productivity": "Organize sales work, meetings, documents, and CRM data."
     },
     "creator": {
-      "geocrm": "By PowerSource Workbench",
+      "workbench": "By PowerSource Workbench",
       "you": "By you"
     },
     "creatorForm": {
@@ -652,7 +652,7 @@
         "stdio": "Local stdio",
         "streamableHttp": "Remote HTTP"
       },
-      "nameRejected": "Use letters, numbers, dashes, or underscores. \"geocrm\" is reserved.",
+      "nameRejected": "Use letters, numbers, dashes, or underscores. \"workbench\" is reserved.",
       "add": "Add service",
       "remove": "Remove"
     },

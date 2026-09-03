@@ -26,7 +26,7 @@ function preloadIfCalendarTab(tabId: string): void {
 }
 
 /** sessionStorage key so Ctrl+R keeps the active title-bar screen. */
-const TITLE_TABS_SESSION_KEY = 'geocrm.electron.titleTabs.v1'
+const TITLE_TABS_SESSION_KEY = 'workbench.electron.titleTabs.v1'
 
 /**
  * Cross-window title-bar tab payload (Chrome-style tab tear-off / merge).
@@ -266,7 +266,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
   }
 
   /**
-   * Opens a GeoCRM feature page as a closable title-bar tab.
+   * Opens a Workbench feature page as a closable title-bar tab.
    * @param feature - Feature id (`chat` / `messages` / `mail` / `calendar` / `map` / `admin` / `aura` / `folio` / `docs` / `sheets` / `slides`).
    * @returns Nothing.
    */
@@ -353,7 +353,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
       if (next.length === 0 && !showHomeLauncher) {
         setScreen('home')
         queueMicrotask(() => {
-          void window.geocrm?.window?.close()
+          void window.workbench?.window?.close()
         })
         return next
       }
@@ -487,7 +487,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
   acceptTransferredTabRef.current = acceptTransferredTab
 
   useEffect(() => {
-    const unsubscribe = window.geocrm?.tabs?.onReceive((payload) => {
+    const unsubscribe = window.workbench?.tabs?.onReceive((payload) => {
       if (!signedInRef.current) {
         pendingTransfersRef.current.push(payload)
         return
@@ -496,10 +496,10 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     })
     // Handshake after subscribe so a tear-off that created this window is not
     // delivered (and dropped) before the listener exists.
-    void window.geocrm?.tabs?.ready?.()
+    void window.workbench?.tabs?.ready?.()
     return () => {
       unsubscribe?.()
-      void window.geocrm?.tabs?.unready?.()
+      void window.workbench?.tabs?.unready?.()
     }
   }, [])
 
@@ -522,7 +522,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
       return false
     }
     if (isBrowserTabId(tabId)) {
-      await window.geocrm?.browser?.invoke?.('markTransferring', tabId)
+      await window.workbench?.browser?.invoke?.('markTransferring', tabId)
     }
     const result = await send(payload)
     if (!result?.accepted) {
@@ -532,7 +532,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     closeTab(tabId)
     if (!showHomeLauncher && remaining === 0) {
       queueMicrotask(() => {
-        void window.geocrm?.window?.close()
+        void window.workbench?.window?.close()
       })
     }
     return true
@@ -551,7 +551,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     tabId: TitleBarTabId,
     screenPoint: { x: number; y: number },
   ): Promise<boolean> {
-    return transferTabAway(tabId, (payload) => window.geocrm?.tabs?.dropTab(payload, screenPoint))
+    return transferTabAway(tabId, (payload) => window.workbench?.tabs?.dropTab(payload, screenPoint))
   }
 
   /**
@@ -560,7 +560,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
    * @returns True when the new window accepted the tab.
    */
   async function openTabInNewWindow(tabId: TitleBarTabId): Promise<boolean> {
-    return transferTabAway(tabId, (payload) => window.geocrm?.tabs?.openInNewWindow(payload))
+    return transferTabAway(tabId, (payload) => window.workbench?.tabs?.openInNewWindow(payload))
   }
 
   /**
@@ -571,7 +571,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
    */
   async function moveTabToWindow(tabId: TitleBarTabId, windowId: number): Promise<boolean> {
     return transferTabAway(tabId, (payload) =>
-      window.geocrm?.tabs?.moveToWindow(payload, windowId),
+      window.workbench?.tabs?.moveToWindow(payload, windowId),
     )
   }
 
@@ -627,7 +627,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
     }
     const active = tabs?.find((tab) => tab.id === screen)
     const label = screen === 'home' || !active ? t('nav.home') : active.label
-    void window.geocrm?.tabs?.setWindowLabel?.(label)
+    void window.workbench?.tabs?.setWindowLabel?.(label)
   }, [screen, signedIn, t, tabs])
 
   return {

@@ -1,7 +1,7 @@
 {
   "title": "T&E Community Users",
   "description": "T&E form community accounts.",
-  "otpLoginNote": "T&E community sign-in uses a one-time email verification code delivered by the T&E mail service (Mailu). Accounts are separate from GeoCRM Supabase Auth — no password is stored or reset from this screen.",
+  "otpLoginNote": "T&E community sign-in uses a one-time email verification code delivered by the T&E mail service (Mailu). Accounts are separate from Workbench Supabase Auth — no password is stored or reset from this screen.",
   "errorNotConfigured": "Database is not configured. Cannot load accounts.",
   "errorLoad": "Failed to load community accounts. Please try again.",
   "errorUpdateStatus": "Failed to update account status. Please try again.",
@@ -65,7 +65,7 @@
     "success": "Password updated.",
     "error": "Failed to update password. Please try again.",
     "noPermission": "Only system or group administrators can change community user passwords.",
-    "apiNotConfigured": "VITE_DEPLOYMENT_DOMAIN is not configured. Deploy geocrm-api to reset passwords.",
+    "apiNotConfigured": "VITE_DEPLOYMENT_DOMAIN is not configured. Deploy workbench-api to reset passwords.",
     "forceHint": "The user will be required to change this password on next login."
   },
   "avatarSet": "Avatar uploaded",

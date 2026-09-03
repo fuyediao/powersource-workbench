@@ -70,7 +70,7 @@ import { checkMediaUnlock, defaultUnlockItems } from './unlock'
 import { invokeUwpTool } from './uwp'
 
 /**
- * Emits a Tauri-style event into the GeoCRM renderer (Clash island).
+ * Emits a Tauri-style event into the Workbench renderer (Clash island).
  * @param name - Event name.
  * @param payload - Payload.
  */
@@ -138,7 +138,7 @@ const CORE_REAPPLY_FIELDS: Array<keyof ClashVergeStore> = [
  * control-plane / TUN fields.
  *
  * `enable_auto_launch` / `enable_silent_start` are intentionally ignored here: the OS login item
- * is owned exclusively by GeoCRM Preferences (`setLoginLaunchSettings` via the Preferences
+ * is owned exclusively by Workbench Preferences (`setLoginLaunchSettings` via the Preferences
  * section) so a stale `verge.yaml` can never overwrite it.
  * @param payload - Patch payload as sent by the renderer.
  * @param next - Store state after the patch was written.
@@ -277,7 +277,7 @@ export async function handleClashCommand(cmd: string, args: Record<string, unkno
         throw new Error('Profile URL must be http(s)')
       }
       const response = await fetch(url, {
-        headers: { 'User-Agent': 'clash-verge/GeoCRM' },
+        headers: { 'User-Agent': 'clash-verge/Workbench' },
       })
       if (!response.ok) {
         throw new Error(`Import failed (${response.status})`)
@@ -313,7 +313,7 @@ export async function handleClashCommand(cmd: string, args: Record<string, unkno
         return
       }
       const response = await fetch(item.url, {
-        headers: { 'User-Agent': 'clash-verge/GeoCRM' },
+        headers: { 'User-Agent': 'clash-verge/Workbench' },
       })
       if (!response.ok) {
         throw new Error(`Update failed (${response.status})`)
@@ -634,7 +634,7 @@ export async function handleClashCommand(cmd: string, args: Record<string, unkno
       const runState = await computeRunState()
       const logs = readSidecarLogs().slice(-40)
       const text = [
-        `GeoCRM ${app.getVersion()}`,
+        `Workbench ${app.getVersion()}`,
         `Platform: ${process.platform} ${os.release()} (${process.arch})`,
         `Core mode: ${runState.mode} (service: ${runState.service})`,
         `Service installed: ${await isServiceInstalled()}`,

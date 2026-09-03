@@ -2,7 +2,7 @@ import { TauriEvent } from '@tauri-apps/api/event'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { useEffect, useState } from 'react'
 
-import { isGeocrmHosted } from '@/services/clash/bridge'
+import { isWorkbenchHosted } from '@/services/clash/bridge'
 
 const isDocumentVisible = () =>
   typeof document === 'undefined' || document.visibilityState === 'visible'
@@ -11,7 +11,7 @@ export const useVisibility = () => {
   const [visible, setVisible] = useState(isDocumentVisible)
 
   useEffect(() => {
-    if (isGeocrmHosted()) {
+    if (isWorkbenchHosted()) {
       const handleVisibleEvent = () => setVisible(isDocumentVisible())
       document.addEventListener('visibilitychange', handleVisibleEvent)
       window.addEventListener('focus', handleVisibleEvent)

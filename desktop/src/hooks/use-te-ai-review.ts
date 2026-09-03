@@ -6,7 +6,7 @@ const SESSION_KEY_MODEL = 'te_ai_review_model'
 
 /**
  * Hook for generating a T&E application AI review suggestion via the
- * protected geocrm-api backend. The backend calls the provider with the
+ * protected workbench-api backend. The backend calls the provider with the
  * admin's own API key and persists the trilingual result; this hook
  * tracks model selection (vendor + specific catalog model), BYOK gating,
  * and loading/error state.

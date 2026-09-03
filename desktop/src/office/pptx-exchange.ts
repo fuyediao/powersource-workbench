@@ -821,11 +821,11 @@ export async function importPpt(
 export async function exportPptx(slideData: ISlideData): Promise<Blob> {
   const pptx = new PptxGenJS()
   pptx.defineLayout({
-    name: 'GEOCRM_16x9',
+    name: 'WORKBENCH_16x9',
     width: SLIDE_WIDTH_PX / PX_PER_INCH,
     height: SLIDE_HEIGHT_PX / PX_PER_INCH,
   })
-  pptx.layout = 'GEOCRM_16x9'
+  pptx.layout = 'WORKBENCH_16x9'
 
   const pageOrder = slideData.body?.pageOrder ?? []
   const pages = slideData.body?.pages ?? {}

@@ -76,10 +76,10 @@ const EMPTY_FILTERS: CustomerListFilters = {
 }
 
 /** localStorage key for customers list `created_at` sort direction. */
-const CUSTOMERS_SORT_ASC_KEY = 'geocrm-electron-customers-sort-ascending'
+const CUSTOMERS_SORT_ASC_KEY = 'workbench-electron-customers-sort-ascending'
 
 /** localStorage key for customers list toolbar filters. */
-const CUSTOMERS_FILTERS_KEY = 'geocrm-electron-customers-filters'
+const CUSTOMERS_FILTERS_KEY = 'workbench-electron-customers-filters'
 
 /**
  * Reads cached sort direction (ascending = oldest created first).

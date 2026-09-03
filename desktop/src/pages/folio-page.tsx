@@ -268,7 +268,7 @@ export function FolioPage({ userId, user, initialPageId = null }: FolioPageProps
   const handleMenuAction = async (action: FolioPageMenuAction) => {
     if (!activePage) return
     if (action === 'rename') titleRef.current?.focus()
-    else if (action === 'new-tab') window.dispatchEvent(new CustomEvent('geocrm:open-folio-page', { detail: { pageId: activePage.id, title: activePage.title } }))
+    else if (action === 'new-tab') window.dispatchEvent(new CustomEvent('workbench:open-folio-page', { detail: { pageId: activePage.id, title: activePage.title } }))
     else if (action === 'info' || action === 'toc' || action === 'history') {
       setSidePanel(action)
       if (action === 'toc') setHeadings(editorRef.current?.headings() ?? [])

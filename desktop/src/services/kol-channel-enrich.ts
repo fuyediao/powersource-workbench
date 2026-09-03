@@ -7,7 +7,7 @@ import { isKolApifyEnrichablePlatform } from '@/constants/kol-constants'
 import {
   fetchApifySocialProfileMeta,
   fetchYoutubeChannelMeta,
-  isGeocrmApiConfigured,
+  isWorkbenchApiConfigured,
   KolApifyEnrichmentError,
   KolYoutubeEnrichmentError,
 } from '@/services/kol-channel-enrichment-api'
@@ -31,8 +31,8 @@ function mapApifyEnrichmentErrorKey(err: unknown): string {
     }
     switch (err.status) {
       case 503:
-        if (err.message.includes('GeoCRM API URL')) {
-          return 'admin.kolDetail.errorGeocrmNotConfigured'
+        if (err.message.includes('Workbench API URL')) {
+          return 'admin.kolDetail.errorWorkbenchNotConfigured'
         }
         return 'admin.kolDetail.errorApifyNotConfigured'
       case 401:
@@ -68,8 +68,8 @@ function mapYoutubeEnrichmentErrorKey(err: unknown): string {
     }
     switch (err.status) {
       case 503:
-        if (err.message.includes('GeoCRM API URL')) {
-          return 'admin.kolDetail.errorGeocrmNotConfigured'
+        if (err.message.includes('Workbench API URL')) {
+          return 'admin.kolDetail.errorWorkbenchNotConfigured'
         }
         return 'admin.kolDetail.errorYoutubeServerNotConfigured'
       case 401:
@@ -92,7 +92,7 @@ function mapYoutubeEnrichmentErrorKey(err: unknown): string {
 /**
  * Normalize URL and, for YouTube or Apify-backed platforms, resolve handle / followers / contentCount.
  * For `other`, only normalizes the URL and keeps all fields as provided (no remote API).
- * @param kolId - KOL UUID (for geocrm-api auth context).
+ * @param kolId - KOL UUID (for workbench-api auth context).
  * @param input - Draft channel fields.
  * @returns Enriched input or an i18n error key.
  */
@@ -108,8 +108,8 @@ export async function enrichKolChannelFields(
   }
 
   if (isKolApifyEnrichablePlatform(input.platformKey)) {
-    if (!isGeocrmApiConfigured()) {
-      return { ok: false, errorKey: 'admin.kolDetail.errorGeocrmNotConfigured' }
+    if (!isWorkbenchApiConfigured()) {
+      return { ok: false, errorKey: 'admin.kolDetail.errorWorkbenchNotConfigured' }
     }
     try {
       const meta = await fetchApifySocialProfileMeta({
@@ -134,8 +134,8 @@ export async function enrichKolChannelFields(
   }
 
   if (input.platformKey === 'youtube') {
-    if (!isGeocrmApiConfigured()) {
-      return { ok: false, errorKey: 'admin.kolDetail.errorGeocrmNotConfigured' }
+    if (!isWorkbenchApiConfigured()) {
+      return { ok: false, errorKey: 'admin.kolDetail.errorWorkbenchNotConfigured' }
     }
     try {
       const meta = await fetchYoutubeChannelMeta({

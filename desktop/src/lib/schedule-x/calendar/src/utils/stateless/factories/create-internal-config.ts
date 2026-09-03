@@ -1,7 +1,7 @@
 import { CalendarConfigExternal } from '@schedule-x/shared/src/interfaces/calendar/calendar-config'
 import CalendarConfigBuilder from '../../stateful/config/calendar-config.builder'
 import { PluginBase } from '@schedule-x/shared/src'
-import { translations } from '@schedule-x/translations/src/geocrm'
+import { translations } from '@schedule-x/translations/src/workbench'
 
 export const createInternalConfig = (
   config: CalendarConfigExternal,

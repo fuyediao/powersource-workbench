@@ -1,7 +1,7 @@
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { isGeocrmHosted } from '@/services/clash/bridge'
+import { isWorkbenchHosted } from '@/services/clash/bridge'
 import { getPendingFailures, type PendingFailure } from '@/services/clash/cmds'
 import { subscribeVergeEvents } from '@/services/clash/events'
 import { showNotice } from '@/services/clash/notice-service'
@@ -14,7 +14,7 @@ const CODES_SHOWN_AS_A_DIALOG = new Set<string>([
 
 /** Return whether a native window is visible and not minimized; fail closed. */
 const windowIsWatched = async () => {
-  if (isGeocrmHosted()) {
+  if (isWorkbenchHosted()) {
     return document.visibilityState === 'visible'
   }
   const window = getCurrentWindow()
@@ -61,7 +61,7 @@ const usePendingFailureReader = (
     }
     document.addEventListener('visibilitychange', readWhenVisible)
 
-    const unlistenFocus = isGeocrmHosted()
+    const unlistenFocus = isWorkbenchHosted()
       ? Promise.resolve(() => {})
       : getCurrentWindow().onFocusChanged(({ payload }) => {
           if (payload) read()

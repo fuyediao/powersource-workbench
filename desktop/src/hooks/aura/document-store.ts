@@ -267,9 +267,9 @@ export async function resolveStartupDocument(): Promise<{
       return { markdown: draft.markdown, title: draft.title || untitled, filePath: null }
     }
     try {
-      const geocrmDraft = localStorage.getItem(AURA_DRAFT_STORAGE_KEY)
-      if (geocrmDraft != null && geocrmDraft.length > 0) {
-        return { markdown: geocrmDraft, title: untitled, filePath: null }
+      const workbenchDraft = localStorage.getItem(AURA_DRAFT_STORAGE_KEY)
+      if (workbenchDraft != null && workbenchDraft.length > 0) {
+        return { markdown: workbenchDraft, title: untitled, filePath: null }
       }
     } catch {
       // Ignore.

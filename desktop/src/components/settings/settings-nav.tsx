@@ -125,7 +125,7 @@ export function SettingsNav({
   onFocusOut,
 }: SettingsNavProps) {
   const { t } = useTranslation()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const navRef = useRef<HTMLDivElement>(null)
   const asideRef = useRef<HTMLElement>(null)
   const buttonRefs = useRef(new Map<SettingsSection, HTMLButtonElement>())

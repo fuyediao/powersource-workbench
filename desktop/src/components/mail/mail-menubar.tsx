@@ -204,7 +204,7 @@ export function MailMenubar({
   const { t, i18n } = useTranslation()
   const rootRef = useRef<HTMLDivElement>(null)
   const [openId, setOpenId] = useState<string | null>(null)
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const hasMessage = activeMessage != null
   const accountMenuLabel = unifiedInbox
     ? t('mail.unifiedInbox')

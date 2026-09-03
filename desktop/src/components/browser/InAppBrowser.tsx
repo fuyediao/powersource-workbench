@@ -32,7 +32,7 @@ interface InAppBrowserProps {
  * @param args - Method arguments
  */
 function browserInvoke(method: string, ...args: unknown[]): void {
-  void window.geocrm?.browser?.invoke?.(method, ...args)
+  void window.workbench?.browser?.invoke?.(method, ...args)
 }
 
 /**
@@ -108,7 +108,7 @@ export function InAppBrowser({
      * Attaches the native pane; for OA/ERP, silent-POSTs credentials then opens main.
      */
     async function boot(): Promise<void> {
-      const invoke = window.geocrm?.browser?.invoke
+      const invoke = window.workbench?.browser?.invoke
       if (!invoke) {
         return
       }
@@ -143,7 +143,7 @@ export function InAppBrowser({
   }, [initialUrl, tabId, userId])
 
   useEffect(() => {
-    const unsubscribe = window.geocrm?.browser?.onNav?.((state) => {
+    const unsubscribe = window.workbench?.browser?.onNav?.((state) => {
       if (state.tabId !== tabId) {
         return
       }
@@ -186,7 +186,7 @@ export function InAppBrowser({
       if (cancelled || isBrowserStartUrl(loadedUrl)) {
         return
       }
-      void window.geocrm?.browser?.invoke?.('attach', tabId, loadedUrl).then(() => {
+      void window.workbench?.browser?.invoke?.('attach', tabId, loadedUrl).then(() => {
         if (!cancelled) {
           showPane()
         }
@@ -239,7 +239,7 @@ export function InAppBrowser({
     if (!next.startsWith('https:') && !next.startsWith('http:')) {
       return
     }
-    const invoke = window.geocrm?.browser?.invoke
+    const invoke = window.workbench?.browser?.invoke
     if (!invoke) {
       return
     }

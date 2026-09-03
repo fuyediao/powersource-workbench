@@ -1,9 +1,9 @@
 /**
- * Resolves the geocrm-api base URL from `VITE_DEPLOYMENT_DOMAIN`
+ * Resolves the workbench-api base URL from `VITE_DEPLOYMENT_DOMAIN`
  * (`https://api.{domain}`).
  * @returns Absolute API origin without a trailing slash, or empty when unset.
  */
-export function resolveGeocrmApiBaseUrl(): string {
+export function resolveWorkbenchApiBaseUrl(): string {
   const domain = process.env.VITE_DEPLOYMENT_DOMAIN?.trim()
   if (!domain) {
     return ''
@@ -13,12 +13,12 @@ export function resolveGeocrmApiBaseUrl(): string {
 }
 
 /**
- * Performs a JSON GET against geocrm-api.
+ * Performs a JSON GET against workbench-api.
  * @param path - Path beginning with `/`.
  * @returns Parsed JSON body.
  */
 export async function apiGetJson<T>(path: string): Promise<T> {
-  const base = resolveGeocrmApiBaseUrl()
+  const base = resolveWorkbenchApiBaseUrl()
   if (!base) {
     throw new Error('VITE_DEPLOYMENT_DOMAIN is not set')
   }
@@ -27,19 +27,19 @@ export async function apiGetJson<T>(path: string): Promise<T> {
     signal: AbortSignal.timeout(10_000),
   })
   if (!response.ok) {
-    throw new Error(`geocrm-api GET ${path} failed: ${response.status}`)
+    throw new Error(`workbench-api GET ${path} failed: ${response.status}`)
   }
   return (await response.json()) as T
 }
 
 /**
- * Performs a JSON POST against geocrm-api.
+ * Performs a JSON POST against workbench-api.
  * @param path - Path beginning with `/`.
  * @param body - JSON-serializable body.
  * @returns Parsed JSON body.
  */
 export async function apiPostJson<T>(path: string, body: unknown): Promise<T> {
-  const base = resolveGeocrmApiBaseUrl()
+  const base = resolveWorkbenchApiBaseUrl()
   if (!base) {
     throw new Error('VITE_DEPLOYMENT_DOMAIN is not set')
   }
@@ -53,7 +53,7 @@ export async function apiPostJson<T>(path: string, body: unknown): Promise<T> {
     signal: AbortSignal.timeout(10_000),
   })
   if (!response.ok) {
-    throw new Error(`geocrm-api POST ${path} failed: ${response.status}`)
+    throw new Error(`workbench-api POST ${path} failed: ${response.status}`)
   }
   return (await response.json()) as T
 }

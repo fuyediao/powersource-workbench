@@ -94,10 +94,10 @@ function skipWinptyTarget() {
   if (process.platform !== 'win32') return
   const gypPath = path.join(ptyRoot, 'binding.gyp')
   const source = fs.readFileSync(gypPath, 'utf8')
-  if (source.includes('geocrm_skip_winpty')) return
+  if (source.includes('workbench_skip_winpty')) return
   const next = source.replace(
     /\n        \{\n          'target_name': 'pty',[\s\S]*?'libraries': \[\n            '-lshlwapi'\n          \],\n        \}/,
-    "\n        {\n          'target_name': 'geocrm_skip_winpty',\n          'type': 'none'\n        }",
+    "\n        {\n          'target_name': 'workbench_skip_winpty',\n          'type': 'none'\n        }",
   )
   if (next === source) {
     log('could not skip the winpty target; building every Windows target')

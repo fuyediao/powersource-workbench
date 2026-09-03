@@ -139,9 +139,9 @@ export interface OfficeDocumentReady {
   fileId: string
 }
 
-const OPEN_OFFICE_EVENT = 'geocrm:open-office'
-const OFFICE_DOCUMENT_EVENT = 'geocrm:office-document'
-const OFFICE_DOCUMENT_ERROR_EVENT = 'geocrm:office-document-error'
+const OPEN_OFFICE_EVENT = 'workbench:open-office'
+const OFFICE_DOCUMENT_EVENT = 'workbench:office-document'
+const OFFICE_DOCUMENT_ERROR_EVENT = 'workbench:office-document-error'
 
 const pendingReady = new Map<OfficeFeatureId, OfficeDocumentReady>()
 

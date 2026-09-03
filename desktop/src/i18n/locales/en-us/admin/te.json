@@ -262,9 +262,9 @@
   "workflowError": {
     "generic": "The T&E workflow request failed. Refresh and try again only when the displayed state allows it.",
     "genericWithCode": "The T&E workflow request failed ({{code}}). Refresh before taking another action.",
-    "api_not_configured": "The GeoCRM API is not configured.",
+    "api_not_configured": "The Workbench API is not configured.",
     "authentication_required": "Your session is unavailable. Sign in again before continuing.",
-    "network_error": "The GeoCRM API could not be reached. Refresh before retrying.",
+    "network_error": "The Workbench API could not be reached. Refresh before retrying.",
     "erp_response_unknown": "The ERP response is unknown. Refresh and do not retry while the attempt is pending.",
     "invalid_status": "The workflow state changed. Refresh the submission before continuing.",
     "invalid_product": "Select at least one unique product from the current active T&E catalog.",

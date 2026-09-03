@@ -27,7 +27,7 @@ function cancelAutoTimer(): void {
 }
 
 /**
- * Hides the main window (Clash Verge's own `entry_lightweight_mode` — GeoCRM keeps one
+ * Hides the main window (Clash Verge's own `entry_lightweight_mode` — Workbench keeps one
  * window/tray instead of spawning a second Clash-only surface).
  * @returns True when the window was hidden by this call.
  */

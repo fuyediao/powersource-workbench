@@ -37,8 +37,8 @@ export interface CalendarEventRecord {
   createdBy: string
   createdAt: string
   updatedAt: string
-  /** `geocrm` native or `google` synced. */
-  source: 'geocrm' | 'google'
+  /** `workbench` native or `google` synced. */
+  source: 'workbench' | 'google'
   googleEventId: string | null
   googleCalendarId: string | null
   googleEtag: string | null
@@ -117,7 +117,7 @@ function normalizeAttendeeStatus(value: string | null | undefined): CalendarAtte
  * @returns Mapped record.
  */
 function mapEvent(row: EventRow, attendees: CalendarAttendee[] = []): CalendarEventRecord {
-  const source = row.source === 'google' ? 'google' : 'geocrm'
+  const source = row.source === 'google' ? 'google' : 'workbench'
   return {
     id: row.id,
     title: row.title,
@@ -478,7 +478,7 @@ export async function createPersonalCalendarEvent(
       calendar_id: write.calendarId ?? null,
       rrule: write.rrule ?? null,
       exdate: write.exdates ?? [],
-      source: 'geocrm',
+      source: 'workbench',
     })
     .select(EVENT_SELECT)
     .single()
@@ -521,7 +521,7 @@ export async function createGroupCalendarEvent(
       calendar_id: write.calendarId ?? null,
       rrule: write.rrule ?? null,
       exdate: write.exdates ?? [],
-      source: 'geocrm',
+      source: 'workbench',
     })
     .select(EVENT_SELECT)
     .single()

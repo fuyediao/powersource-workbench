@@ -6,7 +6,7 @@ import { stripExtension } from '@/office/office-file-io'
 import { exportPptx, importPpt, importPptx } from '@/office/pptx-exchange'
 import { exportXlsx, importXls, importXlsx } from '@/office/xlsx-exchange'
 
-/** File extension (without dot) GeoCRM reads/writes for each Univer office kind. */
+/** File extension (without dot) Workbench reads/writes for each Univer office kind. */
 const OFFICE_EXTENSION: Record<OfficeFeatureId, string> = {
   docs: 'docx',
   sheets: 'xlsx',

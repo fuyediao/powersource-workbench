@@ -364,7 +364,7 @@ async function fetchCanonicalStatusRows(
 }
 
 /**
- * Read-only T&E submission state for the GeoCRM admin panel.
+ * Read-only T&E submission state for the Workbench admin panel.
  *
  * @returns Submission list, filters, pagination, refresh, and export actions
  */

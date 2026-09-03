@@ -22,7 +22,7 @@ async function ensureSidecarOnShow(): Promise<void> {
 }
 
 /**
- * Registers `geocrm:clash` IPC (sidecar lifecycle + Tauri-style invoke).
+ * Registers `workbench:clash` IPC (sidecar lifecycle + Tauri-style invoke).
  */
 export function registerClashIpc(): void {
   ipcMain.removeHandler(CLASH_IPC_CHANNEL)

@@ -8,7 +8,7 @@ const temporaryFolders: string[] = []
 
 /** Creates one isolated Harness workspace for a test. */
 async function makeWorkspace(): Promise<string> {
-  const folder = await fs.mkdtemp(path.join(os.tmpdir(), 'geocrm-harness-tool-'))
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(), 'workbench-harness-tool-'))
   temporaryFolders.push(folder)
   return folder
 }

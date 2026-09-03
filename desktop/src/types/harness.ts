@@ -60,7 +60,7 @@ export interface HarnessFileChangeItem {
   diff: string | null
 }
 
-/** Third-party MCP tool call (never GeoCRM). */
+/** Third-party MCP tool call (never Workbench). */
 export interface HarnessMcpToolCallItem {
   id: string
   type: 'mcpToolCall'
@@ -77,7 +77,7 @@ export interface HarnessMcpToolCallItem {
   durationMs: number | null
 }
 
-/** First-party GeoCRM call over the signed-in session (CRM, mail, calendar). */
+/** First-party Workbench call over the signed-in session (CRM, mail, calendar). */
 export interface HarnessCrmToolCallItem {
   id: string
   type: 'crmToolCall'

@@ -60,7 +60,7 @@ interface AppGridProps {
   onCreate: (fields: NewAppFields) => Promise<void>
   onRemove: (appId: string) => Promise<void>
   onLinkExisting: (siteId: string) => Promise<void>
-  /** Opens a GeoCRM feature sub-page (AI Chat / Map / Admin). */
+  /** Opens a Workbench feature sub-page (AI Chat / Map / Admin). */
   onOpenFeature?: (feature: FeatureTabId) => void
   /** Opens Settings as a title-bar sub-page. */
   onOpenSettings?: () => void

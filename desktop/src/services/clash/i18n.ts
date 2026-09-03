@@ -3,7 +3,7 @@ import { createInstance } from 'i18next'
 /**
  * Dedicated Clash i18n instance. Do not call `initReactI18next` on this instance:
  * that plugin registers itself as react-i18next's global default and would replace
- * GeoCRM Home / title-bar translations with Clash keys. Clash UI is wrapped in
+ * Workbench Home / title-bar translations with Clash keys. Clash UI is wrapped in
  * `I18nextProvider` instead.
  */
 const i18n = createInstance()
@@ -126,7 +126,7 @@ const localeLoaders = Object.entries(localeModules).reduce<
 
 /**
  * Every Clash locale JSON stem (`layout`, `home`, `profiles`, …).
- * Pages, chrome, toasts, and GeoCRM Settings dialogs cross-reference these
+ * Pages, chrome, toasts, and Workbench Settings dialogs cross-reference these
  * files, so they all load together instead of per route.
  * @returns Sorted section names.
  */
@@ -193,7 +193,7 @@ export function clashSectionsForPath(_pathname: string): string[] {
 /**
  * Returns whether every Clash section is already in the language bundle.
  * @param sections - Clash JSON stems (`layout`, `proxies`, …).
- * @param language - Clash or GeoCRM locale code.
+ * @param language - Clash or Workbench locale code.
  * @returns True when no extra load is needed.
  */
 export function areLanguageSectionsLoaded(
@@ -207,7 +207,7 @@ export function areLanguageSectionsLoaded(
 /**
  * Ensures Clash locale JSON for the given sections is in memory.
  * @param sections - One section or a list of stems.
- * @param language - Clash or GeoCRM locale code.
+ * @param language - Clash or Workbench locale code.
  * @returns Nothing.
  */
 export const ensureLanguageSections = async (
@@ -232,7 +232,7 @@ export const ensureLanguageSections = async (
 
 /**
  * Loads locale sections and switches the Clash i18n instance.
- * @param language - Requested locale (GeoCRM or Clash codes).
+ * @param language - Requested locale (Workbench or Clash codes).
  * @returns Nothing.
  */
 export const changeLanguage = async (language: string) => {
@@ -263,7 +263,7 @@ export const initializeLanguage = async (
 }
 
 /**
- * Loads Clash locale JSON for GeoCRM Settings dialogs (TUN, DNS, backup,
+ * Loads Clash locale JSON for Workbench Settings dialogs (TUN, DNS, backup,
  * runtime config). Same full bundle as the island so EditorViewer copy resolves.
  * @param initialLanguage - Locale to activate.
  * @returns Nothing.

@@ -1,5 +1,5 @@
 /**
- * Main-process HTTP helpers for GeoCRM Harness (`/ai/harness/*`).
+ * Main-process HTTP helpers for Workbench Harness (`/ai/harness/*`).
  *
  * The renderer supplies the session JWT and API origin; Vite env is not
  * available here. Calls use `fetch` with a Bearer token, matching the
@@ -43,7 +43,7 @@ function trimOrigin(url: string): string {
 
 /**
  * Authenticated JSON request from the Electron main process.
- * @param apiBaseUrl - Public geocrm-api origin.
+ * @param apiBaseUrl - Public workbench-api origin.
  * @param accessToken - Signed-in session JWT.
  * @param path - Path beginning with `/ai/harness`.
  * @param method - HTTP method.
@@ -95,7 +95,7 @@ async function harnessRequest(
 
 /**
  * Requests one visual desktop action from the selected Computer Use model.
- * @param apiBaseUrl - Public geocrm-api origin.
+ * @param apiBaseUrl - Public workbench-api origin.
  * @param accessToken - Session JWT.
  * @param provider - Selected provider id.
  * @param model - Selected vision model id.
@@ -123,8 +123,8 @@ export async function planComputerUseAction(
 }
 
 /**
- * Runs one first-party GeoCRM tool as the signed-in user.
- * @param apiBaseUrl - Public geocrm-api origin.
+ * Runs one first-party Workbench tool as the signed-in user.
+ * @param apiBaseUrl - Public workbench-api origin.
  * @param accessToken - Session JWT.
  * @param tool - First-party tool name.
  * @param args - Tool arguments.
@@ -158,7 +158,7 @@ export async function callHarnessTool(
 
 /**
  * Marks a this-PC wake item finished after the local Codex turn ends.
- * @param apiBaseUrl - Public geocrm-api origin.
+ * @param apiBaseUrl - Public workbench-api origin.
  * @param accessToken - Session JWT.
  * @param jobId - Scheduled job id.
  * @param failed - True when the local turn failed or was interrupted.

@@ -181,7 +181,7 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   const { openUrl } = useLinkOpen()
   const { keys: aiKeys } = useAiKeys(userId)
   const { addHistory, updateHistory } = useChatHistory()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 
   const displayName = resolveUserDisplayName(user, user.email ?? '')
   const avatarUrl = resolveUserAvatarUrl(user)

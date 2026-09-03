@@ -21,7 +21,7 @@ export function HarnessSection() {
     void hydrateHarnessDevicePreferences().then(() => {
       setWorkFolder(loadHarnessWorkFolder())
     })
-    void window.geocrm?.harness?.defaultWorkFolder().then((path) => {
+    void window.workbench?.harness?.defaultWorkFolder().then((path) => {
       setDefaultFolder(path)
     })
   }, [])
@@ -31,7 +31,7 @@ export function HarnessSection() {
    * @returns Nothing.
    */
   async function chooseWorkFolder(): Promise<void> {
-    const picked = await window.geocrm?.harness?.pickWorkFolder()
+    const picked = await window.workbench?.harness?.pickWorkFolder()
     if (!picked) {
       return
     }

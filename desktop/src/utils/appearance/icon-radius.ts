@@ -1,7 +1,7 @@
 /** localStorage key for the app icon roundness (0–100 UI percent). */
-export const ICON_RADIUS_KEY = 'geocrm-icon-radius-pct'
+export const ICON_RADIUS_KEY = 'workbench-icon-radius-pct'
 /** Legacy key stored the CSS radius 0–50; migrated on read. */
-const LEGACY_ICON_RADIUS_KEY = 'geocrm-icon-radius'
+const LEGACY_ICON_RADIUS_KEY = 'workbench-icon-radius'
 
 /** Default roundness % — close to the previous `rounded-xl` look. */
 export const DEFAULT_ICON_RADIUS = 50

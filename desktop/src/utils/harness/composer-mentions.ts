@@ -11,7 +11,7 @@ export interface ComposerMentionOption {
   name: string
   /** Codex mention path (`app://…`), or empty when the turn only needs the `@` token. */
   path: string
-  kind: 'geocrm' | 'mcp' | 'connector'
+  kind: 'workbench' | 'mcp' | 'connector'
   callable: boolean
   needsOauth: boolean
   /** MCP config key used for OAuth login. */
@@ -134,10 +134,10 @@ export function buildMentionCatalog(
 ): ComposerMentionOption[] {
   const rows: ComposerMentionOption[] = [
     {
-      id: 'geocrm',
+      id: 'workbench',
       name: 'PowerSource Workbench',
       path: '',
-      kind: 'geocrm',
+      kind: 'workbench',
       callable: true,
       needsOauth: false,
     },

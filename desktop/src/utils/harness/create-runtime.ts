@@ -26,7 +26,7 @@ export interface HarnessRuntimeOptions {
   developerInstructions: string | null
   /** Signed-in session JWT for first-party tools and memory review. */
   accessToken: string | null
-  /** Public geocrm-api origin. */
+  /** Public workbench-api origin. */
   apiBaseUrl: string | null
   /** Provider selected from the shared AI catalog. */
   provider: string
@@ -102,7 +102,7 @@ export function createHarnessRuntime(options: HarnessRuntimeOptions): HarnessRun
       throw new Error('The local Harness workflow host is unavailable.')
     },
     async listComputerTargets() {
-      return window.geocrm?.harness?.listComputerTargets() ?? []
+      return window.workbench?.harness?.listComputerTargets() ?? []
     },
     async interrupt() {},
     async respondToApproval() {},

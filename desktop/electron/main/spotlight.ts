@@ -236,8 +236,8 @@ function resizeSpotlight(height: number): void {
 }
 
 /**
- * Forwards a URL to the main window (in-app tab or `geocrm://` page).
- * @param url - Absolute http(s) or `geocrm://` URL.
+ * Forwards a URL to the main window (in-app tab or `workbench://` page).
+ * @param url - Absolute http(s) or `workbench://` URL.
  * @returns Nothing.
  */
 function openUrlInMain(url: string): void {
@@ -282,7 +282,7 @@ function registerSpotlightIpc(): void {
         if (
           url.startsWith('https:') ||
           url.startsWith('http:') ||
-          /^geocrm:\s*\/\//i.test(url)
+          /^workbench:\s*\/\//i.test(url)
         ) {
           openUrlInMain(url)
           hideSpotlight()
@@ -319,7 +319,7 @@ export function setSpotlightEnabled(enabled: boolean): void {
   globalShortcutRegistered = registered
   if (!registered) {
     console.warn(
-      `[geocrm] Could not register ${SPOTLIGHT_ACCELERATOR}; use in-window shortcut fallback.`,
+      `[workbench] Could not register ${SPOTLIGHT_ACCELERATOR}; use in-window shortcut fallback.`,
     )
   }
 }

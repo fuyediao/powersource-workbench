@@ -1,4 +1,4 @@
-/** Supported GeoCRM UI languages (persisted in localStorage). */
+/** Supported Workbench UI languages (persisted in localStorage). */
 export type AppLanguage = 'en' | 'zh-TW' | 'zh-CN'
 
 /**

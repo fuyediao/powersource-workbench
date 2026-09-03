@@ -1,7 +1,7 @@
 /**
  * Render LilyPond fenced blocks.
  *
- * GeoCRM does not ship a LilyPond IPC bridge; show a clear unavailable message.
+ * Workbench does not ship a LilyPond IPC bridge; show a clear unavailable message.
  *
  * @param element - Root to search for LilyPond blocks.
  */

@@ -1,6 +1,6 @@
 /**
  * Maps `public.te_community_posts` rows (with joined author + media) for the
- * GeoCRM T&E community admin UI.
+ * Workbench T&E community admin UI.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'

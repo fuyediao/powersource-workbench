@@ -14,7 +14,7 @@ export type { AppLanguage } from '@/i18n/app-language'
 export { isAppLanguage, resolveAppLanguage } from '@/i18n/app-language'
 export { ensureLocalePrefixes, loadAllLocaleBundles, setActiveLocalePrefixes } from '@/i18n/load-locales'
 
-const LANGUAGE_KEY = 'geocrm-language'
+const LANGUAGE_KEY = 'workbench-language'
 
 /**
  * Reads the Windows installer language via the desktop bridge.
@@ -24,7 +24,7 @@ function readInstallerLanguage(): AppLanguage | null {
   if (typeof window === 'undefined') {
     return null
   }
-  const raw = window.geocrm?.app?.getInstallLanguage?.()
+  const raw = window.workbench?.app?.getInstallLanguage?.()
   return isAppLanguage(raw) ? raw : null
 }
 

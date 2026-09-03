@@ -1,5 +1,5 @@
 import i18n from 'i18next'
-import bundledResources from 'virtual:geocrm-i18n-resources'
+import bundledResources from 'virtual:workbench-i18n-resources'
 import { isAppLanguage, type AppLanguage } from '@/i18n/app-language'
 import {
   localePrefixesForScreen,
@@ -157,7 +157,7 @@ export async function ensureLocalePrefixes(
 }
 
 if (import.meta.hot) {
-  import.meta.hot.accept('virtual:geocrm-i18n-resources', () => {
+  import.meta.hot.accept('virtual:workbench-i18n-resources', () => {
     loadedPrefixes.clear()
     allBundlesLoaded = false
     loadAllLocaleBundles()

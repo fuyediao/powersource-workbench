@@ -1,5 +1,5 @@
 /** localStorage key for the in-app Aura draft. */
-export const AURA_DRAFT_STORAGE_KEY = 'geocrm_aura_draft'
+export const AURA_DRAFT_STORAGE_KEY = 'workbench_aura_draft'
 
 /**
  * Loads the persisted Aura draft, or an empty document.

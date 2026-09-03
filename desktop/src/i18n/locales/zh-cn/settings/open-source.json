@@ -8,7 +8,7 @@
   "npmHeading": "npm 生产依赖",
   "footnote": "间接依赖仍按其自身 package.json 中声明的许可条款。依赖变更后请运行 npm run oss:notices 以更新本清单。",
   "items": {
-    "geocrm": "本桌面应用程序。",
+    "workbench": "本桌面应用程序。",
     "electron": "承载渲染进程的桌面壳层。",
     "chromium": "随 Electron 一并提供的网页引擎。",
     "nodejs": "随 Electron 一并提供的 JavaScript 运行时。",

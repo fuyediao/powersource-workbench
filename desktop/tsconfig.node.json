@@ -11,5 +11,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["electron", "vite.config.ts", "package.json", "scripts/vite-plugin-geocrm-locales.ts"]
+  "include": ["electron", "vite.config.ts", "package.json", "scripts/vite-plugin-workbench-locales.ts"]
 }

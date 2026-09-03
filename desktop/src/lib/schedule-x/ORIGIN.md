@@ -1,6 +1,6 @@
 # Schedule-X calendar engine (in-tree)
 
-This directory is a trimmed, in-repo copy of Schedule-X **source** used by GeoCRM
+This directory is a trimmed, in-repo copy of Schedule-X **source** used by Workbench
 Electron Calendar, fused the same way Aura lives under [`../mdcore/`](../mdcore/)
 and Univer under [`../univer/`](../univer/) — first-party `src/lib` TypeScript,
 not an npm install and not a side `vendor/` tree.
@@ -13,9 +13,9 @@ not an npm install and not a side `vendor/` tree.
 - **License**: MIT — upstream text:
   <https://github.com/schedule-x/schedule-x/blob/v3.7.3/LICENSE>
   (not copied into each package folder)
-- **Reason**: keep the calendar stack auditable and patchable next to GeoCRM chrome
+- **Reason**: keep the calendar stack auditable and patchable next to Workbench chrome
   (brand token bridge in `src/styles/calendar-host.css`, personal/group Supabase
-  scope). Runtime still uses Preact inside the calendar engine; GeoCRM shell stays
+  scope). Runtime still uses Preact inside the calendar engine; Workbench shell stays
   React via the in-tree adapter.
 - **Lint**: oxlint ignores `src/lib/schedule-x/**` (upstream style). Root `tsc`
   excludes the same tree; the app types the public API via published `.d.ts` under
@@ -39,12 +39,12 @@ Upstream package names are unchanged (`@schedule-x/calendar` still resolves to t
 | [`theme-default/`](theme-default/) | Published CSS under `lib/` (SCSS pipeline not reproduced) |
 
 Vite resolves `@schedule-x/<name>` and deep `@schedule-x/<name>/src/...` via
-`geocrm:resolve-schedule-x` in [`../../../vite.config.ts`](../../../vite.config.ts).
-Bare `@schedule-x/calendar` maps to [`calendar/src/geocrm-entry.ts`](calendar/src/geocrm-entry.ts)
+`workbench:resolve-schedule-x` in [`../../../vite.config.ts`](../../../vite.config.ts).
+Bare `@schedule-x/calendar` maps to [`calendar/src/workbench-entry.ts`](calendar/src/workbench-entry.ts)
 (createCalendar + the six host views, not the upstream barrel). Calendar and
-date-picker default locale packs are [`translations/src/geocrm.ts`](translations/src/geocrm.ts)
+date-picker default locale packs are [`translations/src/workbench.ts`](translations/src/workbench.ts)
 (en / zh-CN / zh-TW only).
-Preact JSX for non-`react` packages is compiled by `geocrm:schedule-x-preact-jsx`.
+Preact JSX for non-`react` packages is compiled by `workbench:schedule-x-preact-jsx`.
 TypeScript path maps for the app-facing packages live in
 [`../../../tsconfig.json`](../../../tsconfig.json) (`types/core.d.ts` / react
 `types/index.d.ts`).

@@ -13,7 +13,7 @@ import { StatusLoading } from '@/components/common/status-loading'
  * @returns Nothing.
  */
 function hideAgentOverlayWindow(): void {
-  void window.geocrm?.agentOverlay?.hide?.()
+  void window.workbench?.agentOverlay?.hide?.()
 }
 
 /**
@@ -27,7 +27,7 @@ export default function AgentOverlayPage() {
   const userId = auth.session?.user?.id ?? null
   useAppearance(userId)
 
-  const nativeTrafficLights = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeTrafficLights = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 
   useEffect(() => {
     document.documentElement.classList.add('agent-overlay-window')
@@ -43,7 +43,7 @@ export default function AgentOverlayPage() {
   }, [nativeTrafficLights])
 
   useEffect(() => {
-    return window.geocrm?.agentOverlay?.onShown?.(() => {
+    return window.workbench?.agentOverlay?.onShown?.(() => {
       applyAppearanceFromLocalStorage()
       window.setTimeout(() => {
         document.querySelector<HTMLTextAreaElement>('textarea')?.focus()
@@ -71,11 +71,11 @@ export default function AgentOverlayPage() {
   useEffect(() => {
     let cancelled = false
     let removeKeyDown: (() => void) | undefined
-    void window.geocrm?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
+    void window.workbench?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
       if (cancelled || usesGlobal) {
         return
       }
-      const accelerator = window.geocrm?.agentOverlay?.accelerator ?? 'Alt+G'
+      const accelerator = window.workbench?.agentOverlay?.accelerator ?? 'Alt+G'
       /**
        * Overlay-window shortcut fallback when the OS blocks the global overlay chord.
        * @param event - Keyboard event.
@@ -87,7 +87,7 @@ export default function AgentOverlayPage() {
         }
         event.preventDefault()
         event.stopPropagation()
-        void window.geocrm?.agentOverlay?.toggle?.()
+        void window.workbench?.agentOverlay?.toggle?.()
       }
       window.addEventListener('keydown', handleChord, true)
       removeKeyDown = () => window.removeEventListener('keydown', handleChord, true)
@@ -101,7 +101,7 @@ export default function AgentOverlayPage() {
   return (
     <LinkOpenProvider
       onOpenInApp={(url) => {
-        void window.geocrm?.spotlight?.openInMain?.(url)
+        void window.workbench?.spotlight?.openInMain?.(url)
         hideAgentOverlayWindow()
       }}
     >

@@ -8,7 +8,7 @@ interface LoginBrandPanelProps {
 }
 
 /**
- * Left brand column for the desktop login shell (mirrors geocrm-web LoginCharactersPanel).
+ * Left brand column for the desktop login shell (mirrors workbench-web LoginCharactersPanel).
  * @param props - Form interaction flags that drive character animation.
  * @returns Brand panel with animated mascots.
  */

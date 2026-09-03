@@ -1,5 +1,5 @@
 /**
- * Google Maps URL helpers (geocrm-web parity).
+ * Google Maps URL helpers (workbench-web parity).
  */
 
 /**

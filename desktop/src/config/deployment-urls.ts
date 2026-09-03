@@ -57,7 +57,7 @@ export function resolveWorkbenchApiUrl(): string {
 }
 
 /**
- * Resolves the public geocrm-api origin from `VITE_DEPLOYMENT_DOMAIN`.
+ * Resolves the public workbench-api origin from `VITE_DEPLOYMENT_DOMAIN`.
  * @returns Origin or empty string when unset.
  */
 export function resolveApiBaseUrl(): string {

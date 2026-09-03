@@ -1,4 +1,4 @@
-/** Complete persisted T&E workflow shared with geocrm-api. */
+/** Complete persisted T&E workflow shared with workbench-api. */
 export const TE_SUBMISSION_STATUSES = [
   'under_review',
   'invalid',

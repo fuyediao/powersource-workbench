@@ -41,7 +41,7 @@
     "dictationStop": "Stop and transcribe",
     "dictationListening": "Recording…",
     "dictationTranscribing": "Transcribing…",
-    "dictationErrNotAllowed": "Microphone permission was denied. Allow the mic for GeoCRM in Windows privacy settings (or macOS System Settings) and try again.",
+    "dictationErrNotAllowed": "Microphone permission was denied. Allow the mic for Workbench in Windows privacy settings (or macOS System Settings) and try again.",
     "dictationErrNoSpeech": "No speech was detected. Please try again.",
     "dictationErrNeedsGemini": "Voice input needs a Gemini API key in Settings → AI.",
     "dictationErrTooShort": "Recording was too short. Speak a bit longer, then click the mic again.",

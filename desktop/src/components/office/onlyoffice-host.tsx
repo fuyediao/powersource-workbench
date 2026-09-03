@@ -1,7 +1,7 @@
 /**
  * Embeds the OnlyOffice Document Server editor (`DocsAPI.DocEditor`) for one
  * `office_files` row. Loads the Document Server's own API script (its exact
- * URL comes from `geocrm-api` `/office/session`) and mounts/destroys the
+ * URL comes from `workbench-api` `/office/session`) and mounts/destroys the
  * editor as `fileId` changes.
  */
 

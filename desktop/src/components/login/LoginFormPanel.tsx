@@ -36,7 +36,7 @@ interface LoginFormPanelProps {
 }
 
 /**
- * Right form column matching geocrm-web Vue LoginFormPanel
+ * Right form column matching workbench-web Vue LoginFormPanel
  * (employee id / email / OTP + Google / Apple).
  * @param props - Auth actions and error state.
  * @returns Login form panel.

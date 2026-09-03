@@ -46,11 +46,11 @@ async function createBlankXlsxBytes(): Promise<Uint8Array> {
 async function createBlankPptxBytes(): Promise<Uint8Array> {
   const pptx = new PptxGenJS()
   pptx.defineLayout({
-    name: 'GEOCRM_16x9',
+    name: 'WORKBENCH_16x9',
     width: SLIDE_WIDTH_IN,
     height: SLIDE_HEIGHT_IN,
   })
-  pptx.layout = 'GEOCRM_16x9'
+  pptx.layout = 'WORKBENCH_16x9'
   pptx.addSlide()
   const output = await pptx.write({ outputType: 'arraybuffer' })
   return new Uint8Array(output as ArrayBuffer)

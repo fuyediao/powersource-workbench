@@ -151,7 +151,7 @@ function buildHarnessLibraryPrompt(kind: HarnessGeneratableKind, requirement: st
   }
 
   return [
-    'You create production-ready resources for the GeoCRM Harness library.',
+    'You create production-ready resources for the Workbench Harness library.',
     categoryGuidance[kind],
     'Preserve the user intent and do not invent credentials, external authorization, or destructive permissions.',
     'Write all generated instructions and metadata in English.',

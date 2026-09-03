@@ -646,7 +646,7 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
           : undefined,
       teamView: screen === 'team' && localeReady ? teamView : undefined,
     }
-    void window.geocrm?.menu?.setState?.(state)
+    void window.workbench?.menu?.setState?.(state)
   }, [
     auraView,
     auraStats,
@@ -670,7 +670,7 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
   ])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onNavigate?.((target) => {
+    return window.workbench?.menu?.onNavigate?.((target) => {
       if (!isMenuNavigateTarget(target)) {
         return
       }
@@ -679,13 +679,13 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onLanguage?.((language) => {
+    return window.workbench?.menu?.onLanguage?.((language) => {
       void i18n.changeLanguage(language)
     })
   }, [i18n])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onFileAction?.((action: MenuFileAction) => {
+    return window.workbench?.menu?.onFileAction?.((action: MenuFileAction) => {
       if (action === 'close-tab') {
         onCloseTabRef.current()
         return
@@ -698,37 +698,37 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onAuraAction?.((action) => {
+    return window.workbench?.menu?.onAuraAction?.((action) => {
       dispatchAuraMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onAuraLibraryAction?.((action) => {
+    return window.workbench?.menu?.onAuraLibraryAction?.((action) => {
       dispatchAuraLibraryMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onMapAction?.((action) => {
+    return window.workbench?.menu?.onMapAction?.((action) => {
       dispatchMapMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onMailAction?.((action) => {
+    return window.workbench?.menu?.onMailAction?.((action) => {
       dispatchMailMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onFolioAction?.((action) => {
+    return window.workbench?.menu?.onFolioAction?.((action) => {
       dispatchFolioMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onOfficeAction?.((action) => {
+    return window.workbench?.menu?.onOfficeAction?.((action) => {
       const current = screenRef.current
       if (!isOfficeScreen(current)) {
         return
@@ -738,31 +738,31 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onChatAction?.((action) => {
+    return window.workbench?.menu?.onChatAction?.((action) => {
       dispatchChatMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onClashAction?.((action) => {
+    return window.workbench?.menu?.onClashAction?.((action) => {
       dispatchSidebarRailMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onOrdersAction?.((action) => {
+    return window.workbench?.menu?.onOrdersAction?.((action) => {
       dispatchOrdersMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onCalendarAction?.((action) => {
+    return window.workbench?.menu?.onCalendarAction?.((action) => {
       dispatchCalendarMenuAction(action)
     })
   }, [])
 
   useEffect(() => {
-    return window.geocrm?.menu?.onTeamAction?.((action) => {
+    return window.workbench?.menu?.onTeamAction?.((action) => {
       dispatchTeamMenuAction(action)
     })
   }, [])

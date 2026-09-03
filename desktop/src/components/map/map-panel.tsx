@@ -153,7 +153,7 @@ function makePinIcon(color: string, selected: boolean): L.DivIcon {
   const size = selected ? 28 : 22
   const border = selected ? 3 : 2
   return L.divIcon({
-    className: 'geocrm-map-pin',
+    className: 'workbench-map-pin',
     html: `<span style="display:block;width:${size}px;height:${size}px;border-radius:9999px;background:${color};border:${border}px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)"></span>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
@@ -202,8 +202,8 @@ function shopsFingerprint(shops: ShopLocation[]): string {
 function makeClusterIcon(count: number): L.DivIcon {
   const size = count < 10 ? 36 : count < 100 ? 44 : 52
   return L.divIcon({
-    html: `<span class="geocrm-map-cluster" style="width:${size}px;height:${size}px">${count}</span>`,
-    className: 'geocrm-map-cluster-wrap',
+    html: `<span class="workbench-map-cluster" style="width:${size}px;height:${size}px">${count}</span>`,
+    className: 'workbench-map-cluster-wrap',
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   })

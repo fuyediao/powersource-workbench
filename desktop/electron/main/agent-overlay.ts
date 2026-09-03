@@ -644,7 +644,7 @@ export function setAgentOverlayEnabled(enabled: boolean): void {
   globalShortcutRegistered = registered
   if (!registered) {
     console.warn(
-      `[geocrm] Could not register ${AGENT_OVERLAY_ACCELERATOR}; use in-window shortcut fallback.`,
+      `[workbench] Could not register ${AGENT_OVERLAY_ACCELERATOR}; use in-window shortcut fallback.`,
     )
   }
 }

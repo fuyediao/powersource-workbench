@@ -1,9 +1,9 @@
 /**
- * Map Aura editor tokens onto GeoCRM Electron Settings Theme colors.
+ * Map Aura editor tokens onto Workbench Electron Settings Theme colors.
  * Light/dark follows `html.dark` (atlas-theme), not Aura day/night CSS.
  */
 
-.aura-geocrm-host {
+.aura-workbench-host {
   --bg-color: transparent;
   --text-color: var(--ink);
   --textarea-background-color: transparent;
@@ -36,8 +36,8 @@
   --control-text-hover-color: var(--ink);
 }
 
-.aura-geocrm-host .aura,
-.aura-geocrm-host .aura.aura--dark {
+.aura-workbench-host .aura,
+.aura-workbench-host .aura.aura--dark {
   --border-color: color-mix(in oklab, var(--ink) 10%, transparent);
   --second-color: color-mix(in oklab, var(--ink) 36%, transparent);
   --panel-background-color: var(--panel);
@@ -58,28 +58,28 @@
   min-width: 0;
 }
 
-.aura-geocrm-host .aura-mount {
+.aura-workbench-host .aura-mount {
   height: 100%;
   min-height: 0;
   min-width: 0;
 }
 
-.aura-geocrm-host .aura-content,
-.aura-geocrm-host #write.aura-write,
-.aura-geocrm-host .aura-write {
+.aura-workbench-host .aura-content,
+.aura-workbench-host #write.aura-write,
+.aura-workbench-host .aura-write {
   background-color: transparent;
   color: var(--text-color);
   font-family: inherit;
 }
 
-.aura-geocrm-host .aura-content {
+.aura-workbench-host .aura-content {
   flex: 1 1 auto;
   min-height: 0;
   height: auto;
   overflow: auto;
 }
 
-.aura-geocrm-host .aura-write {
+.aura-workbench-host .aura-write {
   min-height: 100%;
   padding: 1.25rem 1.5rem 2.5rem;
   width: min(100%, var(--aura-editor-max-width));
@@ -89,41 +89,41 @@
 }
 
 /**
- * te-style scrollbar for Aura sidebar + document (overrides GeoCRM global hide).
+ * te-style scrollbar for Aura sidebar + document (overrides Workbench global hide).
  */
-.aura-geocrm-host .aura-scroll {
+.aura-workbench-host .aura-scroll {
   scrollbar-width: thin;
   scrollbar-color: #838383 #ffffff;
 }
 
-.aura-geocrm-host .aura-scroll::-webkit-scrollbar {
+.aura-workbench-host .aura-scroll::-webkit-scrollbar {
   display: block;
   width: 8px;
   height: 8px;
 }
 
-.aura-geocrm-host .aura-scroll::-webkit-scrollbar-track {
+.aura-workbench-host .aura-scroll::-webkit-scrollbar-track {
   background: #ffffff;
 }
 
-.aura-geocrm-host .aura-scroll::-webkit-scrollbar-thumb {
+.aura-workbench-host .aura-scroll::-webkit-scrollbar-thumb {
   background: #838383;
   border-radius: 4px;
 }
 
-.aura-geocrm-host .aura-scroll::-webkit-scrollbar-button {
+.aura-workbench-host .aura-scroll::-webkit-scrollbar-button {
   display: none;
   width: 0;
   height: 0;
 }
 
 @media (width <= 768px) {
-  .aura-geocrm-host .aura-scroll {
+  .aura-workbench-host .aura-scroll {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  .aura-geocrm-host .aura-scroll::-webkit-scrollbar {
+  .aura-workbench-host .aura-scroll::-webkit-scrollbar {
     display: none;
     width: 0;
     height: 0;
@@ -163,7 +163,7 @@
   border-left: var(--window-border);
 }
 
-.aura-geocrm-host .bg-sidebar {
+.aura-workbench-host .bg-sidebar {
   background-color: var(--side-bar-bg-color);
 }
 

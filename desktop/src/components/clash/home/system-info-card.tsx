@@ -45,7 +45,7 @@ export const SystemInfoCard = () => {
   }, [])
 
   /**
-   * Opens the GeoCRM Settings Clash section.
+   * Opens the Workbench Settings Clash section.
    */
   const goToSettings = useCallback(() => {
     openGeoCrmSettings('clash')

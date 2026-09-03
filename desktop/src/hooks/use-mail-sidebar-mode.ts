@@ -5,7 +5,7 @@ export type MailSidebarMode = 'expanded' | 'collapsed' | 'hover'
 export const MAIL_SIDEBAR_EXPANDED_PX = 240
 export const MAIL_SIDEBAR_COLLAPSED_PX = 48
 
-const STORAGE_KEY = 'geocrm-electron-mail-sidebar-mode'
+const STORAGE_KEY = 'workbench-electron-mail-sidebar-mode'
 
 /**
  * Reads a persisted mail sidebar mode from localStorage.

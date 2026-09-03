@@ -6,9 +6,9 @@
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { createAuraFile } from '@/services/aura-files-api'
 
-const OPEN_AURA_EVENT = 'geocrm:open-aura'
-const AURA_DOCUMENT_EVENT = 'geocrm:aura-document'
-const AURA_DOCUMENT_ERROR_EVENT = 'geocrm:aura-document-error'
+const OPEN_AURA_EVENT = 'workbench:open-aura'
+const AURA_DOCUMENT_EVENT = 'workbench:aura-document'
+const AURA_DOCUMENT_ERROR_EVENT = 'workbench:aura-document-error'
 
 /** A Markdown file uploaded to Aura and ready for the editor to open. */
 export interface AuraDocumentReady {

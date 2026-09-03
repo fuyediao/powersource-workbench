@@ -22,9 +22,9 @@ import { requestAskAiSearch } from '@/utils/ask-ai/ask-ai-search-request'
 import { searchEngineLabel } from '@/utils/home/search-engine-label'
 import { FocusRingFrame } from '@/components/ui/focus-ring-frame'
 import {
-  geocrmSearchTargetLabelKey,
-  parseGeocrmSearchTarget,
-  type GeocrmSearchTarget,
+  workbenchSearchTargetLabelKey,
+  parseWorkbenchSearchTarget,
+  type WorkbenchSearchTarget,
 } from '@/constants/feature-tabs'
 import { getAvailableSearchEngines, useSearch, type SearchEngine } from '@/hooks/use-search'
 import { animateHeight } from '@/utils/home/animate-height'
@@ -48,8 +48,8 @@ interface SearchBarProps {
   /** When set with onOpenSettings, shows a settings control beside the search field. */
   showSettingsButton?: boolean
   onOpenSettings?: () => void
-  /** Opens a known `geocrm://` page from the search box. */
-  onOpenGeocrmTarget?: (target: GeocrmSearchTarget) => void
+  /** Opens a known `workbench://` page from the search box. */
+  onOpenWorkbenchTarget?: (target: WorkbenchSearchTarget) => void
   /** Input element id. @default atlas-search */
   inputId?: string
   /** Extra classes on the outer layout wrapper. */
@@ -65,7 +65,7 @@ export function SearchBar({
   userId,
   showSettingsButton = false,
   onOpenSettings,
-  onOpenGeocrmTarget,
+  onOpenWorkbenchTarget,
   inputId = 'atlas-search',
   className = '',
 }: SearchBarProps) {
@@ -83,7 +83,7 @@ export function SearchBar({
     submitSearch,
     removeHistory,
   } = useSearch(userId, {
-    onOpenGeocrmTarget,
+    onOpenWorkbenchTarget,
     onAskSearch: requestAskAiSearch,
   })
   const engines = ALL_ENGINES.filter((item) => getAvailableSearchEngines().includes(item.id))
@@ -183,9 +183,9 @@ export function SearchBar({
    * @returns Localized row text.
    */
   function directRowLabel(text: string): string {
-    const target = parseGeocrmSearchTarget(text)
+    const target = parseWorkbenchSearchTarget(text)
     if (target) {
-      return t('search.openPage', { name: t(geocrmSearchTargetLabelKey(target)) })
+      return t('search.openPage', { name: t(workbenchSearchTargetLabelKey(target)) })
     }
     return t('search.directSearch', { query: text, engine: searchEngineLabel(t, engine) })
   }

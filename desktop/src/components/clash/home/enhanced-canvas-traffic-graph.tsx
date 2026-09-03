@@ -82,7 +82,7 @@ const GRAPH_CONFIG = {
 }
 
 /**
- * Resolves a Tailwind / GeoCRM CSS custom property to an `rgb()` color canvas can paint.
+ * Resolves a Tailwind / Workbench CSS custom property to an `rgb()` color canvas can paint.
  * @param name - Variable name including dashes (e.g. `--brand`).
  * @param fallback - Used when the document is unavailable or the var does not resolve.
  * @returns Computed `rgb()` / `rgba()` string.
@@ -100,7 +100,7 @@ function resolveCssColor(name: string, fallback: string): string {
 }
 
 /**
- * Traffic-graph colors from the GeoCRM Tailwind theme (`theme.css`), not MUI palette.
+ * Traffic-graph colors from the Workbench Tailwind theme (`theme.css`), not MUI palette.
  * Download follows `--brand`; upload uses emerald so the two series stay distinct.
  * @returns Canvas stroke/fill colors.
  */

@@ -46,7 +46,7 @@ function formatOrderAmount(amount?: number | null, currency?: string | null): st
 }
 
 /** sessionStorage key for the ERP list group filter (survives detail / module remount). */
-const ORDERS_CRM_GROUP_FILTER_KEY = 'geocrm-electron-orders-crm-group-filter'
+const ORDERS_CRM_GROUP_FILTER_KEY = 'workbench-electron-orders-crm-group-filter'
 
 /**
  * Reads the cached ERP group filter id.

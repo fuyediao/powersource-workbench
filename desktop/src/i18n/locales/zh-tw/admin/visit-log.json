@@ -41,7 +41,7 @@
     "dictationStop": "停止並轉成文字",
     "dictationListening": "錄音中…",
     "dictationTranscribing": "轉寫中…",
-    "dictationErrNotAllowed": "麥克風權限被拒絕。請在 Windows 隱私設定（或 macOS 系統設定）允許 GeoCRM 使用麥克風後再試。",
+    "dictationErrNotAllowed": "麥克風權限被拒絕。請在 Windows 隱私設定（或 macOS 系統設定）允許 Workbench 使用麥克風後再試。",
     "dictationErrNoSpeech": "未偵測到語音，請再試一次。",
     "dictationErrNeedsGemini": "語音輸入需要在「設定 → AI」中設定 Gemini API 金鑰。",
     "dictationErrTooShort": "錄音太短。請再說久一點，然後再點一次麥克風。",

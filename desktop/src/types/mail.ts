@@ -1,4 +1,4 @@
-/** Mail provider ids returned by geocrm-api `/mail/*`. */
+/** Mail provider ids returned by workbench-api `/mail/*`. */
 export type MailProvider = 'gmail' | 'alibaba' | 'imap'
 
 /** Mailbox connection status. */

@@ -146,7 +146,7 @@ export function MailSidebar({
   onFocusOut,
 }: MailSidebarProps) {
   const { t } = useTranslation()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const asideRef = useRef<HTMLElement>(null)
   const controlRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)

@@ -4,7 +4,7 @@
 
 import { useCallback, useState } from 'react'
 
-const SIDEBAR_WIDTH_STORAGE_KEY = 'geocrm-electron-map-sidebar-width'
+const SIDEBAR_WIDTH_STORAGE_KEY = 'workbench-electron-map-sidebar-width'
 const DEFAULT_WIDTH = 400
 const MIN_WIDTH = 300
 const MAX_WIDTH = 800

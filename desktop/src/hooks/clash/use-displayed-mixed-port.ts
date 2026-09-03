@@ -5,7 +5,7 @@ import { ClashConfigContext } from '@/providers/clash/app-data-context'
 import { resolveDisplayedMixedPort } from '@/utils/clash/mixed-port'
 
 /**
- * Mixed port shown in Clash Home, system-proxy UI, and GeoCRM Settings.
+ * Mixed port shown in Clash Home, system-proxy UI, and Workbench Settings.
  * Uses live Mihomo config when `AppDataProvider` is mounted; otherwise falls
  * back to runtime YAML, verge.yaml, and clash info (Settings is outside the
  * Clash island tree).

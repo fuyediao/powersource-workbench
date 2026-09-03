@@ -1,13 +1,13 @@
 import { shell } from 'electron'
-import { resolveGeocrmApiBaseUrl } from '../net/api-client'
+import { resolveWorkbenchApiBaseUrl } from '../net/api-client'
 import { AUTH_DEEP_LINK_URI } from '../../shared/ipc'
 
 /**
- * Opens the system browser at geocrm-api Google OAuth with Electron deep-link return.
+ * Opens the system browser at workbench-api Google OAuth with Electron deep-link return.
  * @returns Nothing.
  */
 export async function openGoogleSignIn(): Promise<void> {
-  const api = resolveGeocrmApiBaseUrl()
+  const api = resolveWorkbenchApiBaseUrl()
   if (!api) {
     throw new Error('VITE_DEPLOYMENT_DOMAIN is not set')
   }

@@ -140,7 +140,7 @@ async function expandLeftColumnScrollers(contents: WebContents): Promise<() => P
   const restore = async (): Promise<void> => {
     try {
       await contents.executeJavaScript(`(() => {
-        const rows = window.__geocrmAskAiOverflowRestore
+        const rows = window.__workbenchAskAiOverflowRestore
         if (!Array.isArray(rows)) {
           return
         }
@@ -153,7 +153,7 @@ async function expandLeftColumnScrollers(contents: WebContents): Promise<() => P
             el.removeAttribute('style')
           }
         }
-        delete window.__geocrmAskAiOverflowRestore
+        delete window.__workbenchAskAiOverflowRestore
       })()`)
     } catch {
       // Renderer may have navigated.
@@ -188,7 +188,7 @@ async function expandLeftColumnScrollers(contents: WebContents): Promise<() => P
       if (document.body) {
         visit(document.body)
       }
-      window.__geocrmAskAiOverflowRestore = rows
+      window.__workbenchAskAiOverflowRestore = rows
     })()`)
   } catch {
     return restore

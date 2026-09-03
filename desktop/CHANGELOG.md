@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Renamed remaining GeoCRM internal identifiers to Workbench (`workbench://`, `window.workbench`, IPC, and package id). Display name stays PowerSource Workbench.
 - Set the desktop display name to PowerSource Workbench (window, menu, tray, and installer).
 - Replaced remaining GeoCRM product labels in the live desktop UI with PowerSource Workbench.
 - Removed Folio, Docs, Sheets, and Slides from Home, Go menu, and feature tabs.

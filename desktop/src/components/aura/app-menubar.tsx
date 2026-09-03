@@ -240,7 +240,7 @@ export function AppMenubar({
   const rootRef = useRef<HTMLDivElement>(null)
   const [openId, setOpenId] = useState<string | null>(null)
   const [menus, setMenus] = useState(() => buildMenus(t))
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 
   useEffect(() => {
     setMenus(buildMenus(t))

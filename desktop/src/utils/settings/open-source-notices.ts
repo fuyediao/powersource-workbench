@@ -23,7 +23,7 @@ export interface OpenSourceNpmNotice {
  */
 export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
   {
-    id: 'geocrm',
+    id: 'workbench',
     name: 'PowerSource Workbench',
     license: 'AGPL-3.0',
     homepage: '',

@@ -11,8 +11,8 @@ export interface MailComposeRequest {
   body?: string
 }
 
-const OPEN_MAIL_EVENT = 'geocrm:open-mail'
-const COMPOSE_EVENT = 'geocrm:mail-compose'
+const OPEN_MAIL_EVENT = 'workbench:open-mail'
+const COMPOSE_EVENT = 'workbench:mail-compose'
 
 let pendingCompose: MailComposeRequest | null = null
 

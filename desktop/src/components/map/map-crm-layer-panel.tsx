@@ -20,7 +20,7 @@ import {
 import type { ShopLocation } from '@/types/chat'
 import { shopMarkerKey } from '@/types/chat'
 
-const FILTER_CACHE_KEY = 'geocrm.electron.customerMap.filters'
+const FILTER_CACHE_KEY = 'workbench.electron.customerMap.filters'
 
 /** Fixed slot height for virtualized pin cards (3 text lines + gap). */
 const PIN_ROW_HEIGHT_PX = 88

@@ -2,7 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv, normalizePath, type Plugin } from 'vite'
-import { geocrmLocaleResourcesPlugin } from './scripts/vite-plugin-geocrm-locales'
+import { workbenchLocaleResourcesPlugin } from './scripts/vite-plugin-workbench-locales'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { electronSimple } from 'vite-plugin-electron/multi-env'
@@ -15,7 +15,7 @@ const packageDir = path.dirname(fileURLToPath(import.meta.url))
 const univerRoot = path.join(packageDir, 'src/lib/univer')
 /** Root of the in-tree Schedule-X packages (published dist, no npm `@schedule-x/*`). See `src/lib/schedule-x/ORIGIN.md`. */
 const scheduleXRoot = path.join(packageDir, 'src/lib/schedule-x')
-/** Renderer `src/` root (`@/` for GeoCRM and Clash). */
+/** Renderer `src/` root (`@/` for Workbench and Clash). */
 const srcRoot = path.join(packageDir, 'src')
 const nodeModulesRoot = path.join(packageDir, 'node_modules')
 
@@ -45,7 +45,7 @@ function listLodashDotPackages(): string[] {
  */
 function stripBlocksuiteAccessorKeyword(): Plugin {
   return {
-    name: 'geocrm:strip-blocksuite-accessor',
+    name: 'workbench:strip-blocksuite-accessor',
     enforce: 'pre',
     transform(code, id) {
       const normalized = id.replaceAll('\\', '/')
@@ -75,9 +75,9 @@ function stripBlocksuiteAccessorKeyword(): Plugin {
  * @returns Vite plugin.
  */
 function shimLodashDotCjsDefault(): Plugin {
-  const prefix = '\0geocrm-lodash-cjs:'
+  const prefix = '\0workbench-lodash-cjs:'
   return {
-    name: 'geocrm:shim-lodash-dot-cjs',
+    name: 'workbench:shim-lodash-dot-cjs',
     enforce: 'pre',
     resolveId(id) {
       if (/^lodash\.[a-z]+$/.test(id)) {
@@ -145,7 +145,7 @@ function univerPackageRel(name: string): string {
  */
 function resolveUniverEngine(): Plugin {
   return {
-    name: 'geocrm:resolve-univer-engine',
+    name: 'workbench:resolve-univer-engine',
     enforce: 'pre',
     resolveId(id) {
       const facade = /^@univerjs\/([a-z0-9-]+)\/facade$/.exec(id)
@@ -211,7 +211,7 @@ function resolveScheduleXFile(absBase: string): string | null {
  */
 function resolveScheduleXEngine(): Plugin {
   return {
-    name: 'geocrm:resolve-schedule-x',
+    name: 'workbench:resolve-schedule-x',
     enforce: 'pre',
     resolveId(id) {
       const themeBare = id === '@schedule-x/theme-default'
@@ -246,7 +246,7 @@ function resolveScheduleXEngine(): Plugin {
       if (bare?.[1] && SCHEDULE_X_PACKAGES.has(bare[1])) {
         if (bare[1] === 'calendar') {
           return resolveScheduleXFile(
-            path.join(scheduleXRoot, 'calendar', 'src', 'geocrm-entry'),
+            path.join(scheduleXRoot, 'calendar', 'src', 'workbench-entry'),
           )
         }
         return resolveScheduleXFile(
@@ -296,7 +296,7 @@ function resolveClashVergeEngine(): Plugin {
   const tauriShim = normalizePath(path.join(srcRoot, 'services/clash/tauri-shim.ts'))
   const mihomoHttp = normalizePath(path.join(srcRoot, 'services/clash/mihomo-http.ts'))
   return {
-    name: 'geocrm:resolve-clash-verge',
+    name: 'workbench:resolve-clash-verge',
     enforce: 'pre',
     resolveId(id) {
       if (id === 'tauri-plugin-mihomo-api' || id.startsWith('tauri-plugin-mihomo-api/')) {
@@ -328,7 +328,7 @@ function scheduleXPreactJsx(): Plugin {
   const preactEngine =
     /[\\/]src[\\/]lib[\\/]schedule-x[\\/](?!react(?:[\\/]|$))/
   return {
-    name: 'geocrm:schedule-x-preact-jsx',
+    name: 'workbench:schedule-x-preact-jsx',
     enforce: 'pre',
     async transform(code, id) {
       const normalized = id.replaceAll('\\', '/')
@@ -349,7 +349,7 @@ function scheduleXPreactJsx(): Plugin {
 
 /**
  * True when `id` is a raw Univer engine `.css` file (Tailwind v3 `@apply` source), not the
- * published `lib/index.css` GeoCRM actually loads.
+ * published `lib/index.css` Workbench actually loads.
  * @param id - Vite module id.
  * @returns Whether Tailwind v4 should skip the file.
  */
@@ -367,7 +367,7 @@ function isUniverEngineSourceCss(id: string): boolean {
  */
 function skipUniverEngineSourceCss(): Plugin {
   return {
-    name: 'geocrm:skip-univer-engine-source-css',
+    name: 'workbench:skip-univer-engine-source-css',
     enforce: 'pre',
     load(id) {
       return isUniverEngineSourceCss(id) ? '' : null
@@ -379,7 +379,7 @@ const external = Object.keys(
   'dependencies' in pkg ? (pkg.dependencies as Record<string, string>) : {},
 )
 
-/** GeoCRM Electron renderer / Vite port (independent from geocrm-web 4564). */
+/** Workbench Electron renderer / Vite port (independent from workbench-web 4564). */
 const RENDERER_PORT = 4580
 
 const lodashDotPackages = listLodashDotPackages()
@@ -521,7 +521,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     plugins: [
-      geocrmLocaleResourcesPlugin(path.join(packageDir, 'src/i18n/locales')),
+      workbenchLocaleResourcesPlugin(path.join(packageDir, 'src/i18n/locales')),
       shimLodashDotCjsDefault(),
       stripBlocksuiteAccessorKeyword(),
       resolveClashVergeEngine(),

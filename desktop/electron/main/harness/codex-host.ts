@@ -60,7 +60,7 @@ interface PermissionProfile {
 
 /** Client identity reported to the workflow process. */
 const CLIENT_INFO = {
-  name: 'geocrm_harness',
+  name: 'workbench_harness',
   title: 'PowerSource Workbench Harness',
   version: '1',
 }
@@ -425,7 +425,7 @@ export class CodexHost {
   }
 
   /**
-   * Asks Clawd for Allow/Deny. Null means GeoCRM should show its native card.
+   * Asks Clawd for Allow/Deny. Null means Workbench should show its native card.
    * @param input - Tool identity and bounded arguments.
    * @returns `accept`, `decline`, or null.
    */
@@ -541,7 +541,7 @@ export class CodexHost {
       env.OPENAI_API_KEY = options.apiKey
     }
     if (options.accessToken) {
-      env.GEOCRM_HARNESS_TOKEN = options.accessToken
+      env.WORKBENCH_HARNESS_TOKEN = options.accessToken
     }
 
     const child = spawn(binary, workflowSpawnArgs(binary), {
@@ -580,20 +580,20 @@ export class CodexHost {
     this.notify('initialized', {})
 
     // Long-term memory belongs to the VPS Hermes profile, not Codex, and MCP
-    // is only ever used for third-party services (`geocrm` is filtered out).
+    // is only ever used for third-party services (`workbench` is filtered out).
     const config: Record<string, unknown> = {
       'features.memories': false,
       'features.apps': true,
     }
     const provider = options.provider?.trim().toLowerCase() || ''
     if (provider && options.apiBaseUrl && options.accessToken) {
-      config.model_provider = 'geocrm-harness'
-      config['model_providers.geocrm-harness'] = {
+      config.model_provider = 'workbench-harness'
+      config['model_providers.workbench-harness'] = {
         name: 'PowerSource Workbench Harness',
         base_url: `${options.apiBaseUrl.replace(/\/$/, '')}/ai/harness`,
-        env_key: 'GEOCRM_HARNESS_TOKEN',
+        env_key: 'WORKBENCH_HARNESS_TOKEN',
         wire_api: 'responses',
-        http_headers: { 'x-geocrm-provider': provider },
+        http_headers: { 'x-workbench-provider': provider },
       }
     }
     for (const server of options.mcpServers ?? []) {
@@ -1016,7 +1016,7 @@ export class CodexHost {
   }
 
   /**
-   * Dispatches one first-party dynamic tool call through geocrm-api.
+   * Dispatches one first-party dynamic tool call through workbench-api.
    * @param rpcId - JSON-RPC id to answer.
    * @param params - Codex `item/tool/call` parameters.
    * @returns Nothing.

@@ -1,5 +1,5 @@
 /**
- * Sync Aura editor chrome with GeoCRM Settings Theme (`html.dark` / atlas-theme).
+ * Sync Aura editor chrome with Workbench Settings Theme (`html.dark` / atlas-theme).
  * No separate Aura content-theme stylesheets.
  */
 import { getActiveEditor } from '@/utils/aura/active-editor'

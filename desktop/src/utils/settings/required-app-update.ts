@@ -1,6 +1,6 @@
 import type { AppUpdateCheckResult } from '@/utils/settings/app-updates'
 
-const REQUIRE_EVENT = 'geocrm:require-app-update'
+const REQUIRE_EVENT = 'workbench:require-app-update'
 
 let pending: AppUpdateCheckResult | null = null
 

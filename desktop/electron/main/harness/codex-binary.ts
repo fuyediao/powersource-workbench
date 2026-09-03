@@ -12,10 +12,10 @@ import path from 'node:path'
 import { app } from 'electron'
 
 /** Environment variable that pins the workflow binary. */
-const BINARY_ENV_VAR = 'GEOCRM_CODEX_BIN'
+const BINARY_ENV_VAR = 'WORKBENCH_CODEX_BIN'
 
 /** Source checkout consulted in development builds. */
-const DEV_CHECKOUT_ENV_VAR = 'GEOCRM_CODEX_SOURCE'
+const DEV_CHECKOUT_ENV_VAR = 'WORKBENCH_CODEX_SOURCE'
 
 /**
  * Executable names to try for this platform.
@@ -118,7 +118,7 @@ export function workflowSpawnArgs(binary: string): string[] {
  * @returns Absolute path, or empty string when none is installed.
  */
 export function resolveCodexBinary(): string {
-  if (process.env.GEOCRM_DISABLE_CODEX_HOST === '1') return ''
+  if (process.env.WORKBENCH_DISABLE_CODEX_HOST === '1') return ''
   for (const candidate of candidatePaths()) {
     const found = existingFile(candidate)
     if (found) {

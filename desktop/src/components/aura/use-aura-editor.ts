@@ -138,7 +138,7 @@ export function useAuraEditor(documentTitle?: string): UseAuraEditorResult {
   }, [])
 
   useEffect(() => {
-    // GeoCRM owns the desktop window title.
+    // Workbench owns the desktop window title.
   }, [documentTitle])
 
   useEffect(() => {

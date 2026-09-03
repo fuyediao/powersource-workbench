@@ -69,7 +69,7 @@ function unlinkControllerSocket(): void {
 
 /**
  * Runs the full profile enhance pipeline and writes the resulting `runtime.yaml`.
- * Delegates to {@link runEnhance} (merge/script chains, TUN/DNS overlays, GeoCRM
+ * Delegates to {@link runEnhance} (merge/script chains, TUN/DNS overlays, Workbench
  * controller injection over a unix socket / named pipe — never TCP 19091).
  * @returns Validation outcome (see {@link runEnhance}).
  */

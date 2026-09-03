@@ -25,7 +25,7 @@ import {
   SIDEBAR_EXPANDED_PX,
   type SidebarMode,
 } from '@/hooks/use-sidebar-mode'
-import geocrmI18n from '@/i18n'
+import workbenchI18n from '@/i18n'
 
 export interface ClashSidebarNavItem {
   path: string
@@ -120,7 +120,7 @@ export function ClashSidebar({
   onDragEnd,
 }: ClashSidebarProps) {
   const { t } = useTranslation()
-  const nativeApplicationMenu = Boolean(window.geocrm?.window?.usesNativeApplicationMenu)
+  const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
   const asideRef = useRef<HTMLElement>(null)
   const hoverOverlay = mode === 'hover'
   const itemIds = items.map((item) => item.path)
@@ -209,7 +209,7 @@ export function ClashSidebar({
       <LayoutTraffic expanded={expanded} />
 
       {nativeApplicationMenu ? null : (
-        <I18nextProvider i18n={geocrmI18n}>
+        <I18nextProvider i18n={workbenchI18n}>
           <SidebarModeControl expanded={expanded} mode={mode} onSetMode={onSetMode} />
         </I18nextProvider>
       )}

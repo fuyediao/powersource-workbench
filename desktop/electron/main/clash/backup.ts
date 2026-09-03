@@ -8,8 +8,8 @@ import { clashDataDir, ensureClashDirs, loadVergeStore, patchVergeStore } from '
 const require = createRequire(import.meta.url)
 const AdmZip = require('adm-zip') as typeof import('adm-zip')
 
-/** WebDAV remote directory name for GeoCRM Clash backups. */
-const WEBDAV_BACKUP_DIR = 'geocrm-clash-backup'
+/** WebDAV remote directory name for Workbench Clash backups. */
+const WEBDAV_BACKUP_DIR = 'workbench-clash-backup'
 
 /** Local backup file row (`list_local_backup`). */
 export type LocalBackupFile = {
@@ -244,7 +244,7 @@ async function webdavRequest(
     method,
     headers: {
       Authorization: `Basic ${auth}`,
-      'User-Agent': 'geocrm-electron/clash WebDAV-Client',
+      'User-Agent': 'workbench-electron/clash WebDAV-Client',
       ...init?.headers,
     },
     body: init?.body ? new Uint8Array(init.body) : undefined,

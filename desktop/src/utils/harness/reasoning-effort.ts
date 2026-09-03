@@ -22,7 +22,7 @@ export const HARNESS_REASONING_EFFORTS = [
 /** One catalog-backed reasoning depth. */
 export type HarnessReasoningEffort = (typeof HARNESS_REASONING_EFFORTS)[number]
 
-const STORAGE_KEY = 'geocrm.electron.harness.reasoningEffort.v1'
+const STORAGE_KEY = 'workbench.electron.harness.reasoningEffort.v1'
 
 const QUOTA_HINT_LEVELS = new Set<HarnessReasoningEffort>(['xhigh', 'max', 'ultra'])
 
