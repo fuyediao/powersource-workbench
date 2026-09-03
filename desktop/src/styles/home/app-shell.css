@@ -1,0 +1,64 @@
+/* Page padding tracks the category rail dock (JS data attr), not a hard md: snap. */
+.app-shell {
+  padding: 1.25rem 1rem 7rem;
+}
+
+.app-shell-ready {
+  transition:
+    padding-left 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-right 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    padding-bottom 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (width >= 640px) {
+  .app-shell {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+
+/* Keep a larger inset from the window edges on wide displays when the rail
+   is not claiming the left gutter (bottom / floating / hidden). */
+@media (width >= 1280px) {
+  .app-shell:not([data-rail-dock='side']) {
+    padding-right: 3rem;
+    padding-left: 3rem;
+  }
+}
+
+@media (width >= 1536px) {
+  .app-shell:not([data-rail-dock='side']) {
+    padding-right: 4rem;
+    padding-left: 4rem;
+  }
+}
+
+.app-shell[data-rail-dock='side'] {
+  padding-bottom: 1.25rem;
+  padding-left: 6rem;
+}
+
+.app-shell[data-rail-dock='hidden'] {
+  padding-bottom: 1.25rem;
+}
+
+@media (width >= 1024px) {
+  .app-shell[data-rail-dock='side'] {
+    padding-right: 3rem;
+    padding-left: 7rem;
+  }
+}
+
+@media (width >= 1280px) {
+  .app-shell[data-rail-dock='side'] {
+    padding-right: 4rem;
+    padding-left: 8rem;
+  }
+}
+
+@media (width >= 1536px) {
+  .app-shell[data-rail-dock='side'] {
+    padding-right: 5rem;
+    padding-left: 9rem;
+  }
+}

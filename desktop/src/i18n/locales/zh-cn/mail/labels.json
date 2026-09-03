@@ -1,0 +1,11 @@
+{
+  "applyLabel": "标签…",
+  "confirmDeleteLabel": "删除此标签？邮件仍会留在邮箱中。",
+  "create": "创建",
+  "deleteLabel": "删除标签",
+  "labels": "标签",
+  "labelsEmpty": "没有标签",
+  "labelsSearch": "搜索标签",
+  "newLabel": "新建标签",
+  "renameLabel": "重命名标签"
+}

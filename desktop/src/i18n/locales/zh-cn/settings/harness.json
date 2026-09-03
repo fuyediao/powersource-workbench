@@ -1,0 +1,13 @@
+{
+  "workFolder": {
+    "title": "工作文件夹",
+    "choose": "选择文件夹",
+    "reset": "使用默认"
+  },
+  "approval": {
+    "title": "核准",
+    "askAlways": "变更前询问",
+    "askIfUnsafe": "仅询问不安全操作",
+    "fullAccess": "完整访问"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "appsCount": "{{count}} 個應用程式",
+  "createFailed": "新增失敗，請檢查網址與名稱後再試。",
+  "databaseError": "無法載入應用程式資料，請重新整理後再試。",
+  "loading": "載入中",
+  "saving": "儲存中…"
+}

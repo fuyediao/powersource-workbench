@@ -1,0 +1,63 @@
+{
+  "createTitle": "New event",
+  "editTitle": "Edit event",
+  "title": "Title",
+  "description": "Description",
+  "calendar": "Calendar",
+  "allDay": "All day",
+  "start": "Start",
+  "end": "End",
+  "repeat": "Repeat",
+  "repeatNone": "Does not repeat",
+  "repeatDaily": "Daily",
+  "repeatWeekly": "Weekly",
+  "repeatMonthly": "Monthly",
+  "repeatCount": "Number of occurrences",
+  "repeatEditHint": "Choose an edit scope below when changing a series.",
+  "invitees": "Invitees",
+  "delete": "Delete",
+  "confirmDelete": "Delete this event?",
+  "picker": {
+    "today": "Today",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "prevYear": "Previous year",
+    "nextYear": "Next year",
+    "prevYears": "Previous years",
+    "nextYears": "Next years",
+    "chooseYearMonth": "Choose year and month",
+    "hour": "Hour",
+    "minute": "Minute"
+  },
+  "editScope": "Edit scope",
+  "scopeThis": "This event",
+  "scopeFollowing": "This and following events",
+  "scopeAll": "All events",
+  "scopeHint": {
+    "this": "Only this occurrence is updated.",
+    "following": "This and later occurrences are updated.",
+    "all": "The whole series is updated."
+  },
+  "confirmDeleteScope": {
+    "this": "Delete only this occurrence?",
+    "following": "Delete this and all following occurrences?",
+    "all": "Delete the entire series?"
+  },
+  "inviteesSearch": "Search people",
+  "inviteesSearchHint": "Type a name or email to find people.",
+  "inviteesNoResults": "No matching people",
+  "inviteesSelected": "{{count}} selected",
+  "inviteesRemove": "Remove {{name}}",
+  "inviteesEmpty": "No people available to invite",
+  "invitationTitle": "Invitation",
+  "rsvp": {
+    "label": "Your response",
+    "current": "Current: {{status}}",
+    "responses": "Responses",
+    "you": "you",
+    "invited": "Invited",
+    "accepted": "Accept",
+    "declined": "Decline",
+    "tentative": "Maybe"
+  }
+}

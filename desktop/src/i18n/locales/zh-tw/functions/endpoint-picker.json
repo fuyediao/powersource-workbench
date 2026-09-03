@@ -1,0 +1,9 @@
+{
+  "titleOa": "開啟 OA",
+  "titleErp": "開啟 ERP",
+  "regions": {
+    "intranet": "內網",
+    "china": "中國大陸",
+    "other": "其他地區"
+  }
+}

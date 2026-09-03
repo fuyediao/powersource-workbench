@@ -1,0 +1,8 @@
+{
+  "order": "Widget order",
+  "orderEmpty": "Drop widgets here",
+  "orderHint": "Drag within a column to reorder, or across columns to move left/right home widgets.",
+  "orderLeft": "Left",
+  "orderRight": "Right",
+  "title": "Widget tools"
+}

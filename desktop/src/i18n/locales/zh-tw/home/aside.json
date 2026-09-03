@@ -1,0 +1,14 @@
+{
+  "scheduleReminder": "日程提醒",
+  "businessFocus": "業務關注",
+  "mailReminder": "郵件提醒",
+  "mailUnreadDescription": "所有信箱收件匣未讀郵件",
+  "mailUnreadUnavailable": "無法載入郵件摘要（請確認郵件 Worker 設定）",
+  "addFollowUpPlan": "新增待辦清單",
+  "viewMore": "查看更多",
+  "focus": {
+    "recentLeads": "最近 3 天新獲得的線索",
+    "recentAccounts": "最近 3 天新獲得的客戶",
+    "activeOpportunities": "正在跟進的商機"
+  }
+}

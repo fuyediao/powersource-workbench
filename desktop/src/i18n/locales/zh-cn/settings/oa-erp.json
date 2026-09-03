@@ -1,0 +1,28 @@
+{
+  "title": "OA / ERP",
+  "edit": "编辑",
+  "oa": {
+    "title": "OA 账号"
+  },
+  "erp": {
+    "title": "ERP 账号"
+  },
+  "fields": {
+    "username": "账号",
+    "usernamePlaceholder": "工号",
+    "password": "密码",
+    "passwordPlaceholder": "输入密码",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码"
+  },
+  "save": {
+    "button": "保存",
+    "saving": "保存中…",
+    "success": "已保存 OA / ERP 凭证。"
+  },
+  "errors": {
+    "notConfigured": "本机 OA / ERP 存储不可用。",
+    "loadFailed": "无法加载 OA / ERP 凭证。",
+    "saveFailed": "无法保存 OA / ERP 凭证。"
+  }
+}

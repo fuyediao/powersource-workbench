@@ -1,0 +1,230 @@
+{
+  "title": "Team Collaboration",
+  "bscTab": "BSC",
+  "pbcTab": "PBC",
+  "retroTab": "Review",
+  "retroComingSoon": "Retrospective / review workspace is coming soon.",
+  "retroDescription": "Periodic debriefs, gap analysis, and action tracking linked to BSC and PBC.",
+  "retro": {
+    "title": "Monthly Retrospective (Team-wide)",
+    "periodLabel": "Retro period",
+    "groupScopeNote": "Shared across the whole team · one per month",
+    "savedAt": "Saved to database",
+    "supabaseRequired": "Retrospectives are stored in Supabase. Set VITE_DEPLOYMENT_DOMAIN and VITE_SUPABASE_ANON_KEY, apply the team_retro_boards migration, then refresh.",
+    "loadError": "Could not load the retrospective.",
+    "saveError": "Could not save the retrospective. Please try again.",
+    "readOnlyHint": "Read-only view. You need access to this workspace (active group member, group admin, or system admin) to edit.",
+    "col": {
+      "focus": "Focus Area",
+      "guide": "Guiding Questions",
+      "responsibility": "Responsibility",
+      "teamDesc": "Team Notes (whole group)",
+      "improvement": "Improvement Points (whole group)"
+    },
+    "placeholder": {
+      "teamDesc": "Team-wide notes — all members can contribute…",
+      "improvement": "Improvement direction or actions to track…"
+    },
+    "section": {
+      "customer": {
+        "title": "Customer & External",
+        "responsibility": "Sales",
+        "guide1": "What friction or blockers arose in client communications or visits?",
+        "guide2": "Did opportunity follow-ups go smoothly? Any unexpected lost or delayed deals?",
+        "guide3": "Did any clients raise unexpected requirements or issues?"
+      },
+      "goals": {
+        "title": "Goals & Cycle Review",
+        "responsibility": "Management",
+        "guide1": "Were this month's PBC targets met? Where did gaps appear?",
+        "guide2": "Were there planned actions that were not executed?",
+        "guide3": "Did any unexpected events or situations arise?"
+      },
+      "execution": {
+        "title": "Execution & Collaboration",
+        "responsibility": "Whole Team",
+        "guide1": "What key events or blockers impacted progress?",
+        "guide2": "Was cross-team collaboration smooth? Any coordination gaps?",
+        "guide3": "Did any unexpected issues arise in a specific area, and how were they resolved?"
+      },
+      "data": {
+        "title": "Data & Operations",
+        "responsibility": "Support",
+        "guide1": "Were there anomalies, gaps, or quality issues in CRM or map data?",
+        "guide2": "Are there any operational risks that need prompt follow-up?"
+      },
+      "tech": {
+        "title": "Tech & Process",
+        "responsibility": "Systems",
+        "guide1": "Are there unresolved technical issues that need handover or tracking?",
+        "guide2": "Which parts of system integrations or automation need improvement?",
+        "guide3": "For any technical issues, have the relevant parties been notified for next retro tracking?"
+      }
+    }
+  },
+  "bscComingSoon": "BSC (Balanced Scorecard) dashboards are coming soon.",
+  "bscDescription": "The Balanced Scorecard module will provide four-dimension strategy tracking — Financial, Customer, Internal Process, and Learning & Growth.",
+  "bsc": {
+    "title": "Balanced Scorecard (Team-wide)",
+    "initBtn": "Initialize BSC",
+    "loading": "Loading BSC…",
+    "loadError": "Failed to load BSC data.",
+    "saveError": "Save failed. Please try again.",
+    "supabaseRequired": "BSC data requires Supabase. Set VITE_DEPLOYMENT_DOMAIN and VITE_SUPABASE_ANON_KEY, apply the bsc_boards migration, then refresh.",
+    "noGroup": "No team selected. Please select a group to view the BSC.",
+    "noDoc": "No BSC document for this month.",
+    "vision": {
+      "title": "Strategic Vision",
+      "editBtn": "Edit Vision",
+      "clickToEdit": "Click to add a strategic vision statement…",
+      "visionLabel": "Vision Statement",
+      "descLabel": "Description",
+      "placeholder": "e.g. Achieve full market growth and build a high-performance, digital-first team.",
+      "descPlaceholder": "Add supporting context or key priorities…"
+    },
+    "achievement": "Overall Achievement",
+    "weightLabel": "Weight",
+    "status": {
+      "onTrack": "On Track",
+      "atRisk": "At Risk",
+      "behind": "Behind"
+    },
+    "dimension": {
+      "financial": "Financial",
+      "customer": "Customer",
+      "internal": "Internal Process",
+      "learning": "Learning & Growth"
+    },
+    "dimensionSub": {
+      "financial": "Financial Perspective",
+      "customer": "Customer Perspective",
+      "internal": "Internal Process Perspective",
+      "learning": "Learning & Growth Perspective"
+    },
+    "col": {
+      "name": "Strategic Goal",
+      "description": "Description",
+      "weight": "Weight (%)",
+      "responsibility": "Responsibility",
+      "kpiName": "KPI Name",
+      "formula": "Formula",
+      "targetValue": "Target",
+      "currentValue": "Current",
+      "dataSource": "Data Source"
+    },
+    "addGoal": "Add Goal",
+    "editGoal": "Edit Goal",
+    "deleteGoal": "Delete Goal",
+    "deleteGoalConfirm": "Delete this strategic goal and all its KPIs?",
+    "addKpi": "Add KPI",
+    "editKpi": "Edit KPI",
+    "deleteKpi": "Delete KPI",
+    "deleteKpiConfirm": "Delete this KPI?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "noGoals": "No strategic goals in this dimension.",
+    "noKpis": "No KPIs for this goal.",
+    "readOnlyHint": "Read-only view. Only the group admin can edit BSC content."
+  },
+  "pbcTitle": "PBC — Personal Business Commitment",
+  "pbcFiscalYear": "Period",
+  "goToCurrentMonth": "This month",
+  "periodReadOnlyHint": "Older periods are read-only. You can only edit the current month and the previous month.",
+  "periodNoDocumentHint": "No document for this period. Older months cannot be created or edited.",
+  "yearSuffix": "",
+  "monthSuffix": "",
+  "pbcGroupLabel": "Group",
+  "pbcIndividualLabel": "Individual",
+  "pbcValidPeriod": "Valid period",
+  "pbcCommitter": "Committer",
+  "pbcDepartment": "Department",
+  "pbcPosition": "Position",
+  "pbcOverallDirection": "Overall Direction",
+  "pbcSelectMember": "Select a member to view their PBC",
+  "pbcNoMembers": "No group members found.",
+  "pbcSupabaseRequired": "PBC data requires Supabase. Set VITE_DEPLOYMENT_DOMAIN and VITE_SUPABASE_ANON_KEY, apply the database migration for pbc_documents, then reload.",
+  "pbcNoGroup": "No workspace group is linked to your account yet. Join or create a group in Settings to use Team Collaboration.",
+  "pbcSelectGroup": "Select group",
+  "pbcLoading": "Loading PBC…",
+  "pbcError": "Failed to load PBC data.",
+  "pbcRetry": "Retry",
+  "pbcTotalScore": "Est. Total Score",
+  "pbcOverallGoals": "Monthly Goals & Direction",
+  "pbcOverallGoalsHint": "One monthly goal or direction per line; the system shows them as a numbered list",
+  "pbcOverallGoalsEmpty": "No monthly goals yet. Add them in “Edit header” — one per line.",
+  "pbcSectionScore": "Section",
+  "pbcGrade": {
+    "S": "Grade S (Exceptional)",
+    "A": "Grade A (Excellent)",
+    "B": "Grade B (Satisfactory)",
+    "C": "Grade C (Needs Improvement)"
+  },
+  "scoreLabel": {
+    "1": "Poor",
+    "2": "Below Avg.",
+    "3": "Satisfactory",
+    "4": "Good",
+    "5": "Excellent"
+  },
+  "scorePlaceholder": "Click to score",
+  "pbcInitialising": "Initialising PBC document…",
+  "pbcGroupSection": "Group PBC",
+  "pbcMemberPbcHeading": "{{name}}'s PBC",
+  "pbcMemberScopeTitle": "Member PBC",
+  "pbcPickMember": "Select member",
+  "pbcSelectMemberHint": "Use the “Select member” dropdown to choose a member and view or edit their PBC.",
+  "pbcFillProgressHint": "Click to enter current progress (multiple lines allowed).",
+  "pbcFillDefinitionHint": "Click to enter the indicator definition or notes (multiple lines allowed).",
+  "pbcFillCodeHint": "Click to enter the row code (e.g. F2.1.4).",
+  "pbcFillTitleHint": "Click to enter the commitment title.",
+  "pbcFillAnnualTargetHint": "Click to enter the annual target (multiple lines allowed).",
+  "pbcFillWeightHint": "Click to set weight % (0–100).",
+  "pbcFillEvalPeriodHint": "Click to enter the evaluation period label.",
+  "pbcMembersSection": "Member PBCs",
+  "part": {
+    "result": "Part 1 — Result Indicators",
+    "process": "Part 2 — Process Indicators (Key Actions)",
+    "org_growth": "Part 3 — Organisational & Employee Growth"
+  },
+  "partWeight": "Weight: {n}%",
+  "col": {
+    "code": "Code",
+    "title": "Key Indicator / Action",
+    "annualTarget": "2026 Annual Target",
+    "milestones": "Definition / Milestones",
+    "definition": "Definition / Explanation",
+    "weight": "Weight (100%)",
+    "evaluationPeriod": "Evaluation Period",
+    "currentProgress": "Current Progress",
+    "selfEvaluation": "Self-Evaluation",
+    "managerEvaluation": "Manager Evaluation",
+    "groupSelfEvaluation": "Group Self-Evaluation",
+    "groupManagerEvaluation": "Regional Manager Review"
+  },
+  "scoringRubric": {
+    "title": "Scoring Rubric",
+    "score5": "5 pts (Outstanding)",
+    "score4": "4 pts (Good)",
+    "score3": "3 pts (Adequate)",
+    "score2": "2 pts (Below expectation)",
+    "score1": "1 pt (Poor)",
+    "score0": "0 pts",
+    "desc5": "Fully completed all targets; achieved breakthrough results; set a benchmark for others; recognised across teams.",
+    "desc4": "Completed targets at 90%+; some work items exceeded expectations; most deliverables on time.",
+    "desc3": "Completed targets at 80%; work quality meets the standard; meets expectations on time.",
+    "desc2": "Completed targets at 70–80%; missed at least one key item; partial completion.",
+    "desc1": "Completed targets below 60%; most work not completed; unable to fulfil commitments.",
+    "desc0": "Did not execute."
+  },
+  "action": {
+    "editRow": "Edit row",
+    "saveRow": "Save",
+    "cancelEdit": "Cancel",
+    "initDocument": "Initialise PBC",
+    "editHeader": "Edit Header"
+  },
+  "empty": "No PBC document for this year. Click \"Initialise PBC\" to create one.",
+  "saveSuccess": "Saved successfully.",
+  "saveError": "Save failed, please try again."
+}

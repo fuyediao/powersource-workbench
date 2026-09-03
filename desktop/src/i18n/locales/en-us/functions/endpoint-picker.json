@@ -1,0 +1,9 @@
+{
+  "titleOa": "Open OA",
+  "titleErp": "Open ERP",
+  "regions": {
+    "intranet": "Intranet",
+    "china": "Mainland China",
+    "other": "Other regions"
+  }
+}

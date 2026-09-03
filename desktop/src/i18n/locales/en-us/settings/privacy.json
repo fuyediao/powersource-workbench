@@ -1,0 +1,25 @@
+{
+  "linkedAccounts": {
+    "google": "Google",
+    "googleConnected": "Connected",
+    "googleDescription": "Link your Google account to sign in with Google after using your company email.",
+    "linkButton": "Link Google Account",
+    "linkFailed": "Failed to link Google account. Manual linking may be disabled on the server, or this Google account is already linked to another user."
+  },
+  "password": {
+    "changePassword": "Change Password",
+    "confirm": "Confirm New Password",
+    "current": "Current Password",
+    "errors": {
+      "currentInvalid": "Current password is incorrect",
+      "mismatch": "The new passwords do not match",
+      "tooShort": "Password must be at least {{min}} characters",
+      "updateFailed": "Failed to update password, please try again"
+    },
+    "new": "New Password",
+    "setPassword": "Set Password",
+    "setSuccess": "Password set successfully",
+    "title": "Login Password",
+    "updateSuccess": "Password updated successfully"
+  }
+}

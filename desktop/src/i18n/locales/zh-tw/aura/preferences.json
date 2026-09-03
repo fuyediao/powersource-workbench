@@ -1,0 +1,64 @@
+{
+  "title": "偏好設定",
+  "close": "關閉",
+  "search": "搜尋",
+  "categories": {
+    "files": "檔案",
+    "editor": "編輯器",
+    "images": "圖片",
+    "markdown": "Markdown",
+    "export": "匯出",
+    "appearance": "外觀",
+    "general": "一般"
+  },
+  "files": {
+    "startup": "啟動選項",
+    "startupNew": "開啟新檔",
+    "startupLast": "還原上次工作階段",
+    "outline": "大綱",
+    "outlineCollapsible": "允許展開／折疊側邊欄大綱",
+    "defaultExtension": "預設檔案類型或副檔名",
+    "extMd": "Markdown (.md)",
+    "extMarkdown": "Markdown (.markdown)",
+    "extTxt": "純文字 (.txt)",
+    "saveRestore": "儲存並復原",
+    "autoSave": "自動儲存",
+    "autoSaveOnSwitch": "在側邊欄切換檔案時自動儲存無需詢問",
+    "restoreDrafts": "復原未儲存的草稿",
+    "recent": "最近位置",
+    "rememberRecent": "記錄最近使用的檔案與資料夾",
+    "clearRecent": "清除最近使用的資料夾與檔案",
+    "dragDrop": "當拖放檔案或資料夾至 Markdown 編輯器時",
+    "dropFolder": "當拖放資料夾時",
+    "dropMarkdown": "當拖放 Markdown 檔案時",
+    "dropImportable": "當拖放可匯入的檔案時",
+    "actionOpen": "在編輯器中開啟",
+    "actionIgnore": "忽略",
+    "actionImport": "匯入檔案"
+  },
+  "editor": {
+    "defaultMode": "預設編輯模式",
+    "modeWysiwyg": "所見即所得",
+    "modeSv": "原始碼"
+  },
+  "export": {
+    "defaultFormat": "預設匯出格式",
+    "formatMarkdown": "Markdown",
+    "formatHtml": "HTML"
+  },
+  "appearance": {
+    "theme": "主題",
+    "themeLight": "淺色",
+    "themeDay": "日間",
+    "themeNight": "夜間"
+  },
+  "general": {
+    "language": "語言",
+    "langEn": "English",
+    "langZhTw": "繁體中文",
+    "langZhCn": "簡體中文"
+  },
+  "comingSoon": "此功能將於後續版本啟用。",
+  "cleared": "已清除最近記錄。",
+  "noDrafts": "目前沒有可復原的草稿。"
+}

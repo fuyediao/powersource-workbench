@@ -1,0 +1,230 @@
+{
+  "title": "團隊協作",
+  "bscTab": "BSC",
+  "pbcTab": "PBC",
+  "retroTab": "復盤",
+  "retroComingSoon": "復盤與回顧模組即將推出。",
+  "retroDescription": "將支援週期性總結、目標落差分析與行動追蹤，並與 BSC／PBC 資料銜接。",
+  "retro": {
+    "title": "月度復盤（整組）",
+    "periodLabel": "復盤月份",
+    "groupScopeNote": "全組共用 · 每月一份",
+    "savedAt": "已同步至資料庫",
+    "supabaseRequired": "復盤資料需寫入 Supabase。請設定 VITE_DEPLOYMENT_DOMAIN 與 VITE_SUPABASE_ANON_KEY，並套用 team_retro_boards 遷移後重新整理。",
+    "loadError": "載入復盤失敗。",
+    "saveError": "儲存復盤失敗，請重試。",
+    "readOnlyHint": "目前為唯讀。需為此工作區的有效成員、群組管理員或系統管理員才可編輯。",
+    "col": {
+      "focus": "復盤重點",
+      "guide": "可參考的思考方向",
+      "responsibility": "責任面向",
+      "teamDesc": "團隊說明（整組）",
+      "improvement": "改進點（整組）"
+    },
+    "placeholder": {
+      "teamDesc": "整組說明，所有成員皆可貢獻填寫…",
+      "improvement": "本區塊的改進方向或待追蹤行動…"
+    },
+    "section": {
+      "customer": {
+        "title": "客戶與對外協作",
+        "responsibility": "業務",
+        "guide1": "客戶溝通、拜訪過程中有哪些摩擦或卡點？",
+        "guide2": "商機跟進是否順利？有無意外流失或延誤的訂單？",
+        "guide3": "有無客戶反映預期外的需求或問題？"
+      },
+      "goals": {
+        "title": "目標與週期回顧",
+        "responsibility": "管理",
+        "guide1": "本月 PBC 目標是否達標？落差出現在哪個環節？",
+        "guide2": "有無當時規劃但實際未執行的行動？",
+        "guide3": "有無未預計出現的突發事件或情況？"
+      },
+      "execution": {
+        "title": "執行與協作過程",
+        "responsibility": "全組",
+        "guide1": "執行中有哪些影響進度的關鍵事件或阻塞點？",
+        "guide2": "跨人協作是否順暢？有無協調不到位之處？",
+        "guide3": "某個環節遇到小插曲是如何解決的？"
+      },
+      "data": {
+        "title": "資料與營運",
+        "responsibility": "支援",
+        "guide1": "CRM 或地圖資料是否出現異常、缺漏或品質問題？",
+        "guide2": "有無潛在的營運風險需要及時提醒或跟進？"
+      },
+      "tech": {
+        "title": "技術與流程",
+        "responsibility": "系統",
+        "guide1": "有無未解決的技術問題需移交或追蹤？",
+        "guide2": "系統整合或自動化流程有哪些待改善的地方？",
+        "guide3": "如有技術問題，已同步相關人員並列入下次復盤追蹤嗎？"
+      }
+    }
+  },
+  "bscComingSoon": "BSC（平衡計分卡）儀表板即將推出。",
+  "bscDescription": "平衡計分卡模組將提供四維戰略追蹤——財務、客戶、內部流程與學習成長。",
+  "bsc": {
+    "title": "平衡計分卡（整組）",
+    "initBtn": "初始化 BSC",
+    "loading": "載入 BSC 中…",
+    "loadError": "載入 BSC 資料失敗。",
+    "saveError": "儲存失敗，請重試。",
+    "supabaseRequired": "BSC 資料需要 Supabase。請設定 VITE_DEPLOYMENT_DOMAIN 與 VITE_SUPABASE_ANON_KEY，並套用 bsc_boards 遷移後重新整理頁面。",
+    "noGroup": "目前未選擇工作區團隊，無法顯示 BSC。",
+    "noDoc": "本月尚無 BSC 文件。",
+    "vision": {
+      "title": "部門戰略願景",
+      "editBtn": "編輯願景",
+      "clickToEdit": "點此填寫部門戰略願景…",
+      "visionLabel": "願景聲明",
+      "descLabel": "詳細說明",
+      "placeholder": "例如：實現市場全面增長，打造高績效、數位化的團隊。",
+      "descPlaceholder": "補充說明部門戰略方向與核心重點…"
+    },
+    "achievement": "整體達成率",
+    "weightLabel": "權重",
+    "status": {
+      "onTrack": "進展順利",
+      "atRisk": "需要關注",
+      "behind": "進度落後"
+    },
+    "dimension": {
+      "financial": "財務維度",
+      "customer": "客戶維度",
+      "internal": "內部流程維度",
+      "learning": "學習與成長維度"
+    },
+    "dimensionSub": {
+      "financial": "Financial Perspective",
+      "customer": "Customer Perspective",
+      "internal": "Internal Process Perspective",
+      "learning": "Learning & Growth Perspective"
+    },
+    "col": {
+      "name": "戰略目標",
+      "description": "目標描述",
+      "weight": "權重 (%)",
+      "responsibility": "責任方",
+      "kpiName": "指標名稱",
+      "formula": "計算公式",
+      "targetValue": "目標值",
+      "currentValue": "當前值",
+      "dataSource": "資料來源"
+    },
+    "addGoal": "新增目標",
+    "editGoal": "編輯目標",
+    "deleteGoal": "刪除目標",
+    "deleteGoalConfirm": "確定刪除此戰略目標及其所有指標嗎？",
+    "addKpi": "新增指標",
+    "editKpi": "編輯指標",
+    "deleteKpi": "刪除指標",
+    "deleteKpiConfirm": "確定刪除此指標嗎？",
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "noGoals": "此維度尚無戰略目標。",
+    "noKpis": "此目標尚無指標。",
+    "readOnlyHint": "目前為唯讀檢視，僅組管理員可編輯 BSC 內容。"
+  },
+  "pbcTitle": "PBC — 部門目標承諾書",
+  "pbcFiscalYear": "期間",
+  "goToCurrentMonth": "本月",
+  "periodReadOnlyHint": "較早的期間為唯讀。僅可編輯當月與上個月。",
+  "periodNoDocumentHint": "此期間尚無文件。較早月份無法新建或編輯。",
+  "yearSuffix": "年",
+  "monthSuffix": "月",
+  "pbcGroupLabel": "組級",
+  "pbcIndividualLabel": "個人",
+  "pbcValidPeriod": "承諾有效期",
+  "pbcCommitter": "承諾人",
+  "pbcDepartment": "部門",
+  "pbcPosition": "職務",
+  "pbcOverallDirection": "總體目標和方向",
+  "pbcSelectMember": "請選擇成員查看其 PBC",
+  "pbcNoMembers": "暫無組成員。",
+  "pbcSupabaseRequired": "PBC 資料需要 Supabase。請設定 VITE_DEPLOYMENT_DOMAIN 與 VITE_SUPABASE_ANON_KEY，並套用 pbc_documents 相關資料庫遷移後重新整理頁面。",
+  "pbcNoGroup": "目前帳號尚未關聯工作區團隊。請先在設定中加入或建立團隊後再使用團隊協作。",
+  "pbcSelectGroup": "選擇團隊",
+  "pbcLoading": "載入 PBC 中…",
+  "pbcError": "載入 PBC 資料失敗。",
+  "pbcRetry": "重試",
+  "pbcTotalScore": "績效預估總分",
+  "pbcOverallGoals": "月度總體目標與方向",
+  "pbcOverallGoalsHint": "每行輸入一則月度目標或方向，系統將自動排列為編號清單",
+  "pbcOverallGoalsEmpty": "尚未填寫月度總體目標。可於「編輯表頭」中每行輸入一則。",
+  "pbcSectionScore": "區塊小計",
+  "pbcGrade": {
+    "S": "S 級（傑出亮眼）",
+    "A": "A 級（良好超標）",
+    "B": "B 級（合格達標）",
+    "C": "C 級（需加強改善）"
+  },
+  "scoreLabel": {
+    "1": "差",
+    "2": "較差",
+    "3": "合格",
+    "4": "良好",
+    "5": "優秀"
+  },
+  "scorePlaceholder": "點擊評分",
+  "pbcInitialising": "正在初始化 PBC 文件…",
+  "pbcGroupSection": "組級 PBC",
+  "pbcMemberPbcHeading": "{{name}} 的 PBC",
+  "pbcMemberScopeTitle": "成員 PBC",
+  "pbcPickMember": "選擇成員",
+  "pbcSelectMemberHint": "請從右側「選擇成員」下拉選單選擇一位成員，以檢視或編輯其 PBC。",
+  "pbcFillProgressHint": "點此填寫當前進度（可換行）。",
+  "pbcFillDefinitionHint": "點此填寫指標定義或說明（可換行）。",
+  "pbcFillCodeHint": "點此填寫列代碼（例如 F2.1.4）。",
+  "pbcFillTitleHint": "點此填寫承諾標題。",
+  "pbcFillAnnualTargetHint": "點此填寫年度目標（可換行）。",
+  "pbcFillWeightHint": "點此設定權重百分比（0–100）。",
+  "pbcFillEvalPeriodHint": "點此填寫考評週期標示。",
+  "pbcMembersSection": "成員 PBC",
+  "part": {
+    "result": "第一部分：結果指標（占比 50%）",
+    "process": "第二部分：過程指標（關鍵行動）（占比 30%）",
+    "org_growth": "第三部分：組織與員工成長（占比 20%）"
+  },
+  "partWeight": "權重：{n}%",
+  "col": {
+    "code": "編碼",
+    "title": "關鍵指標",
+    "annualTarget": "2026 年度目標",
+    "milestones": "指標定義/說明",
+    "definition": "指標定義/說明",
+    "weight": "權重（100%）",
+    "evaluationPeriod": "評估週期",
+    "currentProgress": "當前進度",
+    "selfEvaluation": "個人完成進度自評",
+    "managerEvaluation": "經理對大區完成進度的評議",
+    "groupSelfEvaluation": "大區完成進度自評",
+    "groupManagerEvaluation": "經理對大區完成進度的評議"
+  },
+  "scoringRubric": {
+    "title": "評價標準",
+    "score5": "5 分（優秀）",
+    "score4": "4 分（良好）",
+    "score3": "3 分（合格）",
+    "score2": "2 分（較差）",
+    "score1": "1 分（差）",
+    "score0": "0 分",
+    "desc5": "完成所有目標，達到突破性成果，為他人樹立標竿，獲跨團隊認可。",
+    "desc4": "目標完成率 90% 以上，部分工作超出預期，大多數交付物按時完成。",
+    "desc3": "目標完成率 80%，工作品質達標，按時滿足預期。",
+    "desc2": "目標完成率 70–80%，至少一項關鍵任務未完成，部分完成。",
+    "desc1": "目標完成率低於 60%，大多數工作未完成，未能履行承諾。",
+    "desc0": "未執行。"
+  },
+  "action": {
+    "editRow": "編輯",
+    "saveRow": "儲存",
+    "cancelEdit": "取消",
+    "initDocument": "初始化 PBC",
+    "editHeader": "編輯表頭"
+  },
+  "empty": "本年度暫無 PBC 文件，點擊「初始化 PBC」建立。",
+  "saveSuccess": "儲存成功。",
+  "saveError": "儲存失敗，請重試。"
+}

@@ -1,0 +1,51 @@
+{
+  "title": "全域主管",
+  "description": "全域主管可跨所有組唯讀存取系統管理員白名單指定的 /admin 模組，不受自身所屬組限制。請謹慎用於需要跨組監督的職務。",
+  "breadcrumb": {
+    "globalLeaders": "全域主管",
+    "settings": "設定"
+  },
+  "addLeader": {
+    "title": "任命全域主管",
+    "searchPlaceholder": "依電子郵件或姓名搜尋",
+    "searchEmpty": "輸入以搜尋已註冊用戶",
+    "searchNoResults": "找不到符合的用戶",
+    "alreadyLeader": "已是全域主管",
+    "add": "任命",
+    "adding": "任命中…",
+    "addError": "任命全域主管失敗，請重試",
+    "addSuccess": "已任命全域主管"
+  },
+  "list": {
+    "title": "目前的全域主管",
+    "empty": "尚未任命任何全域主管。",
+    "appointedAt": "任命時間",
+    "moduleCount": "{{count}} 個模組",
+    "manageModules": "管理模組",
+    "revoke": "撤銷",
+    "revokeConfirmTitle": "撤銷全域主管",
+    "revokeConfirmMessage": "確定要撤銷此用戶的全域主管權限嗎？不會影響其角色或組成員身分。",
+    "revokeConfirmButton": "確認撤銷",
+    "revokeCancelButton": "取消",
+    "revokeError": "撤銷全域主管失敗，請重試",
+    "revokeSuccess": "已撤銷全域主管"
+  },
+  "moduleAccess": {
+    "title": "唯讀模組白名單",
+    "description": "選擇此全域主管可跨所有組唯讀存取的模組。全部不勾選即可先任命、之後再授予存取權限。",
+    "selectAll": "全選所有模組",
+    "save": "儲存模組",
+    "saving": "儲存中…",
+    "saveSuccess": "模組存取權限已更新",
+    "saveError": "儲存模組存取權限失敗，請重試"
+  },
+  "desktopAccess": {
+    "title": "桌面功能",
+    "description": "此領導的 Electron Home Function 與地圖圖層入口鍵（手動管理；不與網站模組同步）。",
+    "selectAll": "全選桌面鍵",
+    "save": "儲存桌面權限",
+    "saving": "儲存中…",
+    "saveSuccess": "桌面權限已儲存",
+    "saveError": "儲存桌面權限失敗"
+  }
+}

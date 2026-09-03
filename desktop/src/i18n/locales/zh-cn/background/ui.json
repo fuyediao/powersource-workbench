@@ -1,0 +1,10 @@
+{
+  "galleryHint": "点选缩图设为背景；悬停可删除。",
+  "invalidType": "仅支持 JPEG、PNG、WebP 图片。",
+  "limitReached": "最多可保存 12 张壁纸，请先删除一张再上传。",
+  "rotateIntervalLabel": "轮播间隔",
+  "rotateLabel": "自动轮播",
+  "rotateSecondsUnit": "秒",
+  "saveFailed": "背景图片保存失败，请再试一次。",
+  "tooLarge": "图片太大，请选择 10MB 以内的文件。"
+}

@@ -1,0 +1,25 @@
+{
+  "linkedAccounts": {
+    "google": "Google",
+    "googleConnected": "已链接",
+    "googleDescription": "绑定 Google 账户后，即可在使用公司邮箱后再以 Google 登录。",
+    "linkButton": "链接 Google 账户",
+    "linkFailed": "链接 Google 账户失败。服务器可能未启用手动链接，或此 Google 账户已链接到其他用户。"
+  },
+  "password": {
+    "changePassword": "修改密码",
+    "confirm": "确认新密码",
+    "current": "当前密码",
+    "errors": {
+      "currentInvalid": "当前密码不正确",
+      "mismatch": "两次输入的新密码不一致",
+      "tooShort": "密码至少需 {{min}} 个字符",
+      "updateFailed": "更新密码失败，请重试"
+    },
+    "new": "新密码",
+    "setPassword": "设置密码",
+    "setSuccess": "已成功设置密码",
+    "title": "登录密码",
+    "updateSuccess": "已成功更新密码"
+  }
+}

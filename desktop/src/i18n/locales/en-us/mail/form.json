@@ -1,0 +1,11 @@
+{
+  "account": "Account",
+  "email": "Email",
+  "password": "Password",
+  "passwordOrAuthCode": "Password / auth code",
+  "displayName": "Display name",
+  "imapHost": "IMAP host",
+  "imapPort": "IMAP port",
+  "smtpHost": "SMTP host",
+  "smtpPort": "SMTP port"
+}

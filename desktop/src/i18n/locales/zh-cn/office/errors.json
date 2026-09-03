@@ -1,0 +1,14 @@
+{
+  "loadFailed": "无法加载文件库。",
+  "openFailed": "无法打开文件。",
+  "createFailed": "无法创建文件。",
+  "colorFailed": "无法更新文件颜色。",
+  "reorderFailed": "无法保存新的排序。",
+  "deleteFailed": "无法删除文件。",
+  "moveFailed": "无法将文件移到群组。",
+  "copyFailed": "无法复制文件到个人文件库。",
+  "uploadFailed": "无法上传文件。",
+  "uploadDenied": "你没有权限在此上传文件。",
+  "uploadTooLarge": "文件太大，无法上传（上限 50 MB）。",
+  "unsupportedType": "请拖入 {{kinds}} 文件以上传到此文件库。"
+}

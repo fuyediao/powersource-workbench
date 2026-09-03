@@ -1,0 +1,7 @@
+{
+  "languageLabel": "语言",
+  "systemLabel": "系统",
+  "startupLabel": "启动",
+  "launchAtLogin": "开机自启动",
+  "silentLaunch": "静默启动"
+}

@@ -1,0 +1,32 @@
+{
+  "emailLabel": "郵箱",
+  "emailPlaceholder": "name{'@'}example.com",
+  "employeeIdLabel": "工號",
+  "employeeIdPlaceholder": "PS0001",
+  "osModelLabel": "作業系統／型號",
+  "osModelPlaceholder": "例如 Windows 11／MacBook Air",
+  "messageLabel": "反饋／建議內容",
+  "messageHint": "問題反饋請附上：復現步驟＋報錯截圖＋發生時間。",
+  "messagePlaceholder": "請描述復現步驟、報錯與發生時間…",
+  "imagesLabel": "圖片（選填）",
+  "imagesHint": "{{count}}／{{max}} · JPEG／PNG · 每張最多 2 MB",
+  "imagesDrag": "拖曳",
+  "imagesOrSelect": "或選擇檔案",
+  "browseFiles": "瀏覽檔案",
+  "pasteFromClipboard": "從剪貼簿貼上",
+  "imagesFormats": "支援的檔案類型：.jpg、.jpeg、.png",
+  "send": "發送",
+  "sending": "發送中…",
+  "success": "反饋／建議已發送，感謝您。",
+  "errors": {
+    "invalidEmail": "請輸入有效的郵箱地址。",
+    "invalidEmployeeId": "請輸入工號。",
+    "invalidOsModel": "請輸入作業系統／型號。",
+    "invalidMessage": "請輸入反饋／建議內容。",
+    "invalidImages": "圖片須為 JPEG／PNG，最多 3 張，每張不超過 2 MB。",
+    "clipboard": "剪貼簿中沒有 JPEG／PNG 圖片，或無法讀取剪貼簿。",
+    "notConfigured": "反饋／建議功能暫時不可用。",
+    "network": "網路錯誤，請檢查連線後重試。",
+    "server": "發送失敗，請稍後重試。"
+  }
+}

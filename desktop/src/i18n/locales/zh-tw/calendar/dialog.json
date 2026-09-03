@@ -1,0 +1,63 @@
+{
+  "createTitle": "新增事件",
+  "editTitle": "編輯事件",
+  "title": "標題",
+  "description": "說明",
+  "calendar": "日曆",
+  "allDay": "全天",
+  "start": "開始",
+  "end": "結束",
+  "repeat": "重複",
+  "repeatNone": "不重複",
+  "repeatDaily": "每天",
+  "repeatWeekly": "每週",
+  "repeatMonthly": "每月",
+  "repeatCount": "重複次數",
+  "repeatEditHint": "修改系列時請在下方選擇範圍。",
+  "invitees": "邀請人",
+  "delete": "刪除",
+  "confirmDelete": "確定刪除此事件？",
+  "picker": {
+    "today": "今天",
+    "prevMonth": "上個月",
+    "nextMonth": "下個月",
+    "prevYear": "上一年",
+    "nextYear": "下一年",
+    "prevYears": "更早年份",
+    "nextYears": "更晚年份",
+    "chooseYearMonth": "選擇年月",
+    "hour": "時",
+    "minute": "分"
+  },
+  "editScope": "編輯範圍",
+  "scopeThis": "僅此事件",
+  "scopeFollowing": "此事件與之後",
+  "scopeAll": "全部事件",
+  "scopeHint": {
+    "this": "只更新這一次。",
+    "following": "更新這次與之後的事件。",
+    "all": "更新整個系列。"
+  },
+  "confirmDeleteScope": {
+    "this": "只刪除這一次？",
+    "following": "刪除這次與之後的事件？",
+    "all": "刪除整個系列？"
+  },
+  "inviteesSearch": "搜尋人員",
+  "inviteesSearchHint": "輸入姓名或電子郵件以尋找人員。",
+  "inviteesNoResults": "沒有符合的人員",
+  "inviteesSelected": "已選 {{count}} 人",
+  "inviteesRemove": "移除 {{name}}",
+  "inviteesEmpty": "目前沒有可邀請的人員",
+  "invitationTitle": "邀請",
+  "rsvp": {
+    "label": "你的回覆",
+    "current": "目前：{{status}}",
+    "responses": "回覆狀態",
+    "you": "你",
+    "invited": "待回覆",
+    "accepted": "接受",
+    "declined": "拒絕",
+    "tentative": "待定"
+  }
+}

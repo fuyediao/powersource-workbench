@@ -1,0 +1,316 @@
+{
+  "common": {
+    "save": "儲存",
+    "saving": "儲存中…",
+    "enable": "開啟",
+    "clear": "清除",
+    "copy": "複製",
+    "copied": "已複製",
+    "configure": "設定",
+    "browse": "瀏覽…"
+  },
+  "units": {
+    "minutes": "分鐘",
+    "milliseconds": "毫秒",
+    "kilobytes": "KB",
+    "files": "個檔案"
+  },
+  "groups": {
+    "network": "網路",
+    "general": "一般",
+    "backup": "備份與診斷"
+  },
+  "network": {
+    "tunMode": "TUN 模式",
+    "systemProxy": "系統代理",
+    "allowLan": "允許區域網路連線",
+    "networkInterfaces": "網路介面",
+    "dnsOverride": "DNS 覆寫",
+    "ipv6": "IPv6",
+    "unifiedDelay": "統一延遲測試",
+    "logLevel": "日誌等級",
+    "ports": "連接埠",
+    "externalController": "外部控制器",
+    "cors": "跨域設定 (CORS)",
+    "webUi": "Web UI",
+    "clashCore": "Clash 核心",
+    "tunnels": "通道",
+    "updateGeoData": "更新地理資料",
+    "openUwpTool": "開啟 UWP 工具",
+    "tooltips": {
+      "unifiedDelay": "在 TCP 交握完成後計算延遲，降低數值波動。"
+    },
+    "logLevels": {
+      "debug": "偵錯",
+      "info": "資訊",
+      "warning": "警告",
+      "error": "錯誤",
+      "silent": "靜音"
+    },
+    "messages": {
+      "geoDataUpdated": "地理資料已更新。"
+    }
+  },
+  "general": {
+    "copyEnv": "複製代理環境變數",
+    "startPageLabel": "啟動頁面",
+    "startPage": {
+      "options": {
+        "home": "首頁",
+        "proxies": "代理",
+        "profiles": "訂閱",
+        "connections": "連線",
+        "rules": "規則",
+        "logs": "日誌",
+        "unlock": "解鎖"
+      }
+    },
+    "startupScript": "啟動腳本",
+    "trayClickEvent": "系統匣點擊動作",
+    "trayClickOptions": {
+      "main_window": "顯示主視窗",
+      "tray_menu": "顯示系統匣選單",
+      "system_proxy": "切換系統代理",
+      "tun_mode": "切換 TUN 模式",
+      "disable": "停用"
+    },
+    "liteMode": "輕量模式",
+    "hotkeys": "快捷鍵",
+    "misc": "其他設定",
+    "layout": "版面配置"
+  },
+  "backup": {
+    "backup": "備份",
+    "runtimeConfig": "執行階段設定",
+    "openConfigDir": "開啟設定資料夾",
+    "openCoreDir": "開啟核心資料夾",
+    "openLogsPage": "開啟日誌",
+    "openLogsDir": "開啟日誌資料夾",
+    "openDevTools": "開啟開發者工具",
+    "exportDiagnostics": "匯出診斷資訊",
+    "vergeVersion": "Clash 介面版本"
+  },
+  "ports": {
+    "title": "連接埠",
+    "fields": {
+      "mixed": "混合連接埠",
+      "socks": "SOCKS5 連接埠",
+      "http": "HTTP(S) 連接埠",
+      "redir": "重新導向連接埠",
+      "tproxy": "TProxy 連接埠"
+    },
+    "actions": {
+      "random": "隨機"
+    },
+    "errors": {
+      "duplicate": "連接埠不可重複。",
+      "invalid": "請輸入 1 至 65535 之間的連接埠。",
+      "portInUse": "連接埠 {{port}} 已被使用。"
+    }
+  },
+  "controller": {
+    "title": "外部控制器",
+    "fields": {
+      "enable": "啟用外部控制器",
+      "address": "監聽位址",
+      "secret": "密鑰"
+    },
+    "placeholders": {
+      "address": "127.0.0.1:9097",
+      "secret": "密鑰"
+    },
+    "tooltips": {
+      "copy": "複製"
+    },
+    "copied": "已複製",
+    "errors": {
+      "addressRequired": "請輸入監聽位址。",
+      "secretRequired": "請輸入密鑰。"
+    }
+  },
+  "cors": {
+    "title": "外部控制器 CORS",
+    "fields": {
+      "allowPrivateNetwork": "允許私有網路",
+      "allowedOrigins": "允許的來源"
+    },
+    "placeholders": {
+      "origin": "https://example.com"
+    },
+    "actions": {
+      "add": "新增來源"
+    },
+    "messages": {
+      "alwaysIncluded": "永遠包含：{{urls}}"
+    }
+  },
+  "core": {
+    "title": "Clash 核心",
+    "actions": {
+      "upgrade": "升級核心",
+      "restart": "重新啟動核心"
+    },
+    "variants": {
+      "release": "使用中"
+    },
+    "messages": {
+      "restartSuccess": "核心已重新啟動。",
+      "upgraded": "核心已升級。",
+      "alreadyLatest": "已是最新版本。"
+    }
+  },
+  "networkInterfaces": {
+    "title": "網路介面",
+    "empty": "找不到任何網路介面。",
+    "fields": {
+      "ipAddress": "IP 位址",
+      "macAddress": "MAC 位址"
+    }
+  },
+  "webUi": {
+    "title": "Web UI",
+    "empty": "尚未新增任何 Web UI 連結。",
+    "placeholder": "https://example.com/#/setup?hostname=%host&port=%port&secret=%secret",
+    "actions": {
+      "add": "新增連結",
+      "open": "開啟"
+    },
+    "errors": {
+      "invalidServer": "尚未設定外部控制器位址。"
+    }
+  },
+  "tunnels": {
+    "title": "通道",
+    "existing": "現有通道",
+    "actions": {
+      "addNew": "新增通道",
+      "add": "新增"
+    },
+    "protocols": "協議",
+    "localAddr": "本機位址",
+    "localPort": "本機連接埠",
+    "targetAddr": "目標位址",
+    "targetPort": "目標連接埠",
+    "proxyGroup": "代理群組",
+    "optional": "選填",
+    "default": "預設（任意）",
+    "errors": {
+      "incomplete": "請填寫本機與目標的位址及連接埠。",
+      "invalidLocalAddr": "請輸入有效的本機位址。",
+      "invalidLocalPort": "請輸入有效的本機連接埠。",
+      "invalidTargetAddr": "請輸入有效的目標位址。",
+      "invalidTargetPort": "請輸入有效的目標連接埠。",
+      "portInUse": "連接埠 {{port}} 已被使用。"
+    }
+  },
+  "hotkeys": {
+    "title": "快捷鍵",
+    "toggles": {
+      "enableGlobal": "啟用全域快捷鍵"
+    },
+    "functions": {
+      "openOrCloseDashboard": "開啟／關閉主控台",
+      "rule": "切換至規則模式",
+      "global": "切換至全域模式",
+      "direct": "切換至直連模式",
+      "toggleSystemProxy": "切換系統代理",
+      "toggleTunMode": "切換 TUN 模式",
+      "entryLightweightMode": "進入輕量模式",
+      "reactivateProfiles": "重新套用訂閱"
+    }
+  },
+  "misc": {
+    "title": "其他設定",
+    "fields": {
+      "appLogLevel": "應用程式日誌等級",
+      "appLogMaxSize": "日誌檔最大大小",
+      "appLogMaxCount": "日誌檔最大數量",
+      "autoCloseConnections": "自動關閉連線",
+      "enableBuiltinEnhanced": "啟用內建增強模式",
+      "proxyLayoutColumns": "代理列表欄數",
+      "autoLogClean": "自動清理日誌",
+      "autoDelayDetection": "自動延遲偵測",
+      "autoDelayDetectionInterval": "自動延遲偵測間隔",
+      "defaultLatencyTest": "預設延遲測試網址",
+      "defaultLatencyTimeout": "預設延遲測試逾時"
+    },
+    "tooltips": {
+      "autoCloseConnections": "切換訂閱或代理時自動關閉連線。",
+      "enableBuiltinEnhanced": "使用內建增強模式進行規則比對。",
+      "autoDelayDetection": "定期在背景重新測試代理延遲。",
+      "defaultLatencyTest": "用於測量代理延遲的網址。"
+    },
+    "options": {
+      "autoLogClean": {
+        "never": "永不清理",
+        "retainDays": "保留 {{n}} 天"
+      },
+      "proxyLayoutColumns": {
+        "auto": "自動"
+      }
+    }
+  },
+  "layout": {
+    "title": "版面配置",
+    "fields": {
+      "trafficGraph": "顯示流量圖",
+      "memoryUsage": "顯示記憶體使用量",
+      "proxyGroupIcon": "顯示代理群組圖示",
+      "pauseRenderTrafficStatsOnBlur": "失去焦點時暫停統計繪製",
+      "toastPosition": "通知顯示位置",
+      "hoverNavigator": "滑鼠停留即可切換代理群組",
+      "hoverNavigatorDelay": "停留切換延遲",
+      "navIcon": "導覽圖示樣式",
+      "collapseNavBar": "收合導覽列",
+      "trayIcon": "系統匣圖示樣式",
+      "enableTraySpeed": "在系統匣圖示顯示速度",
+      "proxyGroupsDisplayMode": "系統匣代理群組顯示方式",
+      "showOutboundModesInline": "在系統匣內嵌顯示出站模式",
+      "commonTrayIcon": "自訂系統匣圖示",
+      "systemProxyTrayIcon": "自訂系統代理系統匣圖示",
+      "tunTrayIcon": "自訂 TUN 系統匣圖示"
+    },
+    "tooltips": {
+      "hoverNavigator": "滑鼠停留在側邊欄即可切換代理群組，無需點擊。"
+    },
+    "options": {
+      "toastPosition": {
+        "topRight": "右上",
+        "topLeft": "左上",
+        "bottomRight": "右下",
+        "bottomLeft": "左下"
+      },
+      "icon": {
+        "monochrome": "單色",
+        "colorful": "彩色",
+        "disable": "停用"
+      },
+      "proxyGroupsDisplayMode": {
+        "default": "預設",
+        "inline": "內嵌",
+        "disable": "停用"
+      }
+    },
+    "actions": {
+      "browse": "瀏覽…"
+    }
+  },
+  "liteMode": {
+    "title": "輕量模式",
+    "actions": {
+      "enterNow": "立即進入輕量模式"
+    },
+    "toggles": {
+      "autoEnter": "閒置時自動進入"
+    },
+    "tooltips": {
+      "autoEnter": "應用程式閒置一段時間後自動切換至輕量模式。"
+    },
+    "fields": {
+      "delay": "閒置延遲"
+    },
+    "messages": {
+      "autoEnterHint": "閒置 {{n}} 分鐘後進入輕量模式。"
+    }
+  }
+}

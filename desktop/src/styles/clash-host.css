@@ -1,0 +1,21 @@
+/*
+ * Clash tile host (GeoCRM shell). Clash Verge mounts in this renderer
+ * (Aura-style island). Tokens here style the inset chrome around that pane.
+ */
+
+.clash-page {
+  --clash-sidebar: color-mix(in oklab, var(--panel) 80%, transparent);
+  --clash-workspace: color-mix(in oklab, var(--panel) 70%, transparent);
+  --clash-selected: color-mix(in oklab, var(--brand) 14%, transparent);
+  --clash-hover: color-mix(in oklab, var(--ink) 5%, transparent);
+  --clash-divider: color-mix(in oklab, var(--ink) 8%, transparent);
+  --clash-dialog: color-mix(in oklab, white 78%, transparent);
+  --clash-traffic-down: var(--brand);
+  --clash-traffic-up: var(--color-emerald-500);
+  background: transparent;
+  color: var(--ink);
+}
+
+html.dark .clash-page {
+  --clash-dialog: color-mix(in oklab, var(--color-zinc-950) 78%, transparent);
+}

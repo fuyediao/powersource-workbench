@@ -1,0 +1,10 @@
+{
+  "galleryHint": "Click a thumbnail to set it as wallpaper; hover to delete.",
+  "invalidType": "Only JPEG, PNG, and WebP images are supported.",
+  "limitReached": "You can save up to 12 wallpapers. Delete one before uploading.",
+  "rotateIntervalLabel": "Rotate interval",
+  "rotateLabel": "Auto-rotate",
+  "rotateSecondsUnit": "sec",
+  "saveFailed": "Could not save the wallpaper. Please try again.",
+  "tooLarge": "Image is too large. Choose a file under 10MB."
+}

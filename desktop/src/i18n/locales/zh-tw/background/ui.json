@@ -1,0 +1,10 @@
+{
+  "galleryHint": "點選縮圖設為背景；懸停可刪除。",
+  "invalidType": "僅支援 JPEG、PNG、WebP 圖片。",
+  "limitReached": "最多可儲存 12 張壁紙，請先刪除一張再上傳。",
+  "rotateIntervalLabel": "輪播間隔",
+  "rotateLabel": "自動輪播",
+  "rotateSecondsUnit": "秒",
+  "saveFailed": "背景圖片儲存失敗，請再試一次。",
+  "tooLarge": "圖片太大，請選擇 10MB 以內的檔案。"
+}

@@ -1,0 +1,14 @@
+{
+  "confirmDelete": "确定要删除 {{name}} 吗？此操作无法撤销。",
+  "rename": "重命名",
+  "renameTitle": "重命名文件",
+  "renameLabel": "文件名称",
+  "renameAction": "重命名",
+  "renaming": "重命名中...",
+  "renameDuplicate": "已存在名为 {{name}} 的文件。",
+  "renameFailed": "无法重命名文件。",
+  "delete": "删除",
+  "fileColor": "文件颜色",
+  "clearColor": "无颜色",
+  "cancel": "取消"
+}

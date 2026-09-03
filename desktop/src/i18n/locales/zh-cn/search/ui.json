@@ -1,0 +1,8 @@
+{
+  "directSearch": "{{query}} — {{engine}} 搜索",
+  "engineAsk": "AI",
+  "openPage": "打开 {{name}}",
+  "placeholder": "使用 {{engine}} 搜索",
+  "spotlightDismiss": "关闭搜索",
+  "spotlightLabel": "Spotlight 搜索"
+}

@@ -1,0 +1,6 @@
+{
+  "archived": "已归档 {{count}} 封",
+  "trashed": "已移至垃圾箱 {{count}} 封",
+  "spammed": "已标为垃圾邮件 {{count}} 封",
+  "action": "撤销"
+}

@@ -1,0 +1,8 @@
+{
+  "loadFailed": "Could not load Folio pages.",
+  "createFailed": "Could not create the page.",
+  "saveFailed": "Could not save the page.",
+  "deleteFailed": "Could not delete the page.",
+  "copyFailed": "Could not copy the page to personal Folio.",
+  "moveFailed": "Could not move the page to the group."
+}

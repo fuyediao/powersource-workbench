@@ -1,18 +1,514 @@
-import { AppShell } from '@/components/app-shell'
-import { LoginPage } from '@/components/login-page'
+import { useCallback, useEffect, useState } from 'react'
+import { SignedInShell } from '@/components/app/SignedInShell'
+import { AskAiSidebar } from '@/components/ask-ai/AskAiSidebar'
+import { MacStyleTitleBar } from '@/components/layout/MacStyleTitleBar'
+import { RequiredAppUpdateGate } from '@/components/settings/required-app-update-gate'
+import { isFeatureTabId, parseGeocrmSearchTarget } from '@/constants/feature-tabs'
+import { isBrowserTabId } from '@/utils/settings/link-open-preference'
+import { LinkOpenProvider } from '@/hooks/link-open-context'
+import { useApplicationMenu } from '@/hooks/use-application-menu'
 import { useAuth } from '@/hooks/use-auth'
+import { useEnsureLocalePrefixes } from '@/hooks/use-ensure-locale-prefixes'
+import { useTitleTabs } from '@/hooks/use-title-tabs'
+import { LoginPage } from '@/pages/login'
+import { StatusLoading } from '@/components/common/status-loading'
+import {
+  isSettingsSection,
+  persistSettingsSection,
+} from '@/components/settings/settings-types'
+import {
+  openGeoCrmSettings,
+  subscribeOpenSettingsRequest,
+} from '@/utils/settings/settings-section-request'
+import { subscribeOpenMailRequest } from '@/utils/mail/mail-compose-request'
+import { subscribeOpenCalendarRequest } from '@/utils/calendar/calendar-event-request'
+import { isAgentOverlayFallbackChord } from '@/utils/agent-overlay/agent-overlay-shortcut'
+import { isSpotlightFallbackChord } from '@/utils/spotlight/spotlight-shortcut'
+import { subscribeOpenOfficeRequest } from '@/utils/office/office-document-request'
+import { subscribeOpenAuraRequest } from '@/utils/aura/aura-document-request'
+import { migrateLegacyOfficeWorkspace } from '@/office/office-workspace-legacy-migration'
+import { subscribeOpenClashRequest } from '@/utils/clash-page-request'
+import { subscribeOpenOrdersRequest } from '@/utils/orders/orders-open-request'
+import { subscribeOpenKanbanRequest } from '@/utils/kanban/kanban-open-request'
+import {
+  parseAskAiSearchUrl,
+  requestAskAiSearch,
+  subscribeAskAiSearch,
+} from '@/utils/ask-ai/ask-ai-search-request'
 
 /**
- * Selects the authenticated or signed-out Workbench experience.
- * @returns The application root.
+ * Parks native WebContentsView panes that would cover Home / other features.
+ * @param screen - Title-bar screen being shown.
+ */
+function hideForeignNativePanes(screen: string): void {
+  if (!isBrowserTabId(screen)) {
+    void window.geocrm?.browser?.invoke?.('hideAll')
+  }
+  if (screen !== 'clash') {
+    void window.geocrm?.clash?.invoke?.('hide')
+  }
+}
+
+/**
+ * Auth gate + caption overlay (Windows traffic lights / macOS hidden title bar).
+ * Signed-in UI lives in {@link SignedInShell}.
+ * @returns Application root.
  */
 export default function App() {
   const auth = useAuth()
-  if (auth.loading && !auth.user) {
-    return <div className="loading-screen"><span /></div>
+  const customTitleBar = Boolean(window.geocrm?.window?.usesCustomTitleBar)
+  const showHomeLauncher = window.geocrm?.window?.showHomeLauncher !== false
+  const signedIn = Boolean(auth.session?.user)
+  const tabs = useTitleTabs(signedIn, showHomeLauncher)
+  const localeReady = useEnsureLocalePrefixes(
+    signedIn ? tabs.screen : 'home',
+    signedIn ? tabs.openTabs : [],
+  )
+  const [askAiOpen, setAskAiOpen] = useState(false)
+  const [tabReloadEpoch, setTabReloadEpoch] = useState<Record<string, number>>({})
+
+  /**
+   * Reloads a title-bar tab: in-app browser pages reload in place; Settings,
+   * feature, and Folio pages remount so their data is fetched again.
+   * @param tabId - Tab to refresh.
+   * @returns Nothing.
+   */
+  function reloadTitleBarTab(tabId: string): void {
+    if (isBrowserTabId(tabId)) {
+      void window.geocrm?.browser?.invoke?.('reload', tabId)
+      return
+    }
+    setTabReloadEpoch((prev) => ({ ...prev, [tabId]: (prev[tabId] ?? 0) + 1 }))
   }
-  if (!auth.user) {
-    return <LoginPage error={auth.error} loading={auth.loading} onLogin={auth.login} />
+
+  const openBrowserTab = useCallback(
+    (url: string) => {
+      tabs.openBrowserTab(url)
+    },
+    [tabs],
+  )
+
+  /**
+   * Hides native browser panes immediately when leaving an in-app browser tab.
+   * Must run synchronously on click — waiting for useEffect leaves WebContentsView covering Home.
+   *
+   * @param tabId - Title-bar tab being activated
+   */
+  const selectTab = useCallback(
+    (tabId: Parameters<typeof tabs.selectTab>[0]): void => {
+      hideForeignNativePanes(tabId)
+      tabs.selectTab(tabId)
+    },
+    [tabs],
+  )
+
+  useApplicationMenu({
+    signedIn,
+    screen: tabs.screen,
+    userId: auth.session?.user?.id ?? null,
+    localeReady,
+    onNavigate: (target) => {
+      if (target === 'home') {
+        if (showHomeLauncher) {
+          selectTab('home')
+        }
+        return
+      }
+      if (target === 'settings') {
+        hideForeignNativePanes('settings')
+        tabs.openSettings()
+        return
+      }
+      if (isFeatureTabId(target)) {
+        hideForeignNativePanes(target)
+        tabs.openFeature(target)
+      }
+    },
+    onCloseTab: () => {
+      if (tabs.screen !== 'home') {
+        tabs.closeTab(tabs.screen)
+      }
+    },
+  })
+
+  /**
+   * Closes a title-bar tab; hides browser panes when landing on Home / Settings / feature.
+   *
+   * @param tabId - Tab to close
+   */
+  const closeTab = useCallback(
+    (tabId: Parameters<typeof tabs.closeTab>[0]): void => {
+      const wasBrowser = isBrowserTabId(tabId)
+      const wasActive = tabs.screen === tabId
+      tabs.closeTab(tabId)
+      if (wasBrowser && wasActive) {
+        hideForeignNativePanes('home')
+      }
+    },
+    [tabs],
+  )
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('has-custom-title-bar', customTitleBar)
+    return () => {
+      document.documentElement.classList.remove('has-custom-title-bar')
+    }
+  }, [customTitleBar])
+
+  useEffect(() => {
+    if (!signedIn) {
+      setAskAiOpen(false)
+    }
+  }, [signedIn])
+
+  useEffect(() => {
+    if (!signedIn) {
+      hideForeignNativePanes('home')
+      return
+    }
+    hideForeignNativePanes(tabs.screen)
+  }, [signedIn, tabs.screen])
+
+  useEffect(() => {
+    if (!signedIn) return
+    const open = (event: Event) => {
+      const detail = (event as CustomEvent<{ pageId?: unknown; title?: unknown }>).detail
+      if (typeof detail?.pageId === 'string') {
+        tabs.openFolioPage(detail.pageId, typeof detail.title === 'string' ? detail.title : '')
+      }
+    }
+    window.addEventListener('geocrm:open-folio-page', open)
+    return () => window.removeEventListener('geocrm:open-folio-page', open)
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenSettingsRequest(() => {
+      hideForeignNativePanes('settings')
+      tabs.openSettings()
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn || !auth.session?.user.id) {
+      return
+    }
+    void migrateLegacyOfficeWorkspace(auth.session.user.id)
+  }, [signedIn, auth.session?.user.id])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenOfficeRequest((kind) => {
+      hideForeignNativePanes(kind)
+      tabs.openFeature(kind)
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenAuraRequest(() => {
+      hideForeignNativePanes('aura')
+      tabs.openFeature('aura')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenMailRequest(() => {
+      hideForeignNativePanes('mail')
+      tabs.openFeature('mail')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenCalendarRequest(() => {
+      hideForeignNativePanes('calendar')
+      tabs.openFeature('calendar')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenClashRequest(() => {
+      hideForeignNativePanes('clash')
+      tabs.openFeature('clash')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenOrdersRequest(() => {
+      hideForeignNativePanes('orders')
+      tabs.openFeature('orders')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return subscribeOpenKanbanRequest(() => {
+      hideForeignNativePanes('kanban')
+      tabs.openFeature('kanban')
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return window.geocrm?.window?.onOpenSettings?.((section) => {
+      hideForeignNativePanes('settings')
+      if (section && isSettingsSection(section)) {
+        persistSettingsSection(section)
+        openGeoCrmSettings(section)
+        return
+      }
+      tabs.openSettings()
+    })
+  }, [signedIn, tabs])
+
+  useEffect(() => {
+    return window.geocrm?.window?.onSignOut?.(() => {
+      hideForeignNativePanes('home')
+      void auth.signOut()
+    })
+  }, [auth])
+
+  useEffect(() => {
+    void window.geocrm?.spotlight?.setEnabled?.(signedIn)
+    void window.geocrm?.agentOverlay?.setEnabled?.(signedIn)
+    return () => {
+      void window.geocrm?.spotlight?.setEnabled?.(false)
+      void window.geocrm?.agentOverlay?.setEnabled?.(false)
+    }
+  }, [signedIn])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+
+    let cancelled = false
+    let removeKeyDown: (() => void) | undefined
+
+    void window.geocrm?.spotlight?.usesGlobalShortcut?.().then((usesGlobal) => {
+      if (cancelled || usesGlobal) {
+        // Main process owns the global shortcut — avoid a second toggle from the renderer.
+        return
+      }
+      const accelerator = window.geocrm?.spotlight?.accelerator ?? 'Alt+Space'
+      /**
+       * In-window shortcut fallback when the OS blocks the global shortcut.
+       * @param event - Keyboard event.
+       * @returns Nothing.
+       */
+      function handleKeyDown(event: KeyboardEvent): void {
+        if (!isSpotlightFallbackChord(event, accelerator)) {
+          return
+        }
+        event.preventDefault()
+        event.stopPropagation()
+        void window.geocrm?.spotlight?.toggle?.()
+      }
+      window.addEventListener('keydown', handleKeyDown, true)
+      removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)
+    })
+
+    return () => {
+      cancelled = true
+      removeKeyDown?.()
+    }
+  }, [signedIn])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+
+    let cancelled = false
+    let removeKeyDown: (() => void) | undefined
+
+    void window.geocrm?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
+      if (cancelled || usesGlobal) {
+        return
+      }
+      const accelerator = window.geocrm?.agentOverlay?.accelerator ?? 'Alt+G'
+      /**
+       * In-window shortcut fallback when the OS blocks the global overlay chord.
+       * @param event - Keyboard event.
+       * @returns Nothing.
+       */
+      function handleKeyDown(event: KeyboardEvent): void {
+        if (!isAgentOverlayFallbackChord(event, accelerator)) {
+          return
+        }
+        event.preventDefault()
+        event.stopPropagation()
+        void window.geocrm?.agentOverlay?.toggle?.()
+      }
+      window.addEventListener('keydown', handleKeyDown, true)
+      removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)
+    })
+
+    return () => {
+      cancelled = true
+      removeKeyDown?.()
+    }
+  }, [signedIn])
+
+  useEffect(() => {
+    return subscribeAskAiSearch(() => {
+      hideForeignNativePanes('chat')
+      tabs.openFeature('chat')
+    })
+  }, [tabs])
+
+  useEffect(() => {
+    if (!signedIn) {
+      return
+    }
+    return window.geocrm?.spotlight?.onOpenInApp?.((url) => {
+      const askQuery = parseAskAiSearchUrl(url)
+      if (askQuery) {
+        requestAskAiSearch(askQuery)
+        return
+      }
+      const target = parseGeocrmSearchTarget(url)
+      if (target) {
+        if (target.kind === 'home') {
+          if (showHomeLauncher) {
+            selectTab('home')
+          }
+          return
+        }
+        if (target.kind === 'settings') {
+          hideForeignNativePanes('settings')
+          tabs.openSettings()
+          return
+        }
+        if (target.kind === 'folio-page') {
+          hideForeignNativePanes('folio')
+          tabs.openFolioPage(target.pageId)
+          return
+        }
+        hideForeignNativePanes(target.id)
+        tabs.openFeature(target.id)
+        return
+      }
+      openBrowserTab(url)
+    })
+  }, [signedIn, openBrowserTab, selectTab, showHomeLauncher, tabs])
+
+  let body
+  if (auth.loading || (!signedIn && !localeReady)) {
+    body = (
+      <div className="auth-gate h-full min-h-dvh bg-canvas">
+        <StatusLoading />
+      </div>
+    )
+  } else if (!auth.session?.user) {
+    body = (
+      <LoginPage
+        error={auth.error}
+        configured={auth.configured}
+        isBusy={auth.isActionLoading}
+        onClearError={auth.clearError}
+        onSignInWithGoogle={auth.signInWithGoogle}
+        onSignInWithPassword={auth.signInWithPassword}
+        onSignInWithOtp={auth.signInWithOtp}
+        onVerifyEmailOtp={auth.verifyEmailOtp}
+      />
+    )
+  } else {
+    body = (
+      <SignedInShell
+        user={auth.session.user}
+        screen={tabs.screen}
+        openTabs={tabs.openTabs}
+        browserTabs={tabs.browserTabs}
+        folioTabs={tabs.folioTabs}
+        onOpenSettings={tabs.openSettings}
+        onOpenFeature={tabs.openFeature}
+        onBrowserTabTitle={tabs.setBrowserTabTitle}
+        onSignOut={auth.signOut}
+        tabReloadEpoch={tabReloadEpoch}
+      />
+    )
   }
-  return <AppShell user={auth.user} onSignOut={auth.logout} />
+
+  const shell = (
+    <>
+      <MacStyleTitleBar
+        tabs={tabs.tabs}
+        activeTabId={signedIn ? tabs.screen : undefined}
+        onSelectTab={selectTab}
+        onCloseTab={closeTab}
+        onReorderTabs={tabs.reorderTabs}
+        onTearOffTab={(tabId, screenPoint) => {
+          void tabs.beginTabTransfer(tabId, screenPoint)
+        }}
+        onOpenTabInNewWindow={(tabId) => {
+          void tabs.openTabInNewWindow(tabId)
+        }}
+        onMoveTabToWindow={(tabId, windowId) => {
+          void tabs.moveTabToWindow(tabId, windowId)
+        }}
+        onReloadTab={reloadTitleBarTab}
+        showHome={signedIn && showHomeLauncher}
+        showAskAi={signedIn}
+        askAiOpen={askAiOpen}
+        onAskAiClick={() => {
+          setAskAiOpen((open) => !open)
+        }}
+      />
+      <div className={customTitleBar ? 'pt-10' : undefined}>
+        <div
+          className={`flex ${
+            customTitleBar ? 'h-[calc(100dvh-2.5rem)]' : 'min-h-dvh'
+          }`}
+        >
+          <div className="min-h-0 min-w-0 flex-1 overflow-hidden">{body}</div>
+          {signedIn && auth.session ? (
+            <AskAiSidebar
+              open={askAiOpen}
+              user={auth.session.user}
+              pageLabel={tabs.tabs?.find((tab) => tab.id === tabs.screen)?.label ?? ''}
+            />
+          ) : null}
+        </div>
+      </div>
+    </>
+  )
+
+  if (signedIn) {
+    return (
+      <LinkOpenProvider onOpenInApp={openBrowserTab}>
+        {shell}
+        <RequiredAppUpdateGate />
+      </LinkOpenProvider>
+    )
+  }
+
+  return (
+    <>
+      {shell}
+      <RequiredAppUpdateGate />
+    </>
+  )
 }

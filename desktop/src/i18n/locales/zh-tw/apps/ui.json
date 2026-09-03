@@ -1,0 +1,12 @@
+{
+  "invalidName": "請輸入名稱。",
+  "invalidUrl": "請輸入有效的網址。",
+  "modeCreate": "建立",
+  "modeSearch": "搜尋",
+  "noResults": "找不到符合的網站",
+  "removeConfirm": "要將「{{name}}」從目前分類移出嗎？不會刪除網址本身。",
+  "removeTitle": "移出列表",
+  "searchHint": "輸入關鍵字搜尋資料庫中的網站",
+  "searchPlaceholder": "搜尋已有的網站",
+  "urlExists": "這個網址已在資料庫中，請改用搜尋加入。"
+}

@@ -1,0 +1,162 @@
+{
+  "clear": {
+    "button": "Clear All",
+    "confirm": {
+      "cancel": "Cancel",
+      "confirm": "Confirm Clear",
+      "message": "Are you sure you want to clear all API keys? This deletes every saved provider key and cannot be undone.",
+      "title": "Confirm Clear All API Keys"
+    }
+  },
+  "config": {
+    "anthropic": {
+      "placeholder": "sk-ant-..."
+    },
+    "gemini": {
+      "placeholder": "AIza..."
+    },
+    "grok": {
+      "placeholder": "xai-..."
+    },
+    "openai": {
+      "placeholder": "sk-..."
+    },
+    "title": "{{provider}} API Configuration",
+    "status": {
+      "configured": "Configured",
+      "localReady": "Local runtime",
+      "notConfigured": "Not Configured"
+    }
+  },
+  "local": {
+    "baseUrl": "Base URL",
+    "hint": "Runs on this device. Electron talks to localhost directly (not via the VPS).",
+    "keyOptional": "API key (optional)",
+    "llamacppHint": "Start llama-server yourself (default http://127.0.0.1:8080). We do not ship llama.cpp binaries."
+  },
+  "ipCheck": {
+    "apiSuccess": "API access successful",
+    "apiTest": "IP and API Check",
+    "browserHop": "Browser",
+    "button": "Check IP & API Access",
+    "checking": "Checking...",
+    "colModel": "Provider",
+    "egressHint": "Cloud keys use GET /models; local runtimes probe localhost. Server column is N/A for local. Headers show browser and server egress IPs.",
+    "egressTitle": "Egress IP",
+    "error": "Check failed, please try again",
+    "localOnly": "Local only (not via VPS)",
+    "missingKey": "API key is empty",
+    "networkError": "Network error",
+    "notTested": "Not tested",
+    "serverHop": "Server",
+    "skippedNoKey": "No API key saved on the server",
+    "unsupportedProvider": "Needs extra configuration"
+  },
+  "models": {
+    "chatgpt": {
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI"
+    },
+    "claude": {
+      "name": "Claude Opus 5",
+      "provider": "Anthropic"
+    },
+    "gemini": {
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google"
+    },
+    "grok": {
+      "name": "Grok 4.5",
+      "provider": "xAI"
+    }
+  },
+  "modelAllowlist": {
+    "search": "Search models…",
+    "allVendors": "All",
+    "vendorFilterAria": "Filter by vendor",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing…",
+    "loading": "Loading models…",
+    "empty": "No matching models",
+    "offline": "offline",
+    "viewAll": "View all models",
+    "showLess": "Show less",
+    "toggleAria": "Enable {{model}} in desktop pickers"
+  },
+  "save": {
+    "button": "Save Changes",
+    "error": "Save failed, please try again",
+    "saving": "Saving...",
+    "success": "All API keys saved successfully"
+  },
+  "showKey": "Show",
+  "hideKey": "Hide",
+  "providerSelection": {
+    "title": "Provider Selection",
+    "search": "Search providers…",
+    "empty": "No matching providers"
+  },
+  "providers": {
+    "ollama": "Ollama",
+    "lmstudio": "LM Studio",
+    "llamacpp": "llama.cpp",
+    "cherryin": "CherryIN",
+    "radeon-cloud": "AMD GPU Cloud",
+    "silicon": "Silicon",
+    "aihubmix": "AiHubMix",
+    "ocoolai": "ocoolAI",
+    "zhipu": "ZhiPu",
+    "deepseek": "deepseek",
+    "alayanew": "AlayaNew",
+    "dmxapi": "DMXAPI",
+    "aionly": "AIOnly",
+    "burncloud": "BurnCloud",
+    "302ai": "302.AI",
+    "lanyun": "LANYUN",
+    "ph8": "PH8",
+    "sophnet": "SophNet",
+    "ppio": "PPIO",
+    "qiniu": "Qiniu",
+    "openrouter": "OpenRouter",
+    "anthropic": "Anthropic",
+    "openai": "OpenAI",
+    "opencode": "OpenCode Go",
+    "azure-openai": "Azure OpenAI",
+    "gemini": "Gemini",
+    "vertexai": "VertexAI",
+    "github": "Github Models",
+    "copilot": "Github Copilot",
+    "moonshot": "Moonshot AI",
+    "baichuan": "BAICHUAN AI",
+    "dashscope": "Bailian",
+    "stepfun": "StepFun",
+    "doubao": "doubao",
+    "minimax": "MiniMax",
+    "groq": "Groq",
+    "together": "Together",
+    "fireworks": "Fireworks",
+    "nvidia": "nvidia",
+    "grok": "Grok",
+    "mistral": "Mistral",
+    "jina": "Jina",
+    "perplexity": "Perplexity",
+    "modelscope": "ModelScope",
+    "xirang": "Xirang",
+    "tokenhub": "TokenHub",
+    "baidu-cloud": "Baidu Cloud",
+    "voyageai": "VoyageAI",
+    "aws-bedrock": "AWS Bedrock",
+    "poe": "Poe",
+    "longcat": "LongCat",
+    "huggingface": "Hugging Face",
+    "gateway": "Vercel AI Gateway",
+    "cerebras": "Cerebras AI",
+    "mimo": "Xiaomi MiMo",
+    "zai": "zai",
+    "minimax-global": "minimax-global"
+  },
+  "catalog": {
+    "loading": "Loading providers…",
+    "loadError": "Could not load provider list. Check API connectivity."
+  }
+}

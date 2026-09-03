@@ -1,0 +1,12 @@
+{
+  "address": "Address",
+  "back": "Back",
+  "forward": "Forward",
+  "openExternal": "Open in system browser",
+  "reload": "Reload",
+  "tabFallback": "Page",
+  "newTab": "New tab",
+  "startTitle": "Start browsing",
+  "startBody": "Enter a URL to open a page.",
+  "startPlaceholder": "Enter URL"
+}

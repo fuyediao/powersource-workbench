@@ -1,0 +1,316 @@
+{
+  "common": {
+    "save": "保存",
+    "saving": "保存中…",
+    "enable": "开启",
+    "clear": "清除",
+    "copy": "复制",
+    "copied": "已复制",
+    "configure": "设置",
+    "browse": "浏览…"
+  },
+  "units": {
+    "minutes": "分钟",
+    "milliseconds": "毫秒",
+    "kilobytes": "KB",
+    "files": "个文件"
+  },
+  "groups": {
+    "network": "网络",
+    "general": "通用",
+    "backup": "备份与诊断"
+  },
+  "network": {
+    "tunMode": "TUN 模式",
+    "systemProxy": "系统代理",
+    "allowLan": "允许局域网连接",
+    "networkInterfaces": "网络接口",
+    "dnsOverride": "DNS 覆写",
+    "ipv6": "IPv6",
+    "unifiedDelay": "统一延迟测试",
+    "logLevel": "日志等级",
+    "ports": "端口",
+    "externalController": "外部控制器",
+    "cors": "跨域设置 (CORS)",
+    "webUi": "Web UI",
+    "clashCore": "Clash 核心",
+    "tunnels": "隧道",
+    "updateGeoData": "更新地理数据",
+    "openUwpTool": "打开 UWP 工具",
+    "tooltips": {
+      "unifiedDelay": "在 TCP 握手完成后计算延迟，降低数值波动。"
+    },
+    "logLevels": {
+      "debug": "调试",
+      "info": "信息",
+      "warning": "警告",
+      "error": "错误",
+      "silent": "静音"
+    },
+    "messages": {
+      "geoDataUpdated": "地理数据已更新。"
+    }
+  },
+  "general": {
+    "copyEnv": "复制代理环境变量",
+    "startPageLabel": "启动页面",
+    "startPage": {
+      "options": {
+        "home": "首页",
+        "proxies": "代理",
+        "profiles": "订阅",
+        "connections": "连接",
+        "rules": "规则",
+        "logs": "日志",
+        "unlock": "解锁"
+      }
+    },
+    "startupScript": "启动脚本",
+    "trayClickEvent": "系统托盘点击动作",
+    "trayClickOptions": {
+      "main_window": "显示主窗口",
+      "tray_menu": "显示托盘菜单",
+      "system_proxy": "切换系统代理",
+      "tun_mode": "切换 TUN 模式",
+      "disable": "停用"
+    },
+    "liteMode": "轻量模式",
+    "hotkeys": "快捷键",
+    "misc": "其他设置",
+    "layout": "布局"
+  },
+  "backup": {
+    "backup": "备份",
+    "runtimeConfig": "运行时配置",
+    "openConfigDir": "打开配置文件夹",
+    "openCoreDir": "打开核心文件夹",
+    "openLogsPage": "打开日志",
+    "openLogsDir": "打开日志文件夹",
+    "openDevTools": "打开开发者工具",
+    "exportDiagnostics": "导出诊断信息",
+    "vergeVersion": "Clash 界面版本"
+  },
+  "ports": {
+    "title": "端口",
+    "fields": {
+      "mixed": "混合端口",
+      "socks": "SOCKS5 端口",
+      "http": "HTTP(S) 端口",
+      "redir": "重定向端口",
+      "tproxy": "TProxy 端口"
+    },
+    "actions": {
+      "random": "随机"
+    },
+    "errors": {
+      "duplicate": "端口不可重复。",
+      "invalid": "请输入 1 至 65535 之间的端口。",
+      "portInUse": "端口 {{port}} 已被占用。"
+    }
+  },
+  "controller": {
+    "title": "外部控制器",
+    "fields": {
+      "enable": "启用外部控制器",
+      "address": "监听地址",
+      "secret": "密钥"
+    },
+    "placeholders": {
+      "address": "127.0.0.1:9097",
+      "secret": "密钥"
+    },
+    "tooltips": {
+      "copy": "复制"
+    },
+    "copied": "已复制",
+    "errors": {
+      "addressRequired": "请输入监听地址。",
+      "secretRequired": "请输入密钥。"
+    }
+  },
+  "cors": {
+    "title": "外部控制器 CORS",
+    "fields": {
+      "allowPrivateNetwork": "允许私有网络",
+      "allowedOrigins": "允许的来源"
+    },
+    "placeholders": {
+      "origin": "https://example.com"
+    },
+    "actions": {
+      "add": "添加来源"
+    },
+    "messages": {
+      "alwaysIncluded": "始终包含：{{urls}}"
+    }
+  },
+  "core": {
+    "title": "Clash 核心",
+    "actions": {
+      "upgrade": "升级核心",
+      "restart": "重启核心"
+    },
+    "variants": {
+      "release": "使用中"
+    },
+    "messages": {
+      "restartSuccess": "核心已重启。",
+      "upgraded": "核心已升级。",
+      "alreadyLatest": "已是最新版本。"
+    }
+  },
+  "networkInterfaces": {
+    "title": "网络接口",
+    "empty": "未找到任何网络接口。",
+    "fields": {
+      "ipAddress": "IP 地址",
+      "macAddress": "MAC 地址"
+    }
+  },
+  "webUi": {
+    "title": "Web UI",
+    "empty": "尚未添加任何 Web UI 链接。",
+    "placeholder": "https://example.com/#/setup?hostname=%host&port=%port&secret=%secret",
+    "actions": {
+      "add": "添加链接",
+      "open": "打开"
+    },
+    "errors": {
+      "invalidServer": "尚未配置外部控制器地址。"
+    }
+  },
+  "tunnels": {
+    "title": "隧道",
+    "existing": "现有隧道",
+    "actions": {
+      "addNew": "添加隧道",
+      "add": "添加"
+    },
+    "protocols": "协议",
+    "localAddr": "本机地址",
+    "localPort": "本机端口",
+    "targetAddr": "目标地址",
+    "targetPort": "目标端口",
+    "proxyGroup": "代理组",
+    "optional": "可选",
+    "default": "默认（任意）",
+    "errors": {
+      "incomplete": "请填写本机与目标的地址及端口。",
+      "invalidLocalAddr": "请输入有效的本机地址。",
+      "invalidLocalPort": "请输入有效的本机端口。",
+      "invalidTargetAddr": "请输入有效的目标地址。",
+      "invalidTargetPort": "请输入有效的目标端口。",
+      "portInUse": "端口 {{port}} 已被占用。"
+    }
+  },
+  "hotkeys": {
+    "title": "快捷键",
+    "toggles": {
+      "enableGlobal": "启用全局快捷键"
+    },
+    "functions": {
+      "openOrCloseDashboard": "打开／关闭主面板",
+      "rule": "切换到规则模式",
+      "global": "切换到全局模式",
+      "direct": "切换到直连模式",
+      "toggleSystemProxy": "切换系统代理",
+      "toggleTunMode": "切换 TUN 模式",
+      "entryLightweightMode": "进入轻量模式",
+      "reactivateProfiles": "重新应用订阅"
+    }
+  },
+  "misc": {
+    "title": "其他设置",
+    "fields": {
+      "appLogLevel": "应用日志等级",
+      "appLogMaxSize": "日志文件最大大小",
+      "appLogMaxCount": "日志文件最大数量",
+      "autoCloseConnections": "自动关闭连接",
+      "enableBuiltinEnhanced": "启用内置增强模式",
+      "proxyLayoutColumns": "代理列表列数",
+      "autoLogClean": "自动清理日志",
+      "autoDelayDetection": "自动延迟检测",
+      "autoDelayDetectionInterval": "自动延迟检测间隔",
+      "defaultLatencyTest": "默认延迟测试网址",
+      "defaultLatencyTimeout": "默认延迟测试超时"
+    },
+    "tooltips": {
+      "autoCloseConnections": "切换订阅或代理时自动关闭连接。",
+      "enableBuiltinEnhanced": "使用内置增强模式进行规则匹配。",
+      "autoDelayDetection": "定期在后台重新测试代理延迟。",
+      "defaultLatencyTest": "用于测量代理延迟的网址。"
+    },
+    "options": {
+      "autoLogClean": {
+        "never": "永不清理",
+        "retainDays": "保留 {{n}} 天"
+      },
+      "proxyLayoutColumns": {
+        "auto": "自动"
+      }
+    }
+  },
+  "layout": {
+    "title": "布局",
+    "fields": {
+      "trafficGraph": "显示流量图",
+      "memoryUsage": "显示内存使用量",
+      "proxyGroupIcon": "显示代理组图标",
+      "pauseRenderTrafficStatsOnBlur": "失焦时暂停统计绘制",
+      "toastPosition": "通知显示位置",
+      "hoverNavigator": "悬停即可切换代理组",
+      "hoverNavigatorDelay": "悬停切换延迟",
+      "navIcon": "导航图标样式",
+      "collapseNavBar": "收起导航栏",
+      "trayIcon": "托盘图标样式",
+      "enableTraySpeed": "在托盘图标显示速度",
+      "proxyGroupsDisplayMode": "托盘代理组显示方式",
+      "showOutboundModesInline": "在托盘内嵌显示出站模式",
+      "commonTrayIcon": "自定义托盘图标",
+      "systemProxyTrayIcon": "自定义系统代理托盘图标",
+      "tunTrayIcon": "自定义 TUN 托盘图标"
+    },
+    "tooltips": {
+      "hoverNavigator": "鼠标悬停在侧边栏即可切换代理组，无需点击。"
+    },
+    "options": {
+      "toastPosition": {
+        "topRight": "右上",
+        "topLeft": "左上",
+        "bottomRight": "右下",
+        "bottomLeft": "左下"
+      },
+      "icon": {
+        "monochrome": "单色",
+        "colorful": "彩色",
+        "disable": "停用"
+      },
+      "proxyGroupsDisplayMode": {
+        "default": "默认",
+        "inline": "内嵌",
+        "disable": "停用"
+      }
+    },
+    "actions": {
+      "browse": "浏览…"
+    }
+  },
+  "liteMode": {
+    "title": "轻量模式",
+    "actions": {
+      "enterNow": "立即进入轻量模式"
+    },
+    "toggles": {
+      "autoEnter": "闲置时自动进入"
+    },
+    "tooltips": {
+      "autoEnter": "应用闲置一段时间后自动切换至轻量模式。"
+    },
+    "fields": {
+      "delay": "闲置延迟"
+    },
+    "messages": {
+      "autoEnterHint": "闲置 {{n}} 分钟后进入轻量模式。"
+    }
+  }
+}

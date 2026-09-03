@@ -1,0 +1,37 @@
+{
+  "avatar": {
+    "restoreGoogle": "恢復 Google 頭像",
+    "upload": "上傳頭像"
+  },
+  "bio": "個人簡介",
+  "displayName": "顯示名稱",
+  "email": "電子郵件",
+  "emailDisplayChoice": "顯示用郵箱",
+  "emailOptionPrimary": "{{email}}（主要）",
+  "emailOptionGoogle": "{{email}}（Google）",
+  "useGoogleName": "使用 Google 名稱：{{name}}",
+  "edit": "編輯",
+  "employeeId": "工號",
+  "organization": {
+    "groupAdmin": "組管理員",
+    "superAdmin": "超級管理員",
+    "systemAdmin": "系統管理員",
+    "user": "使用者"
+  },
+  "organizationLabel": "所屬組織",
+  "phoneNumber": "電話號碼",
+  "phoneNoCountries": "找不到國家/地區",
+  "placeholders": {
+    "bio": "寫入您的個人簡介...",
+    "displayName": "Enter your display name",
+    "phoneLocal": "0912345678",
+    "phonePickCountry": "區號",
+    "phoneSearch": "搜尋國家或區號..."
+  },
+  "save": {
+    "button": "儲存變更",
+    "error": "儲存失敗，請重試",
+    "saving": "儲存中...",
+    "success": "個人資料已成功儲存"
+  }
+}

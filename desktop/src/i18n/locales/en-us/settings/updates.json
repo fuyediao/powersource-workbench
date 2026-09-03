@@ -1,0 +1,19 @@
+{
+  "title": "Updates",
+  "checking": "Checking for updates…",
+  "upToDate": "You are on the latest version ({{version}}).",
+  "available": "Version {{latestVersion}} is available (you have {{version}}).",
+  "unavailable": "Update checks are not available on this platform ({{version}}).",
+  "error": "Could not check for updates.",
+  "currentVersion": "Current version: {{version}}",
+  "download": "Download update",
+  "install": "Install update",
+  "retry": "Retry install",
+  "installError": "Could not install the update.",
+  "stepDownload": "Download",
+  "stepInstall": "Install",
+  "stepRestart": "Restart",
+  "forceTitle": "Update required",
+  "forceBody": "GeoCRM {{latestVersion}} is required to continue. You have {{version}}. The app will download, install, and restart.",
+  "close": "Close"
+}

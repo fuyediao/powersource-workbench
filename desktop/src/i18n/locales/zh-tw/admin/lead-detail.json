@@ -1,0 +1,16 @@
+{
+  "sectionOverview": "概覽",
+  "email": "Email",
+  "phone": "電話",
+  "linkedCustomer": "連結客戶",
+  "linkedCustomerSearch": "搜尋客戶名稱、聯絡人或 Email……",
+  "linkedCustomerNone": "未連結",
+  "lastContactDate": "最後聯絡時間",
+  "title": "線索詳情",
+  "notFound": "找不到此線索",
+  "createdAt": "建立時間",
+  "extendedSectionTitle": "擴充欄位",
+  "contactProfilesTitle": "聯絡人",
+  "contactProfileEmail": "郵箱",
+  "contactProfilePhones": "電話"
+}

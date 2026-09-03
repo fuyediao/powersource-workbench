@@ -1,0 +1,83 @@
+.title-bar-drag {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+/* Native traffic lights at x:16; 3x12px + 2x8px gaps. Home / tab gutter is ml-3. */
+.title-bar-native-inset {
+  padding-left: 4.25rem;
+}
+
+/* Fullscreen hides native lights — pull tabs toward the left edge. */
+.title-bar-native-inset-fullscreen {
+  padding-left: 0.75rem;
+}
+
+.title-bar-no-drag,
+.title-bar-traffic {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+/*
+ * Isolate caption controls from global `button { line-height/font: inherit }`
+ * so Folio/BlockSuite (AFFiNE :root tokens + editor remount) cannot reflow
+ * Ask AI / pin glyph metrics inside the fixed-height pills.
+ */
+.title-bar button {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: normal;
+  /* 1 clips descenders (g, y, j) under `truncate`; 1.25 still isolates from Folio inherit. */
+  line-height: 1.25;
+}
+
+.title-bar .title-bar-ask-ai-label {
+  position: static;
+  display: block;
+  align-self: center;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  font: inherit;
+  line-height: 1.25;
+  vertical-align: baseline;
+}
+
+.title-bar-traffic {
+  padding: 0;
+  border: 0;
+  cursor: default;
+}
+
+.title-bar-traffic:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--brand) 55%, transparent);
+  outline-offset: 2px;
+}
+
+html.has-custom-title-bar .app-shell {
+  min-height: calc(100dvh - 2.5rem);
+}
+
+html.has-custom-title-bar .auth-gate {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: auto;
+}
+
+html.has-custom-title-bar .settings-page,
+html.has-custom-title-bar .feature-page,
+html.has-custom-title-bar .aura-page,
+html.has-custom-title-bar .chat-page,
+html.has-custom-title-bar .mail-page,
+html.has-custom-title-bar .folio-page,
+html.has-custom-title-bar .calendar-page,
+html.has-custom-title-bar .map-page,
+html.has-custom-title-bar .clash-page,
+html.has-custom-title-bar .harness-page {
+  height: 100%;
+  max-height: 100%;
+}

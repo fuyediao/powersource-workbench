@@ -1,0 +1,18 @@
+{
+  "scope": "範圍",
+  "more": "頁面選單",
+  "rename": "重新命名",
+  "defaultMode": "預設檢視",
+  "addFavorite": "加入我的最愛",
+  "removeFavorite": "從我的最愛移除",
+  "new-tab": "在新分頁開啟",
+  "info": "檢視資訊",
+  "toc": "目錄",
+  "history": "歷史記錄",
+  "duplicate": "建立副本",
+  "importMarkdown": "匯入 Markdown",
+  "importHtml": "匯入 HTML",
+  "exportMarkdown": "匯出 Markdown",
+  "exportHtml": "匯出 HTML",
+  "trash": "移至垃圾桶"
+}

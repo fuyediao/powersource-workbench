@@ -1,0 +1,19 @@
+{
+  "title": "更新",
+  "checking": "正在檢查更新…",
+  "upToDate": "已是最新版本（{{version}}）。",
+  "available": "有新版本 {{latestVersion}}（目前為 {{version}}）。",
+  "unavailable": "此平台無法檢查更新（{{version}}）。",
+  "error": "無法檢查更新。",
+  "currentVersion": "目前版本：{{version}}",
+  "download": "下載更新",
+  "install": "安裝更新",
+  "retry": "重試安裝",
+  "installError": "無法安裝更新。",
+  "stepDownload": "下載",
+  "stepInstall": "安裝",
+  "stepRestart": "重新啟動",
+  "forceTitle": "必須更新",
+  "forceBody": "必須安裝 GeoCRM {{latestVersion}} 才能繼續使用（目前為 {{version}}）。應用程式會自動下載、安裝並重新啟動。",
+  "close": "關閉"
+}

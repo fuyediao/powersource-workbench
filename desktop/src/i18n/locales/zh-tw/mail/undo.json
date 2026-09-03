@@ -1,0 +1,6 @@
+{
+  "archived": "已封存 {{count}} 封",
+  "trashed": "已移至垃圾桶 {{count}} 封",
+  "spammed": "已標為垃圾郵件 {{count}} 封",
+  "action": "復原"
+}

@@ -1,0 +1,17 @@
+{
+  "section": "Google",
+  "connectionMenu": "Connection",
+  "connect": "Connect Google",
+  "connecting": "Waiting…",
+  "reauth": "Reconnect Google",
+  "reauthHint": "Reconnect Google Calendar to grant edit access, then Sync.",
+  "calendarsHeading": "Google calendars",
+  "sync": "Sync Google",
+  "syncing": "Syncing…",
+  "disconnect": "Disconnect",
+  "disconnectHint": "Stops future sync. Imported events stay in Personal.",
+  "confirmDisconnect": "Disconnect Google Calendar? Imported events stay in your Personal calendar.",
+  "error": "Google Calendar error",
+  "readOnlyEvent": "This Google calendar is read-only here. Reconnect with write access, or pick a writable calendar.",
+  "readOnlyCalendar": "Read-only calendar (holidays / subscribed). You can sync it, but not edit events."
+}

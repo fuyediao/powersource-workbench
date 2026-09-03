@@ -1,0 +1,37 @@
+{
+  "avatar": {
+    "restoreGoogle": "Restore Google avatar",
+    "upload": "Upload Avatar"
+  },
+  "bio": "Bio",
+  "displayName": "Display Name",
+  "email": "Email",
+  "emailDisplayChoice": "Display email",
+  "emailOptionPrimary": "{{email}} (primary)",
+  "emailOptionGoogle": "{{email}} (Google)",
+  "useGoogleName": "Use Google name: {{name}}",
+  "edit": "Edit",
+  "employeeId": "Employee ID",
+  "organization": {
+    "groupAdmin": "Group Administrator",
+    "superAdmin": "Super Administrator",
+    "systemAdmin": "System Administrator",
+    "user": "User"
+  },
+  "organizationLabel": "Organization",
+  "phoneNumber": "Phone Number",
+  "phoneNoCountries": "No countries found",
+  "placeholders": {
+    "bio": "Write your bio...",
+    "displayName": "Enter your display name",
+    "phoneLocal": "5551234567",
+    "phonePickCountry": "Code",
+    "phoneSearch": "Search country or code..."
+  },
+  "save": {
+    "button": "Save changes",
+    "error": "Save failed, please try again",
+    "saving": "Saving...",
+    "success": "Profile saved successfully"
+  }
+}

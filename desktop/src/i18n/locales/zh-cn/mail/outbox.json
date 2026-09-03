@@ -1,0 +1,31 @@
+{
+  "empty": "没有待同步或失败的任务",
+  "refresh": "刷新发件箱",
+  "messageCount": "{{count}} 封",
+  "status": {
+    "pending_remote": "待同步",
+    "failed": "失败",
+    "done": "完成",
+    "cancelled": "已取消"
+  },
+  "kind": {
+    "send": "发信",
+    "read": "标为已读",
+    "unread": "标为未读",
+    "star": "加星标",
+    "unstar": "取消星标",
+    "trash": "移至垃圾箱",
+    "untrash": "移出垃圾箱",
+    "archive": "归档",
+    "unarchive": "取消归档",
+    "spam": "垃圾邮件",
+    "unspam": "非垃圾邮件",
+    "apply_label": "应用标签",
+    "remove_label": "移除标签",
+    "snooze": "稍后处理",
+    "unsnooze": "取消稍后处理",
+    "delete_forever": "永久删除",
+    "empty_folder": "清空文件夹",
+    "other": "{{kind}}"
+  }
+}

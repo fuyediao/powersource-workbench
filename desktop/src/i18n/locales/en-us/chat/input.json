@@ -1,0 +1,19 @@
+{
+  "disclaimer": "AI can generate inaccurate information. Please verify important details.",
+  "modeQuick": "Quick",
+  "modeThink": "Think",
+  "mapSearch": "Map",
+  "placeholder": "Ask GeoCRM anything...",
+  "sendButton": "Send Message",
+  "stopAnswering": "Stop Answering",
+  "stopped": "You have stopped this response",
+  "voiceNotSupported": "This device cannot capture microphone audio for voice input.",
+  "voiceStart": "Start voice input",
+  "voiceStop": "Stop recording and transcribe",
+  "voiceTranscribing": "Transcribing…",
+  "voiceNeedsGemini": "Voice input needs a Gemini API key in Settings → AI.",
+  "voiceMicDenied": "Microphone permission was denied. Allow the mic for GeoCRM and try again.",
+  "voiceTooShort": "Recording was too short. Hold a bit longer, then click the mic again.",
+  "voiceEmpty": "No speech was detected. Please try again.",
+  "voiceFailed": "Voice transcription failed. Please try again."
+}

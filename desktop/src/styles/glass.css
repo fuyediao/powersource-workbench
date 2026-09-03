@@ -1,0 +1,32 @@
+.glass-panel {
+  border: 1px solid rgb(161 161 170 / 16%);
+  background: var(--panel);
+  transition:
+    background-color 450ms ease,
+    border-color 450ms ease,
+    box-shadow 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 450ms ease;
+}
+
+.search-suggest-panel {
+  border: 1px solid rgb(161 161 170 / 16%);
+  background: var(--search-panel);
+  transition:
+    background-color 450ms ease,
+    border-color 450ms ease,
+    box-shadow 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 450ms ease;
+}
+
+.glass-dialog {
+  border: 1px solid rgb(161 161 170 / 16%);
+  background: rgb(255 255 255 / 92%);
+  transition:
+    background-color 450ms ease,
+    border-color 450ms ease,
+    color 450ms ease;
+}
+
+:root.dark .glass-dialog {
+  background: rgb(24 24 27 / 92%);
+}

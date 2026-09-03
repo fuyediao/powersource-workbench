@@ -1,0 +1,29 @@
+.harness-terminal,
+.harness-terminal .xterm,
+.harness-terminal .xterm-viewport,
+.harness-terminal .xterm-screen,
+.harness-terminal canvas {
+  background-color: #09090b;
+}
+
+.harness-terminal .xterm {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 8px 10px;
+}
+
+.harness-terminal .xterm-viewport {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.harness-terminal .xterm-viewport::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+  height: 8px;
+}
+
+.harness-terminal .xterm-screen {
+  height: 100%;
+}

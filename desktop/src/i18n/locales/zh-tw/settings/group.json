@@ -1,0 +1,167 @@
+{
+  "admin": {
+    "emailPlaceholder": "電子郵件",
+    "addFailed": "新增成員失敗",
+    "addMember": {
+      "add": "添加",
+      "addError": "添加成員失敗，請重試",
+      "adding": "添加中...",
+      "addSuccess": "成員已成功添加",
+      "invitationSent": "已發送邀請，對方使用該郵箱註冊並登入後將自動加入本組。",
+      "email": "郵箱",
+      "emailPlaceholder": "輸入郵箱地址",
+      "title": "添加成員",
+      "userNotFound": "用戶未找到。他們將在使用該郵箱註冊後自動加入組。",
+      "searchUsers": "從使用者列表搜尋",
+      "searchPlaceholder": "依 Email、姓名搜尋使用者",
+      "searchEmpty": "輸入關鍵字搜尋，或下方輸入郵箱添加未註冊用戶",
+      "searchNoResults": "無符合的使用者",
+      "alreadyMember": "已在組內"
+    },
+    "breadcrumb": {
+      "groupAdmin": "組管理",
+      "settings": "設定"
+    },
+    "description": "管理組信息和組內成員",
+    "groupInfo": {
+      "description": "組描述",
+      "descriptionPlaceholder": "輸入組描述",
+      "groupName": "組名稱",
+      "groupNamePlaceholder": "輸入組名稱",
+      "memberCount": "成員數量",
+      "nameRequired": "組名稱為必填",
+      "save": "儲存更改",
+      "saveError": "更新組信息失敗，請重試",
+      "saveSuccess": "組信息已成功更新",
+      "saving": "儲存中...",
+      "title": "組信息"
+    },
+    "memberWrites": {
+      "actionDelete": "刪除",
+      "actionInsert": "新增",
+      "actionUpdate": "編輯",
+      "description": "可對每個已白名單的模組分別授予新增、編輯、刪除權限（不影響查看權限）。",
+      "manageButton": "管理寫入權限",
+      "noWhitelistedModules": "此組尚未有任何白名單側欄模組，請先請系統管理員授予模組，才能設定成員寫入權限。",
+      "save": "儲存寫入權限",
+      "saveError": "儲存寫入權限失敗，請重試",
+      "saveSuccess": "寫入權限已成功更新",
+      "saving": "儲存中...",
+      "selectAll": "全選所有模組",
+      "title": "成員寫入權限"
+    },
+    "members": {
+      "addedAt": "加入時間",
+      "adminBadge": "組管理員",
+      "email": "郵箱",
+      "makeAdmin": "設為組管理員",
+      "name": "姓名",
+      "noMembers": "暫無成員",
+      "remove": "移除",
+      "removeCancelButton": "取消",
+      "removeConfirmButton": "確認移除",
+      "removeConfirmMessage": "您確定要移除此成員嗎？移除後該成員無法再查看組內資料。",
+      "removeConfirmTitle": "確認移除成員",
+      "removeError": "移除成員失敗，請重試",
+      "removeSuccess": "成員已成功移除",
+      "removing": "移除中...",
+      "revokeAdmin": "撤銷組管理員",
+      "title": "組內成員",
+      "toggleAdminError": "更新組管理員狀態失敗，請重試"
+    },
+    "moduleAccess": {
+      "openButton": "側欄模組 {{selected}}/{{total}}",
+      "save": "儲存模組設定",
+      "saveError": "儲存模組權限失敗，請重試",
+      "saveSuccess": "模組權限已成功更新",
+      "saving": "儲存中...",
+      "selectAll": "全選所有模組",
+      "title": "側欄模組"
+    },
+    "pendingInvitations": {
+      "title": "待接受邀請",
+      "invitedBadge": "邀請中",
+      "invitedAt": "邀請時間",
+      "revoke": "撤銷邀請",
+      "revokeConfirmTitle": "撤銷邀請",
+      "revokeConfirmMessage": "撤銷後，這個郵箱再登入也不會自動加入本組。確定要撤銷此邀請嗎？",
+      "revokeConfirmButton": "確認撤銷",
+      "revokeCancelButton": "取消"
+    },
+    "statistics": {
+      "favorites": "收藏數量",
+      "history": "歷史記錄數量",
+      "tags": "標籤數量",
+      "title": "組資料統計"
+    },
+    "title": "組管理"
+  },
+  "management": {
+    "addGroupAdmin": {
+      "add": "添加",
+      "addError": "添加組管理員失敗，請重試",
+      "adding": "添加中...",
+      "addSuccess": "組管理員已成功添加",
+      "description": "組描述（可選）",
+      "descriptionPlaceholder": "輸入組描述",
+      "email": "郵箱",
+      "emailPlaceholder": "輸入未註冊的郵箱地址",
+      "emailRequired": "請輸入電子郵件地址",
+      "groupName": "組名稱",
+      "groupNamePlaceholder": "輸入組名稱",
+      "invalidEmail": "請輸入有效的電子郵件地址",
+      "pick": "選擇",
+      "searchUsers": "從已註冊使用者搜尋",
+      "searchPlaceholder": "依 Email、姓名搜尋已註冊使用者",
+      "searchEmpty": "輸入關鍵字搜尋已註冊使用者，或在下方輸入郵箱建立邀請",
+      "searchNoResults": "找不到符合的已註冊使用者",
+      "title": "添加組管理員",
+      "userNotFound": "尚未註冊的郵箱會建立邀請；該使用者註冊登入後會自動成為組管理員。"
+    },
+    "breadcrumb": {
+      "groupManagement": "組管理",
+      "settings": "設定"
+    },
+    "description": "管理組管理員和組信息",
+    "groupAdmins": {
+      "delete": "刪除",
+      "deleteCancelButton": "取消",
+      "deleteConfirmButton": "確認刪除",
+      "deleteConfirmMessage": "您確定要刪除此組管理員嗎？組將被設置為臨時管理狀態，等待任命新管理員。",
+      "deleteConfirmTitle": "確認刪除組管理員",
+      "deleteError": "刪除組管理員失敗，請重試",
+      "deleteSuccess": "組管理員已成功刪除",
+      "deleting": "刪除中...",
+      "email": "郵箱",
+      "groupName": "組名",
+      "memberCount": "成員數量",
+      "name": "姓名",
+      "noAdmins": "暫無組管理員",
+      "title": "組管理員列表"
+    },
+    "pendingInvitations": {
+      "title": "待註冊的邀請",
+      "description": "下列組已邀請尚未註冊的使用者擔任管理員，待對方註冊登入後會自動接管。",
+      "invitedBadge": "邀請中",
+      "invitedEmailLabel": "邀請：{{email}}",
+      "changeButton": "更換邀請",
+      "noInvitations": "暫無待註冊的邀請"
+    },
+    "tempManagedGroups": {
+      "assignAdmin": "任命管理員",
+      "assignError": "任命管理員失敗，請重試",
+      "assigning": "任命中...",
+      "assignSuccess": "管理員已成功任命",
+      "assignSuccessPending": "已創建待處理的任命。當該用戶註冊並登錄時，將自動成為組管理員。",
+      "description": "下列組目前沒有管理員，請指派新管理員。",
+      "groupName": "組名",
+      "memberCount": "成員數量",
+      "noGroups": "暫無臨時管理的組",
+      "title": "臨時管理的組"
+    },
+    "editMembersBack": "返回組管理",
+    "editMembersTitle": "管理組成員",
+    "editMembersUnauthorized": "您沒有權限管理此組。",
+    "title": "組管理"
+  }
+}

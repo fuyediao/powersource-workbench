@@ -1,0 +1,84 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.geocrm.desktop",
+  "productName": "GeoCRM",
+  "asar": true,
+  "asarUnpack": [
+    "node_modules/node-pty/**"
+  ],
+  "compression": "maximum",
+  "forceCodeSigning": true,
+  "electronLanguages": ["en", "zh-TW", "zh-CN"],
+  "directories": {
+    "output": "release/${version}",
+    "buildResources": "build"
+  },
+  "files": [
+    "package.json",
+    "dist-electron",
+    "dist",
+    ".env"
+  ],
+  "extraResources": [
+    {
+      "from": ".env",
+      "to": ".env"
+    },
+    {
+      "from": "src/lib/mihomo/bin",
+      "to": "clash-sidecar",
+      "filter": ["mihomo", "mihomo.exe"]
+    },
+    {
+      "from": "src/lib/codex/bin",
+      "to": "codex",
+      "filter": ["codex-app-server", "codex-app-server.exe"]
+    }
+  ],
+  "win": {
+    "icon": "public/favicon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ]
+  },
+  "mac": {
+    "icon": "build/icon.icon",
+    "target": ["dmg"],
+    "identity": "TK5J4CUQ7J",
+    "hardenedRuntime": true,
+    "notarize": true,
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.plist",
+    "extendInfo": {
+      "CFBundleName": "GeoCRM",
+      "CFBundleDisplayName": "GeoCRM"
+    }
+  },
+  "linux": {
+    "icon": "public/app-icon.png",
+    "target": ["AppImage"]
+  },
+  "dmg": {
+    "format": "UDZO",
+    "icon": "build/icon.icns"
+  },
+  "nsis": {
+    "differentialPackage": false,
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "displayLanguageSelector": true,
+    "multiLanguageInstaller": true,
+    "installerIcon": "public/favicon.ico",
+    "uninstallerIcon": "public/favicon.ico",
+    "installerHeaderIcon": "public/favicon.ico",
+    "installerHeader": "build/installerHeader.bmp",
+    "installerSidebar": "build/installerSidebar.bmp",
+    "uninstallerSidebar": "build/installerSidebar.bmp",
+    "include": "build/installer.nsh",
+    "installerLanguages": ["en_US", "zh_TW", "zh_CN"],
+    "unicode": true
+  }
+}

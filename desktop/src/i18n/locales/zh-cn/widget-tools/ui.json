@@ -1,0 +1,8 @@
+{
+  "order": "小工具排序",
+  "orderEmpty": "将小工具拖到此处",
+  "orderHint": "在同一栏拖曳调整上下顺序，或拖到另一栏切换左右侧小工具。",
+  "orderLeft": "左侧",
+  "orderRight": "右侧",
+  "title": "小工具设置"
+}

@@ -1,0 +1,28 @@
+{
+  "title": "OA / ERP",
+  "edit": "Edit",
+  "oa": {
+    "title": "OA account"
+  },
+  "erp": {
+    "title": "ERP account"
+  },
+  "fields": {
+    "username": "Username",
+    "usernamePlaceholder": "Employee ID",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "save": {
+    "button": "Save",
+    "saving": "Saving…",
+    "success": "OA / ERP credentials saved."
+  },
+  "errors": {
+    "notConfigured": "Local OA / ERP storage is unavailable in this window.",
+    "loadFailed": "Failed to load OA / ERP credentials.",
+    "saveFailed": "Failed to save OA / ERP credentials."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "gmail": "Gmail",
+  "gmailHint": "使用 Google 登录",
+  "alibaba": "阿里邮箱",
+  "alibabaHint": "阿里云企业邮箱",
+  "imap": "IMAP / SMTP",
+  "imapHint": "其他 IMAP 服务器"
+}

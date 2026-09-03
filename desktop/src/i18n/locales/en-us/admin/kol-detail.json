@@ -1,0 +1,296 @@
+{
+  "save": "Save",
+  "saving": "Saving...",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "loadError": "Failed to load KOL",
+  "saveError": "Failed to save KOL",
+  "errorDatabaseNotConfigured": "Database is not configured.",
+  "errorNoGroupForCreate": "To add a KOL you must belong to a team, or link the KOL to a customer that already has a team.",
+  "createGroup": "Target group",
+  "createGroupHint": "The new KOL will be created under this group (you can only pick groups you have access to)",
+  "createGroupNoAccess": "(no groups available)",
+  "createGroupLoading": "Loading groups…",
+  "ownerNoMembers": "This group has no members yet",
+  "criteria": {
+    "openButton": "View tier / rating criteria",
+    "modalTitle": "KOL tier & rating criteria",
+    "modalCloseHint": "Click outside, press Esc, or click Close to dismiss",
+    "tier": {
+      "section": "Tier classification",
+      "headerLevel": "Tier",
+      "headerCategories": "Categories",
+      "headerStrategy": "Strategy",
+      "rows": [
+        {
+          "level": "A",
+          "categories": [
+            "LEO: police of all kinds",
+            "Military: service members of all kinds",
+            "Retired / former LEO",
+            "Veterans",
+            "Instructor / Trainer"
+          ],
+          "strategy": "Long-term relationship building"
+        },
+        {
+          "level": "B",
+          "categories": [
+            "Tactical content creators (video)",
+            "Tactical photographers",
+            "Shooting & tactical gear channels / KOLs",
+            "Outdoor / EDC / Hunting channels / KOLs"
+          ],
+          "strategy": "Short-term, fast-traffic driven"
+        },
+        {
+          "level": "C",
+          "categories": [
+            "Flashlight reviewers",
+            "EDC reviewers",
+            "Doomsday / survivalism (Prepper)"
+          ],
+          "strategy": "Audience expansion & traffic"
+        },
+        {
+          "level": "D",
+          "categories": [
+            "3C / mixed-category reviewers",
+            "Loosely related reviewers"
+          ],
+          "strategy": "Supplemental"
+        }
+      ]
+    },
+    "rating": {
+      "section": "Rating criteria (match any one)",
+      "headerScore": "Score",
+      "headerCriteria": "Criteria",
+      "rows": [
+        {
+          "score": 5,
+          "criteria": [
+            "Followers ≥ 500K",
+            "High-value LEO (PD-internal referral / introduction)",
+            "LE / Military instructor (with large classes or training programs)",
+            "Retired police (still has an active network)"
+          ]
+        },
+        {
+          "score": 4,
+          "criteria": [
+            "Followers ≥ 100K",
+            "Followers < 500K"
+          ]
+        },
+        {
+          "score": 3,
+          "criteria": [
+            "Followers ≥ 10K",
+            "Followers < 100K"
+          ]
+        },
+        {
+          "score": 2,
+          "criteria": [
+            "Followers ≥ 1K",
+            "Followers < 10K"
+          ]
+        },
+        {
+          "score": 1,
+          "criteria": [
+            "Followers < 1K"
+          ]
+        }
+      ]
+    }
+  },
+  "saveErrorWithDetail": "Save failed: {{message}}",
+  "errorDeleteNotPermitted": "Only team admins or system admins can delete KOLs.",
+  "errorLoadChannels": "Failed to load KOL channels.",
+  "errorAddChannel": "Failed to add channel. Please try again.",
+  "errorGeocrmNotConfigured": "GeoCRM API URL is not set. Add VITE_DEPLOYMENT_DOMAIN so channel stats can be fetched from the server.",
+  "errorYoutubeGeocrmNotConfigured": "GeoCRM API URL is not set. Add VITE_DEPLOYMENT_DOMAIN so channel stats can be fetched from the server.",
+  "errorYoutubeServerNotConfigured": "YouTube enrichment is not configured on the server (missing API key).",
+  "errorYoutubeUnauthorized": "You must be signed in to add a YouTube channel with live stats.",
+  "errorYoutubeForbidden": "You do not have access to enrich channels for this KOL.",
+  "errorYoutubeNotFound": "That YouTube channel could not be found. Check the URL.",
+  "errorYoutubeBadRequest": "Invalid or unsupported YouTube channel URL.",
+  "errorYoutubeUpstream": "YouTube is temporarily unavailable. Try again later.",
+  "errorYoutubeNetwork": "Could not reach GeoCRM API. Check your connection and try again.",
+  "errorApifyNetwork": "Could not reach GeoCRM API. Check your connection and try again.",
+  "errorApifyNotConfigured": "Apify enrichment is not configured on the server (missing APIFY_API_TOKEN).",
+  "errorApifyUnauthorized": "You must be signed in to fetch social profile stats.",
+  "errorApifyForbidden": "You do not have access to enrich channels for this KOL.",
+  "errorApifyNotFound": "That profile could not be found. Check the URL.",
+  "errorApifyBadRequest": "Invalid or unsupported profile URL for this platform.",
+  "errorApifyBilling": "Apify billing or subscription is required to run this scraper.",
+  "errorApifyTimeout": "The profile scraper timed out. Try again later.",
+  "errorApifyUpstream": "Social profile service is temporarily unavailable. Try again later.",
+  "errorRefreshChannelStats": "Could not refresh channel stats. Try again.",
+  "refreshYoutubeStatsTitle": "Refresh stats for all channels that support live data (YouTube, Instagram, TikTok, etc.)",
+  "refreshYoutubeStatsRowTitle": "Refresh live stats for this channel row",
+  "refreshYoutubeStatsDisabledGeocrm": "Set VITE_DEPLOYMENT_DOMAIN in the app build to enable refresh.",
+  "errorUpdateChannel": "Failed to update channel. Please try again.",
+  "errorRemoveChannel": "Failed to remove channel. Please try again.",
+  "namePlaceholder": "KOL name (required)",
+  "uploadAvatar": "Upload avatar",
+  "avatarTooLarge": "Image file is too large",
+  "socialChannels": "Social Media",
+  "channelsSaveFirst": "Please save the KOL first before adding social media accounts.",
+  "addChannel": "Add Account",
+  "editChannelTitle": "Edit social channel",
+  "openChannelProfile": "Open channel profile page",
+  "editChannelPlatformLocked": "Platform cannot be changed. Delete this row and add a new one if the creator moved to another platform.",
+  "noHistory": "No communication history yet",
+  "contractFilesHint": "Upload contract files (PDF, Word, Excel, etc., max 10 MB).",
+  "contractImagesHint": "Upload contract-related images. Auto-converted to WebP (max 5 MB).",
+  "contractLinksHint": "Paste links to contracts or related documents (Google Drive, Dropbox, etc.).",
+  "uploadContractImage": "Upload Image",
+  "uploadContractFile": "Upload File",
+  "uploadingContract": "Uploading…",
+  "uploadInCreateModeHint": "Save the KOL first",
+  "contractTooLargeImage": "Image too large (max 5 MB)",
+  "contractTooLargeFile": "File too large (max 10 MB)",
+  "contractNotImage": "Please pick an image file (JPG, PNG, GIF, WebP).",
+  "contractFileIsImage": "Please use the Contract Images section for image uploads.",
+  "contractUploadFailed": "Upload failed",
+  "contractDeleteFailed": "Delete failed",
+  "contractDeleteAdminOnly": "Only system or group admins can delete",
+  "ai": {
+    "title": "AI KOL Summary",
+    "placeholderTitle": "AI features under development",
+    "placeholderHint": "Soon you'll get auto-summarized KOL profiles, collaboration suggestions, reply drafts, and next-action recommendations here. Stay tuned."
+  },
+  "aiSummary": {
+    "title": "AI KOL Summary",
+    "generate": "Generate Summary",
+    "regenerate": "Regenerate",
+    "loading": "Analyzing...",
+    "noKey": "No API key configured. Go to Settings → AI to add a key.",
+    "noKeyShort": "No key",
+    "privacy": "KOL data is sent to the selected AI provider to generate this summary.",
+    "savedAt": "Saved {{time}}",
+    "modelPickerAria": "AI model: {{model}}. Open menu to change.",
+    "toolbarGroupAria": "AI summary actions: generate summary and choose model",
+    "saveFirst": "Please save all changes before generating the summary.",
+    "emptyHint": "No AI summary yet. Use Generate Summary above. If the KOL form is still in edit mode, save your changes first.",
+    "panelLoading": "Generating summary…",
+    "model": {
+      "gemini": "Gemini",
+      "chatgpt": "ChatGPT",
+      "claude": "Claude",
+      "grok": "Grok"
+    }
+  },
+  "ordersHint": "Add multiple rows: each row is one tracking number and shipping status pair.",
+  "noShipments": "No shipment / tracking rows yet.",
+  "noChannelRows": "No social channel rows yet.",
+  "shipmentTitle": "Shipment {{n}}",
+  "removeShipment": "Remove this row",
+  "addShipment": "Add row",
+  "tabs": {
+    "overview": "Overview",
+    "location": "Location",
+    "performance": "Performance",
+    "aiSummary": "AI summary",
+    "orders": "Orders",
+    "visits": "Visits",
+    "status": "Status",
+    "logistics": "Receiving & contracts"
+  },
+  "visitLog": {
+    "title": "Visit records",
+    "add": "Add visit",
+    "empty": "No visit records for this KOL yet.",
+    "untitled": "Untitled"
+  },
+  "location": {
+    "selectLocation": "Location (from saved places)",
+    "searchPlaceholder": "Search saved places…",
+    "noFavorites": "No saved places yet",
+    "noMatchingFavorites": "No matching saved place",
+    "clearLocation": "Clear location",
+    "openOnMap": "Open on map"
+  },
+  "field": {
+    "kolCode": "KOL ID",
+    "kolCodePending": "Auto-generated on save",
+    "accountName": "Account / Channel Name",
+    "accountNamePlaceholder": "Account or channel name",
+    "vertical": "Vertical / Niche",
+    "verticalPlaceholder": "e.g. Beauty, Tech, Food",
+    "info": "Basic Info",
+    "infoPlaceholder": "KOL intro or overview",
+    "background": "Background",
+    "backgroundPlaceholder": "KOL background, style, audience",
+    "remarks": "Remarks",
+    "remarksPlaceholder": "Any other notes…",
+    "rating": "Rating",
+    "email": "Email",
+    "emailInvalid": "Invalid email format",
+    "phone": "Phone",
+    "linkedCustomerPlaceholder": "No linked customer",
+    "linkedCustomerSearchPlaceholder": "Search by company name or customer code…",
+    "linkedCustomerNoMatch": "No matching customer",
+    "linkedCustomerUnknown": "Linked customer (name unavailable)",
+    "country": "Country",
+    "countryPlaceholder": "Select country",
+    "countryNoMatch": "No matching country",
+    "region": "Region / Coast",
+    "state": "State / Province",
+    "county": "County",
+    "city": "City",
+    "town": "Town",
+    "circle": "Circle / Community",
+    "channelPageUrl": "Profile link",
+    "channelPageUrlPlaceholder": "https://…",
+    "postalCode": "Postal code",
+    "addressLine1": "Address line 1",
+    "addressLine1Placeholder": "Street, number, floor…",
+    "addressLine2": "Address line 2",
+    "addressLine2Placeholder": "Apartment, unit, extra info… (optional)",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "orderCount": "Order Count",
+    "totalAmount": "Total Amount",
+    "cooperationYears": "Cooperation years",
+    "cooperationYearsPlaceholder": "2019, 2020…",
+    "promoCode": "Promo Code",
+    "engagementRate": "Engagement Rate",
+    "viewCount": "View Count",
+    "historyLinks": "History Collaboration Links",
+    "currentStatus": "Current Status",
+    "cooperationStatus": "Cooperation Status",
+    "reconnectAt": "Reconnect Date",
+    "commission": "Commission",
+    "meetAt": "Meeting Time",
+    "checkCycleDays": "Check Cycle (days)",
+    "testedProducts": "Tested Products",
+    "testedProductPlaceholder": "Select products from the electronic catalog",
+    "testedProductSearchPlaceholder": "Search by product code or name...",
+    "testedProductHint": "Search and select one or more electronic catalog products",
+    "testedProductEmpty": "No matching active products",
+    "testedProductLoadFailed": "Unable to load the product catalog",
+    "removeTestedProduct": "Remove product",
+    "communicationHistory": "Communication History",
+    "newHistoryEntry": "Log new communication...",
+    "shippingInfo": "Shipping Info",
+    "shippingRecipient": "Recipient",
+    "shippingAddress": "Shipping Address",
+    "shippingPhone": "Phone",
+    "trackingNumber": "Tracking Number",
+    "shippingStatus": "Shipping Status",
+    "shippingStatusPlaceholder": "e.g. Shipped, Delivered",
+    "contractFiles": "Contract Files",
+    "contractImages": "Contract Images",
+    "contractLinks": "External Links",
+    "platformCustomName": "Custom platform name",
+    "platformCustomNamePlaceholder": "e.g. LinkedIn, Patreon, Substack…",
+    "otherPlatformManualHint": "For \"Other\", all values below are entered manually; no API fetches stats.",
+    "channelHandleOptional": "Handle (optional)",
+    "channelHandlePlaceholder": "{'@'}name or display handle"
+  }
+}

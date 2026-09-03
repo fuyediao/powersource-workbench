@@ -1,0 +1,63 @@
+{
+  "createTitle": "新建事件",
+  "editTitle": "编辑事件",
+  "title": "标题",
+  "description": "说明",
+  "calendar": "日历",
+  "allDay": "全天",
+  "start": "开始",
+  "end": "结束",
+  "repeat": "重复",
+  "repeatNone": "不重复",
+  "repeatDaily": "每天",
+  "repeatWeekly": "每周",
+  "repeatMonthly": "每月",
+  "repeatCount": "重复次数",
+  "repeatEditHint": "修改系列时请在下方选择范围。",
+  "invitees": "邀请人",
+  "delete": "删除",
+  "confirmDelete": "确定删除此事件？",
+  "picker": {
+    "today": "今天",
+    "prevMonth": "上个月",
+    "nextMonth": "下个月",
+    "prevYear": "上一年",
+    "nextYear": "下一年",
+    "prevYears": "更早年份",
+    "nextYears": "更晚年份",
+    "chooseYearMonth": "选择年月",
+    "hour": "时",
+    "minute": "分"
+  },
+  "editScope": "编辑范围",
+  "scopeThis": "仅此事件",
+  "scopeFollowing": "此事件与之后",
+  "scopeAll": "全部事件",
+  "scopeHint": {
+    "this": "只更新这一次。",
+    "following": "更新这次与之后的事件。",
+    "all": "更新整个系列。"
+  },
+  "confirmDeleteScope": {
+    "this": "只删除这一次？",
+    "following": "删除这次与之后的事件？",
+    "all": "删除整个系列？"
+  },
+  "inviteesSearch": "搜索人员",
+  "inviteesSearchHint": "输入姓名或电子邮件以查找人员。",
+  "inviteesNoResults": "没有符合的人员",
+  "inviteesSelected": "已选 {{count}} 人",
+  "inviteesRemove": "移除 {{name}}",
+  "inviteesEmpty": "目前没有可邀请的人员",
+  "invitationTitle": "邀请",
+  "rsvp": {
+    "label": "你的回复",
+    "current": "目前：{{status}}",
+    "responses": "回复状态",
+    "you": "你",
+    "invited": "待回复",
+    "accepted": "接受",
+    "declined": "拒绝",
+    "tentative": "待定"
+  }
+}

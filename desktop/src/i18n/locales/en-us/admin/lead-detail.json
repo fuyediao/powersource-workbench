@@ -1,0 +1,16 @@
+{
+  "sectionOverview": "Overview",
+  "email": "Email",
+  "phone": "Phone",
+  "linkedCustomer": "Linked customer",
+  "linkedCustomerSearch": "Search customers…",
+  "linkedCustomerNone": "Not linked",
+  "lastContactDate": "Last contact time",
+  "title": "Lead Details",
+  "notFound": "Lead not found",
+  "createdAt": "Created",
+  "extendedSectionTitle": "Additional fields",
+  "contactProfilesTitle": "Contacts",
+  "contactProfileEmail": "Email",
+  "contactProfilePhones": "Phone"
+}

@@ -1,0 +1,12 @@
+{
+  "address": "网址",
+  "back": "上一页",
+  "forward": "下一页",
+  "openExternal": "在系统浏览器中打开",
+  "reload": "刷新",
+  "tabFallback": "页面",
+  "newTab": "新标签页",
+  "startTitle": "开始浏览",
+  "startBody": "输入网址以打开页面。",
+  "startPlaceholder": "输入网址"
+}

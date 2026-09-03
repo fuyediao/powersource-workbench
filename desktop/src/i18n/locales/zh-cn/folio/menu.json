@@ -1,0 +1,18 @@
+{
+  "scope": "范围",
+  "more": "页面菜单",
+  "rename": "重命名",
+  "defaultMode": "默认视图",
+  "addFavorite": "添加到收藏",
+  "removeFavorite": "从收藏移除",
+  "new-tab": "在新标签页打开",
+  "info": "查看信息",
+  "toc": "目录",
+  "history": "历史记录",
+  "duplicate": "创建副本",
+  "importMarkdown": "导入 Markdown",
+  "importHtml": "导入 HTML",
+  "exportMarkdown": "导出 Markdown",
+  "exportHtml": "导出 HTML",
+  "trash": "移至回收站"
+}

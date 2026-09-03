@@ -1,0 +1,19 @@
+{
+  "defaultName": "日曆",
+  "add": "新增日曆",
+  "addShort": "+ 日曆",
+  "promptName": "日曆名稱",
+  "newName": "新日曆",
+  "delete": "刪除日曆",
+  "rename": "重新命名",
+  "confirmDelete": "刪除日曆「{{name}}」？事件會保留，只是不再歸屬此日曆。",
+  "cannotDeleteDefault": "預設日曆無法刪除。",
+  "cannotDeleteLast": "至少需保留一個日曆。",
+  "contextHint": "右鍵可重新命名或刪除",
+  "menu": "日曆（{{count}}）",
+  "section": "日曆",
+  "empty": "尚無日曆",
+  "color": "顏色",
+  "changeColor": "變更顏色",
+  "customColor": "自訂顏色"
+}

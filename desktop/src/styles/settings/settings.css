@@ -1,0 +1,21 @@
+@keyframes settings-in-up {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+
+@keyframes settings-in-down {
+  from {
+    opacity: 0;
+    translate: 0 -14px;
+  }
+}
+
+.animate-settings-in-up {
+  animation: settings-in-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-settings-in-down {
+  animation: settings-in-down 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}

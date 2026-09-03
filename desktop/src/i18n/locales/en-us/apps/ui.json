@@ -1,0 +1,12 @@
+{
+  "invalidName": "Enter a name.",
+  "invalidUrl": "Enter a valid URL.",
+  "modeCreate": "Create",
+  "modeSearch": "Search",
+  "noResults": "No matching sites",
+  "removeConfirm": "Remove “{{name}}” from this category? The site itself will not be deleted.",
+  "removeTitle": "Remove from list",
+  "searchHint": "Type to search the site catalog",
+  "searchPlaceholder": "Search existing sites",
+  "urlExists": "This URL is already in the catalog. Use search to add it."
+}

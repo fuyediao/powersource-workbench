@@ -1,0 +1,31 @@
+{
+  "empty": "沒有待同步或失敗的任務",
+  "refresh": "重新整理寄件匣",
+  "messageCount": "{{count}} 封",
+  "status": {
+    "pending_remote": "待同步",
+    "failed": "失敗",
+    "done": "完成",
+    "cancelled": "已取消"
+  },
+  "kind": {
+    "send": "寄信",
+    "read": "標為已讀",
+    "unread": "標為未讀",
+    "star": "加星號",
+    "unstar": "取消星號",
+    "trash": "移至垃圾桶",
+    "untrash": "移出垃圾桶",
+    "archive": "封存",
+    "unarchive": "取消封存",
+    "spam": "垃圾郵件",
+    "unspam": "非垃圾郵件",
+    "apply_label": "套用標籤",
+    "remove_label": "移除標籤",
+    "snooze": "稍後處理",
+    "unsnooze": "取消稍後處理",
+    "delete_forever": "永久刪除",
+    "empty_folder": "清空資料夾",
+    "other": "{{kind}}"
+  }
+}

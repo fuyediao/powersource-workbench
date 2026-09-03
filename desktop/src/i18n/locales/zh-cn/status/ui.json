@@ -1,0 +1,7 @@
+{
+  "appsCount": "{{count}} 个应用程序",
+  "createFailed": "新增失败，请检查网址与名称后再试。",
+  "databaseError": "无法加载应用数据，请刷新后再试。",
+  "loading": "加载中",
+  "saving": "保存中…"
+}

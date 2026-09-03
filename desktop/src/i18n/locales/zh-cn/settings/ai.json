@@ -1,0 +1,162 @@
+{
+  "clear": {
+    "button": "清除所有",
+    "confirm": {
+      "cancel": "取消",
+      "confirm": "确认清除",
+      "message": "您确定要清除所有 API 密钥吗？此操作将删除所有已保存的厂商密钥，且无法恢复。",
+      "title": "确认清除所有 API 密钥"
+    }
+  },
+  "config": {
+    "anthropic": {
+      "placeholder": "sk-ant-..."
+    },
+    "gemini": {
+      "placeholder": "AIza..."
+    },
+    "grok": {
+      "placeholder": "xai-..."
+    },
+    "openai": {
+      "placeholder": "sk-..."
+    },
+    "title": "{{provider}} API 设定",
+    "status": {
+      "configured": "已设定",
+      "localReady": "本机运行环境",
+      "notConfigured": "未设定"
+    }
+  },
+  "local": {
+    "baseUrl": "Base URL",
+    "hint": "在本机运行。Electron 直连 localhost（不经 VPS）。",
+    "keyOptional": "API 密钥（选填）",
+    "llamacppHint": "请自行启动 llama-server（默认 http://127.0.0.1:8080）。我们不打包 llama.cpp 二进制文件。"
+  },
+  "ipCheck": {
+    "apiSuccess": "API 连线成功",
+    "apiTest": "IP 与 API 检查",
+    "browserHop": "浏览器",
+    "button": "检查 IP 与 API 连线",
+    "checking": "检查中...",
+    "colModel": "厂商",
+    "egressHint": "云端密钥用 GET /models；本机运行环境探测 localhost。本机的服务器栏为 N/A。表头显示浏览器与服务器出口 IP。",
+    "egressTitle": "出口 IP",
+    "error": "检查失败，请重试",
+    "localOnly": "仅本机（不经 VPS）",
+    "missingKey": "API 密钥为空",
+    "networkError": "网络错误",
+    "notTested": "未测试",
+    "serverHop": "服务器",
+    "skippedNoKey": "服务器上未保存 API 密钥",
+    "unsupportedProvider": "需要额外配置"
+  },
+  "models": {
+    "chatgpt": {
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI"
+    },
+    "claude": {
+      "name": "Claude Opus 5",
+      "provider": "Anthropic"
+    },
+    "gemini": {
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google"
+    },
+    "grok": {
+      "name": "Grok 4.5",
+      "provider": "xAI"
+    }
+  },
+  "modelAllowlist": {
+    "search": "搜索模型…",
+    "allVendors": "全部",
+    "vendorFilterAria": "按厂商筛选",
+    "refresh": "刷新",
+    "refreshing": "刷新中…",
+    "loading": "加载模型中…",
+    "empty": "没有匹配的模型",
+    "offline": "离线",
+    "viewAll": "查看全部模型",
+    "showLess": "显示较少",
+    "toggleAria": "在桌面选择器中启用 {{model}}"
+  },
+  "save": {
+    "button": "保存更改",
+    "error": "保存失败，请重试",
+    "saving": "保存中...",
+    "success": "所有 API 密钥已成功保存"
+  },
+  "showKey": "显示",
+  "hideKey": "隐藏",
+  "providerSelection": {
+    "title": "厂商选择",
+    "search": "搜索厂商…",
+    "empty": "没有匹配的厂商"
+  },
+  "providers": {
+    "ollama": "Ollama",
+    "lmstudio": "LM Studio",
+    "llamacpp": "llama.cpp",
+    "cherryin": "CherryIN",
+    "radeon-cloud": "AMD GPU Cloud",
+    "silicon": "Silicon",
+    "aihubmix": "AiHubMix",
+    "ocoolai": "ocoolAI",
+    "zhipu": "ZhiPu",
+    "deepseek": "deepseek",
+    "alayanew": "AlayaNew",
+    "dmxapi": "DMXAPI",
+    "aionly": "AIOnly",
+    "burncloud": "BurnCloud",
+    "302ai": "302.AI",
+    "lanyun": "LANYUN",
+    "ph8": "PH8",
+    "sophnet": "SophNet",
+    "ppio": "PPIO",
+    "qiniu": "Qiniu",
+    "openrouter": "OpenRouter",
+    "anthropic": "Anthropic",
+    "openai": "OpenAI",
+    "opencode": "OpenCode Go",
+    "azure-openai": "Azure OpenAI",
+    "gemini": "Gemini",
+    "vertexai": "VertexAI",
+    "github": "Github Models",
+    "copilot": "Github Copilot",
+    "moonshot": "Moonshot AI",
+    "baichuan": "BAICHUAN AI",
+    "dashscope": "Bailian",
+    "stepfun": "StepFun",
+    "doubao": "doubao",
+    "minimax": "MiniMax",
+    "groq": "Groq",
+    "together": "Together",
+    "fireworks": "Fireworks",
+    "nvidia": "nvidia",
+    "grok": "Grok",
+    "mistral": "Mistral",
+    "jina": "Jina",
+    "perplexity": "Perplexity",
+    "modelscope": "ModelScope",
+    "xirang": "Xirang",
+    "tokenhub": "TokenHub",
+    "baidu-cloud": "Baidu Cloud",
+    "voyageai": "VoyageAI",
+    "aws-bedrock": "AWS Bedrock",
+    "poe": "Poe",
+    "longcat": "LongCat",
+    "huggingface": "Hugging Face",
+    "gateway": "Vercel AI Gateway",
+    "cerebras": "Cerebras AI",
+    "mimo": "Xiaomi MiMo",
+    "zai": "zai",
+    "minimax-global": "minimax-global"
+  },
+  "catalog": {
+    "loading": "加载厂商中…",
+    "loadError": "无法加载厂商列表，请检查 API 连接。"
+  }
+}

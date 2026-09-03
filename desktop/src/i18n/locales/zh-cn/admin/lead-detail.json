@@ -1,0 +1,16 @@
+{
+  "sectionOverview": "概览",
+  "email": "Email",
+  "phone": "电话",
+  "linkedCustomer": "链接客户",
+  "linkedCustomerSearch": "搜索客户名称、联系人或 Email……",
+  "linkedCustomerNone": "未链接",
+  "lastContactDate": "最后联络时间",
+  "title": "线索详情",
+  "notFound": "找不到此线索",
+  "createdAt": "创建时间",
+  "extendedSectionTitle": "扩展字段",
+  "contactProfilesTitle": "联系人",
+  "contactProfileEmail": "邮箱",
+  "contactProfilePhones": "电话"
+}

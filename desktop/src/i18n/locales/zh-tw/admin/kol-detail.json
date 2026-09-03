@@ -1,0 +1,296 @@
+{
+  "save": "儲存",
+  "saving": "儲存中...",
+  "edit": "編輯",
+  "cancel": "取消",
+  "delete": "刪除",
+  "loadError": "載入 KOL 失敗",
+  "saveError": "儲存 KOL 失敗",
+  "errorDatabaseNotConfigured": "資料庫未設定，無法操作。",
+  "errorNoGroupForCreate": "新增 KOL 需要所屬團隊：請加入團隊，或關聯到已有團隊的客戶。",
+  "createGroup": "所屬組別",
+  "createGroupHint": "新 KOL 將建立於此組底下（僅可選你有權限的組）",
+  "createGroupNoAccess": "（無可用組別）",
+  "createGroupLoading": "載入組別中…",
+  "ownerNoMembers": "此組目前沒有成員",
+  "criteria": {
+    "openButton": "查看等級 / 評分標準",
+    "modalTitle": "KOL 等級 & 評分標準",
+    "modalCloseHint": "點擊外部、按 Esc 或關閉按鈕以關閉",
+    "tier": {
+      "section": "等級分類",
+      "headerLevel": "等級",
+      "headerCategories": "類別",
+      "headerStrategy": "策略",
+      "rows": [
+        {
+          "level": "A",
+          "categories": [
+            "LEO：所有種類警察",
+            "Military：所有種類軍人",
+            "Retired / former LEO：退休 / 前警察",
+            "Veterans：退伍軍人",
+            "Instructor / Trainer"
+          ],
+          "strategy": "長期建設"
+        },
+        {
+          "level": "B",
+          "categories": [
+            "Tactical content creator（戰術內容視頻 創作者）",
+            "Tactical Photographer（戰術美圖 創作者）",
+            "Shooting & Tactical Gear channel / KOL（射擊 & 戰術裝備 頻道 / KOL）",
+            "Outdoor & EDC & Hunting channel / KOL（戶外 & 戶外求生 & EDC & 狩獵 頻道 / KOL）"
+          ],
+          "strategy": "短期 & 流量快速驅動"
+        },
+        {
+          "level": "C",
+          "categories": [
+            "純手電測評（Reviewers）",
+            "純 EDC 測評（Reviewers）",
+            "末日生存 / 生存主義（Prepper）"
+          ],
+          "strategy": "破圈 & 流量"
+        },
+        {
+          "level": "D",
+          "categories": [
+            "3C 類 & 大雜燴類型 測評（Reviewers）",
+            "不具體相關類型 測評（Reviewers）"
+          ],
+          "strategy": "附加"
+        }
+      ]
+    },
+    "rating": {
+      "section": "評分標準（任意符合一個條件）",
+      "headerScore": "評分",
+      "headerCriteria": "條件",
+      "rows": [
+        {
+          "score": 5,
+          "criteria": [
+            "Followers ≥ 50W",
+            "超具價值 LEO（PD 內部可引薦、可介紹等）",
+            "LE / Military 教官（擁有大型授課 or 培訓的）",
+            "退役警察（仍由關係網的）"
+          ]
+        },
+        {
+          "score": 4,
+          "criteria": [
+            "Followers ≥ 10W",
+            "Followers < 50W"
+          ]
+        },
+        {
+          "score": 3,
+          "criteria": [
+            "Followers ≥ 1W",
+            "Followers < 10W"
+          ]
+        },
+        {
+          "score": 2,
+          "criteria": [
+            "Followers ≥ 1K",
+            "Followers < 1W"
+          ]
+        },
+        {
+          "score": 1,
+          "criteria": [
+            "Followers < 1K"
+          ]
+        }
+      ]
+    }
+  },
+  "saveErrorWithDetail": "儲存失敗：{{message}}",
+  "errorDeleteNotPermitted": "僅團隊管理員或系統管理員可刪除此 KOL。",
+  "errorLoadChannels": "載入 KOL 頻道失敗。",
+  "errorAddChannel": "新增頻道失敗，請重試。",
+  "errorGeocrmNotConfigured": "未設定 GeoCRM API 網址。請設定 VITE_DEPLOYMENT_DOMAIN，以便從伺服器擷取頻道統計。",
+  "errorYoutubeGeocrmNotConfigured": "未設定 GeoCRM API 網址。請設定 VITE_DEPLOYMENT_DOMAIN，以便從伺服器擷取頻道統計。",
+  "errorYoutubeServerNotConfigured": "伺服器未設定 YouTube API 金鑰，無法擷取頻道統計。",
+  "errorYoutubeUnauthorized": "請先登入，才能新增並擷取 YouTube 頻道統計。",
+  "errorYoutubeForbidden": "您無權為此 KOL 擷取頻道資料。",
+  "errorYoutubeNotFound": "找不到該 YouTube 頻道，請確認網址。",
+  "errorYoutubeBadRequest": "YouTube 頻道網址無效或不支援此格式。",
+  "errorYoutubeUpstream": "YouTube 服務暫時無法使用，請稍後再試。",
+  "errorYoutubeNetwork": "無法連線至 GeoCRM API，請檢查網路後重試。",
+  "errorApifyNetwork": "無法連線至 GeoCRM API，請檢查網路後重試。",
+  "errorApifyNotConfigured": "伺服器未設定 Apify（缺少 APIFY_API_TOKEN），無法擷取社群主頁統計。",
+  "errorApifyUnauthorized": "請先登入後再擷取社群主頁統計。",
+  "errorApifyForbidden": "您無權為此 KOL 擷取頻道資料。",
+  "errorApifyNotFound": "找不到該主頁，請確認網址。",
+  "errorApifyBadRequest": "此平台的個人檔案網址無效或不支援。",
+  "errorApifyBilling": "需要 Apify 計費或訂閱才能執行此擷取工作。",
+  "errorApifyTimeout": "擷取工作逾時，請稍後再試。",
+  "errorApifyUpstream": "社群主頁服務暫時無法使用，請稍後再試。",
+  "errorRefreshChannelStats": "無法重新整理頻道統計，請再試一次。",
+  "refreshYoutubeStatsTitle": "重新擷取列表中所有支援即時資料的頻道（YouTube、Instagram、TikTok 等）",
+  "refreshYoutubeStatsRowTitle": "只重新擷取此列的即時粉絲與內容數",
+  "refreshYoutubeStatsDisabledGeocrm": "請在應用程式環境設定 VITE_DEPLOYMENT_DOMAIN 後才能重新整理。",
+  "errorUpdateChannel": "更新頻道失敗，請重試。",
+  "errorRemoveChannel": "移除頻道失敗，請重試。",
+  "namePlaceholder": "KOL 名稱（必填）",
+  "uploadAvatar": "上傳頭像",
+  "avatarTooLarge": "圖片檔案過大",
+  "socialChannels": "社交頻道",
+  "channelsSaveFirst": "請先儲存 KOL 後，再新增頻道。",
+  "addChannel": "新增頻道",
+  "editChannelTitle": "編輯社群頻道",
+  "openChannelProfile": "開啟頻道個人頁",
+  "editChannelPlatformLocked": "無法變更平台。若創作者已換平台，請刪除此列後再新增。",
+  "noHistory": "尚無溝通紀錄",
+  "contractFilesHint": "上傳合約檔案（PDF、Word、Excel 等，最大 10 MB）",
+  "contractImagesHint": "上傳合約相關圖片，將自動轉為 WebP（最大 5 MB）",
+  "contractLinksHint": "貼上合約或相關文件連結（Google Drive、Dropbox 等）",
+  "uploadContractImage": "上傳圖片",
+  "uploadContractFile": "上傳檔案",
+  "uploadingContract": "上傳中…",
+  "uploadInCreateModeHint": "請先儲存 KOL",
+  "contractTooLargeImage": "圖片過大（最大 5 MB）",
+  "contractTooLargeFile": "檔案過大（最大 10 MB）",
+  "contractNotImage": "請選擇圖片檔（JPG、PNG、GIF、WebP）",
+  "contractFileIsImage": "請改用合約圖片區塊上傳圖片",
+  "contractUploadFailed": "上傳失敗",
+  "contractDeleteFailed": "刪除失敗",
+  "contractDeleteAdminOnly": "僅系統或組管理員可刪除",
+  "ai": {
+    "title": "AI KOL 摘要",
+    "placeholderTitle": "AI 功能開發中",
+    "placeholderHint": "未來這裡會提供：自動摘要 KOL 背景、合作建議、回覆草稿與後續動作建議。敬請期待。"
+  },
+  "aiSummary": {
+    "title": "AI KOL 摘要",
+    "generate": "產生摘要",
+    "regenerate": "重新產生",
+    "loading": "分析中...",
+    "noKey": "尚未設定 API 金鑰，請至設定 → AI 新增。",
+    "noKeyShort": "未設定金鑰",
+    "privacy": "KOL 資料將傳送至所選的 AI 服務商以產生摘要。",
+    "savedAt": "已儲存 {{time}}",
+    "modelPickerAria": "AI 模型：{{model}}。開啟選單以切換。",
+    "toolbarGroupAria": "AI 摘要操作：產生摘要與選擇模型",
+    "saveFirst": "請先儲存所有變更再產生摘要。",
+    "emptyHint": "尚無 AI 摘要。請在上方按「產生摘要」。若 KOL 表單仍在編輯模式，請先儲存。",
+    "panelLoading": "正在產生摘要…",
+    "model": {
+      "gemini": "Gemini",
+      "chatgpt": "ChatGPT",
+      "claude": "Claude",
+      "grok": "Grok"
+    }
+  },
+  "ordersHint": "可新增多筆：每筆對應一組物流單號與寄送狀態。",
+  "noShipments": "尚無物流／寄送紀錄。",
+  "noChannelRows": "尚無社交頻道資料。",
+  "shipmentTitle": "寄送 {{n}}",
+  "removeShipment": "移除此筆",
+  "addShipment": "新增一筆",
+  "tabs": {
+    "overview": "概覽",
+    "location": "地理位置",
+    "performance": "合作成效",
+    "aiSummary": "AI 摘要",
+    "orders": "訂單",
+    "visits": "拜訪記錄",
+    "status": "管理狀態",
+    "logistics": "收件與合約"
+  },
+  "visitLog": {
+    "title": "拜訪記錄",
+    "add": "新增拜訪",
+    "empty": "此 KOL 尚無拜訪記錄。",
+    "untitled": "未命名"
+  },
+  "location": {
+    "selectLocation": "地點（來自收藏地點）",
+    "searchPlaceholder": "搜尋收藏地點…",
+    "noFavorites": "尚無收藏地點",
+    "noMatchingFavorites": "找不到符合的收藏地點",
+    "clearLocation": "清除地點",
+    "openOnMap": "在地圖開啟"
+  },
+  "field": {
+    "kolCode": "KOL 編號",
+    "kolCodePending": "儲存後自動編號",
+    "accountName": "頻道名稱",
+    "accountNamePlaceholder": "帳號 / 頻道名稱",
+    "vertical": "垂直領域",
+    "verticalPlaceholder": "例如：美妝、科技、美食",
+    "info": "基本信息",
+    "infoPlaceholder": "KOL 簡介或基本描述",
+    "background": "背景信息",
+    "backgroundPlaceholder": "KOL 背景、風格、受眾特性",
+    "remarks": "備註",
+    "remarksPlaceholder": "其他補充說明…",
+    "rating": "評分",
+    "email": "Email",
+    "emailInvalid": "Email 格式不正確",
+    "phone": "電話",
+    "linkedCustomerPlaceholder": "未關聯客戶",
+    "linkedCustomerSearchPlaceholder": "以公司名稱或客戶編號搜尋…",
+    "linkedCustomerNoMatch": "找不到符合的客戶",
+    "linkedCustomerUnknown": "已關聯客戶（無法顯示名稱）",
+    "country": "國家",
+    "countryPlaceholder": "選擇國家",
+    "countryNoMatch": "找不到符合的國家",
+    "region": "地區 / 海岸線",
+    "state": "州 / 省",
+    "county": "縣",
+    "city": "城市",
+    "town": "鎮",
+    "circle": "圈子 / 社群圈",
+    "channelPageUrl": "個人頁連結",
+    "channelPageUrlPlaceholder": "https://…",
+    "postalCode": "郵遞區號",
+    "addressLine1": "地址第一行",
+    "addressLine1Placeholder": "街道、門牌、樓層…",
+    "addressLine2": "地址第二行",
+    "addressLine2Placeholder": "公寓、單位、補充說明…（選填）",
+    "latitude": "緯度",
+    "longitude": "經度",
+    "orderCount": "訂單數量",
+    "totalAmount": "總金額",
+    "cooperationYears": "合作年份",
+    "cooperationYearsPlaceholder": "2019, 2020…",
+    "promoCode": "專屬折扣碼",
+    "engagementRate": "互動率",
+    "viewCount": "播放量",
+    "historyLinks": "歷史合作連結",
+    "currentStatus": "當前狀態",
+    "cooperationStatus": "合作狀態",
+    "reconnectAt": "回訪日期",
+    "commission": "佣金",
+    "meetAt": "碰面時間",
+    "checkCycleDays": "檢點週期（天）",
+    "testedProducts": "已測評產品",
+    "testedProductPlaceholder": "從產品電子目錄選擇",
+    "testedProductSearchPlaceholder": "搜尋產品編號或名稱...",
+    "testedProductHint": "可搜尋並選擇一個或多個電子目錄產品",
+    "testedProductEmpty": "找不到符合的啟用產品",
+    "testedProductLoadFailed": "無法載入產品電子目錄",
+    "removeTestedProduct": "移除產品",
+    "communicationHistory": "溝通歷史",
+    "newHistoryEntry": "記錄新的溝通內容...",
+    "shippingInfo": "收件資訊",
+    "shippingRecipient": "收件人",
+    "shippingAddress": "收件地址",
+    "shippingPhone": "收件電話",
+    "trackingNumber": "物流單號",
+    "shippingStatus": "寄送狀態",
+    "shippingStatusPlaceholder": "例如：已寄出、已簽收",
+    "contractFiles": "合約檔案",
+    "contractImages": "合約圖片",
+    "contractLinks": "外部連結",
+    "platformCustomName": "自訂平台名稱",
+    "platformCustomNamePlaceholder": "例如：LinkedIn、Patreon、小宇宙…",
+    "otherPlatformManualHint": "選擇「其他」時，以下欄位皆為手動輸入，不會呼叫 API 擷取資料。",
+    "channelHandleOptional": "帳號／暱稱（選填）",
+    "channelHandlePlaceholder": "例如 {'@'}name 或顯示名稱"
+  }
+}

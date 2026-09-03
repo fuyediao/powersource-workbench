@@ -1,0 +1,14 @@
+{
+  "selectCustomer": "选择客户",
+  "searchPlaceholder": "搜索公司、联系人或邮箱…",
+  "searching": "搜索中…",
+  "empty": "找不到有邮箱的客户或联系人。",
+  "error": "无法搜索 CRM 联系人。",
+  "customers": "客户",
+  "contacts": "联系人",
+  "back": "返回",
+  "companyEmail": "公司邮箱",
+  "noCompanyEmail": "无公司邮箱",
+  "noContacts": "没有带邮箱的联系人",
+  "addAll": "全部加入（有邮箱）"
+}

@@ -1,0 +1,51 @@
+{
+  "fill-specializations" : [
+    {
+      "value" : {
+        "solid" : "extended-srgb:0.96078,0.96078,0.96078,1.00000"
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : "none"
+    }
+  ],
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name-specializations" : [
+            {
+              "value" : "Foreground.svg"
+            },
+            {
+              "appearance" : "dark",
+              "value" : "Foreground-Dark.svg"
+            },
+            {
+              "appearance" : "tinted",
+              "value" : "Tinted.svg"
+            }
+          ],
+          "name" : "Mark"
+        }
+      ],
+      "name" : "GeoCRM",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.35
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.15
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : [
+      "macOS"
+    ]
+  }
+}

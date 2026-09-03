@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Replaced the slim Workbench shell with a full copy of the GeoCRM Electron source tree so the desktop UI can be adapted in place.
 - Stored the Simplified Chinese locale as `zh-cn.json` / `zh-CN` instead of a Traditional Chinese filename.
 - Clarified the sign-in subtitle so it no longer refers to an existing administrator account.
 - Removed unused locale IPC and leftover invitation error strings.

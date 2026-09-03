@@ -1,0 +1,80 @@
+import { CalendarConfigExternal } from '@schedule-x/shared/src'
+
+export const validateConfig = (config: CalendarConfigExternal) => {
+  if (
+    config.selectedDate &&
+    !(config.selectedDate instanceof Temporal.PlainDate)
+  ) {
+    throw new Error(
+      '[Schedule-X error]: selectedDate must have the format YYYY-MM-DD'
+    )
+  }
+
+  if (config.minDate && !(config.minDate instanceof Temporal.PlainDate)) {
+    throw new Error('[Schedule-X error]: minDate must be a temporal plain date')
+  }
+
+  if (config.maxDate && !(config.maxDate instanceof Temporal.PlainDate)) {
+    throw new Error('[Schedule-X error]: maxDate must be a temporal plain date')
+  }
+
+  if (
+    typeof config.firstDayOfWeek !== 'undefined' &&
+    (config.firstDayOfWeek < 1 || config.firstDayOfWeek > 7)
+  ) {
+    throw new Error(
+      '[Schedule-X error]: firstDayOfWeek must be a number between 1 and 7'
+    )
+  }
+
+  if (
+    typeof config.weekOptions?.gridHeight !== 'undefined' &&
+    config.weekOptions.gridHeight < 0
+  ) {
+    throw new Error(
+      '[Schedule-X error]: weekOptions.gridHeight must be a positive number'
+    )
+  }
+
+  if (
+    typeof config.weekOptions?.nDays !== 'undefined' &&
+    (config.weekOptions.nDays < 1 || config.weekOptions.nDays > 7)
+  ) {
+    throw new Error(
+      '[Schedule-X error]: weekOptions.nDays must be a number between 1 and 7'
+    )
+  }
+
+  if (
+    typeof config.weekOptions?.eventWidth !== 'undefined' &&
+    (config.weekOptions.eventWidth < 1 || config.weekOptions.eventWidth > 100)
+  ) {
+    throw new Error(
+      '[Schedule-X error]: weekOptions.eventWidth must be an integer between 1 and 100'
+    )
+  }
+
+  if (
+    typeof config.monthGridOptions?.nEventsPerDay !== 'undefined' &&
+    config.monthGridOptions.nEventsPerDay < 0
+  ) {
+    throw new Error(
+      '[Schedule-X error]: monthGridOptions.nEventsPerDay must be a positive number'
+    )
+  }
+
+  const dayBoundaryPattern = /^\d{2}:00$/
+  if (typeof config.dayBoundaries !== 'undefined') {
+    const startFormatIsInvalid = !dayBoundaryPattern.test(
+      config.dayBoundaries.start
+    )
+    const endFormatIsInvalid = !dayBoundaryPattern.test(
+      config.dayBoundaries.end
+    )
+    if (startFormatIsInvalid || endFormatIsInvalid) {
+      throw new Error(
+        '[Schedule-X error]: dayBoundaries must be an object with "start"- and "end" properties, each with the format HH:mm'
+      )
+    }
+  }
+}

@@ -1,67 +1,132 @@
 import axios from 'axios'
-import { resolveSupabasePublishableKey, resolveSupabaseUrl, resolveWorkbenchApiUrl } from '@/config/deployment-urls'
 
-const sessionStorageKey = 'powersource-workbench-supabase-session'
-const supabaseUrl = resolveSupabaseUrl()
-const publishableKey = resolveSupabasePublishableKey()
-
-export interface StoredAuthSession {
-  accessToken: string
-  expiresAt: number
-  refreshToken: string
+/** Optional configuration for an external JSON POST request. */
+export interface JsonPostOptions {
+  headers?: Record<string, string>
+  params?: Record<string, string | number | boolean>
 }
 
-const jsonHeaders = {
-  'Content-Type': 'application/json',
+/** Configuration for a centralized JSON API request. */
+export interface JsonRequestOptions extends JsonPostOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  body?: unknown
 }
 
-export const workbenchApi = axios.create({
-  baseURL: resolveWorkbenchApiUrl(),
-  timeout: 20_000,
-  headers: jsonHeaders,
-})
+/** HTTP failure with the provider response preserved for diagnostics. */
+export class ApiRequestError extends Error {
+  readonly status: number
 
-export const supabaseDataApi = axios.create({
-  baseURL: `${supabaseUrl}/rest/v1`,
-  timeout: 15_000,
-  headers: {
-    apikey: publishableKey,
-    'Content-Type': 'application/json',
-  },
-})
-
-/**
- * Reads and validates the locally persisted Supabase session.
- * @returns The stored session or null when none is valid.
- */
-export function readAuthSession(): StoredAuthSession | null {
-  const stored = localStorage.getItem(sessionStorageKey)
-  if (!stored) return null
-  try {
-    const value: unknown = JSON.parse(stored)
-    if (typeof value !== 'object' || value === null || Array.isArray(value)) return null
-    const session = value as Record<string, unknown>
-    if (typeof session.accessToken !== 'string' || typeof session.refreshToken !== 'string'
-      || typeof session.expiresAt !== 'number') return null
-    return {
-      accessToken: session.accessToken,
-      expiresAt: session.expiresAt,
-      refreshToken: session.refreshToken,
-    }
-  } catch {
-    return null
+  /**
+   * Creates a normalized API request error.
+   * @param message - Provider or network error message.
+   * @param status - HTTP status, or zero for a network failure.
+   */
+  constructor(message: string, status: number) {
+    super(message)
+    this.name = 'ApiRequestError'
+    this.status = status
   }
 }
 
 /**
- * Persists or removes the current Supabase session.
- * @param session - Session to persist, or null to clear it.
- * @returns Nothing.
+ * Extracts a useful message from a JSON error body.
+ * @param payload - Unknown provider response body.
+ * @returns Provider message when present.
  */
-export function persistAuthSession(session: StoredAuthSession | null): void {
-  if (session) {
-    localStorage.setItem(sessionStorageKey, JSON.stringify(session))
-  } else {
-    localStorage.removeItem(sessionStorageKey)
+function responseErrorMessage(payload: unknown): string {
+  if (!payload || typeof payload !== 'object') return ''
+  const record = payload as Record<string, unknown>
+  if (typeof record.message === 'string') return record.message
+  if (typeof record.error === 'string') return record.error
+  if (record.error && typeof record.error === 'object') {
+    const nestedMessage = (record.error as Record<string, unknown>).message
+    if (typeof nestedMessage === 'string') return nestedMessage
+  }
+  return ''
+}
+
+/**
+ * Posts JSON through the centralized axios client boundary.
+ * @param url - Absolute request URL.
+ * @param body - Serializable request payload.
+ * @param options - Optional headers and query parameters.
+ * @returns Parsed JSON response.
+ */
+export async function postJson<T>(
+  url: string,
+  body: unknown,
+  options: JsonPostOptions = {},
+): Promise<T> {
+  try {
+    const response = await axios.post<T>(url, body, {
+      headers: options.headers,
+      params: options.params,
+    })
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status ?? 0
+      const detail = responseErrorMessage(error.response?.data) || error.message
+      throw new ApiRequestError(
+        status > 0 ? `API request failed (${status}): ${detail}` : `API request failed: ${detail}`,
+        status,
+      )
+    }
+    throw error
+  }
+}
+
+/** Sends an arbitrary JSON request through the centralized axios boundary. */
+export async function requestJson<T>(
+  url: string,
+  options: JsonRequestOptions = {},
+): Promise<T> {
+  try {
+    const response = await axios.request<T>({
+      url,
+      method: options.method ?? 'GET',
+      data: options.body,
+      headers: options.headers,
+      params: options.params,
+    })
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status ?? 0
+      const detail = responseErrorMessage(error.response?.data) || error.message
+      throw new ApiRequestError(
+        status > 0 ? `API request failed (${status}): ${detail}` : `API request failed: ${detail}`,
+        status,
+      )
+    }
+    throw error
+  }
+}
+
+/** Sends an arbitrary request and returns the response body as text. */
+export async function requestText(
+  url: string,
+  options: JsonRequestOptions = {},
+): Promise<string> {
+  try {
+    const response = await axios.request<string>({
+      url,
+      method: options.method ?? 'GET',
+      data: options.body,
+      headers: options.headers,
+      params: options.params,
+      responseType: 'text',
+    })
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status ?? 0
+      const detail = responseErrorMessage(error.response?.data) || error.message
+      throw new ApiRequestError(
+        status > 0 ? `API request failed (${status}): ${detail}` : `API request failed: ${detail}`,
+        status,
+      )
+    }
+    throw error
   }
 }

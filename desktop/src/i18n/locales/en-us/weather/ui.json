@@ -1,0 +1,18 @@
+{
+  "allowLocation": "Allow location",
+  "cityKind": "City",
+  "cityNoResults": "No matching cities",
+  "cityPlaceholder": "Search city…",
+  "denied": "Location is blocked. Allow it in the browser, pick a city, or try again.",
+  "humidity": "Humidity {{value}}%",
+  "needPermission": "Allow location or pick a city in widget tools.",
+  "pickCity": "Choose a city",
+  "requesting": "Waiting for location…",
+  "subtitle": "Near you",
+  "title": "Weather",
+  "unavailable": "Weather is temporarily unavailable. Try again later.",
+  "unsupported": "This browser cannot share a location. Pick a city instead.",
+  "useLocation": "Use current location",
+  "wind": "Wind {{value}} km/h",
+  "windMph": "Wind {{value}} mph"
+}

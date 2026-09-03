@@ -1,5 +1,11 @@
+/** Electron renderer stylesheet validation. */
 export default {
-  extends: [],
+  overrides: [
+    {
+      files: ['**/*.scss'],
+      customSyntax: 'postcss-scss',
+    },
+  ],
   rules: {
     'block-no-empty': true,
     'color-no-invalid-hex': true,

@@ -1,0 +1,32 @@
+{
+  "emailLabel": "邮箱",
+  "emailPlaceholder": "name{'@'}example.com",
+  "employeeIdLabel": "工号",
+  "employeeIdPlaceholder": "PS0001",
+  "osModelLabel": "操作系统／型号",
+  "osModelPlaceholder": "例如 Windows 11／MacBook Air",
+  "messageLabel": "反馈／建议内容",
+  "messageHint": "问题反馈请附上：复现步骤＋报错截图＋发生时间。",
+  "messagePlaceholder": "请描述复现步骤、报错与发生时间…",
+  "imagesLabel": "图片（选填）",
+  "imagesHint": "{{count}}／{{max}} · JPEG／PNG · 每张最多 2 MB",
+  "imagesDrag": "拖曳",
+  "imagesOrSelect": "或选择文件",
+  "browseFiles": "浏览文件",
+  "pasteFromClipboard": "从剪贴板粘贴",
+  "imagesFormats": "支持的文件类型：.jpg、.jpeg、.png",
+  "send": "发送",
+  "sending": "发送中…",
+  "success": "反馈／建议已发送，感谢您。",
+  "errors": {
+    "invalidEmail": "请输入有效的邮箱地址。",
+    "invalidEmployeeId": "请输入工号。",
+    "invalidOsModel": "请输入操作系统／型号。",
+    "invalidMessage": "请输入反馈／建议内容。",
+    "invalidImages": "图片须为 JPEG／PNG，最多 3 张，每张不超过 2 MB。",
+    "clipboard": "剪贴板中没有 JPEG／PNG 图片，或无法读取剪贴板。",
+    "notConfigured": "反馈／建议功能暂时不可用。",
+    "network": "网络错误，请检查连接后重试。",
+    "server": "发送失败，请稍后重试。"
+  }
+}

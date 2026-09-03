@@ -1,0 +1,8 @@
+{
+  "loadFailed": "無法載入文庫頁面。",
+  "createFailed": "無法建立頁面。",
+  "saveFailed": "無法儲存頁面。",
+  "deleteFailed": "無法刪除頁面。",
+  "copyFailed": "無法複製到個人文庫。",
+  "moveFailed": "無法移至群組。"
+}

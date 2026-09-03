@@ -1,0 +1,6 @@
+{
+  "archived": "{{count}} archived",
+  "trashed": "{{count}} moved to trash",
+  "spammed": "{{count}} marked as spam",
+  "action": "Undo"
+}

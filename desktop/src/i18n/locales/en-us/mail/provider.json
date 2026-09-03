@@ -1,0 +1,8 @@
+{
+  "gmail": "Gmail",
+  "gmailHint": "Sign in with Google",
+  "alibaba": "AliMail",
+  "alibabaHint": "Alibaba Cloud enterprise mail",
+  "imap": "IMAP / SMTP",
+  "imapHint": "Other IMAP servers"
+}

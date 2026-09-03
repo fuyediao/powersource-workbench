@@ -1,0 +1,98 @@
+/* Apps + widgets grid: placement follows JS dock, not an instant lg: snap. */
+.content-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 1.5rem;
+}
+
+/*
+ * Narrow stack (< lg): keep Functions (apps) on top, then left rail, then right.
+ * Wide dual keeps DOM order left | apps | right via grid columns.
+ */
+.content-stage[data-aside-dock='stack'] [data-stage-slot='apps'] {
+  order: 1;
+}
+
+.content-stage[data-aside-dock='stack'] [data-stage-slot='left'] {
+  order: 2;
+}
+
+.content-stage[data-aside-dock='stack'] [data-stage-slot='right'] {
+  order: 3;
+}
+
+/* Right rail only (legacy side dock). */
+.content-stage[data-aside-dock='side'],
+.content-stage[data-aside-dock='right'] {
+  grid-template-columns: minmax(0, 1fr) 17rem;
+}
+
+/* Left rail only. */
+.content-stage[data-aside-dock='left'] {
+  grid-template-columns: 17rem minmax(0, 1fr);
+}
+
+/* Left + apps + right. */
+.content-stage[data-aside-dock='dual'] {
+  grid-template-columns: 17rem minmax(0, 1fr) 17rem;
+}
+
+@media (width >= 1280px) {
+  .content-stage {
+    gap: 2rem;
+  }
+}
+
+@media (width >= 1536px) {
+  .content-stage {
+    gap: 2.5rem;
+  }
+
+  .content-stage[data-aside-dock='side'],
+  .content-stage[data-aside-dock='right'] {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+
+  .content-stage[data-aside-dock='left'] {
+    grid-template-columns: 22rem minmax(0, 1fr);
+  }
+
+  .content-stage[data-aside-dock='dual'] {
+    grid-template-columns: 22rem minmax(0, 1fr) 22rem;
+  }
+}
+
+.content-stage-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-stage-aside[data-aside-pair='pair'] {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-stage-aside-pair-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 1rem;
+}
+
+.content-stage-aside-pair-col {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-stage[data-aside-dock='side'] .content-stage-aside,
+.content-stage[data-aside-dock='right'] .content-stage-aside,
+.content-stage[data-aside-dock='left'] .content-stage-aside,
+.content-stage[data-aside-dock='dual'] .content-stage-aside {
+  position: sticky;
+  top: 1.5rem;
+}

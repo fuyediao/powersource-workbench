@@ -1,0 +1,13 @@
+{
+  "scopeToggle": "個人或群組資料庫",
+  "scope": "範圍",
+  "personal": "個人",
+  "group": "群組",
+  "groupsMenu": "群組",
+  "groupSwitcher": "選擇群組",
+  "newFile": "新增檔案",
+  "moveToGroup": "移至群組",
+  "copyToPersonal": "複製到個人",
+  "deleteFile": "刪除",
+  "readOnly": "唯讀"
+}

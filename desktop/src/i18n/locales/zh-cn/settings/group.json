@@ -1,0 +1,167 @@
+{
+  "admin": {
+    "emailPlaceholder": "邮箱",
+    "addFailed": "添加成员失败",
+    "addMember": {
+      "add": "添加",
+      "addError": "添加成员失败，请重试",
+      "adding": "添加中...",
+      "addSuccess": "成员已成功添加",
+      "invitationSent": "已发送邀请，对方使用该邮箱注册并登录后将自动加入本组。",
+      "email": "邮箱",
+      "emailPlaceholder": "输入邮箱地址",
+      "title": "添加成员",
+      "userNotFound": "用户未找到。他们将在使用该邮箱注册后自动加入组。",
+      "searchUsers": "从用户列表搜索",
+      "searchPlaceholder": "按 Email、姓名搜索用户",
+      "searchEmpty": "输入关键字搜索，或下方输入邮箱添加未注册用户",
+      "searchNoResults": "无匹配的用户",
+      "alreadyMember": "已在组内"
+    },
+    "breadcrumb": {
+      "groupAdmin": "组管理",
+      "settings": "设置"
+    },
+    "description": "管理组信息和组内成员",
+    "groupInfo": {
+      "description": "组描述",
+      "descriptionPlaceholder": "输入组描述",
+      "groupName": "组名称",
+      "groupNamePlaceholder": "输入组名称",
+      "memberCount": "成员数量",
+      "nameRequired": "组名称为必填",
+      "save": "保存更改",
+      "saveError": "更新组信息失败，请重试",
+      "saveSuccess": "组信息已成功更新",
+      "saving": "保存中...",
+      "title": "组信息"
+    },
+    "memberWrites": {
+      "actionDelete": "删除",
+      "actionInsert": "新增",
+      "actionUpdate": "编辑",
+      "description": "可对每个已白名单的模块分别授予新增、编辑、删除权限（不影响查看权限）。",
+      "manageButton": "管理写入权限",
+      "noWhitelistedModules": "此组尚未有任何白名单侧边栏模块，请先请系统管理员授予模块，才能设置成员写入权限。",
+      "save": "保存写入权限",
+      "saveError": "保存写入权限失败，请重试",
+      "saveSuccess": "写入权限已成功更新",
+      "saving": "保存中...",
+      "selectAll": "全选所有模块",
+      "title": "成员写入权限"
+    },
+    "members": {
+      "addedAt": "加入时间",
+      "adminBadge": "组管理员",
+      "email": "邮箱",
+      "makeAdmin": "设为组管理员",
+      "name": "姓名",
+      "noMembers": "暂无成员",
+      "remove": "移除",
+      "removeCancelButton": "取消",
+      "removeConfirmButton": "确认移除",
+      "removeConfirmMessage": "您确定要移除此成员吗？移除后该成员无法再查看组内资料。",
+      "removeConfirmTitle": "确认移除成员",
+      "removeError": "移除成员失败，请重试",
+      "removeSuccess": "成员已成功移除",
+      "removing": "移除中...",
+      "revokeAdmin": "撤销组管理员",
+      "title": "组内成员",
+      "toggleAdminError": "更新组管理员状态失败，请重试"
+    },
+    "moduleAccess": {
+      "openButton": "侧边栏模块 {{selected}}/{{total}}",
+      "save": "保存模块设置",
+      "saveError": "保存模块权限失败，请重试",
+      "saveSuccess": "模块权限已成功更新",
+      "saving": "保存中...",
+      "selectAll": "全选所有模块",
+      "title": "侧边栏模块"
+    },
+    "pendingInvitations": {
+      "title": "待接受邀请",
+      "invitedBadge": "邀请中",
+      "invitedAt": "邀请时间",
+      "revoke": "撤销邀请",
+      "revokeConfirmTitle": "撤销邀请",
+      "revokeConfirmMessage": "撤销后，这个邮箱再登入也不会自动加入本组。确定要撤销此邀请吗？",
+      "revokeConfirmButton": "确认撤销",
+      "revokeCancelButton": "取消"
+    },
+    "statistics": {
+      "favorites": "收藏数量",
+      "history": "历史记录数量",
+      "tags": "标签数量",
+      "title": "组资料统计"
+    },
+    "title": "组管理"
+  },
+  "management": {
+    "addGroupAdmin": {
+      "add": "添加",
+      "addError": "添加组管理员失败，请重试",
+      "adding": "添加中...",
+      "addSuccess": "组管理员已成功添加",
+      "description": "组描述（可选）",
+      "descriptionPlaceholder": "输入组描述",
+      "email": "邮箱",
+      "emailPlaceholder": "输入未注册的邮箱地址",
+      "emailRequired": "请输入电子邮件地址",
+      "groupName": "组名称",
+      "groupNamePlaceholder": "输入组名称",
+      "invalidEmail": "请输入有效的电子邮件地址",
+      "pick": "选择",
+      "searchUsers": "从已注册用户搜索",
+      "searchPlaceholder": "按 Email、姓名搜索已注册用户",
+      "searchEmpty": "输入关键字搜索已注册用户，或在下方输入邮箱创建邀请",
+      "searchNoResults": "未找到匹配的已注册用户",
+      "title": "添加组管理员",
+      "userNotFound": "尚未注册的邮箱会创建邀请；该用户注册登入后会自动成为组管理员。"
+    },
+    "breadcrumb": {
+      "groupManagement": "组管理",
+      "settings": "设置"
+    },
+    "description": "管理组管理员和组信息",
+    "groupAdmins": {
+      "delete": "删除",
+      "deleteCancelButton": "取消",
+      "deleteConfirmButton": "确认删除",
+      "deleteConfirmMessage": "您确定要删除此组管理员吗？组将被设置为临时管理状态，等待任命新管理员。",
+      "deleteConfirmTitle": "确认删除组管理员",
+      "deleteError": "删除组管理员失败，请重试",
+      "deleteSuccess": "组管理员已成功删除",
+      "deleting": "删除中...",
+      "email": "邮箱",
+      "groupName": "组名",
+      "memberCount": "成员数量",
+      "name": "姓名",
+      "noAdmins": "暂无组管理员",
+      "title": "组管理员列表"
+    },
+    "pendingInvitations": {
+      "title": "待注册的邀请",
+      "description": "下列组已邀请尚未注册的用户担任管理员，对方注册登录后会自动接管。",
+      "invitedBadge": "邀请中",
+      "invitedEmailLabel": "邀请：{{email}}",
+      "changeButton": "更换邀请",
+      "noInvitations": "暂无待注册的邀请"
+    },
+    "tempManagedGroups": {
+      "assignAdmin": "任命管理员",
+      "assignError": "任命管理员失败，请重试",
+      "assigning": "任命中...",
+      "assignSuccess": "管理员已成功任命",
+      "assignSuccessPending": "已创建待处理的任命。当该用户注册并登录时，将自动成为组管理员。",
+      "description": "下列组目前没有管理员，请指派新管理员。",
+      "groupName": "组名",
+      "memberCount": "成员数量",
+      "noGroups": "暂无临时管理的组",
+      "title": "临时管理的组"
+    },
+    "editMembersBack": "返回组管理",
+    "editMembersTitle": "管理组成员",
+    "editMembersUnauthorized": "您没有权限管理此组。",
+    "title": "组管理"
+  }
+}

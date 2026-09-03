@@ -1,0 +1,26 @@
+.clash-verge-root {
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji' !important;
+  background: var(--canvas, transparent) !important;
+  color: var(--ink) !important;
+}
+
+.clash-verge-root .MuiPaper-root {
+  background-color: var(--panel) !important;
+  color: var(--ink) !important;
+}
+
+.clash-verge-root .MuiDialog-paper {
+  background-color: var(--clash-dialog, var(--panel)) !important;
+  color: var(--ink) !important;
+  backdrop-filter: blur(20px);
+}
+
+.clash-verge-root .the_titlebar {
+  display: none !important;
+}
+
+.clash-verge-root .layout--geocrm-hosted {
+  border: none !important;
+  box-shadow: none !important;
+}

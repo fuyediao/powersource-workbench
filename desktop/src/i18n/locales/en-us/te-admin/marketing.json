@@ -1,0 +1,21 @@
+{
+  "title": "T&E Marketing",
+  "description": "Applicants who opted in to marketing emails on the T&E application form.",
+  "searchPlaceholder": "Search name, email, or agency...",
+  "refresh": "Refresh",
+  "empty": "No applicants have opted in to marketing emails yet.",
+  "noResults": "No matching subscribers",
+  "totalCount": "{{count}} subscribers",
+  "loading": "Loading…",
+  "columns": {
+    "name": "Name",
+    "email": "Email",
+    "agency": "Agency",
+    "status": "Status",
+    "submittedAt": "Submitted"
+  },
+  "errors": {
+    "notConfigured": "Database is not configured; marketing subscribers cannot be loaded.",
+    "load": "Failed to load marketing subscribers. Please try again."
+  }
+}

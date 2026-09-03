@@ -1,0 +1,98 @@
+{
+  "title": "User Management",
+  "description": "Manage Supabase authentication users: create, invite, reset passwords, ban, and delete accounts.",
+  "createUser": "Create User",
+  "editUser": "Edit User",
+  "searchPlaceholder": "Search by email",
+  "refresh": "Refresh",
+  "empty": "No users found.",
+  "you": "you",
+  "prev": "Previous",
+  "next": "Next",
+  "pageLabel": "Page {{page}}",
+  "deleteConfirmTitle": "Delete User",
+  "deleteConfirmMessage": "Permanently delete {{email}}? This cannot be undone.",
+  "columns": {
+    "email": "Email",
+    "employeeId": "Employee ID",
+    "affiliation": "Organization",
+    "providers": "Providers",
+    "createdAt": "Created",
+    "lastSignIn": "Last Sign-in",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "status": {
+    "active": "Active",
+    "banned": "Banned"
+  },
+  "affiliation": {
+    "superAdmin": "Super administrator",
+    "systemAdmin": "System administrator",
+    "globalLeader": "Global leader",
+    "groupAdmin": "{{group}} · Group admin",
+    "groupMember": "{{group}} · Member"
+  },
+  "actions": {
+    "edit": "Edit",
+    "invite": "Send verification code",
+    "ban": "Ban",
+    "unban": "Unban",
+    "delete": "Delete",
+    "cannotDeleteSelf": "You cannot delete your own account",
+    "grantSystemAdmin": "Grant system administrator",
+    "revokeSystemAdmin": "Revoke system administrator"
+  },
+  "form": {
+    "email": "Email",
+    "employeeId": "Employee ID (optional)",
+    "inviteNote": "No password is set here. The user receives an invitation link to sign in for the first time, then sets a password under Settings → Privacy & Security.",
+    "create": "Create",
+    "creating": "Creating…",
+    "save": "Save",
+    "saving": "Saving…"
+  },
+  "create": {
+    "title": "Create User",
+    "emailPlaceholder": "Enter email address",
+    "employeeIdPlaceholder": "Employee id (e.g. PS1234)",
+    "passwordPlaceholder": "Optional initial password",
+    "sendInvite": "Send invitation email",
+    "submit": "Create User",
+    "creating": "Creating…",
+    "emailRequired": "Email is required",
+    "employeeIdInvalid": "Employee id must match the PS#### format",
+    "passwordTooShort": "Password must be at least {{minLength}} characters"
+  },
+  "edit": {
+    "title": "Edit User",
+    "emailPlaceholder": "Enter email address",
+    "employeeIdPlaceholder": "Employee id (e.g. PS1234)",
+    "save": "Save Changes",
+    "saving": "Saving…",
+    "emailRequired": "Email is required",
+    "employeeIdInvalid": "Employee id must match the PS#### format"
+  },
+  "messages": {
+    "created": "User created.",
+    "updated": "User updated.",
+    "inviteSent": "Verification code sent.",
+    "banned": "User banned.",
+    "unbanned": "User unbanned.",
+    "deleted": "User deleted.",
+    "systemAdminGranted": "System administrator granted.",
+    "systemAdminRevoked": "System administrator revoked."
+  },
+  "errors": {
+    "apiNotConfigured": "The GeoCRM API URL is not configured.",
+    "loadFailed": "Failed to load users.",
+    "createFailed": "Failed to create user.",
+    "updateFailed": "Failed to update user.",
+    "inviteFailed": "Failed to send invite.",
+    "deleteFailed": "Failed to delete user.",
+    "invalidEmail": "Please enter a valid email address.",
+    "invalidEmployeeId": "Employee ID must match PS#### (e.g. PS0000).",
+    "passwordTooShort": "Password must be at least {{min}} characters.",
+    "systemAdminToggleFailed": "Failed to update system administrator status, please try again."
+  }
+}

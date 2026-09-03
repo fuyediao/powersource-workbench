@@ -1,0 +1,11 @@
+{
+  "import": "Import ICS…",
+  "export": "Export ICS…",
+  "exportName": "GeoCRM Calendar",
+  "importEmpty": "No events found in that ICS file.",
+  "importNoCalendar": "Create a calendar before importing.",
+  "importDone": "Imported {{count}} event(s).",
+  "importFailed": "Could not import the ICS file.",
+  "exportEmpty": "No events to export in the current calendars.",
+  "exportFailed": "Could not export ICS."
+}

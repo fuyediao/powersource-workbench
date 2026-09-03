@@ -1,0 +1,496 @@
+/* History rail: width morph + expanded/collapsed content crossfade */
+.chat-sidebar-rail {
+  transition:
+    width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width, transform;
+}
+
+.chat-sidebar-rail__expanded,
+.chat-sidebar-rail__collapsed {
+  transition:
+    opacity 200ms ease-out,
+    visibility 200ms ease-out;
+}
+
+.chat-sidebar-rail__expanded {
+  transition-delay: 60ms;
+}
+
+.chat-sidebar-rail__collapsed {
+  transition-delay: 40ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-sidebar-rail,
+  .chat-sidebar-rail__expanded,
+  .chat-sidebar-rail__collapsed {
+    transition: none;
+  }
+}
+
+/* AI chat assistant: fenced / indented code blocks */
+.chat-code-block {
+  margin-bottom: 0.75em;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: rgb(0 0 0 / 6%);
+}
+
+.chat-code-block--collapsed > .chat-code-block__toolbar,
+.chat-code-block--collapsed > .chat-code-block__body {
+  display: none;
+}
+
+.chat-code-block--collapsed[open] > .chat-code-block__toolbar,
+.chat-code-block--collapsed[open] > .chat-code-block__body {
+  display: block;
+}
+
+.chat-code-block--collapsed[open] > .chat-code-block__toolbar {
+  display: flex;
+}
+
+.chat-code-block__summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.5rem 0.75rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.chat-code-block__summary::-webkit-details-marker {
+  display: none;
+}
+
+.chat-code-block__summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.4rem;
+  transition: transform 0.15s ease;
+}
+
+.chat-code-block--collapsed[open] > .chat-code-block__summary::before {
+  transform: rotate(90deg);
+}
+
+.chat-code-block__summary:hover {
+  color: var(--ink);
+  background: rgb(0 0 0 / 4%);
+}
+
+:root.dark .chat-code-block__summary:hover {
+  background: rgb(255 255 255 / 6%);
+}
+
+:root.dark .chat-code-block {
+  border-color: rgb(255 255 255 / 10%);
+  background: rgb(0 0 0 / 18%);
+}
+
+.chat-code-block__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: rgb(0 0 0 / 6%);
+  gap: 0.5rem;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+:root.dark .chat-code-block__toolbar {
+  background: rgb(0 0 0 / 35%);
+  border-bottom-color: rgb(255 255 255 / 8%);
+}
+
+.chat-code-block__label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.chat-code-block__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.chat-code-block__btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.375rem;
+  color: var(--muted);
+  line-height: 0;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  border-radius: 0.25rem;
+}
+
+.chat-code-block__btn:hover {
+  background: rgb(0 0 0 / 6%);
+  color: var(--ink);
+}
+
+:root.dark .chat-code-block__btn:hover {
+  background: rgb(255 255 255 / 10%);
+  color: #fff;
+}
+
+.chat-code-block__body pre {
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  font-size: 0.875em;
+  line-height: 1.5;
+  border-radius: 0;
+  overflow-x: auto;
+}
+
+.chat-code-block__body pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+.chat-markdown :is(p, ul, ol) {
+  margin: 0.35em 0;
+}
+
+/* Restore markers after Tailwind Preflight `list-style: none`. */
+.chat-markdown :is(ul, ol) {
+  padding-left: 1.75em;
+  list-style-position: outside;
+}
+
+.chat-markdown ul {
+  list-style: disc;
+}
+
+.chat-markdown ul ul {
+  list-style-type: circle;
+}
+
+.chat-markdown ul ul ul {
+  list-style-type: square;
+}
+
+.chat-markdown ol {
+  list-style: decimal;
+}
+
+.chat-markdown ol ol {
+  list-style-type: lower-alpha;
+}
+
+.chat-markdown ol ol ol {
+  list-style-type: lower-roman;
+}
+
+.chat-markdown li {
+  margin: 0.25em 0;
+  line-height: 1.55;
+}
+
+.chat-markdown li > :is(p, ul, ol):first-child {
+  margin-top: 0;
+}
+
+.chat-markdown li > :is(p, ul, ol):last-child {
+  margin-bottom: 0;
+}
+
+/* GFM task lists from Aura `markdownToHtml` (`contains-task-list`). */
+.chat-markdown ul.contains-task-list {
+  padding-left: 0.15em;
+  list-style: none;
+}
+
+.chat-markdown li.task-list-item {
+  list-style: none;
+}
+
+.chat-markdown li.task-list-item > input[type='checkbox'] {
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0 0.45em 0.15em 0;
+  vertical-align: middle;
+  accent-color: var(--brand);
+  cursor: default;
+}
+
+.chat-markdown table {
+  display: block;
+  width: 100%;
+  margin: 0.75em 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  scrollbar-width: thin;
+}
+
+.chat-markdown th,
+.chat-markdown td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--muted) 32%, transparent);
+  line-height: 1.45;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.chat-markdown th {
+  font-weight: 700;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+}
+
+.chat-markdown tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--muted) 6%, transparent);
+}
+
+:root.dark .chat-markdown th,
+:root.dark .chat-markdown td {
+  border-color: rgb(255 255 255 / 14%);
+}
+
+:root.dark .chat-markdown th {
+  background: rgb(255 255 255 / 8%);
+}
+
+:root.dark .chat-markdown tbody tr:nth-child(even) {
+  background: rgb(255 255 255 / 4%);
+}
+
+.chat-markdown > :first-child {
+  margin-top: 0;
+}
+
+.chat-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.chat-markdown :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0.75em 0 0.35em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.chat-markdown h1 {
+  font-size: 1.35em;
+}
+
+.chat-markdown h2 {
+  font-size: 1.2em;
+}
+
+.chat-markdown h3 {
+  font-size: 1.1em;
+}
+
+.chat-markdown strong,
+.chat-markdown b {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.chat-markdown em,
+.chat-markdown i {
+  font-style: italic;
+}
+
+.chat-markdown sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+.chat-markdown sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+.chat-markdown audio,
+.chat-markdown video {
+  display: block;
+  max-width: 100%;
+  margin: 0.75em 0;
+}
+
+.chat-markdown video {
+  background: rgb(0 0 0 / 40%);
+  border-radius: 0.5rem;
+}
+
+.chat-markdown .language-math {
+  overflow-x: auto;
+}
+
+.chat-markdown .katex-display {
+  margin: 0.75em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.chat-markdown blockquote {
+  margin: 0.5em 0;
+  padding-left: 0.85rem;
+  border-left: 3px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  color: var(--muted);
+}
+
+.chat-markdown hr {
+  margin: 0.85em 0;
+  border: 0;
+  border-top: 1px solid rgb(0 0 0 / 10%);
+}
+
+:root.dark .chat-markdown hr {
+  border-top-color: rgb(255 255 255 / 12%);
+}
+
+.chat-markdown pre {
+  margin: 0.5em 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: rgb(0 0 0 / 6%);
+  font-size: 0.875em;
+  line-height: 1.5;
+}
+
+:root.dark .chat-markdown pre {
+  background: rgb(0 0 0 / 22%);
+}
+
+.chat-markdown code:not(pre code) {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+  color: var(--brand);
+  font-size: 0.875em;
+}
+
+.chat-markdown a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.chat-markdown kbd {
+  display: inline-block;
+  padding: 0.15em 0.4em;
+  margin: 0 0.1em;
+  font:
+    0.85em ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  line-height: 1.2;
+  color: var(--ink);
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--muted) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent);
+  border-radius: 0.3rem;
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--muted) 35%, transparent);
+}
+
+.chat-markdown mark {
+  padding: 0.05em 0.2em;
+  border-radius: 0.2rem;
+  background: color-mix(in srgb, var(--brand) 28%, transparent);
+  color: inherit;
+}
+
+.chat-markdown blockquote[data-type='callout'] {
+  margin: 0.75em 0;
+  padding: 0.75rem 1rem;
+  border-left-width: 4px;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: color-mix(in srgb, var(--brand) 8%, transparent);
+}
+
+.chat-markdown .language-echarts,
+.chat-markdown .language-mindmap,
+.chat-markdown .language-markmap {
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  height: 360px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.chat-markdown .language-mermaid,
+.chat-markdown .language-flowchart,
+.chat-markdown .language-graphviz,
+.chat-markdown .language-dot,
+.chat-markdown .language-digraph,
+.chat-markdown .language-plantuml,
+.chat-markdown .language-puml,
+.chat-markdown .language-abc,
+.chat-markdown .language-smiles {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  text-align: center;
+  background: transparent;
+}
+
+.chat-markdown .language-mermaid svg,
+.chat-markdown .aura-svg-preview svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.chat-markdown pre code.hljs {
+  background: transparent;
+  padding: 0;
+}
+
+/* Visible scrollbars for chat transcript + composer (override global hide in base.css). */
+.chat-scroll,
+.chat-composer-input {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+}
+
+.chat-scroll::-webkit-scrollbar,
+.chat-composer-input::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+  height: 8px;
+}
+
+.chat-scroll::-webkit-scrollbar-track,
+.chat-composer-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb,
+.chat-composer-input::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover,
+.chat-composer-input::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+.chat-composer-input {
+  overflow-y: auto;
+  overflow-x: hidden;
+}

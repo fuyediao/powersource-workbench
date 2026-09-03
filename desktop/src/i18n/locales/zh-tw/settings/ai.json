@@ -1,0 +1,162 @@
+{
+  "clear": {
+    "button": "清除所有",
+    "confirm": {
+      "cancel": "取消",
+      "confirm": "確認清除",
+      "message": "您確定要清除所有 API 金鑰嗎？此操作將刪除所有已儲存的廠商金鑰，且無法復原。",
+      "title": "確認清除所有 API 金鑰"
+    }
+  },
+  "config": {
+    "anthropic": {
+      "placeholder": "sk-ant-..."
+    },
+    "gemini": {
+      "placeholder": "AIza..."
+    },
+    "grok": {
+      "placeholder": "xai-..."
+    },
+    "openai": {
+      "placeholder": "sk-..."
+    },
+    "title": "{{provider}} API 設定",
+    "status": {
+      "configured": "已設定",
+      "localReady": "本機執行環境",
+      "notConfigured": "未設定"
+    }
+  },
+  "local": {
+    "baseUrl": "Base URL",
+    "hint": "在本機執行。Electron 直連 localhost（不經 VPS）。",
+    "keyOptional": "API 金鑰（選填）",
+    "llamacppHint": "請自行啟動 llama-server（預設 http://127.0.0.1:8080）。我們不打包 llama.cpp 二進位檔。"
+  },
+  "ipCheck": {
+    "apiSuccess": "API 連線成功",
+    "apiTest": "IP 與 API 檢查",
+    "browserHop": "瀏覽器",
+    "button": "檢查 IP 與 API 連線",
+    "checking": "檢查中...",
+    "colModel": "廠商",
+    "egressHint": "雲端金鑰用 GET /models；本機執行環境探測 localhost。本機的伺服器欄為 N/A。表頭顯示瀏覽器與伺服器出口 IP。",
+    "egressTitle": "出口 IP",
+    "error": "檢查失敗，請重試",
+    "localOnly": "僅本機（不經 VPS）",
+    "missingKey": "API 金鑰為空",
+    "networkError": "網路錯誤",
+    "notTested": "未測試",
+    "serverHop": "伺服器",
+    "skippedNoKey": "伺服器上未儲存 API 金鑰",
+    "unsupportedProvider": "需要額外設定"
+  },
+  "models": {
+    "chatgpt": {
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI"
+    },
+    "claude": {
+      "name": "Claude Opus 5",
+      "provider": "Anthropic"
+    },
+    "gemini": {
+      "name": "Gemini 3.1 Pro",
+      "provider": "Google"
+    },
+    "grok": {
+      "name": "Grok 4.5",
+      "provider": "xAI"
+    }
+  },
+  "modelAllowlist": {
+    "search": "搜尋模型…",
+    "allVendors": "全部",
+    "vendorFilterAria": "依廠商篩選",
+    "refresh": "重新整理",
+    "refreshing": "重新整理中…",
+    "loading": "載入模型中…",
+    "empty": "沒有符合的模型",
+    "offline": "離線",
+    "viewAll": "檢視全部模型",
+    "showLess": "顯示較少",
+    "toggleAria": "在桌面選單中啟用 {{model}}"
+  },
+  "save": {
+    "button": "儲存更改",
+    "error": "儲存失敗，請重試",
+    "saving": "儲存中...",
+    "success": "所有 API 金鑰已成功儲存"
+  },
+  "showKey": "顯示",
+  "hideKey": "隱藏",
+  "providerSelection": {
+    "title": "廠商選擇",
+    "search": "搜尋廠商…",
+    "empty": "沒有符合的廠商"
+  },
+  "providers": {
+    "ollama": "Ollama",
+    "lmstudio": "LM Studio",
+    "llamacpp": "llama.cpp",
+    "cherryin": "CherryIN",
+    "radeon-cloud": "AMD GPU Cloud",
+    "silicon": "Silicon",
+    "aihubmix": "AiHubMix",
+    "ocoolai": "ocoolAI",
+    "zhipu": "ZhiPu",
+    "deepseek": "deepseek",
+    "alayanew": "AlayaNew",
+    "dmxapi": "DMXAPI",
+    "aionly": "AIOnly",
+    "burncloud": "BurnCloud",
+    "302ai": "302.AI",
+    "lanyun": "LANYUN",
+    "ph8": "PH8",
+    "sophnet": "SophNet",
+    "ppio": "PPIO",
+    "qiniu": "Qiniu",
+    "openrouter": "OpenRouter",
+    "anthropic": "Anthropic",
+    "openai": "OpenAI",
+    "opencode": "OpenCode Go",
+    "azure-openai": "Azure OpenAI",
+    "gemini": "Gemini",
+    "vertexai": "VertexAI",
+    "github": "Github Models",
+    "copilot": "Github Copilot",
+    "moonshot": "Moonshot AI",
+    "baichuan": "BAICHUAN AI",
+    "dashscope": "Bailian",
+    "stepfun": "StepFun",
+    "doubao": "doubao",
+    "minimax": "MiniMax",
+    "groq": "Groq",
+    "together": "Together",
+    "fireworks": "Fireworks",
+    "nvidia": "nvidia",
+    "grok": "Grok",
+    "mistral": "Mistral",
+    "jina": "Jina",
+    "perplexity": "Perplexity",
+    "modelscope": "ModelScope",
+    "xirang": "Xirang",
+    "tokenhub": "TokenHub",
+    "baidu-cloud": "Baidu Cloud",
+    "voyageai": "VoyageAI",
+    "aws-bedrock": "AWS Bedrock",
+    "poe": "Poe",
+    "longcat": "LongCat",
+    "huggingface": "Hugging Face",
+    "gateway": "Vercel AI Gateway",
+    "cerebras": "Cerebras AI",
+    "mimo": "Xiaomi MiMo",
+    "zai": "zai",
+    "minimax-global": "minimax-global"
+  },
+  "catalog": {
+    "loading": "載入廠商中…",
+    "loadError": "無法載入廠商清單，請檢查 API 連線。"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "inbox": "Inbox",
+  "unreadFolder": "Unread",
+  "starred": "Starred",
+  "important": "Important",
+  "snoozed": "Snoozed",
+  "sent": "Sent",
+  "drafts": "Drafts",
+  "outbox": "Outbox",
+  "allMail": "All Mail",
+  "spam": "Spam",
+  "trash": "Trash",
+  "archive": "Archive"
+}

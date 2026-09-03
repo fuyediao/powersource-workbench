@@ -1,0 +1,17 @@
+{
+  "section": "Google",
+  "connectionMenu": "連線",
+  "connect": "連結 Google",
+  "connecting": "等待中…",
+  "reauth": "重新連結 Google",
+  "reauthHint": "請重新連結 Google 日曆以取得編輯權限，再按同步。",
+  "calendarsHeading": "Google 日曆",
+  "sync": "同步 Google",
+  "syncing": "同步中…",
+  "disconnect": "中斷連結",
+  "disconnectHint": "停止之後同步。已匯入的事件仍留在個人日曆。",
+  "confirmDisconnect": "中斷 Google 日曆連結？已匯入的事件仍會留在個人日曆。",
+  "error": "Google 日曆錯誤",
+  "readOnlyEvent": "此 Google 日曆在此為唯讀。請重新連結取得寫入權限，或選擇可寫入的日曆。",
+  "readOnlyCalendar": "唯讀日曆（節慶／訂閱）。可同步匯入，但無法在此編輯事件。"
+}

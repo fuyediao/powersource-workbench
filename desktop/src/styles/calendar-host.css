@@ -1,0 +1,427 @@
+/* Relative path: Tailwind's CSS resolver does not use Vite `@schedule-x/*` aliases. */
+@import '../lib/schedule-x/theme-default/lib/index.css';
+
+/*
+ * Bridge Schedule-X tokens to GeoCRM Appearance (--brand / --canvas / --ink / --muted).
+ * Light defaults; dark mode via html.dark (and Schedule-X isDark class on the host).
+ */
+
+.calendar-page {
+  --sx-color-primary: var(--brand);
+  --sx-color-on-primary: var(--brand-fg, #fff);
+  --sx-color-primary-container: color-mix(in oklab, var(--brand) 18%, var(--canvas));
+  --sx-color-on-primary-container: var(--brand);
+  --sx-color-secondary: color-mix(in oklab, var(--brand) 55%, var(--ink));
+  --sx-color-on-secondary: var(--brand-fg, #fff);
+  --sx-color-secondary-container: color-mix(in oklab, var(--brand) 12%, var(--canvas));
+  --sx-color-on-secondary-container: var(--ink);
+  --sx-color-tertiary: color-mix(in oklab, var(--brand) 40%, var(--muted));
+  --sx-color-on-tertiary: var(--brand-fg, #fff);
+  --sx-color-tertiary-container: color-mix(in oklab, var(--brand) 10%, var(--canvas));
+  --sx-color-on-tertiary-container: var(--ink);
+  --sx-color-surface: var(--canvas);
+  --sx-color-surface-dim: color-mix(in oklab, var(--ink) 4%, var(--canvas));
+  --sx-color-surface-bright: var(--canvas);
+  --sx-color-surface-container-lowest: var(--canvas);
+  --sx-color-surface-container-low: color-mix(in oklab, var(--ink) 3%, var(--canvas));
+  --sx-color-surface-container: color-mix(in oklab, var(--ink) 5%, var(--canvas));
+  --sx-color-surface-container-high: color-mix(in oklab, var(--ink) 7%, var(--canvas));
+  --sx-color-surface-container-highest: color-mix(in oklab, var(--ink) 9%, var(--canvas));
+  --sx-color-background: var(--canvas);
+  --sx-color-on-background: var(--ink);
+  --sx-color-on-surface: var(--ink);
+  --sx-color-outline: color-mix(in oklab, var(--ink) 14%, transparent);
+  --sx-color-outline-variant: color-mix(in oklab, var(--ink) 8%, transparent);
+  --sx-color-shadow: color-mix(in oklab, var(--ink) 20%, transparent);
+  --sx-color-surface-tint: var(--brand);
+  --sx-color-neutral: var(--muted);
+  --sx-color-neutral-variant: color-mix(in oklab, var(--ink) 42%, transparent);
+  --sx-internal-color-text: var(--ink);
+  --sx-border: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
+}
+
+html.dark .calendar-page,
+.calendar-page .is-dark {
+  /* Keep GeoCRM brand tokens; Schedule-X `.is-dark` otherwise injects purple MD3 defaults. */
+  --sx-color-primary: var(--brand);
+  --sx-color-on-primary: var(--brand-fg, #fff);
+  --sx-color-primary-container: color-mix(in oklab, var(--brand) 28%, var(--canvas));
+  --sx-color-on-primary-container: color-mix(in oklab, var(--brand) 75%, var(--ink));
+  --sx-color-secondary: color-mix(in oklab, var(--brand) 45%, var(--ink));
+  --sx-color-on-secondary: var(--brand-fg, #fff);
+  --sx-color-secondary-container: color-mix(in oklab, var(--brand) 18%, var(--canvas));
+  --sx-color-on-secondary-container: var(--ink);
+  --sx-color-tertiary: color-mix(in oklab, var(--brand) 35%, var(--muted));
+  --sx-color-on-tertiary: var(--brand-fg, #fff);
+  --sx-color-tertiary-container: color-mix(in oklab, var(--brand) 14%, var(--canvas));
+  --sx-color-on-tertiary-container: var(--ink);
+  --sx-color-surface: var(--canvas);
+  --sx-color-surface-dim: color-mix(in oklab, var(--ink) 8%, var(--canvas));
+  --sx-color-surface-bright: color-mix(in oklab, var(--ink) 14%, var(--canvas));
+  --sx-color-surface-container-lowest: var(--canvas);
+  --sx-color-surface-container-low: color-mix(in oklab, var(--ink) 6%, var(--canvas));
+  --sx-color-surface-container: color-mix(in oklab, var(--ink) 9%, var(--canvas));
+  --sx-color-surface-container-high: color-mix(in oklab, var(--ink) 12%, var(--canvas));
+  --sx-color-surface-container-highest: color-mix(in oklab, var(--ink) 16%, var(--canvas));
+  --sx-color-background: var(--canvas);
+  --sx-color-on-background: var(--ink);
+  --sx-color-on-surface: var(--ink);
+  --sx-color-outline: color-mix(in oklab, var(--ink) 22%, transparent);
+  --sx-color-outline-variant: color-mix(in oklab, var(--ink) 14%, transparent);
+  --sx-color-shadow: #000;
+  --sx-color-surface-tint: var(--brand);
+  --sx-color-neutral: var(--muted);
+  --sx-color-neutral-variant: color-mix(in oklab, var(--ink) 38%, transparent);
+  --sx-internal-color-text: var(--ink);
+  --sx-internal-color-light-gray: color-mix(in oklab, var(--ink) 8%, var(--canvas));
+  --sx-border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent);
+}
+
+/* Year overview (Google-style 12 mini months). */
+.calendar-page .sx__year-wrapper {
+  height: 100%;
+  overflow: auto;
+  padding: 0.75rem 1rem 1.25rem;
+  background: var(--sx-color-background);
+}
+
+.calendar-page .sx__year-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .calendar-page .sx__year-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.calendar-page .sx__year-month__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sx-color-on-surface);
+}
+
+.calendar-page .sx__year-month__weekdays,
+.calendar-page .sx__year-month__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+}
+
+.calendar-page .sx__year-month__weekday {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--sx-color-neutral-variant);
+  padding: 0.15rem 0;
+}
+
+.calendar-page .sx__year-month__day {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0.2rem 0;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  color: var(--sx-color-on-surface);
+  cursor: pointer;
+}
+
+.calendar-page .sx__year-month__day:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--brand) 14%, transparent);
+}
+
+.calendar-page .sx__year-month__day--leading {
+  color: color-mix(in oklab, var(--ink) 28%, transparent);
+  cursor: default;
+}
+
+.calendar-page .sx__year-month__day--today {
+  background: var(--brand);
+  color: var(--brand-fg, #fff);
+  font-weight: 700;
+}
+
+.calendar-page .sx__year-month__day--selected:not(.sx__year-month__day--today) {
+  box-shadow: inset 0 0 0 1.5px var(--brand);
+}
+
+.calendar-page .sx__year-month__day:disabled {
+  cursor: default;
+}
+
+/* View menu: brand hover/selected (avoid light lavender MD3 primary on dark). */
+.calendar-page .sx__view-selection-item:hover,
+.calendar-page .sx__view-selection-item:focus,
+.calendar-page .sx__view-selection-item.is-selected:hover,
+.calendar-page .sx__view-selection-item.is-selected:focus {
+  background-color: var(--brand);
+  color: var(--brand-fg, #fff);
+}
+
+.calendar-page .sx__view-selection-item.is-selected {
+  background-color: color-mix(in oklab, var(--ink) 10%, var(--canvas));
+  color: var(--ink);
+}
+
+.calendar-page .sx__view-selection-items {
+  margin-top: 6px;
+  /* Wider than the compact trigger so labels like 「時間表」 / 「4 天」 do not wrap. */
+  width: max-content;
+  min-width: max(100%, 7.5rem);
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  background-color: color-mix(in oklab, var(--canvas) 96%, transparent);
+  box-shadow:
+    0 10px 30px color-mix(in oklab, var(--ink) 18%, transparent),
+    0 1px 0 color-mix(in oklab, var(--ink) 6%, transparent);
+  animation: calendar-chrome-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.calendar-page .sx__view-selection-item {
+  white-space: nowrap;
+}
+
+.calendar-page .sx__view-selection-items.is-leaving {
+  animation: calendar-chrome-out 160ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.calendar-page .sx__view-selection-selected-item,
+.calendar-page .sx__date-input {
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  background-color: color-mix(in oklab, var(--ink) 4%, var(--canvas));
+}
+
+.calendar-page .sx__date-input--active .sx__date-input {
+  border-color: var(--brand);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--brand);
+}
+
+.calendar-page .sx__date-picker-popup {
+  z-index: var(--sx-calendar-header-popup-z-index, 3);
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  background-color: color-mix(in oklab, var(--canvas) 98%, transparent);
+  color: var(--ink);
+  box-shadow:
+    0 14px 40px color-mix(in oklab, var(--ink) 22%, transparent),
+    0 1px 0 color-mix(in oklab, var(--ink) 6%, transparent);
+  animation: calendar-chrome-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.calendar-page .sx__date-picker-popup.is-dark {
+  background-color: color-mix(in oklab, var(--canvas) 98%, transparent);
+}
+
+.calendar-page .sx__date-picker-popup.is-leaving {
+  animation: calendar-chrome-out 160ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.calendar-page .sx__date-picker__day.is-leading-or-trailing {
+  color: color-mix(in oklab, var(--ink) 28%, transparent);
+}
+
+html.dark .calendar-page .sx__date-picker__day.is-leading-or-trailing,
+.calendar-page .is-dark .sx__date-picker__day.is-leading-or-trailing {
+  color: color-mix(in oklab, var(--ink) 32%, transparent);
+}
+
+.calendar-page .sx__date-picker__day.sx__date-picker__day--selected {
+  background-color: var(--brand);
+  color: var(--brand-fg, #fff);
+}
+
+.calendar-page .sx__date-picker__day.sx__date-picker__day--today:not(
+    .sx__date-picker__day--selected
+  ) {
+  background-color: color-mix(in oklab, var(--brand) 18%, var(--canvas));
+  color: var(--brand);
+}
+
+.calendar-page .sx__date-picker__day:hover {
+  background-color: color-mix(in oklab, var(--ink) 8%, var(--canvas));
+}
+
+.calendar-page .sx__date-picker__month-view-header__month-year {
+  border-radius: 0.75rem;
+  padding: 0.35em 0.7em;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.calendar-page .sx__date-picker__month-view-header__month-year:hover {
+  background-color: color-mix(in oklab, var(--ink) 8%, var(--canvas));
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.calendar-page .sx__date-picker-view-pane.is-entering {
+  animation: calendar-chrome-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.calendar-page .sx__date-picker-view-pane.is-leaving {
+  animation: calendar-chrome-out 140ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.calendar-page .sx__date-picker__years-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-page .sx__date-picker__years-view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.calendar-page .sx__date-picker__years-view-header
+  .sx__date-picker__month-view-header__month-year:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.calendar-page .sx__date-picker__years-grid,
+.calendar-page .sx__date-picker__months-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem;
+  width: 100%;
+  animation: calendar-chrome-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.calendar-page .sx__date-picker__months-grid.is-pointer-blocked {
+  pointer-events: none;
+}
+
+.calendar-page .sx__date-picker__years-grid__cell,
+.calendar-page .sx__date-picker__months-grid__cell {
+  min-width: 0;
+  border-radius: 0.75rem;
+  padding: 0.65em 0.35em;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.calendar-page .sx__date-picker__years-grid__cell:hover:not(:disabled),
+.calendar-page .sx__date-picker__months-grid__cell:hover {
+  background-color: color-mix(in oklab, var(--ink) 8%, var(--canvas));
+  color: var(--ink);
+}
+
+.calendar-page .sx__date-picker__years-grid__cell:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.calendar-page .sx__date-picker__years-grid__cell.is-selected,
+.calendar-page .sx__date-picker__months-grid__cell.is-selected {
+  background-color: var(--brand);
+  color: var(--brand-fg, #fff);
+}
+
+.calendar-page .sx__date-picker__years-grid__cell.is-selected:hover,
+.calendar-page .sx__date-picker__months-grid__cell.is-selected:hover {
+  background-color: var(--brand);
+  color: var(--brand-fg, #fff);
+}
+
+.calendar-page .sx__date-picker__years-grid__cell.is-current,
+.calendar-page .sx__date-picker__months-grid__cell.is-current {
+  color: var(--brand);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brand) 40%, transparent);
+}
+
+@keyframes calendar-chrome-in {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+    scale: 0.98;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+@keyframes calendar-chrome-out {
+  from {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0;
+    translate: 0 -4px;
+    scale: 0.98;
+  }
+}
+
+.calendar-page .sx-react-calendar-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  opacity: 1;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.calendar-page .sx-react-calendar-wrapper[data-calendar-fading='true'] {
+  opacity: 0;
+}
+
+.calendar-page.is-readonly .sx__time-grid-event,
+.calendar-page.is-readonly .sx__date-grid-event,
+.calendar-page.is-readonly .sx__month-grid-event {
+  cursor: default;
+}
+
+/* Leading / trailing days outside the focused month (Windows Calendar style). */
+.calendar-page .sx__month-grid-day.is-leading-or-trailing .sx__month-grid-day__header-date,
+.calendar-page .sx__month-grid-day.is-leading-or-trailing .sx__month-grid-day__header-day-name {
+  color: var(--sx-color-neutral-variant);
+  opacity: 0.72;
+}
+
+.calendar-page .sx__month-agenda-day.is-leading-or-trailing {
+  color: var(--sx-color-neutral-variant);
+  opacity: 0.72;
+}
+
+/* macOS: Today / period arrows / view / date picker live on the application menu. */
+.calendar-page.is-native-menu .sx__today-button,
+.calendar-page.is-native-menu .sx__forward-backward-navigation,
+.calendar-page.is-native-menu .sx__view-selection,
+.calendar-page.is-native-menu .sx__date-picker-wrapper {
+  display: none;
+}

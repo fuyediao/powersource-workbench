@@ -1,0 +1,51 @@
+{
+  "title": "Global Leaders",
+  "description": "Global leaders get read-only access to a whitelisted set of /admin modules across every group, regardless of their own workspace. Use this sparingly for cross-group oversight roles.",
+  "breadcrumb": {
+    "globalLeaders": "Global Leaders",
+    "settings": "Settings"
+  },
+  "addLeader": {
+    "title": "Appoint Global Leader",
+    "searchPlaceholder": "Search by email or name",
+    "searchEmpty": "Type to search registered users",
+    "searchNoResults": "No matching users",
+    "alreadyLeader": "Already a global leader",
+    "add": "Appoint",
+    "adding": "Appointing…",
+    "addError": "Failed to appoint global leader, please try again",
+    "addSuccess": "Global leader appointed"
+  },
+  "list": {
+    "title": "Current Global Leaders",
+    "empty": "No global leaders appointed yet.",
+    "appointedAt": "Appointed",
+    "moduleCount": "{{count}} module(s)",
+    "manageModules": "Manage modules",
+    "revoke": "Revoke",
+    "revokeConfirmTitle": "Revoke Global Leader",
+    "revokeConfirmMessage": "Revoke global leader access for this user? Their role and group membership are unaffected.",
+    "revokeConfirmButton": "Confirm Revoke",
+    "revokeCancelButton": "Cancel",
+    "revokeError": "Failed to revoke global leader, please try again",
+    "revokeSuccess": "Global leader revoked"
+  },
+  "moduleAccess": {
+    "title": "Read-only Module Whitelist",
+    "description": "Choose which modules this global leader can read across every group. Leave everything unchecked to appoint them without granting any access yet.",
+    "selectAll": "Select all modules",
+    "save": "Save Modules",
+    "saving": "Saving…",
+    "saveSuccess": "Module access successfully updated",
+    "saveError": "Failed to save module access, please try again"
+  },
+  "desktopAccess": {
+    "title": "Desktop Functions",
+    "description": "Electron Home Function and map-layer entry keys for this leader (manual; not synced from website modules).",
+    "selectAll": "Select all desktop keys",
+    "save": "Save desktop access",
+    "saving": "Saving…",
+    "saveSuccess": "Desktop access saved",
+    "saveError": "Failed to save desktop access"
+  }
+}

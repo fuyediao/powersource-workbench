@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "builtin": true
+  },
+  "ignorePatterns": [
+    "src/lib/univer/**",
+    "src/lib/schedule-x/**",
+    "src/lib/mihomo/**",
+    "src/lib/codex/**",
+    "src/components/clash/**",
+    "src/hooks/clash/**",
+    "src/pages/clash/**",
+    "src/services/clash/**",
+    "src/types/clash/**",
+    "src/utils/clash/**",
+    "src/providers/clash/**",
+    "src/constants/clash-app-version.ts"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "allowLocation": "允许定位",
+  "cityKind": "城市",
+  "cityNoResults": "找不到符合的城市",
+  "cityPlaceholder": "搜索城市…",
+  "denied": "定位已被阻止，请在浏览器允许、改选城市，或再试一次。",
+  "humidity": "湿度 {{value}}%",
+  "needPermission": "允许定位，或在小工具设置选择城市。",
+  "pickCity": "选择城市",
+  "requesting": "正在获取位置…",
+  "subtitle": "你附近",
+  "title": "天气",
+  "unavailable": "暂时无法获取天气，请稍后再试。",
+  "unsupported": "此浏览器无法提供定位，请改为选择城市。",
+  "useLocation": "使用当前位置",
+  "wind": "风速 {{value}} km/h",
+  "windMph": "风速 {{value}} mph"
+}

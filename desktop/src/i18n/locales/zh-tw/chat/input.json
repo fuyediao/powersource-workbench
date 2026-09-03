@@ -1,0 +1,19 @@
+{
+  "disclaimer": "AI 可能會產生不準確的資訊，請核實重要資訊。",
+  "modeQuick": "快速",
+  "modeThink": "思考",
+  "mapSearch": "地圖",
+  "placeholder": "問問 GeoCRM 任何問題...",
+  "sendButton": "發送訊息",
+  "stopAnswering": "停止回答",
+  "stopped": "你已讓系統停止這項回覆",
+  "voiceNotSupported": "此裝置無法擷取麥克風音訊以進行語音輸入。",
+  "voiceStart": "開始語音輸入",
+  "voiceStop": "停止錄音並轉成文字",
+  "voiceTranscribing": "轉寫中…",
+  "voiceNeedsGemini": "語音輸入需要在「設定 → AI」中設定 Gemini API 金鑰。",
+  "voiceMicDenied": "麥克風權限被拒絕。請允許 GeoCRM 使用麥克風後再試。",
+  "voiceTooShort": "錄音太短。請再說久一點，然後再點一次麥克風。",
+  "voiceEmpty": "未偵測到語音，請再試一次。",
+  "voiceFailed": "語音轉文字失敗，請再試一次。"
+}

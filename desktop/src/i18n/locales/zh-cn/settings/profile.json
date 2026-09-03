@@ -1,0 +1,37 @@
+{
+  "avatar": {
+    "restoreGoogle": "恢复 Google 头像",
+    "upload": "上传头像"
+  },
+  "bio": "个人简介",
+  "displayName": "显示名称",
+  "email": "电子邮件",
+  "emailDisplayChoice": "显示用邮箱",
+  "emailOptionPrimary": "{{email}}（主要）",
+  "emailOptionGoogle": "{{email}}（Google）",
+  "useGoogleName": "使用 Google 名称：{{name}}",
+  "edit": "编辑",
+  "employeeId": "工号",
+  "organization": {
+    "groupAdmin": "组管理员",
+    "superAdmin": "超级管理员",
+    "systemAdmin": "系统管理员",
+    "user": "使用者"
+  },
+  "organizationLabel": "所属组织",
+  "phoneNumber": "电话号码",
+  "phoneNoCountries": "未找到国家/地区",
+  "placeholders": {
+    "bio": "写入您的个人简介...",
+    "displayName": "Enter your display name",
+    "phoneLocal": "13800138000",
+    "phonePickCountry": "区号",
+    "phoneSearch": "搜索国家或区号..."
+  },
+  "save": {
+    "button": "保存变更",
+    "error": "保存失败，请重试",
+    "saving": "保存中...",
+    "success": "个人资料已成功保存"
+  }
+}

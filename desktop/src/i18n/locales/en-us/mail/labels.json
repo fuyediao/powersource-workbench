@@ -1,0 +1,11 @@
+{
+  "applyLabel": "Labels…",
+  "confirmDeleteLabel": "Delete this label? Messages stay in the mailbox.",
+  "create": "Create",
+  "deleteLabel": "Delete label",
+  "labels": "Labels",
+  "labelsEmpty": "No labels",
+  "labelsSearch": "Search labels",
+  "newLabel": "New label",
+  "renameLabel": "Rename label"
+}

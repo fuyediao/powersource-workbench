@@ -1,0 +1,51 @@
+{
+  "title": "全域主管",
+  "description": "全域主管可跨所有组只读访问系统管理员白名单指定的 /admin 模块，不受自身所属组限制。请谨慎用于需要跨组监督的职务。",
+  "breadcrumb": {
+    "globalLeaders": "全域主管",
+    "settings": "设置"
+  },
+  "addLeader": {
+    "title": "任命全域主管",
+    "searchPlaceholder": "按邮箱或姓名搜索",
+    "searchEmpty": "输入以搜索已注册用户",
+    "searchNoResults": "未找到匹配的用户",
+    "alreadyLeader": "已是全域主管",
+    "add": "任命",
+    "adding": "任命中…",
+    "addError": "任命全域主管失败，请重试",
+    "addSuccess": "已任命全域主管"
+  },
+  "list": {
+    "title": "当前的全域主管",
+    "empty": "尚未任命任何全域主管。",
+    "appointedAt": "任命时间",
+    "moduleCount": "{{count}} 个模块",
+    "manageModules": "管理模块",
+    "revoke": "撤销",
+    "revokeConfirmTitle": "撤销全域主管",
+    "revokeConfirmMessage": "确定要撤销此用户的全域主管权限吗？不会影响其角色或组成员身份。",
+    "revokeConfirmButton": "确认撤销",
+    "revokeCancelButton": "取消",
+    "revokeError": "撤销全域主管失败，请重试",
+    "revokeSuccess": "已撤销全域主管"
+  },
+  "moduleAccess": {
+    "title": "只读模块白名单",
+    "description": "选择此全域主管可跨所有组只读访问的模块。全部不勾选即可先任命、之后再授予访问权限。",
+    "selectAll": "全选所有模块",
+    "save": "保存模块",
+    "saving": "保存中…",
+    "saveSuccess": "模块访问权限已更新",
+    "saveError": "保存模块访问权限失败，请重试"
+  },
+  "desktopAccess": {
+    "title": "桌面功能",
+    "description": "此领导的 Electron Home Function 与地图图层入口键（手动管理；不与网站模块同步）。",
+    "selectAll": "全选桌面键",
+    "save": "保存桌面权限",
+    "saving": "保存中…",
+    "saveSuccess": "桌面权限已保存",
+    "saveError": "保存桌面权限失败"
+  }
+}

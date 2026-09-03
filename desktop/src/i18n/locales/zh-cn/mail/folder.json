@@ -1,0 +1,14 @@
+{
+  "inbox": "收件箱",
+  "unreadFolder": "未读",
+  "starred": "已加星标",
+  "important": "重要",
+  "snoozed": "稍后处理",
+  "sent": "已发送",
+  "drafts": "草稿",
+  "outbox": "发件箱",
+  "allMail": "所有邮件",
+  "spam": "垃圾邮件",
+  "trash": "废纸篓",
+  "archive": "归档"
+}

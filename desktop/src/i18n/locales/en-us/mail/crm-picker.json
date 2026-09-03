@@ -1,0 +1,14 @@
+{
+  "selectCustomer": "Select customer",
+  "searchPlaceholder": "Search company, contact, or email…",
+  "searching": "Searching…",
+  "empty": "No matching customers or contacts with email.",
+  "error": "Could not search CRM contacts.",
+  "customers": "Customers",
+  "contacts": "Contacts",
+  "back": "Back",
+  "companyEmail": "Company email",
+  "noCompanyEmail": "No company email",
+  "noContacts": "No contacts with email",
+  "addAll": "Add all with email"
+}

@@ -1,0 +1,11 @@
+{
+  "account": "帳號",
+  "email": "電子郵件",
+  "password": "密碼",
+  "passwordOrAuthCode": "密碼/授權碼",
+  "displayName": "顯示名稱",
+  "imapHost": "IMAP 主機",
+  "imapPort": "IMAP 連接埠",
+  "smtpHost": "SMTP 主機",
+  "smtpPort": "SMTP 連接埠"
+}

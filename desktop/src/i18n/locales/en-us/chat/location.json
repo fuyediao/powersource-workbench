@@ -1,0 +1,7 @@
+{
+  "closedSunday": "Closed Sunday",
+  "notSupported": "Geolocation is not supported by your browser",
+  "openSun": "Open Sun",
+  "timeout": "Location request timed out. Please try again.",
+  "unableToRetrieve": "Unable to retrieve your location. Using query context instead."
+}

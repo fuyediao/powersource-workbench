@@ -1,0 +1,167 @@
+{
+  "admin": {
+    "emailPlaceholder": "Email",
+    "addFailed": "Failed to add member",
+    "addMember": {
+      "add": "Add",
+      "addError": "Failed to add member, please try again",
+      "adding": "Adding...",
+      "addSuccess": "Member successfully added",
+      "invitationSent": "Invitation sent. They will join the group when they register with this email.",
+      "email": "Email",
+      "emailPlaceholder": "Enter email address",
+      "title": "Add Member",
+      "userNotFound": "User not found. They will be added automatically when they register with this email.",
+      "searchUsers": "Search from user list",
+      "searchPlaceholder": "Search by email or name",
+      "searchEmpty": "Type to search, or enter email below to invite users who have not registered",
+      "searchNoResults": "No matching users",
+      "alreadyMember": "Already in group"
+    },
+    "breadcrumb": {
+      "groupAdmin": "Group Admin",
+      "settings": "Settings"
+    },
+    "description": "Manage group information and group members",
+    "groupInfo": {
+      "description": "Group Description",
+      "descriptionPlaceholder": "Enter group description",
+      "groupName": "Group Name",
+      "groupNamePlaceholder": "Enter group name",
+      "memberCount": "Members",
+      "nameRequired": "Group name is required",
+      "save": "Save Changes",
+      "saveError": "Failed to update group information, please try again",
+      "saveSuccess": "Group information successfully updated",
+      "saving": "Saving...",
+      "title": "Group Information"
+    },
+    "memberWrites": {
+      "actionDelete": "Delete",
+      "actionInsert": "Create",
+      "actionUpdate": "Edit",
+      "description": "Grant create, edit, and delete separately for each whitelisted module (view access is unaffected).",
+      "manageButton": "Manage write access",
+      "noWhitelistedModules": "This group has no whitelisted sidebar modules yet — ask a system admin to grant modules before assigning member write access.",
+      "save": "Save Write Access",
+      "saveError": "Failed to save write access, please try again",
+      "saveSuccess": "Write access successfully updated",
+      "saving": "Saving...",
+      "selectAll": "Select all modules",
+      "title": "Member Write Access"
+    },
+    "members": {
+      "addedAt": "Joined",
+      "adminBadge": "Group Admin",
+      "email": "Email",
+      "makeAdmin": "Make group admin",
+      "name": "Name",
+      "noMembers": "No members",
+      "remove": "Remove",
+      "removeCancelButton": "Cancel",
+      "removeConfirmButton": "Confirm Remove",
+      "removeConfirmMessage": "Are you sure you want to remove this member? After removal, the member will no longer be able to view group data.",
+      "removeConfirmTitle": "Confirm Remove Member",
+      "removeError": "Failed to remove member, please try again",
+      "removeSuccess": "Member successfully removed",
+      "removing": "Removing...",
+      "revokeAdmin": "Revoke group admin",
+      "title": "Group Members",
+      "toggleAdminError": "Failed to update group admin status, please try again"
+    },
+    "moduleAccess": {
+      "openButton": "Sidebar Modules {{selected}}/{{total}}",
+      "save": "Save Modules",
+      "saveError": "Failed to save module access, please try again",
+      "saveSuccess": "Module access successfully updated",
+      "saving": "Saving...",
+      "selectAll": "Select all modules",
+      "title": "Sidebar Modules"
+    },
+    "pendingInvitations": {
+      "title": "Pending Invitations",
+      "invitedBadge": "Invited",
+      "invitedAt": "Invited at",
+      "revoke": "Revoke Invitation",
+      "revokeConfirmTitle": "Revoke Invitation",
+      "revokeConfirmMessage": "After revoking, signing in with this email will no longer auto-join this group. Revoke this invitation?",
+      "revokeConfirmButton": "Confirm Revoke",
+      "revokeCancelButton": "Cancel"
+    },
+    "statistics": {
+      "favorites": "Favorites",
+      "history": "History Records",
+      "tags": "Tags",
+      "title": "Group Data Statistics"
+    },
+    "title": "Group Management"
+  },
+  "management": {
+    "addGroupAdmin": {
+      "add": "Add",
+      "addError": "Failed to add group administrator, please try again",
+      "adding": "Adding...",
+      "addSuccess": "Group administrator successfully added",
+      "description": "Group Description (Optional)",
+      "descriptionPlaceholder": "Enter group description",
+      "email": "Email",
+      "emailPlaceholder": "Enter an unregistered email address",
+      "emailRequired": "Please enter an email address",
+      "groupName": "Group Name",
+      "groupNamePlaceholder": "Enter group name",
+      "invalidEmail": "Please enter a valid email address",
+      "pick": "Pick",
+      "searchUsers": "Search registered users",
+      "searchPlaceholder": "Search registered users by email or name",
+      "searchEmpty": "Type to search registered users, or enter an email below to create a pending invitation",
+      "searchNoResults": "No matching registered users",
+      "title": "Add Group Administrator",
+      "userNotFound": "Unregistered emails create a pending invitation; that user becomes the group administrator automatically once they sign in."
+    },
+    "breadcrumb": {
+      "groupManagement": "Group Management",
+      "settings": "Settings"
+    },
+    "description": "Manage group administrators and group information",
+    "groupAdmins": {
+      "delete": "Delete",
+      "deleteCancelButton": "Cancel",
+      "deleteConfirmButton": "Confirm Delete",
+      "deleteConfirmMessage": "Are you sure you want to delete this group administrator? The group will be set to temporary managed state, waiting for a new administrator to be assigned.",
+      "deleteConfirmTitle": "Confirm Delete Group Administrator",
+      "deleteError": "Failed to delete group administrator, please try again",
+      "deleteSuccess": "Group administrator successfully deleted",
+      "deleting": "Deleting...",
+      "email": "Email",
+      "groupName": "Group Name",
+      "memberCount": "Members",
+      "name": "Name",
+      "noAdmins": "No group administrators",
+      "title": "Group Administrators"
+    },
+    "pendingInvitations": {
+      "title": "Pending Invitations",
+      "description": "These groups have invited a user who has not yet registered. They will automatically take over once they sign up and log in.",
+      "invitedBadge": "Invited",
+      "invitedEmailLabel": "Invited: {{email}}",
+      "changeButton": "Change Invitation",
+      "noInvitations": "No pending invitations"
+    },
+    "tempManagedGroups": {
+      "assignAdmin": "Assign Administrator",
+      "assignError": "Failed to assign administrator, please try again",
+      "assigning": "Assigning...",
+      "assignSuccess": "Administrator successfully assigned",
+      "assignSuccessPending": "Pending assignment created. The user will automatically become a group administrator when they register and log in.",
+      "description": "These groups currently have no administrator. Please assign a new one.",
+      "groupName": "Group Name",
+      "memberCount": "Members",
+      "noGroups": "No temporarily managed groups",
+      "title": "Temporarily Managed Groups"
+    },
+    "editMembersBack": "Back to Group Management",
+    "editMembersTitle": "Manage Group Members",
+    "editMembersUnauthorized": "You do not have permission to manage this group.",
+    "title": "Group Management"
+  }
+}

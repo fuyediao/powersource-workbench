@@ -1,0 +1,12 @@
+{
+  "title": "联系人",
+  "description": "浏览所有客户下的联系人，并可进入客户详情",
+  "searchPlaceholder": "搜索姓名、职称、Email、电话或客户名称...",
+  "empty": "尚无联系人资料，请在客户详情中新增",
+  "noResults": "找不到符合的联系人",
+  "deleteConfirm": "确定要删除此联系人？",
+  "col": {
+    "company": "公司",
+    "customer": "所属客户"
+  }
+}

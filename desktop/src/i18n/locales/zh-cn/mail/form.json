@@ -1,0 +1,11 @@
+{
+  "account": "账号",
+  "email": "电子邮件",
+  "password": "密码",
+  "passwordOrAuthCode": "密码/授权码",
+  "displayName": "显示名称",
+  "imapHost": "IMAP 主机",
+  "imapPort": "IMAP 端口",
+  "smtpHost": "SMTP 主机",
+  "smtpPort": "SMTP 端口"
+}

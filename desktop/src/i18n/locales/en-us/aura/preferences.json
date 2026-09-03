@@ -1,0 +1,64 @@
+{
+  "title": "Preferences",
+  "close": "Close",
+  "search": "Search",
+  "categories": {
+    "files": "Files",
+    "editor": "Editor",
+    "images": "Images",
+    "markdown": "Markdown",
+    "export": "Export",
+    "appearance": "Appearance",
+    "general": "General"
+  },
+  "files": {
+    "startup": "Startup options",
+    "startupNew": "Open a new file",
+    "startupLast": "Restore the last session",
+    "outline": "Outline",
+    "outlineCollapsible": "Allow expand/collapse sidebar outline",
+    "defaultExtension": "Default file type or extension",
+    "extMd": "Markdown (.md)",
+    "extMarkdown": "Markdown (.markdown)",
+    "extTxt": "Plain text (.txt)",
+    "saveRestore": "Save and restore",
+    "autoSave": "Auto-save",
+    "autoSaveOnSwitch": "Auto-save without asking when switching files in the sidebar",
+    "restoreDrafts": "Restore unsaved drafts",
+    "recent": "Recent locations",
+    "rememberRecent": "Remember recently used files and folders",
+    "clearRecent": "Clear recently used folders and files",
+    "dragDrop": "When dragging files or folders into the Markdown editor",
+    "dropFolder": "When dragging folders",
+    "dropMarkdown": "When dragging Markdown files",
+    "dropImportable": "When dragging importable files",
+    "actionOpen": "Open in the editor",
+    "actionIgnore": "Ignore",
+    "actionImport": "Import files"
+  },
+  "editor": {
+    "defaultMode": "Default edit mode",
+    "modeWysiwyg": "WYSIWYG",
+    "modeSv": "Source"
+  },
+  "export": {
+    "defaultFormat": "Default export format",
+    "formatMarkdown": "Markdown",
+    "formatHtml": "HTML"
+  },
+  "appearance": {
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDay": "Day",
+    "themeNight": "Night"
+  },
+  "general": {
+    "language": "Language",
+    "langEn": "English",
+    "langZhTw": "Traditional Chinese",
+    "langZhCn": "Simplified Chinese"
+  },
+  "comingSoon": "This feature will be enabled in a later update.",
+  "cleared": "Recent history cleared.",
+  "noDrafts": "There are no drafts to restore."
+}

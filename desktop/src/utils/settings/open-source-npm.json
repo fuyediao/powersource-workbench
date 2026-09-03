@@ -1,0 +1,587 @@
+[
+  {
+    "name": "@blocksuite/affine",
+    "license": "MIT",
+    "homepage": ""
+  },
+  {
+    "name": "@dnd-kit/core",
+    "license": "MIT",
+    "homepage": "https://github.com/clauderic/dnd-kit"
+  },
+  {
+    "name": "@dnd-kit/sortable",
+    "license": "MIT",
+    "homepage": "https://github.com/clauderic/dnd-kit"
+  },
+  {
+    "name": "@dnd-kit/utilities",
+    "license": "MIT",
+    "homepage": "https://github.com/clauderic/dnd-kit"
+  },
+  {
+    "name": "@e965/xlsx",
+    "license": "Apache-2.0",
+    "homepage": "https://sheetjs.com/"
+  },
+  {
+    "name": "@emotion/react",
+    "license": "MIT",
+    "homepage": "https://github.com/emotion-js/emotion/tree/main/packages/react"
+  },
+  {
+    "name": "@emotion/styled",
+    "license": "MIT",
+    "homepage": "https://github.com/emotion-js/emotion/tree/main/packages/styled"
+  },
+  {
+    "name": "@flatten-js/interval-tree",
+    "license": "MIT",
+    "homepage": "https://github.com/alexbol99/flatten-interval-tree#readme"
+  },
+  {
+    "name": "@floating-ui/dom",
+    "license": "MIT",
+    "homepage": "https://floating-ui.com"
+  },
+  {
+    "name": "@fontsource/plus-jakarta-sans",
+    "license": "OFL-1.1",
+    "homepage": "https://fontsource.org/fonts/plus-jakarta-sans"
+  },
+  {
+    "name": "@grpc/grpc-js",
+    "license": "Apache-2.0",
+    "homepage": "https://grpc.io/"
+  },
+  {
+    "name": "@grpc/proto-loader",
+    "license": "Apache-2.0",
+    "homepage": "https://grpc.io/"
+  },
+  {
+    "name": "@juggle/resize-observer",
+    "license": "Apache-2.0",
+    "homepage": "https://juggle.studio/resize-observer/"
+  },
+  {
+    "name": "@mermaid-js/mermaid-zenuml",
+    "license": "MIT",
+    "homepage": "https://github.com/mermaid-js/mermaid"
+  },
+  {
+    "name": "@monaco-editor/react",
+    "license": "MIT",
+    "homepage": "https://github.com/suren-atoyan/monaco-react#readme"
+  },
+  {
+    "name": "@mui/icons-material",
+    "license": "MIT",
+    "homepage": "https://mui.com/material-ui/material-icons/"
+  },
+  {
+    "name": "@mui/material",
+    "license": "MIT",
+    "homepage": "https://mui.com/material-ui/"
+  },
+  {
+    "name": "@nut-tree-fork/nut-js",
+    "license": "Apache-2.0",
+    "homepage": "https://nutjs.dev"
+  },
+  {
+    "name": "@plantuml/core",
+    "license": "MIT",
+    "homepage": "https://plantuml.com/"
+  },
+  {
+    "name": "@preact/signals",
+    "license": "MIT",
+    "homepage": "https://preactjs.com"
+  },
+  {
+    "name": "@radix-ui/react-dialog",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-direction",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-dropdown-menu",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-hover-card",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-popover",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-separator",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@radix-ui/react-slot",
+    "license": "MIT",
+    "homepage": "https://radix-ui.com/primitives"
+  },
+  {
+    "name": "@supabase/supabase-js",
+    "license": "MIT",
+    "homepage": "https://github.com/supabase/supabase-js/tree/master/packages/core/supabase-js"
+  },
+  {
+    "name": "@tanstack/react-virtual",
+    "license": "MIT",
+    "homepage": "https://tanstack.com/virtual"
+  },
+  {
+    "name": "@toeverything/theme",
+    "license": "SEE PACKAGE",
+    "homepage": "toeverything/design"
+  },
+  {
+    "name": "@univerjs/icons",
+    "license": "MIT",
+    "homepage": "https://docs.univer.ai/icons"
+  },
+  {
+    "name": "@viz-js/viz",
+    "license": "MIT",
+    "homepage": "https://github.com/mdaines/viz-js"
+  },
+  {
+    "name": "@wendellhu/redi",
+    "license": "MIT",
+    "homepage": "https://github.com/wzhudev/redi"
+  },
+  {
+    "name": "@xterm/addon-fit",
+    "license": "MIT",
+    "homepage": "https://github.com/xtermjs/xterm.js/tree/master/addons/addon-fit"
+  },
+  {
+    "name": "@xterm/xterm",
+    "license": "MIT",
+    "homepage": "https://github.com/xtermjs/xterm.js"
+  },
+  {
+    "name": "abcjs",
+    "license": "MIT",
+    "homepage": "https://abcjs.net"
+  },
+  {
+    "name": "adm-zip",
+    "license": "MIT",
+    "homepage": "https://github.com/cthackers/adm-zip"
+  },
+  {
+    "name": "ahooks",
+    "license": "MIT",
+    "homepage": "https://github.com/alibaba/hooks"
+  },
+  {
+    "name": "async-lock",
+    "license": "MIT",
+    "homepage": "https://github.com/rogierschouten/async-lock"
+  },
+  {
+    "name": "axios",
+    "license": "MIT",
+    "homepage": "https://axios-http.com"
+  },
+  {
+    "name": "cidr-block",
+    "license": "MIT",
+    "homepage": "https://cidr-block.com"
+  },
+  {
+    "name": "cjk-regex",
+    "license": "MIT",
+    "homepage": "https://github.com/ikatyang-collab/cjk-regex#readme"
+  },
+  {
+    "name": "class-variance-authority",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/joe-bell/cva#readme"
+  },
+  {
+    "name": "clsx",
+    "license": "MIT",
+    "homepage": "lukeed/clsx"
+  },
+  {
+    "name": "dayjs",
+    "license": "MIT",
+    "homepage": "https://day.js.org"
+  },
+  {
+    "name": "decimal.js",
+    "license": "MIT",
+    "homepage": "https://github.com/MikeMcl/decimal.js"
+  },
+  {
+    "name": "docx",
+    "license": "MIT",
+    "homepage": "https://docx.js.org"
+  },
+  {
+    "name": "dompurify",
+    "license": "(MPL-2.0 OR Apache-2.0)",
+    "homepage": "https://github.com/cure53/DOMPurify"
+  },
+  {
+    "name": "echarts",
+    "license": "Apache-2.0",
+    "homepage": "https://echarts.apache.org"
+  },
+  {
+    "name": "exceljs",
+    "license": "MIT",
+    "homepage": "https://github.com/exceljs/exceljs"
+  },
+  {
+    "name": "fast-diff",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/jhchen/fast-diff"
+  },
+  {
+    "name": "fast-xml-parser",
+    "license": "MIT",
+    "homepage": "https://github.com/NaturalIntelligence/fast-xml-parser"
+  },
+  {
+    "name": "flowchart.js",
+    "license": "MIT",
+    "homepage": "http://flowchart.js.org/"
+  },
+  {
+    "name": "foxact",
+    "license": "MIT",
+    "homepage": "https://foxact.skk.moe"
+  },
+  {
+    "name": "foxts",
+    "license": "MIT",
+    "homepage": "https://github.com/SukkaW/foxts"
+  },
+  {
+    "name": "fractional-indexing",
+    "license": "CC0-1.0",
+    "homepage": "https://github.com/rocicorp/fractional-indexing#readme"
+  },
+  {
+    "name": "franc-min",
+    "license": "MIT",
+    "homepage": "https://github.com/wooorm/franc/tree/main/packages/franc-min"
+  },
+  {
+    "name": "gemoji",
+    "license": "MIT",
+    "homepage": "wooorm/gemoji"
+  },
+  {
+    "name": "highlight.js",
+    "license": "BSD-3-Clause",
+    "homepage": "https://highlightjs.org/"
+  },
+  {
+    "name": "i18next",
+    "license": "MIT",
+    "homepage": "https://www.i18next.com"
+  },
+  {
+    "name": "js-yaml",
+    "license": "MIT",
+    "homepage": "nodeca/js-yaml"
+  },
+  {
+    "name": "jszip",
+    "license": "(MIT OR GPL-3.0-or-later)",
+    "homepage": "https://github.com/Stuk/jszip"
+  },
+  {
+    "name": "katex",
+    "license": "MIT",
+    "homepage": "https://katex.org"
+  },
+  {
+    "name": "kdbush",
+    "license": "ISC",
+    "homepage": "git://github.com/mourner/kdbush"
+  },
+  {
+    "name": "leaflet",
+    "license": "BSD-2-Clause",
+    "homepage": "https://leafletjs.com/"
+  },
+  {
+    "name": "leaflet.markercluster",
+    "license": "MIT",
+    "homepage": "https://github.com/Leaflet/Leaflet.markercluster"
+  },
+  {
+    "name": "lit",
+    "license": "BSD-3-Clause",
+    "homepage": "https://lit.dev/"
+  },
+  {
+    "name": "localforage",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/localForage/localForage"
+  },
+  {
+    "name": "lodash-es",
+    "license": "MIT",
+    "homepage": "https://lodash.com/custom-builds"
+  },
+  {
+    "name": "markdown-it",
+    "license": "MIT",
+    "homepage": "markdown-it/markdown-it"
+  },
+  {
+    "name": "markmap-lib",
+    "license": "MIT",
+    "homepage": "https://github.com/markmap/markmap/packages/markmap-lib#readme"
+  },
+  {
+    "name": "markmap-view",
+    "license": "MIT",
+    "homepage": "https://github.com/markmap/markmap/packages/markmap-view#readme"
+  },
+  {
+    "name": "mermaid",
+    "license": "MIT",
+    "homepage": "https://github.com/mermaid-js/mermaid"
+  },
+  {
+    "name": "meta-json-schema",
+    "license": "MIT",
+    "homepage": "https://github.com/dongchengjie/meta-json-schema"
+  },
+  {
+    "name": "monaco-editor",
+    "license": "MIT",
+    "homepage": "https://github.com/microsoft/monaco-editor"
+  },
+  {
+    "name": "monaco-yaml",
+    "license": "MIT",
+    "homepage": "https://monaco-yaml.js.org"
+  },
+  {
+    "name": "nanoid",
+    "license": "MIT",
+    "homepage": "ai/nanoid"
+  },
+  {
+    "name": "node-pty",
+    "license": "MIT",
+    "homepage": "https://github.com/microsoft/node-pty"
+  },
+  {
+    "name": "numfmt",
+    "license": "MIT",
+    "homepage": "https://github.com/borgar/numfmt"
+  },
+  {
+    "name": "opentype.js",
+    "license": "MIT",
+    "homepage": "git://github.com/opentypejs/opentype.js"
+  },
+  {
+    "name": "ot-json1",
+    "license": "ISC",
+    "homepage": "https://github.com/josephg/json1#readme"
+  },
+  {
+    "name": "pptxgenjs",
+    "license": "MIT",
+    "homepage": "https://gitbrent.github.io/PptxGenJS/"
+  },
+  {
+    "name": "preact",
+    "license": "MIT",
+    "homepage": "https://preactjs.com"
+  },
+  {
+    "name": "qrcode.react",
+    "license": "ISC",
+    "homepage": "http://zpao.github.io/qrcode.react"
+  },
+  {
+    "name": "rbush",
+    "license": "MIT",
+    "homepage": "https://github.com/mourner/rbush"
+  },
+  {
+    "name": "react",
+    "license": "MIT",
+    "homepage": "https://react.dev/"
+  },
+  {
+    "name": "react-dom",
+    "license": "MIT",
+    "homepage": "https://react.dev/"
+  },
+  {
+    "name": "react-error-boundary",
+    "license": "MIT",
+    "homepage": "https://react-error-boundary-lib.vercel.app/"
+  },
+  {
+    "name": "react-hook-form",
+    "license": "MIT",
+    "homepage": "https://react-hook-form.com"
+  },
+  {
+    "name": "react-i18next",
+    "license": "MIT",
+    "homepage": "https://github.com/i18next/react-i18next"
+  },
+  {
+    "name": "react-markdown",
+    "license": "MIT",
+    "homepage": "remarkjs/react-markdown"
+  },
+  {
+    "name": "react-router",
+    "license": "MIT",
+    "homepage": "https://github.com/remix-run/react-router"
+  },
+  {
+    "name": "react-transition-group",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/reactjs/react-transition-group#readme"
+  },
+  {
+    "name": "rehype-parse",
+    "license": "MIT",
+    "homepage": "https://github.com/rehypejs/rehype"
+  },
+  {
+    "name": "rehype-raw",
+    "license": "MIT",
+    "homepage": "rehypejs/rehype-raw"
+  },
+  {
+    "name": "rehype-remark",
+    "license": "MIT",
+    "homepage": "rehypejs/rehype-remark"
+  },
+  {
+    "name": "rehype-stringify",
+    "license": "MIT",
+    "homepage": "https://github.com/rehypejs/rehype"
+  },
+  {
+    "name": "remark-frontmatter",
+    "license": "MIT",
+    "homepage": "remarkjs/remark-frontmatter"
+  },
+  {
+    "name": "remark-gfm",
+    "license": "MIT",
+    "homepage": "remarkjs/remark-gfm"
+  },
+  {
+    "name": "remark-math",
+    "license": "MIT",
+    "homepage": "https://github.com/remarkjs/remark-math/tree/main/packages/remark-math"
+  },
+  {
+    "name": "remark-parse",
+    "license": "MIT",
+    "homepage": "https://remark.js.org"
+  },
+  {
+    "name": "remark-rehype",
+    "license": "MIT",
+    "homepage": "remarkjs/remark-rehype"
+  },
+  {
+    "name": "remark-stringify",
+    "license": "MIT",
+    "homepage": "https://remark.js.org"
+  },
+  {
+    "name": "rrule",
+    "license": "BSD-3-Clause",
+    "homepage": "http://jakubroztocil.github.io/rrule/"
+  },
+  {
+    "name": "rxjs",
+    "license": "Apache-2.0",
+    "homepage": "https://rxjs.dev"
+  },
+  {
+    "name": "smiles-drawer",
+    "license": "MIT",
+    "homepage": "https://github.com/reymond-group/smilesDrawer"
+  },
+  {
+    "name": "sonner",
+    "license": "MIT",
+    "homepage": "https://sonner.emilkowal.ski/"
+  },
+  {
+    "name": "swr",
+    "license": "MIT",
+    "homepage": "https://swr.vercel.app"
+  },
+  {
+    "name": "tailwind-merge",
+    "license": "MIT",
+    "homepage": "https://github.com/dcastil/tailwind-merge"
+  },
+  {
+    "name": "temporal-polyfill",
+    "license": "MIT",
+    "homepage": "https://github.com/fullcalendar/temporal-polyfill"
+  },
+  {
+    "name": "types-pac",
+    "license": "MIT",
+    "homepage": "https://github.com/dongchengjie/types-pac/"
+  },
+  {
+    "name": "unified",
+    "license": "MIT",
+    "homepage": "https://unifiedjs.com"
+  },
+  {
+    "name": "unist-util-visit",
+    "license": "MIT",
+    "homepage": "syntax-tree/unist-util-visit"
+  },
+  {
+    "name": "validator",
+    "license": "MIT",
+    "homepage": "https://github.com/validatorjs/validator.js"
+  },
+  {
+    "name": "y-protocols",
+    "license": "MIT",
+    "homepage": "https://github.com/yjs/y-protocols#readme"
+  },
+  {
+    "name": "yjs",
+    "license": "MIT",
+    "homepage": "https://docs.yjs.dev"
+  },
+  {
+    "name": "zod",
+    "license": "MIT",
+    "homepage": "https://zod.dev"
+  }
+]

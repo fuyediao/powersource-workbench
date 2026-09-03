@@ -1,0 +1,7 @@
+{
+  "languageLabel": "Language",
+  "systemLabel": "System",
+  "startupLabel": "Startup",
+  "launchAtLogin": "Launch at startup",
+  "silentLaunch": "Silent launch"
+}

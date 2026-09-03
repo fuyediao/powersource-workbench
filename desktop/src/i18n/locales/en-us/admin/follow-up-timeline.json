@@ -1,0 +1,10 @@
+{
+  "title": "Todo List",
+  "addPlan": "Add Todo List",
+  "noFollowUps": "No todo plans yet",
+  "scheduledAt": "Scheduled",
+  "completedAt": "Completed",
+  "overdue": "Overdue",
+  "planned": "Planned",
+  "completed": "Completed"
+}

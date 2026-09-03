@@ -1,0 +1,19 @@
+{
+  "defaultName": "Calendar",
+  "add": "Add calendar",
+  "addShort": "+ Cal",
+  "promptName": "Calendar name",
+  "newName": "New calendar",
+  "delete": "Delete calendar",
+  "rename": "Rename",
+  "confirmDelete": "Delete calendar \"{{name}}\"? Events stay; they are unassigned from this calendar.",
+  "cannotDeleteDefault": "The default calendar cannot be deleted.",
+  "cannotDeleteLast": "Keep at least one calendar.",
+  "contextHint": "Right-click to rename or delete",
+  "menu": "Calendars ({{count}})",
+  "section": "Calendars",
+  "empty": "No calendars yet",
+  "color": "Color",
+  "changeColor": "Change color",
+  "customColor": "Custom color"
+}

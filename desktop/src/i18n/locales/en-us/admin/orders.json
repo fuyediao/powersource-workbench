@@ -1,0 +1,147 @@
+{
+  "crmTitle": "ERP Orders",
+  "crmDescription": "Customer orders synced from ERP.",
+  "obmTitle": "OBM Orders",
+  "obmDescription": "Orders mirrored from the OBM portal for cross-team visibility.",
+  "teTitle": "T&E Orders",
+  "teDescription": "Backend-owned local orders and carrier tracking for T&E applications.",
+  "refresh": "Refresh",
+  "searchPlaceholder": "Search customer code, customer, or order no…",
+  "empty": "No orders yet. Orders sync automatically from the ERP system.",
+  "noResults": "No orders match your search",
+  "col": {
+    "customer": "Customer",
+    "contact": "Contact",
+    "address": "Address",
+    "productName": "Product Name",
+    "customerCode": "Customer Code",
+    "group": "Group",
+    "orderNo": "Order No.",
+    "amount": "Amount",
+    "createdAt": "Created At",
+    "actions": "Actions"
+  },
+  "erp": {
+    "syncButton": "Sync ERP",
+    "syncing": "Syncing...",
+    "syncDone": "Synced {{orders}} orders across {{customers}} customers.",
+    "syncError": "Failed to sync ERP orders",
+    "detailTitle": "ERP Order",
+    "detailError": "Failed to load ERP order detail",
+    "lineItems": "Line Items",
+    "noLineItems": "This order has no line items.",
+    "field": {
+      "billNo": "Order No.",
+      "billDate": "Order Date",
+      "customer": "Customer",
+      "contactInfo": "Contact info",
+      "amount": "Amount",
+      "shipment": "Shipment",
+      "address": "Address"
+    },
+    "item": {
+      "code": "Item No.",
+      "name": "Item Name",
+      "qty": "Qty",
+      "price": "Price",
+      "amount": "Amount"
+    }
+  },
+  "detail": {
+    "backToList": "Back",
+    "notFound": "Order not found."
+  },
+  "viewDetail": "View order details",
+  "error": {
+    "load": "Failed to load orders"
+  },
+  "hub": {
+    "obm": {
+      "searchPlaceholder": "Search by order number…",
+      "empty": "No OBM orders yet.",
+      "error": "Failed to load OBM orders",
+      "detailError": "Failed to load this OBM order",
+      "detailNotFound": "OBM order not found",
+      "detailSubtitle": "Wholesale order from the shop storefront",
+      "customerSectionTitle": "OBM Orders",
+      "col": {
+        "orderNumber": "Order No.",
+        "customer": "Customer",
+        "items": "Items",
+        "amount": "Amount",
+        "status": "Status",
+        "createdAt": "Created At"
+      },
+      "status": {
+        "pending_payment": "Pending payment",
+        "payment_processing": "Payment processing",
+        "payment_succeeded": "Paid",
+        "payment_failed": "Payment failed",
+        "closed": "Closed",
+        "cancelled": "Cancelled"
+      },
+      "platform": {
+        "web": "Web",
+        "ios": "iOS",
+        "android": "Android"
+      },
+      "detail": {
+        "sections": {
+          "summary": "Order details",
+          "shipping": "Shipping",
+          "payment": "Payment",
+          "items": "Line items"
+        },
+        "fields": {
+          "platform": "Client platform",
+          "closedAt": "Closed at",
+          "cancelledAt": "Cancelled at",
+          "contactName": "Contact name",
+          "contactEmail": "Contact email",
+          "contactPhone": "Contact phone",
+          "address": "Address",
+          "subtotal": "Subtotal",
+          "stripePaymentIntent": "Stripe Payment Intent",
+          "stripeCheckoutSession": "Stripe Checkout Session",
+          "paidAt": "Paid at"
+        },
+        "itemsColumns": {
+          "item": "Item",
+          "sku": "SKU",
+          "quantity": "Qty",
+          "unitPrice": "Unit price",
+          "lineTotal": "Line total"
+        },
+        "emptyItems": "No line items on this order.",
+        "paymentMissing": "Paid status is set, but no Stripe payment row is visible yet."
+      }
+    },
+    "teOrders": {
+      "searchPlaceholder": "Search by tracking number or carrier…",
+      "empty": "No T&E orders yet.",
+      "error": "Failed to load T&E orders",
+      "statusNotRegistered": "Not registered",
+      "col": {
+        "approvedProducts": "Approved products",
+        "tracking": "Tracking No.",
+        "carrier": "Carrier",
+        "status": "Tracking status",
+        "lastChecked": "Last checked",
+        "shippedAt": "Shipped at",
+        "deliveredAt": "Delivered at"
+      },
+      "detailTitle": "T&E Order",
+      "detailError": "Failed to load this T&E order",
+      "detailNotFound": "T&E order not found",
+      "detail": {
+        "orderCreatedAt": "Order created",
+        "lastError": "Last tracking error"
+      }
+    }
+  },
+  "teTracking": {
+    "pending": "Pending shipment",
+    "in_transit": "In transit",
+    "delivered": "Delivered"
+  }
+}

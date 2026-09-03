@@ -1,0 +1,230 @@
+{
+  "title": "团队协作",
+  "bscTab": "BSC",
+  "pbcTab": "PBC",
+  "retroTab": "复盘",
+  "retroComingSoon": "复盘与回顾模块即将上线。",
+  "retroDescription": "将支持周期性总结、目标差距分析与行动跟踪，并与 BSC／PBC 数据衔接。",
+  "retro": {
+    "title": "月度复盘（整组）",
+    "periodLabel": "复盘月份",
+    "groupScopeNote": "全组共用 · 每月一份",
+    "savedAt": "已同步至数据库",
+    "supabaseRequired": "复盘数据需写入 Supabase。请设置 VITE_DEPLOYMENT_DOMAIN 与 VITE_SUPABASE_ANON_KEY，并应用 team_retro_boards 迁移后刷新页面。",
+    "loadError": "加载复盘失败。",
+    "saveError": "保存复盘失败，请重试。",
+    "readOnlyHint": "当前为只读。需为本工作区的有效成员、群组管理员或系统管理员才可编辑。",
+    "col": {
+      "focus": "复盘重点",
+      "guide": "可参考的思考方向",
+      "responsibility": "责任面向",
+      "teamDesc": "团队说明（整组）",
+      "improvement": "改进点（整组）"
+    },
+    "placeholder": {
+      "teamDesc": "整组说明，所有成员均可贡献填写…",
+      "improvement": "本区块的改进方向或待跟踪行动…"
+    },
+    "section": {
+      "customer": {
+        "title": "客户与对外协作",
+        "responsibility": "业务",
+        "guide1": "客户沟通、拜访过程中有哪些摩擦或卡点？",
+        "guide2": "商机跟进是否顺利？有无意外流失或延误的订单？",
+        "guide3": "有无客户反映预期外的需求或问题？"
+      },
+      "goals": {
+        "title": "目标与周期回顾",
+        "responsibility": "管理",
+        "guide1": "本月 PBC 目标是否达标？差距出现在哪个环节？",
+        "guide2": "有无当时规划但实际未执行的行动？",
+        "guide3": "有无未预计出现的突发事件或情况？"
+      },
+      "execution": {
+        "title": "执行与协作过程",
+        "responsibility": "全组",
+        "guide1": "执行中有哪些影响进度的关键事件或阻塞点？",
+        "guide2": "跨人协作是否顺畅？有无协调不到位之处？",
+        "guide3": "某个环节遇到小插曲是如何解决的？"
+      },
+      "data": {
+        "title": "数据与运营",
+        "responsibility": "支持",
+        "guide1": "CRM 或地图数据是否出现异常、缺漏或质量问题？",
+        "guide2": "有无潜在的运营风险需要及时提醒或跟进？"
+      },
+      "tech": {
+        "title": "技术与流程",
+        "responsibility": "系统",
+        "guide1": "有无未解决的技术问题需移交或追踪？",
+        "guide2": "系统集成或自动化流程有哪些待改善的地方？",
+        "guide3": "如有技术问题，已同步相关人员并列入下次复盘追踪吗？"
+      }
+    }
+  },
+  "bscComingSoon": "BSC（平衡计分卡）仪表板即将上线。",
+  "bscDescription": "平衡计分卡模块将提供四维战略追踪——财务、客户、内部流程与学习成长。",
+  "bsc": {
+    "title": "平衡计分卡（整组）",
+    "initBtn": "初始化 BSC",
+    "loading": "加载 BSC 中…",
+    "loadError": "加载 BSC 数据失败。",
+    "saveError": "保存失败，请重试。",
+    "supabaseRequired": "BSC 数据需要 Supabase。请设置 VITE_DEPLOYMENT_DOMAIN 与 VITE_SUPABASE_ANON_KEY，并应用 bsc_boards 迁移后刷新页面。",
+    "noGroup": "当前未选择工作区团队，无法显示 BSC。",
+    "noDoc": "本月暂无 BSC 文件。",
+    "vision": {
+      "title": "部门战略愿景",
+      "editBtn": "编辑愿景",
+      "clickToEdit": "点此填写部门战略愿景…",
+      "visionLabel": "愿景声明",
+      "descLabel": "详细说明",
+      "placeholder": "例如：实现市场全面增长，打造高绩效、数字化的团队。",
+      "descPlaceholder": "补充说明部门战略方向与核心重点…"
+    },
+    "achievement": "整体达成率",
+    "weightLabel": "权重",
+    "status": {
+      "onTrack": "进展顺利",
+      "atRisk": "需要关注",
+      "behind": "进度落后"
+    },
+    "dimension": {
+      "financial": "财务维度",
+      "customer": "客户维度",
+      "internal": "内部流程维度",
+      "learning": "学习与成长维度"
+    },
+    "dimensionSub": {
+      "financial": "Financial Perspective",
+      "customer": "Customer Perspective",
+      "internal": "Internal Process Perspective",
+      "learning": "Learning & Growth Perspective"
+    },
+    "col": {
+      "name": "战略目标",
+      "description": "目标描述",
+      "weight": "权重 (%)",
+      "responsibility": "责任方",
+      "kpiName": "指标名称",
+      "formula": "计算公式",
+      "targetValue": "目标值",
+      "currentValue": "当前值",
+      "dataSource": "数据来源"
+    },
+    "addGoal": "新增目标",
+    "editGoal": "编辑目标",
+    "deleteGoal": "删除目标",
+    "deleteGoalConfirm": "确定删除此战略目标及其所有指标吗？",
+    "addKpi": "新增指标",
+    "editKpi": "编辑指标",
+    "deleteKpi": "删除指标",
+    "deleteKpiConfirm": "确定删除此指标吗？",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "noGoals": "此维度暂无战略目标。",
+    "noKpis": "此目标暂无指标。",
+    "readOnlyHint": "当前为只读视图，仅组管理员可编辑 BSC 内容。"
+  },
+  "pbcTitle": "PBC — 部门目标承诺书",
+  "pbcFiscalYear": "期间",
+  "goToCurrentMonth": "本月",
+  "periodReadOnlyHint": "较早的期间为只读。仅可编辑当月与上个月。",
+  "periodNoDocumentHint": "此期间尚无文件。较早月份无法新建或编辑。",
+  "yearSuffix": "年",
+  "monthSuffix": "月",
+  "pbcGroupLabel": "组级",
+  "pbcIndividualLabel": "个人",
+  "pbcValidPeriod": "承诺有效期",
+  "pbcCommitter": "承诺人",
+  "pbcDepartment": "部门",
+  "pbcPosition": "职务",
+  "pbcOverallDirection": "总体目标和方向",
+  "pbcSelectMember": "请选择成员查看其 PBC",
+  "pbcNoMembers": "暂无组成员。",
+  "pbcSupabaseRequired": "PBC 数据需要 Supabase。请配置 VITE_DEPLOYMENT_DOMAIN 与 VITE_SUPABASE_ANON_KEY，并执行 pbc_documents 相关数据库迁移后刷新页面。",
+  "pbcNoGroup": "当前账号尚未关联工作区团队。请先在设置中加入或创建团队后再使用团队协作。",
+  "pbcSelectGroup": "选择团队",
+  "pbcLoading": "加载 PBC 中…",
+  "pbcError": "加载 PBC 数据失败。",
+  "pbcRetry": "重试",
+  "pbcTotalScore": "绩效预估总分",
+  "pbcOverallGoals": "月度总体目标与方向",
+  "pbcOverallGoalsHint": "每行输入一则月度目标或方向，系统将自动排列为编号清单",
+  "pbcOverallGoalsEmpty": "尚未填写月度总体目标。可在「编辑表头」中每行输入一则。",
+  "pbcSectionScore": "区块小计",
+  "pbcGrade": {
+    "S": "S 级（杰出亮眼）",
+    "A": "A 级（良好超标）",
+    "B": "B 级（合格达标）",
+    "C": "C 级（需加强改善）"
+  },
+  "scoreLabel": {
+    "1": "差",
+    "2": "较差",
+    "3": "合格",
+    "4": "良好",
+    "5": "优秀"
+  },
+  "scorePlaceholder": "点击评分",
+  "pbcInitialising": "正在初始化 PBC 文档…",
+  "pbcGroupSection": "组级 PBC",
+  "pbcMemberPbcHeading": "{{name}} 的 PBC",
+  "pbcMemberScopeTitle": "成员 PBC",
+  "pbcPickMember": "选择成员",
+  "pbcSelectMemberHint": "请从右侧「选择成员」下拉菜单选择一位成员，以查看或编辑其 PBC。",
+  "pbcFillProgressHint": "点此填写当前进度（可换行）。",
+  "pbcFillDefinitionHint": "点此填写指标定义或说明（可换行）。",
+  "pbcFillCodeHint": "点此填写行代码（例如 F2.1.4）。",
+  "pbcFillTitleHint": "点此填写承诺标题。",
+  "pbcFillAnnualTargetHint": "点此填写年度目标（可换行）。",
+  "pbcFillWeightHint": "点此设置权重百分比（0–100）。",
+  "pbcFillEvalPeriodHint": "点此填写考评周期标示。",
+  "pbcMembersSection": "成员 PBC",
+  "part": {
+    "result": "第一部分：结果指标（占比 50%）",
+    "process": "第二部分：过程指标（关键行动）（占比 30%）",
+    "org_growth": "第三部分：组织与员工成长（占比 20%）"
+  },
+  "partWeight": "权重：{n}%",
+  "col": {
+    "code": "编码",
+    "title": "关键指标",
+    "annualTarget": "2026 年度目标",
+    "milestones": "指标定义/说明",
+    "definition": "指标定义/说明",
+    "weight": "权重（100%）",
+    "evaluationPeriod": "评估周期",
+    "currentProgress": "当前进度",
+    "selfEvaluation": "个人完成进度自评",
+    "managerEvaluation": "经理对大区完成进度的评议",
+    "groupSelfEvaluation": "大区完成进度自评",
+    "groupManagerEvaluation": "经理对大区完成进度的评议"
+  },
+  "scoringRubric": {
+    "title": "评价标准",
+    "score5": "5 分（优秀）",
+    "score4": "4 分（良好）",
+    "score3": "3 分（合格）",
+    "score2": "2 分（较差）",
+    "score1": "1 分（差）",
+    "score0": "0 分",
+    "desc5": "完成所有目标，达到突破性成果，为他人树立标杆，获跨团队认可。",
+    "desc4": "目标完成率 90% 以上，部分工作超出预期，大多数交付物按时完成。",
+    "desc3": "目标完成率 80%，工作质量达标，按时满足预期。",
+    "desc2": "目标完成率 70–80%，至少一项关键任务未完成，部分完成。",
+    "desc1": "目标完成率低于 60%，大多数工作未完成，未能履行承诺。",
+    "desc0": "未执行。"
+  },
+  "action": {
+    "editRow": "编辑",
+    "saveRow": "保存",
+    "cancelEdit": "取消",
+    "initDocument": "初始化 PBC",
+    "editHeader": "编辑表头"
+  },
+  "empty": "本年度暂无 PBC 文档，点击「初始化 PBC」创建。",
+  "saveSuccess": "保存成功。",
+  "saveError": "保存失败，请重试。"
+}

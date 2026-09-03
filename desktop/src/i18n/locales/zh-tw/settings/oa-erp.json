@@ -1,0 +1,28 @@
+{
+  "title": "OA / ERP",
+  "edit": "編輯",
+  "oa": {
+    "title": "OA 帳號"
+  },
+  "erp": {
+    "title": "ERP 帳號"
+  },
+  "fields": {
+    "username": "帳號",
+    "usernamePlaceholder": "工號",
+    "password": "密碼",
+    "passwordPlaceholder": "輸入密碼",
+    "showPassword": "顯示密碼",
+    "hidePassword": "隱藏密碼"
+  },
+  "save": {
+    "button": "儲存",
+    "saving": "儲存中…",
+    "success": "已儲存 OA / ERP 憑證。"
+  },
+  "errors": {
+    "notConfigured": "本機 OA / ERP 儲存無法使用。",
+    "loadFailed": "無法載入 OA / ERP 憑證。",
+    "saveFailed": "無法儲存 OA / ERP 憑證。"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "合作部门管理",
+  "description": "管理显示在 T&E 首页的合作部门名称。",
+  "searchPlaceholder": "搜索部门……",
+  "namePlaceholder": "部门名称",
+  "add": "新增",
+  "refresh": "刷新",
+  "active": "已启用",
+  "inactive": "已停用",
+  "edit": "编辑部门",
+  "delete": "删除部门",
+  "save": "保存",
+  "cancel": "取消",
+  "confirmDelete": "确认删除",
+  "empty": "没有匹配的部门",
+  "count": "共 {{count}} 个部门",
+  "columns": {
+    "name": "部门",
+    "status": "首页状态",
+    "actions": "操作"
+  },
+  "errors": {
+    "load": "无法加载合作部门。",
+    "save": "无法保存部门。",
+    "delete": "无法删除部门。",
+    "duplicate": "已有相同名称的部门。",
+    "nameRequired": "请先输入部门名称再新增。"
+  }
+}

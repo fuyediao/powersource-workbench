@@ -1,0 +1,32 @@
+{
+  "emailLabel": "Email",
+  "emailPlaceholder": "name{'@'}example.com",
+  "employeeIdLabel": "Employee ID",
+  "employeeIdPlaceholder": "PS0001",
+  "osModelLabel": "OS / Model",
+  "osModelPlaceholder": "e.g. Windows 11 / MacBook Air",
+  "messageLabel": "Feedback / Suggestion",
+  "messageHint": "For issue reports, include reproduction steps, error screenshots, and when it happened.",
+  "messagePlaceholder": "Reproduction steps, error details, and time…",
+  "imagesLabel": "Images (optional)",
+  "imagesHint": "{{count}} / {{max}} · JPEG / PNG · max 2 MB each",
+  "imagesDrag": "Drag",
+  "imagesOrSelect": "Or select a file",
+  "browseFiles": "Browse files",
+  "pasteFromClipboard": "Paste from clipboard",
+  "imagesFormats": "Supported file types: .jpg, .jpeg, .png",
+  "send": "Send",
+  "sending": "Sending…",
+  "success": "Feedback / suggestion sent. Thank you.",
+  "errors": {
+    "invalidEmail": "Enter a valid email address.",
+    "invalidEmployeeId": "Enter your employee ID.",
+    "invalidOsModel": "Enter your OS / model.",
+    "invalidMessage": "Enter your feedback or suggestion.",
+    "invalidImages": "Images must be JPEG/PNG, up to 3 files, 2 MB each.",
+    "clipboard": "No JPEG/PNG image found on the clipboard, or clipboard access was denied.",
+    "notConfigured": "Feedback is not available right now.",
+    "network": "Network error. Check your connection and try again.",
+    "server": "Could not send feedback. Please try again."
+  }
+}

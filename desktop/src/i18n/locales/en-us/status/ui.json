@@ -1,0 +1,7 @@
+{
+  "appsCount": "{{count}} apps",
+  "createFailed": "Could not add the app. Check the URL and name, then try again.",
+  "databaseError": "Could not load app data. Refresh and try again.",
+  "loading": "Loading",
+  "saving": "Saving…"
+}

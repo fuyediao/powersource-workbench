@@ -1,0 +1,10 @@
+{
+  "title": "待办清单",
+  "addPlan": "新增待办清单",
+  "noFollowUps": "暂无待办清单",
+  "scheduledAt": "预计时间",
+  "completedAt": "完成时间",
+  "overdue": "已逾期",
+  "planned": "计划中",
+  "completed": "已完成"
+}

@@ -1,0 +1,8 @@
+{
+  "mode": {
+    "control": "Sidebar control",
+    "expanded": "Expanded",
+    "collapsed": "Collapsed",
+    "hover": "Expand on hover"
+  }
+}

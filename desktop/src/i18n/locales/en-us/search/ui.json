@@ -1,0 +1,8 @@
+{
+  "directSearch": "{{query}} — {{engine}} search",
+  "engineAsk": "AI",
+  "openPage": "Open {{name}}",
+  "placeholder": "Search with {{engine}}",
+  "spotlightDismiss": "Dismiss search",
+  "spotlightLabel": "Spotlight search"
+}

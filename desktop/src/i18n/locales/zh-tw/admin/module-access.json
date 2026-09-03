@@ -1,0 +1,5 @@
+{
+  "noModulesTitle": "尚未分配模組",
+  "noModulesDescription": "您所屬的組尚未獲得任何管理模組的存取權限。請聯絡系統管理員為您開通所需模組。",
+  "readOnly": "唯讀 — 您沒有此模組的寫入權限。"
+}

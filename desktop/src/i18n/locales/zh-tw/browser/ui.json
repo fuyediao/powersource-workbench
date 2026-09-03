@@ -1,0 +1,12 @@
+{
+  "address": "網址",
+  "back": "上一頁",
+  "forward": "下一頁",
+  "openExternal": "在系統瀏覽器開啟",
+  "reload": "重新整理",
+  "tabFallback": "頁面",
+  "newTab": "新分頁",
+  "startTitle": "開始瀏覽",
+  "startBody": "輸入網址以開啟頁面。",
+  "startPlaceholder": "輸入網址"
+}

@@ -1,0 +1,12 @@
+{
+  "invalidName": "请输入名称。",
+  "invalidUrl": "请输入有效的网址。",
+  "modeCreate": "建立",
+  "modeSearch": "搜索",
+  "noResults": "找不到符合的网站",
+  "removeConfirm": "要将“{{name}}”从当前分类移出吗？不会删除网址本身。",
+  "removeTitle": "移出列表",
+  "searchHint": "输入关键词搜索资料库中的网站",
+  "searchPlaceholder": "搜索已有的网站",
+  "urlExists": "这个网址已在资料库中，请改用搜索加入。"
+}

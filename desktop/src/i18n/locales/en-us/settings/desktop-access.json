@@ -1,0 +1,15 @@
+{
+  "title": "Desktop Functions",
+  "noGroups": "No groups yet",
+  "groupLabel": "Group",
+  "functionsTitle": "Home Apps",
+  "layersTitle": "Map layers",
+  "layersNeedMap": "Enable the Map Function before assigning layers.",
+  "kanbanBoardsTitle": "Kanban boards",
+  "kanbanBoardsNeedKanban": "Enable the Kanban Function before assigning boards.",
+  "selectAll": "Select all",
+  "save": "Save desktop access",
+  "saving": "Saving…",
+  "saveSuccess": "Desktop access saved",
+  "saveError": "Failed to save desktop access"
+}

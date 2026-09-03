@@ -1,0 +1,9 @@
+{
+  "emptySelection": "No markets selected. Use the button at the top right to add some.",
+  "kindStock": "Stock",
+  "noResults": "No matching assets",
+  "searchHint": "Type a keyword to start searching",
+  "slotPlaceholder": "Search…",
+  "subtitle": "Live overview",
+  "title": "Markets"
+}

@@ -1,0 +1,11 @@
+{
+  "import": "导入 ICS…",
+  "export": "导出 ICS…",
+  "exportName": "GeoCRM 日历",
+  "importEmpty": "该 ICS 文件中没有找到事件。",
+  "importNoCalendar": "请先添加日历再导入。",
+  "importDone": "已导入 {{count}} 个事件。",
+  "importFailed": "无法导入 ICS 文件。",
+  "exportEmpty": "当前可见日历没有可导出的事件。",
+  "exportFailed": "无法导出 ICS。"
+}

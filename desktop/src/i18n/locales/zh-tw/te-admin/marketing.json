@@ -1,0 +1,21 @@
+{
+  "title": "T&E 行銷",
+  "description": "已在 T&E 申請表勾選行銷郵件訂閱的申請人。",
+  "searchPlaceholder": "搜尋姓名、Email 或機構……",
+  "refresh": "重新整理",
+  "empty": "尚無申請人勾選行銷郵件訂閱。",
+  "noResults": "找不到符合的訂閱者",
+  "totalCount": "共 {{count}} 位訂閱者",
+  "loading": "載入中……",
+  "columns": {
+    "name": "姓名",
+    "email": "Email",
+    "agency": "機構",
+    "status": "狀態",
+    "submittedAt": "提交時間"
+  },
+  "errors": {
+    "notConfigured": "資料庫未設定，無法載入行銷訂閱名單。",
+    "load": "載入行銷訂閱名單失敗，請重試。"
+  }
+}

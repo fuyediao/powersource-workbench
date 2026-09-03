@@ -1,0 +1,64 @@
+{
+  "title": "Aura",
+  "close": "关闭",
+  "search": "搜索",
+  "categories": {
+    "files": "文件",
+    "editor": "编辑器",
+    "images": "图片",
+    "markdown": "Markdown",
+    "export": "导出",
+    "appearance": "外观",
+    "general": "通用"
+  },
+  "files": {
+    "startup": "启动选项",
+    "startupNew": "打开新文件",
+    "startupLast": "恢复上次会话",
+    "outline": "大纲",
+    "outlineCollapsible": "允许展开/折叠侧边栏大纲",
+    "defaultExtension": "默认文件类型或扩展名",
+    "extMd": "Markdown (.md)",
+    "extMarkdown": "Markdown (.markdown)",
+    "extTxt": "纯文本 (.txt)",
+    "saveRestore": "保存与恢复",
+    "autoSave": "自动保存",
+    "autoSaveOnSwitch": "在侧边栏切换文件时自动保存且不询问",
+    "restoreDrafts": "恢复未保存的草稿",
+    "recent": "最近位置",
+    "rememberRecent": "记住最近使用的文件和文件夹",
+    "clearRecent": "清除最近使用的文件夹和文件",
+    "dragDrop": "将文件或文件夹拖入 Markdown 编辑器时",
+    "dropFolder": "拖入文件夹时",
+    "dropMarkdown": "拖入 Markdown 文件时",
+    "dropImportable": "拖入可导入文件时",
+    "actionOpen": "在编辑器中打开",
+    "actionIgnore": "忽略",
+    "actionImport": "导入文件"
+  },
+  "editor": {
+    "defaultMode": "默认编辑模式",
+    "modeWysiwyg": "所见即所得",
+    "modeSv": "源码"
+  },
+  "export": {
+    "defaultFormat": "默认导出格式",
+    "formatMarkdown": "Markdown",
+    "formatHtml": "HTML"
+  },
+  "appearance": {
+    "theme": "内容主题",
+    "themeDay": "日间",
+    "themeNight": "夜间",
+    "themeLight": "浅色"
+  },
+  "general": {
+    "language": "语言",
+    "langEn": "English",
+    "langZhTw": "繁体中文",
+    "langZhCn": "简体中文"
+  },
+  "comingSoon": "此功能将在后续版本启用。",
+  "cleared": "已清除最近记录。",
+  "noDrafts": "目前没有可恢复的草稿。"
+}

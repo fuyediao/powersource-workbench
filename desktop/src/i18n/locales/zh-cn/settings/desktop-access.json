@@ -1,0 +1,15 @@
+{
+  "title": "桌面功能",
+  "noGroups": "尚无群组",
+  "groupLabel": "群组",
+  "functionsTitle": "Home 应用",
+  "layersTitle": "地图图层",
+  "layersNeedMap": "请先启用地图功能，再指派图层。",
+  "kanbanBoardsTitle": "看板页面",
+  "kanbanBoardsNeedKanban": "请先启用看板功能，再指派看板页面。",
+  "selectAll": "全选",
+  "save": "保存桌面权限",
+  "saving": "保存中…",
+  "saveSuccess": "桌面权限已保存",
+  "saveError": "保存桌面权限失败"
+}

@@ -1,0 +1,67 @@
+@keyframes category-out-up {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -18%, -48px) rotateX(18deg) scale(0.94);
+  }
+}
+
+@keyframes category-out-down {
+  to {
+    opacity: 0;
+    transform: translate3d(0, 18%, -48px) rotateX(-18deg) scale(0.94);
+  }
+}
+
+@keyframes category-in-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18%, -48px) rotateX(-18deg) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes category-in-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -18%, -48px) rotateX(18deg) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+  }
+}
+
+.category-stage {
+  perspective: 1400px;
+}
+
+.animate-category-out-up,
+.animate-category-out-down,
+.animate-category-in-up,
+.animate-category-in-down {
+  backface-visibility: hidden;
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.animate-category-out-up {
+  animation: category-out-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-category-out-down {
+  animation: category-out-down 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-category-in-up {
+  animation: category-in-up 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-category-in-down {
+  animation: category-in-down 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}

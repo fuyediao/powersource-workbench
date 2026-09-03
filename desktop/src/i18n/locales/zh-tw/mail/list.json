@@ -1,0 +1,22 @@
+{
+  "confirmEmptyFolder": "永久刪除此資料夾中的所有郵件？",
+  "deselectAll": "取消全選",
+  "done": "完成",
+  "emptyFolder": "此資料夾沒有郵件",
+  "emptyFolderBar": "{{role}} 中有 {{count}} 封",
+  "emptyNow": "立即清空{{role}}",
+  "historicalSync": "歷史同步",
+  "loadingMore": "載入更多…",
+  "mailboxes": "信箱",
+  "notConfigured": "尚未設定郵件 API，請設定 VITE_DEPLOYMENT_DOMAIN。",
+  "notifyNew": "{{count}} 封未讀郵件",
+  "resizeList": "調整郵件列表寬度",
+  "search": "搜尋",
+  "searchPlaceholder": "搜尋郵件",
+  "select": "選取",
+  "selectAll": "全選",
+  "selectedCount": "已選 {{count}} 封",
+  "sync": "同步",
+  "syncing": "同步中…",
+  "unifiedInbox": "所有帳號"
+}

@@ -1,0 +1,31 @@
+{
+  "empty": "No pending or failed sync tasks",
+  "refresh": "Refresh outbox",
+  "messageCount": "{{count}} messages",
+  "status": {
+    "pending_remote": "Pending",
+    "failed": "Failed",
+    "done": "Done",
+    "cancelled": "Cancelled"
+  },
+  "kind": {
+    "send": "Send",
+    "read": "Mark read",
+    "unread": "Mark unread",
+    "star": "Star",
+    "unstar": "Unstar",
+    "trash": "Trash",
+    "untrash": "Move from trash",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "spam": "Spam",
+    "unspam": "Not spam",
+    "apply_label": "Apply label",
+    "remove_label": "Remove label",
+    "snooze": "Snooze",
+    "unsnooze": "Unsnooze",
+    "delete_forever": "Delete forever",
+    "empty_folder": "Empty folder",
+    "other": "{{kind}}"
+  }
+}

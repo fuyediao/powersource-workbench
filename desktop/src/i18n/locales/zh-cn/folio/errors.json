@@ -1,0 +1,8 @@
+{
+  "loadFailed": "无法加载文库页面。",
+  "createFailed": "无法创建页面。",
+  "saveFailed": "无法保存页面。",
+  "deleteFailed": "无法删除页面。",
+  "copyFailed": "无法复制到个人文库。",
+  "moveFailed": "无法移至群组。"
+}

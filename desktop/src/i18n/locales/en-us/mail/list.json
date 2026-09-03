@@ -1,0 +1,22 @@
+{
+  "confirmEmptyFolder": "Permanently delete every message in this folder?",
+  "deselectAll": "Deselect all",
+  "done": "Done",
+  "emptyFolder": "No messages in this folder",
+  "emptyFolderBar": "Showing {{count}} in {{role}}",
+  "emptyNow": "Empty {{role}} now",
+  "historicalSync": "Historical sync",
+  "loadingMore": "Loading more…",
+  "mailboxes": "Mailboxes",
+  "notConfigured": "Mail API is not configured. Set VITE_DEPLOYMENT_DOMAIN.",
+  "notifyNew": "{{count}} unread messages",
+  "resizeList": "Resize message list",
+  "search": "Search",
+  "searchPlaceholder": "Search mail",
+  "select": "Select",
+  "selectAll": "Select all",
+  "selectedCount": "{{count}} selected",
+  "sync": "Sync",
+  "syncing": "Syncing…",
+  "unifiedInbox": "All accounts"
+}

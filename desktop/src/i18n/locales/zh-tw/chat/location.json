@@ -1,0 +1,7 @@
+{
+  "closedSunday": "週日休息",
+  "notSupported": "您的瀏覽器不支援地理定位功能",
+  "openSun": "週日營業",
+  "timeout": "位置請求逾時，請再試一次。",
+  "unableToRetrieve": "無法取得您的位置。將使用查詢上下文代替。"
+}

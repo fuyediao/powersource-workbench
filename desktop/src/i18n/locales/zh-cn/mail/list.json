@@ -1,0 +1,22 @@
+{
+  "confirmEmptyFolder": "永久删除此文件夹中的所有邮件？",
+  "deselectAll": "取消全选",
+  "done": "完成",
+  "emptyFolder": "此文件夹没有邮件",
+  "emptyFolderBar": "{{role}} 中有 {{count}} 封",
+  "emptyNow": "立即清空{{role}}",
+  "historicalSync": "历史同步",
+  "loadingMore": "加载更多…",
+  "mailboxes": "邮箱",
+  "notConfigured": "尚未配置邮件 API，请设置 VITE_DEPLOYMENT_DOMAIN。",
+  "notifyNew": "{{count}} 封未读邮件",
+  "resizeList": "调整邮件列表宽度",
+  "search": "搜索",
+  "searchPlaceholder": "搜索邮件",
+  "select": "选择",
+  "selectAll": "全选",
+  "selectedCount": "已选 {{count}} 封",
+  "sync": "同步",
+  "syncing": "同步中…",
+  "unifiedInbox": "所有账号"
+}

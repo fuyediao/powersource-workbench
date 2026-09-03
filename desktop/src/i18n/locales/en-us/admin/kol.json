@@ -1,0 +1,150 @@
+{
+  "title": "KOL Management",
+  "addButton": "Add KOL",
+  "refresh": "Refresh",
+  "searchPlaceholder": "Search by name, platform, or contact info...",
+  "empty": "No KOLs yet. Click \"Add KOL\" to create one.",
+  "noResults": "No KOLs match your search",
+  "filter": {
+    "allTiers": "All Tiers",
+    "allStatuses": "All Statuses"
+  },
+  "col": {
+    "name": "Name",
+    "tier": "Tier",
+    "platform": "Platform",
+    "followers": "Followers",
+    "contentCount": "Videos / posts",
+    "status": "Cooperation Status",
+    "owner": "Owner",
+    "lastContact": "Last Contact",
+    "contactInfo": "Contact Info",
+    "notes": "Notes",
+    "customer": "Customer",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "currentStatus": "Current status"
+  },
+  "time": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{n}} days ago",
+    "monthsAgo": "{{n}} months ago",
+    "yearsAgo": "{{n}} years ago"
+  },
+  "tier": {
+    "A": "Tier A",
+    "B": "Tier B",
+    "C": "Tier C",
+    "D": "Tier D"
+  },
+  "rating": {
+    "1": "Poor",
+    "2": "Fair",
+    "3": "Average",
+    "4": "Good",
+    "5": "Excellent"
+  },
+  "currentStatus": {
+    "received_review": "Review Received",
+    "product_sent": "Product Sent",
+    "abnormal": "Abnormal",
+    "active_cooperation": "Active Cooperation",
+    "other": "Other"
+  },
+  "cooperationStatus": {
+    "contacted": "Contacted",
+    "handled_by_others": "Handled by Others",
+    "used_by_ecommerce": "E-commerce Occupied",
+    "normal_maintenance": "Normal Maintenance",
+    "long_no_reply": "Long No Reply",
+    "low_frequency": "Low Frequency",
+    "pending_contact": "Pending Contact",
+    "core_partner": "Core Partner"
+  },
+  "platform": {
+    "youtube": "YouTube",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "facebook": "Facebook",
+    "x": "X (Twitter)",
+    "threads": "Threads",
+    "other": "Other"
+  },
+  "modal": {
+    "addTitle": "Add KOL",
+    "editTitle": "Edit KOL",
+    "name": "Name",
+    "namePlaceholder": "KOL name (required)",
+    "platform": "Platform",
+    "platformPlaceholder": "e.g. YouTube, Instagram, Facebook",
+    "contactInfo": "Contact Info",
+    "contactInfoPlaceholder": "Contact method or handle",
+    "notes": "Notes",
+    "notesPlaceholder": "Notes or remarks...",
+    "customer": "Customer",
+    "customerPlaceholder": "Select a customer (optional)",
+    "searchCustomerPlaceholder": "Search by customer name or code...",
+    "noCustomerMatch": "No matching customers",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
+  },
+  "deleteConfirmTitle": "Delete KOL",
+  "deleteConfirm": "Delete this KOL permanently?",
+  "error": {
+    "load": "Failed to load KOLs",
+    "add": "Failed to add KOL",
+    "update": "Failed to update KOL",
+    "delete": "Failed to delete KOL",
+    "save": "Failed to save KOL",
+    "nameRequired": "Name is required.",
+    "noGroup": "Select a workspace group before adding a KOL.",
+    "channelUrlRequired": "Channel URL is required.",
+    "channelSave": "Failed to save the channel"
+  },
+  "section": {
+    "overview": "Overview",
+    "location": "Location",
+    "channels": "Channels"
+  },
+  "form": {
+    "unset": "Not set"
+  },
+  "field": {
+    "name": "Name",
+    "accountName": "Handle",
+    "tier": "Tier",
+    "vertical": "Vertical",
+    "currentStatus": "Current status",
+    "cooperationStatus": "Cooperation status",
+    "email": "Email",
+    "phone": "Phone",
+    "followers": "Followers",
+    "promoCode": "Promo code",
+    "info": "Profile info",
+    "remarks": "Remarks",
+    "country": "Country",
+    "state": "State / Province",
+    "city": "City",
+    "postalCode": "Postal code",
+    "addressLine1": "Address",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "targetGroup": "Workspace group",
+    "targetGroupAria": "Select workspace group for the new KOL"
+  },
+  "channels": {
+    "addButton": "Add channel",
+    "empty": "No channels yet",
+    "createTitle": "Add channel",
+    "editTitle": "Edit channel",
+    "form": {
+      "platform": "Platform",
+      "customName": "Custom platform name",
+      "url": "Channel URL",
+      "handle": "Handle",
+      "notes": "Notes"
+    }
+  }
+}

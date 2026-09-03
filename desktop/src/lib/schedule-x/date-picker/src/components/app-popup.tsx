@@ -1,0 +1,198 @@
+import { useContext, useEffect, useMemo, useRef, useState } from 'preact/hooks'
+import { DatePickerView } from '@schedule-x/shared/src/interfaces/date-picker/date-picker-view.enum'
+import MonthView from './month-view'
+import YearsView from './years-view'
+import { AppContext } from '../utils/stateful/app-context'
+import { getScrollableParents } from '@schedule-x/shared/src/utils/stateless/dom/scrolling'
+
+const POPUP_CLASS_NAME = 'sx__date-picker-popup'
+
+type Props = {
+  wrapperEl: HTMLDivElement | null
+  isLeaving?: boolean
+}
+
+export default function AppPopup({ wrapperEl, isLeaving = false }: Props) {
+  const $app = useContext(AppContext)
+
+  const [datePickerView, setDatePickerView] = useState<DatePickerView>(
+    DatePickerView.MONTH_DAYS
+  )
+  const [displayedView, setDisplayedView] = useState<DatePickerView>(
+    DatePickerView.MONTH_DAYS
+  )
+  const [viewLeaving, setViewLeaving] = useState(false)
+  const [viewEntered, setViewEntered] = useState(false)
+  const viewLeaveTimerRef = useRef<number | null>(null)
+
+  /**
+   * Switches month-days ↔ years. Years mounts immediately so the leave pane
+   * cannot sit under the year grid and steal the next click.
+   * @param next - Target date-picker view.
+   */
+  const switchDatePickerView = (next: DatePickerView) => {
+    if (next === datePickerView) {
+      return
+    }
+    if (viewLeaveTimerRef.current !== null) {
+      window.clearTimeout(viewLeaveTimerRef.current)
+      viewLeaveTimerRef.current = null
+    }
+    setDatePickerView(next)
+    if (next === DatePickerView.YEARS) {
+      setDisplayedView(next)
+      setViewLeaving(false)
+      setViewEntered(true)
+      return
+    }
+    setViewLeaving(true)
+    viewLeaveTimerRef.current = window.setTimeout(() => {
+      setDisplayedView(next)
+      setViewLeaving(false)
+      setViewEntered(true)
+      viewLeaveTimerRef.current = null
+    }, 140)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (viewLeaveTimerRef.current !== null) {
+        window.clearTimeout(viewLeaveTimerRef.current)
+      }
+    }
+  }, [])
+
+  const classList = useMemo(() => {
+    const returnValue = [
+      POPUP_CLASS_NAME,
+      $app.datePickerState.isDark.value ? 'is-dark' : '',
+      $app.config.teleportTo ? 'is-teleported' : '',
+      isLeaving ? 'is-leaving' : '',
+    ]
+    if ($app.config.placement && !$app.config.teleportTo && wrapperEl) {
+      const placement =
+        $app.config.placement instanceof Function
+          ? $app.config.placement(wrapperEl)
+          : $app.config.placement
+      returnValue.push(placement)
+    }
+
+    return returnValue
+  }, [
+    $app.datePickerState.isDark.value,
+    $app.config.placement,
+    $app.config.teleportTo,
+    isLeaving,
+    wrapperEl,
+  ])
+
+  const clickOutsideListener = (event: Event) => {
+    const target = event.target as HTMLElement
+
+    if (!target.closest(`.${POPUP_CLASS_NAME}`)) $app.datePickerState.close()
+  }
+
+  const escapeKeyListener = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      if ($app.config.listeners.onEscapeKeyDown)
+        $app.config.listeners.onEscapeKeyDown($app)
+      else $app.datePickerState.close()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', clickOutsideListener)
+    document.addEventListener('keydown', escapeKeyListener)
+    return () => {
+      document.removeEventListener('click', clickOutsideListener)
+      document.removeEventListener('keydown', escapeKeyListener)
+    }
+  }, [])
+
+  const remSize: number = Number(
+    getComputedStyle(document.documentElement).fontSize.split('px')[0]
+  )
+  const popupHeight = 362
+  const popupWidth = 332
+
+  const getFixedPositionStyles = () => {
+    const inputWrapperEl = $app.datePickerState.inputWrapperElement.value
+    const inputRect = inputWrapperEl?.getBoundingClientRect()
+    if (inputWrapperEl === undefined || !(inputRect instanceof DOMRect))
+      return undefined
+
+    const resolvedPlacement =
+      typeof $app.config.placement === 'function'
+        ? wrapperEl
+          ? $app.config.placement(wrapperEl)
+          : 'bottom-end'
+        : $app.config.placement
+
+    if (!resolvedPlacement) return undefined
+
+    return {
+      top: resolvedPlacement.includes('bottom')
+        ? inputRect.height + inputRect.y + 1 // 1px border
+        : inputRect.y - remSize - popupHeight, // subtract remsize to leave room for label text
+      left: resolvedPlacement.includes('start')
+        ? inputRect.x
+        : inputRect.x + inputRect.width - popupWidth,
+      width: popupWidth,
+      position: 'fixed',
+    }
+  }
+
+  const [fixedPositionStyle, setFixedPositionStyle] = useState(
+    getFixedPositionStyles()
+  )
+
+  useEffect(() => {
+    const inputWrapper = $app.datePickerState.inputWrapperElement.value
+    if (inputWrapper === undefined) return
+
+    const scrollableParents = getScrollableParents(inputWrapper)
+    const scrollListener = () => setFixedPositionStyle(getFixedPositionStyles())
+    scrollableParents.forEach((parent) =>
+      parent.addEventListener('scroll', scrollListener)
+    )
+
+    return () =>
+      scrollableParents.forEach((parent) =>
+        parent.removeEventListener('scroll', scrollListener)
+      )
+  }, [])
+
+  return (
+    <>
+      <div
+        style={$app.config.teleportTo ? fixedPositionStyle : undefined}
+        data-testid="date-picker-popup"
+        className={classList.join(' ')}
+      >
+        <div
+          className={
+            'sx__date-picker-view-pane' +
+            (viewLeaving
+              ? ' is-leaving'
+              : viewEntered
+                ? ' is-entering'
+                : '')
+          }
+          key={displayedView}
+        >
+          {displayedView === DatePickerView.MONTH_DAYS ? (
+            <MonthView
+              seatYearsView={() => switchDatePickerView(DatePickerView.YEARS)}
+            />
+          ) : (
+            <YearsView
+              setMonthView={() =>
+                switchDatePickerView(DatePickerView.MONTH_DAYS)
+              }
+            />
+          )}
+        </div>
+      </div>
+    </>
+  )
+}

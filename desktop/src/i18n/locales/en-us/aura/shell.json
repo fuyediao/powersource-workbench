@@ -1,0 +1,43 @@
+{
+  "files": "Files",
+  "outline": "Outline",
+  "outlineUnavailable": "Outline unavailable",
+  "untitled": "Untitled.md",
+  "expandSidebar": "Expand sidebar",
+  "collapseSidebar": "Collapse sidebar",
+  "toggleSidebar": "Show/hide sidebar",
+  "toggleSource": "Show/hide source mode",
+  "dropRelease": "Release to upload",
+  "dropUploading": "Uploading…",
+  "wordCount": {
+    "title": "Word Count",
+    "wordsShort": "{{count}} words",
+    "readingTime": "{{count}} min",
+    "lines": "{{count}} lines",
+    "words": "{{count}} words",
+    "characters": "{{count}} characters"
+  },
+  "copied": "Copied",
+  "rotate": "Rotate",
+  "imagePreview": "Image preview",
+  "find": {
+    "title": "Find",
+    "find": "Find",
+    "replace": "Replace",
+    "replaceAll": "Replace All",
+    "findPlaceholder": "Find (↑↓ for history)",
+    "replacePlaceholder": "Replace",
+    "matchCase": "Match Case",
+    "wholeWord": "Match Whole Word",
+    "regex": "Use Regular Expression",
+    "preserveCase": "Preserve Case",
+    "previous": "Previous Match",
+    "next": "Next Match",
+    "close": "Close",
+    "showReplace": "Toggle Replace",
+    "hideReplace": "Hide Replace",
+    "noResults": "No results",
+    "invalidRegex": "Invalid regex",
+    "resultCount": "{{current}} of {{total}}"
+  }
+}

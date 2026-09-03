@@ -1,0 +1,119 @@
+import { useContext, useState } from 'preact/hooks'
+import { AppContext } from '../../utils/stateful/app-context'
+import Chevron from '@schedule-x/shared/src/components/buttons/chevron'
+import { getLocalizedDate } from '@schedule-x/shared/src/utils/stateless/time/date-time-localization/get-time-stamp'
+import { dateFromDateTime } from '@schedule-x/shared/src/utils/stateless/time/format-conversion/string-to-string'
+import { useSignalEffect } from '@preact/signals'
+
+export default function ForwardBackwardNavigation() {
+  const $app = useContext(AppContext)
+
+  const navigate = (direction: 'forwards' | 'backwards') => {
+    const currentView = $app.config.views.value.find(
+      (view) => view.name === $app.calendarState.view.value
+    )
+    if (!currentView) return
+
+    $app.datePickerState.selectedDate.value = currentView.backwardForwardFn(
+      $app.datePickerState.selectedDate.value,
+      direction === 'forwards'
+        ? currentView.backwardForwardUnits
+        : -currentView.backwardForwardUnits
+    ) as Temporal.PlainDate
+  }
+
+  const [localizedRange, setLocalizedRange] = useState('')
+  useSignalEffect(() => {
+    setLocalizedRange(
+      `${getLocalizedDate(
+        $app.calendarState.range.value!.start,
+        $app.config.locale.value
+      )} ${$app.translate('to')} ${getLocalizedDate(
+        $app.calendarState.range.value!.end,
+        $app.config.locale.value
+      )}`
+    )
+  })
+
+  const [rangeEndMinusOneRange, setRangeEndMinusOneRange] =
+    useState<Temporal.ZonedDateTime | null>(null)
+  const [rangeStartPlusOneRange, setRangeStartPlusOneRange] =
+    useState<Temporal.ZonedDateTime | null>(null)
+
+  useSignalEffect(() => {
+    const selectedView = $app.config.views.value.find(
+      (view) => view.name === $app.calendarState.view.value
+    )
+    if (!selectedView) return
+
+    setRangeEndMinusOneRange(
+      selectedView.setDateRange({
+        range: $app.calendarState.range,
+        calendarConfig: $app.config,
+        timeUnitsImpl: $app.timeUnitsImpl,
+        date: (() => {
+          const result = selectedView.backwardForwardFn(
+            $app.datePickerState.selectedDate.value,
+            -selectedView.backwardForwardUnits
+          )
+          return result instanceof Temporal.ZonedDateTime
+            ? result.toPlainDate()
+            : result
+        })(),
+      }).end
+    )
+    setRangeStartPlusOneRange(
+      selectedView.setDateRange({
+        range: $app.calendarState.range,
+        calendarConfig: $app.config,
+        timeUnitsImpl: $app.timeUnitsImpl,
+        date: (() => {
+          const result = selectedView.backwardForwardFn(
+            $app.datePickerState.selectedDate.value,
+            selectedView.backwardForwardUnits
+          )
+          return result instanceof Temporal.ZonedDateTime
+            ? result.toPlainDate()
+            : result
+        })(),
+      }).start
+    )
+  })
+
+  return (
+    <>
+      <div
+        className="sx__forward-backward-navigation"
+        aria-label={localizedRange}
+        aria-live="polite"
+      >
+        <Chevron
+          disabled={
+            !!(
+              $app.config.minDate.value &&
+              dateFromDateTime(rangeEndMinusOneRange?.toString() ?? '') <
+                $app.config.minDate.value.toString()
+            )
+          }
+          onClick={() => navigate('backwards')}
+          direction={'previous'}
+          buttonText={$app.translate('Previous period')}
+        />
+
+        <Chevron
+          disabled={
+            !!(
+              $app.config.maxDate.value &&
+              rangeStartPlusOneRange &&
+              dateFromDateTime(rangeStartPlusOneRange.toString()) >
+                $app.config.maxDate.value.toString()
+            )
+          }
+          onClick={() => navigate('forwards')}
+          direction={'next'}
+          buttonText={$app.translate('Next period')}
+        />
+      </div>
+    </>
+  )
+}

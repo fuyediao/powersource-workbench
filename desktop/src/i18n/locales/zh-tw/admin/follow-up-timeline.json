@@ -1,0 +1,10 @@
+{
+  "title": "待辦清單",
+  "addPlan": "新增待辦清單",
+  "noFollowUps": "尚無待辦清單",
+  "scheduledAt": "預計時間",
+  "completedAt": "完成時間",
+  "overdue": "已逾期",
+  "planned": "計畫中",
+  "completed": "已完成"
+}
