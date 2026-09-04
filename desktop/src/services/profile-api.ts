@@ -1,5 +1,6 @@
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { PROFILE_AVATARS_BUCKET, type ProfileRow } from '@/types/crm-settings'
+import { publicContactEmail } from '@/utils/auth/workbench-username'
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024
 
@@ -67,6 +68,28 @@ export async function fetchProfile(userId: string): Promise<ProfileRow | null> {
 }
 
 /**
+ * Loads the Workbench login username for the signed-in user.
+ * @param userId - Auth user id.
+ * @returns Username, or empty when missing.
+ */
+export async function fetchWorkUsername(userId: string): Promise<string> {
+  if (!isSupabaseConfigured || !supabase) {
+    return ''
+  }
+  const { data, error } = await supabase
+    .from('work_profiles')
+    .select('username')
+    .eq('id', userId)
+    .maybeSingle()
+  if (error) {
+    console.error('fetchWorkUsername', error)
+    return ''
+  }
+  const username = data?.username
+  return typeof username === 'string' ? username.trim().toLowerCase() : ''
+}
+
+/**
  * Creates a minimal profile when none exists.
  * @param input - Initial fields.
  * @returns Created row or null.
@@ -77,13 +100,14 @@ export async function createProfile(input: {
   displayName?: string | null
   avatarUrl?: string | null
   language?: string | null
+  employeeId?: string | null
 }): Promise<ProfileRow | null> {
   if (!isSupabaseConfigured || !supabase) {
     return null
   }
   const { error } = await supabase.from('profiles').insert({
     id: input.id,
-    email: input.email ?? null,
+    email: publicContactEmail(input.email) || null,
     full_name: input.displayName ?? null,
     display_name: input.displayName ?? '',
     language: input.language ?? 'en',
@@ -92,6 +116,7 @@ export async function createProfile(input: {
     phone_country: '',
     avatar_url: input.avatarUrl ?? null,
     avatar_index: null,
+    employee_id: input.employeeId?.trim() || null,
   })
   if (error) {
     console.error('createProfile', error)
@@ -114,6 +139,7 @@ export async function upsertProfileFields(
     phone_number: string | null
     phone_country: string | null
     email: string | null
+    employee_id: string | null
     language: string | null
     avatar_url: string | null
     avatar_index: number | null
@@ -122,10 +148,14 @@ export async function upsertProfileFields(
   if (!isSupabaseConfigured || !supabase) {
     return false
   }
+  const nextPatch = { ...patch }
+  if ('email' in nextPatch) {
+    nextPatch.email = publicContactEmail(nextPatch.email) || null
+  }
   const { error } = await supabase.from('profiles').upsert(
     {
       id: userId,
-      ...patch,
+      ...nextPatch,
       updated_at: new Date().toISOString(),
     },
     { onConflict: 'id' },

@@ -616,6 +616,34 @@ export interface Database {
         }>
         Relationships: []
       }
+      work_profiles: {
+        Row: {
+          id: string
+          username: string
+          display_name: string
+          role: string
+          status: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          username: string
+          display_name?: string
+          role?: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: Partial<{
+          username: string
+          display_name: string
+          role: string
+          status: string
+          updated_at: string
+        }>
+        Relationships: []
+      }
       user_roles: {
         Row: {
           user_id: string

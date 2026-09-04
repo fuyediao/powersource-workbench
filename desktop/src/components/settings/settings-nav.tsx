@@ -14,7 +14,6 @@ import type { Theme } from '@/hooks/use-theme'
 import {
   AdminAppsIcon,
   BrainIcon,
-  CodeIcon,
   CrownIcon,
   OpenSourceIcon,
   ImageIcon,
@@ -72,7 +71,6 @@ function buildNavItems(
     preferences: { label: t('settings.sections.preferences'), Icon: SettingsIcon },
     oaErp: { label: t('settings.sections.oaErp'), Icon: AdminAppsIcon },
     ai: { label: t('settings.sections.ai'), Icon: BrainIcon },
-    mcp: { label: t('settings.sections.mcp'), Icon: CodeIcon },
     privacy: { label: t('settings.sections.privacy'), Icon: ShieldIcon },
     theme: {
       label: t('settings.sections.theme'),

@@ -89,6 +89,10 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		writeSupabase(w, err, "invalid_credentials")
 		return
 	}
+	if session == nil || session.User == nil || session.User.ID == "" {
+		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
+		return
+	}
 	writeSession(w, session, *profile)
 }
 
@@ -104,6 +108,10 @@ func (h *Handler) Refresh(w http.ResponseWriter, r *http.Request) {
 	session, err := h.sb.RefreshSession(r.Context(), body.RefreshToken)
 	if err != nil {
 		writeSupabase(w, err, "invalid_session")
+		return
+	}
+	if session == nil || session.User == nil || session.User.ID == "" {
+		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_session")
 		return
 	}
 	profile, err := h.loadProfile(r.Context(), session.User.ID)
@@ -181,7 +189,7 @@ func (h *Handler) CreateInvitation(w http.ResponseWriter, r *http.Request) {
 		"expires_at":   expiresAt,
 		"token_hash":   hashInvitationCode(code),
 		"username":     username,
-	}).Exec(r.Context())
+	}).Exec(r.Context(), nil)
 	if err != nil {
 		if apiErr, ok := err.(*supabase.APIError); ok && apiErr.Code == "23505" {
 			httpx.WriteCode(w, http.StatusConflict, "username_unavailable")

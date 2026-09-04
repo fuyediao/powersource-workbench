@@ -4,6 +4,10 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Copied Ask, Harness, Mail, and Calendar backends onto workbench-api on `api.powersource.work`, plus curated SQL on `supabase.powersource.work` for profiles, history, leftover customers, Mail, and Calendar.
+- Showed the Workbench username (`psxxxx`) as the desktop profile employee id and hid the Auth placeholder email (`name@users.invalid`).
+- Removed the desktop Settings Model Context Protocol page. Workbench has no first-party MCP server or access keys; Harness can still attach third-party MCP servers.
+- Regenerated the desktop Mac ICNS 16x16 slot from a simplified brand SVG so Finder no longer shows a pink bilinear shrink of the 1024px mark.
 - Removed leftover desktop trees that are no longer product surfaces (Admin, Map, Kanban, Folio tabs, Clash Vite/BlockSuite wiring, opportunity-board IPC, and unused CRM locales/services). Home still ships Ask, Harness, Mail, Calendar, Settings, OA, ERP, and NEXTORCH.
 - Dropped unused desktop Folio/Map npm packages (BlockSuite, Leaflet, Yjs, Monaco) and their in-repo vendor tarballs.
 - Kept the Markdown engine, Calendar Schedule-X, Harness Codex, and Univer / OnlyOffice paths used by Ask, Mail attachments, and Harness.

@@ -11,8 +11,30 @@ import (
 type Env struct {
 	Port                   string
 	SupabaseURL            string
+	SupabasePublicURL      string
 	SupabaseAnonKey        string
 	SupabaseServiceRoleKey string
+
+	EncryptionKey            string
+	AppPublicOrigin          string
+	AppPublicOriginAllowlist string
+
+	GoogleClientID            string
+	GoogleClientSecret        string
+	GoogleRedirectURI         string
+	GoogleCalendarRedirectURI string
+	GoogleCalendarWebhookURL  string
+
+	HermesProfilesRoot  string
+	HermesOrgSkillsRoot string
+
+	JWTSecret            string
+	MCPOAuthClientID     string
+	MCPOAuthClientSecret string
+
+	OnlyOfficeDSURL         string
+	OnlyOfficeDSInternalURL string
+	OnlyOfficeJWTSecret     string
 }
 
 // Load reads Workbench API settings from environment variables.
@@ -22,9 +44,47 @@ func Load() Env {
 	return Env{
 		Port:                   firstNonEmpty(os.Getenv("PORT"), "3001"),
 		SupabaseURL:            strings.TrimRight(strings.TrimSpace(os.Getenv("SUPABASE_URL")), "/"),
+		SupabasePublicURL:      strings.TrimRight(strings.TrimSpace(os.Getenv("SUPABASE_PUBLIC_URL")), "/"),
 		SupabaseAnonKey:        strings.TrimSpace(anon),
 		SupabaseServiceRoleKey: strings.TrimSpace(service),
+
+		EncryptionKey:            strings.TrimSpace(os.Getenv("ENCRYPTION_KEY")),
+		AppPublicOrigin:          strings.TrimRight(strings.TrimSpace(os.Getenv("APP_PUBLIC_ORIGIN")), "/"),
+		AppPublicOriginAllowlist: strings.TrimSpace(os.Getenv("APP_PUBLIC_ORIGIN_ALLOWLIST")),
+
+		GoogleClientID:            strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID")),
+		GoogleClientSecret:        strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_SECRET")),
+		GoogleRedirectURI:         strings.TrimSpace(os.Getenv("GOOGLE_REDIRECT_URI")),
+		GoogleCalendarRedirectURI: strings.TrimSpace(os.Getenv("GOOGLE_CALENDAR_REDIRECT_URI")),
+		GoogleCalendarWebhookURL:  strings.TrimSpace(os.Getenv("GOOGLE_CALENDAR_WEBHOOK_URL")),
+
+		HermesProfilesRoot:  strings.TrimSpace(os.Getenv("HERMES_PROFILES_ROOT")),
+		HermesOrgSkillsRoot: strings.TrimSpace(os.Getenv("HERMES_ORG_SKILLS_ROOT")),
+
+		JWTSecret:            strings.TrimSpace(os.Getenv("JWT_SECRET")),
+		MCPOAuthClientID:     strings.TrimSpace(os.Getenv("MCP_OAUTH_CLIENT_ID")),
+		MCPOAuthClientSecret: strings.TrimSpace(os.Getenv("MCP_OAUTH_CLIENT_SECRET")),
+
+		OnlyOfficeDSURL:         strings.TrimRight(strings.TrimSpace(os.Getenv("ONLYOFFICE_DS_URL")), "/"),
+		OnlyOfficeDSInternalURL: strings.TrimRight(strings.TrimSpace(os.Getenv("ONLYOFFICE_DS_INTERNAL_URL")), "/"),
+		OnlyOfficeJWTSecret:     strings.TrimSpace(os.Getenv("ONLYOFFICE_JWT_SECRET")),
 	}
+}
+
+// ResolvedSupabasePublicURL returns the browser-facing Supabase origin.
+func (e Env) ResolvedSupabasePublicURL() string {
+	if u := strings.TrimSpace(e.SupabasePublicURL); u != "" {
+		return strings.TrimRight(u, "/")
+	}
+	return strings.TrimRight(strings.TrimSpace(e.SupabaseURL), "/")
+}
+
+// ResolvedOnlyOfficeDSInternalURL returns the Docker-network Document Server origin.
+func (e Env) ResolvedOnlyOfficeDSInternalURL() string {
+	if u := strings.TrimSpace(e.OnlyOfficeDSInternalURL); u != "" {
+		return strings.TrimRight(u, "/")
+	}
+	return "http://onlyoffice-ds"
 }
 
 // LoadDotEnv loads KEY=value pairs from path without overwriting existing env vars.

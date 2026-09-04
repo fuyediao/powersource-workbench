@@ -1,9 +1,10 @@
 /**
  * Settings OA/ERP credentials — local Electron SQLite via IPC.
- * Employee id defaults still come from Supabase `profiles`.
+ * Username defaults come from the Workbench login username.
  */
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { fetchWorkUsername } from '@/services/profile-api'
 
 /** Credentials used by Settings and POWERSOURCE autofill. */
 export interface OaErpCredentials {
@@ -46,11 +47,15 @@ function oaErpCredentialsBridge(): Window['workbench']['oaErpCredentials'] | nul
 }
 
 /**
- * Loads `profiles.employee_id` for username defaults.
+ * Loads the Workbench username for OA/ERP username defaults.
  * @param userId - Signed-in user id
- * @returns Trimmed employee id, or empty
+ * @returns Trimmed username or leftover employee id, or empty
  */
 async function fetchEmployeeId(userId: string): Promise<string> {
+  const username = await fetchWorkUsername(userId)
+  if (username) {
+    return username
+  }
   if (!isSupabaseConfigured || !supabase) {
     return ''
   }

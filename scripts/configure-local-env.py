@@ -77,8 +77,14 @@ def configure(replace: bool = False) -> None:
         [
             "PORT=3001",
             f"SUPABASE_URL={supabase_url}",
+            f"SUPABASE_PUBLIC_URL={supabase_url}",
             f"SUPABASE_ANON_KEY={publishable_key}",
             f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
+            f"GOOGLE_REDIRECT_URI=https://api.{domain}/mail/oauth/google/callback",
+            f"GOOGLE_CALENDAR_REDIRECT_URI=https://api.{domain}/calendar/oauth/google/callback",
+            f"GOOGLE_CALENDAR_WEBHOOK_URL=https://api.{domain}/calendar/webhooks/google",
+            "HERMES_ORG_SKILLS_ROOT=",
+            "HERMES_PROFILES_ROOT=",
         ],
         replace,
     )

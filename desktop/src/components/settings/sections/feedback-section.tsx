@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type ClipboardEvent, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ClipboardIcon, CloudUploadIcon } from '@/icons/AllIcons'
-import { fetchProfile } from '@/services/profile-api'
+import { fetchProfile, fetchWorkUsername } from '@/services/profile-api'
+import { publicContactEmail } from '@/utils/auth/workbench-username'
 import {
   FEEDBACK_MAX_IMAGES,
   FeedbackSubmitError,
@@ -32,7 +33,7 @@ export function FeedbackSection({ userId, fallbackEmail }: FeedbackSectionProps)
   const { t, i18n } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dragDepthRef = useRef(0)
-  const [email, setEmail] = useState(fallbackEmail)
+  const [email, setEmail] = useState(() => publicContactEmail(fallbackEmail))
   const [employeeId, setEmployeeId] = useState('')
   const [osModel, setOsModel] = useState('')
   const [message, setMessage] = useState('')
@@ -60,17 +61,19 @@ export function FeedbackSection({ userId, fallbackEmail }: FeedbackSectionProps)
       }
       setIsPrefilling(true)
       try {
-        const profile = await fetchProfile(userId)
+        const [profile, workUsername] = await Promise.all([
+          fetchProfile(userId),
+          fetchWorkUsername(userId),
+        ])
         if (cancelled) {
           return
         }
-        if (profile?.email?.trim()) {
-          setEmail(profile.email.trim())
-        } else if (fallbackEmail.trim()) {
-          setEmail(fallbackEmail.trim())
-        }
-        if (profile?.employee_id?.trim()) {
-          setEmployeeId(profile.employee_id.trim())
+        setEmail(
+          publicContactEmail(profile?.email) || publicContactEmail(fallbackEmail),
+        )
+        const staffId = workUsername || profile?.employee_id?.trim() || ''
+        if (staffId) {
+          setEmployeeId(staffId)
         }
       } finally {
         if (!cancelled) {

@@ -40,7 +40,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              ":" + env.Port,
-		Handler:           server.New(env),
+		Handler:           server.New(ctx, env),
 		ReadHeaderTimeout: 15 * time.Second,
 	}
 

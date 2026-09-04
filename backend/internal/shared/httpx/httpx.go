@@ -5,18 +5,19 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 )
 
-// MaxBodyBytes caps JSON request bodies at 1 MiB.
-const MaxBodyBytes = 1 << 20
+// MaxBodyBytes caps JSON request bodies (10 MiB, matching mail/AI uploads).
+const MaxBodyBytes = 10 << 20
 
 // CORS allows the Electron renderer to call the API from localhost or workbench://.
 func CORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := w.Header()
 		h.Set("Access-Control-Allow-Origin", "*")
-		h.Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		h.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Authorization")
+		h.Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		h.Set("Access-Control-Allow-Headers", "Accept, Content-Type, Authorization, X-Workspace-Group-Id, X-GeoCRM-Provider")
 		h.Set("Access-Control-Max-Age", "86400")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
@@ -62,6 +63,20 @@ func BearerToken(r *http.Request) string {
 	const prefix = "Bearer "
 	if len(auth) > len(prefix) && auth[:len(prefix)] == prefix {
 		return auth[len(prefix):]
+	}
+	return ""
+}
+
+// ClientIP extracts a best-effort client IP from reverse-proxy headers.
+func ClientIP(r *http.Request) string {
+	if v := strings.TrimSpace(r.Header.Get("CF-Connecting-IP")); v != "" {
+		return v
+	}
+	if v := r.Header.Get("X-Forwarded-For"); v != "" {
+		return strings.TrimSpace(strings.Split(v, ",")[0])
+	}
+	if v := strings.TrimSpace(r.Header.Get("X-Real-IP")); v != "" {
+		return v
 	}
 	return ""
 }

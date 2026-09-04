@@ -3,8 +3,9 @@
 Packages backend/, uploads a build archive, compiles in a temporary directory
 on the VPS, and recreates the workbench-api container on supabase_default.
 Only /opt/workbench-backend/.env persists. Server keys are copied from the
-existing /opt/supabase-project/.env on that host. This script does not touch
-the powersource.app GeoCRM stack.
+existing /opt/supabase-project/.env on that host. Extra Ask/Mail/Calendar/Harness
+keys are merged in place so Google OAuth secrets and ENCRYPTION_KEY survive
+rebuilds. This script does not touch the powersource.app GeoCRM stack.
 """
 
 from __future__ import annotations
@@ -17,12 +18,13 @@ from pathlib import Path
 from vps_ssh import REPOSITORY_ROOT, connect_ssh, run_ssh
 
 LOCAL_ROOT = REPOSITORY_ROOT / "backend"
-MIGRATION_PATH = REPOSITORY_ROOT / "supabase" / "migrations" / "20260903113749_direct_supabase_auth.sql"
+MIGRATIONS_DIR = REPOSITORY_ROOT / "supabase" / "migrations"
 REMOTE_DIR = "/opt/workbench-backend"
 COMPOSE_DIR = "/opt/supabase-project"
 COMPOSE_FILE = "docker-compose.workbench.yml"
 IMAGE_NAME = "workbench-api:latest"
 REMOTE_TAR = "/tmp/workbench-backend-deploy.tar.gz"
+HERMES_PROFILES_HOST = "/opt/workbench-hermes/profiles"
 
 SKIP_DIRS = {".git", ".idea", "node_modules", "tmp"}
 SKIP_FILES = {".env", ".smoke-out.log", ".smoke-err.log"}
@@ -35,6 +37,8 @@ COMPOSE_CONTENT = f"""services:
     ports:
       - "127.0.0.1:3001:3001"
     env_file: {REMOTE_DIR}/.env
+    volumes:
+      - {HERMES_PROFILES_HOST}:/var/lib/workbench/hermes-profiles
     networks:
       supabase_default:
         aliases:
@@ -57,7 +61,7 @@ def should_skip(arcname: str) -> bool:
 
 
 def make_tarball() -> str:
-    """Pack the Workbench Go sources into a temporary archive."""
+    """Pack the Workbench Go sources and SQL migrations into a temporary archive."""
     fd, path = tempfile.mkstemp(suffix=".tar.gz")
     os.close(fd)
     with tarfile.open(path, "w:gz") as tar:
@@ -68,7 +72,8 @@ def make_tarball() -> str:
             if should_skip(rel):
                 continue
             tar.add(item, arcname=f"workbench-backend/{rel}")
-        tar.add(MIGRATION_PATH, arcname="workbench-backend/migrations/direct_supabase_auth.sql")
+        for sql in sorted(MIGRATIONS_DIR.glob("*.sql")):
+            tar.add(sql, arcname=f"workbench-backend/migrations/{sql.name}")
     return path
 
 
@@ -77,8 +82,8 @@ def main() -> int:
     if not LOCAL_ROOT.is_dir():
         print(f"Missing {LOCAL_ROOT}")
         return 1
-    if not MIGRATION_PATH.is_file():
-        print(f"Missing {MIGRATION_PATH}")
+    if not MIGRATIONS_DIR.is_dir():
+        print(f"Missing {MIGRATIONS_DIR}")
         return 1
 
     print(f"Packing {LOCAL_ROOT} ...")
@@ -99,10 +104,13 @@ REMOTE_DIR={REMOTE_DIR!r}
 COMPOSE_DIR={COMPOSE_DIR!r}
 COMPOSE_FILE={COMPOSE_FILE!r}
 IMAGE_NAME={IMAGE_NAME!r}
+HERMES_PROFILES_HOST={HERMES_PROFILES_HOST!r}
 
-mkdir -p "$REMOTE_DIR"
+mkdir -p "$REMOTE_DIR" "$HERMES_PROFILES_HOST"
 python3 - <<'PY'
+import secrets
 from pathlib import Path
+
 src = Path("/opt/supabase-project/.env")
 values = {{}}
 for raw in src.read_text().splitlines():
@@ -115,17 +123,43 @@ anon = values.get("ANON_KEY", "")
 service = values.get("SERVICE_ROLE_KEY", "")
 if not anon or not service:
     raise SystemExit("missing ANON_KEY or SERVICE_ROLE_KEY on the Workbench Supabase stack")
-Path("{REMOTE_DIR}/.env").write_text(
-    "\\n".join([
-        "PORT=3001",
-        "SUPABASE_URL=http://kong:8000",
-        f"SUPABASE_ANON_KEY={{anon}}",
-        f"SUPABASE_SERVICE_ROLE_KEY={{service}}",
-        "",
-    ])
-)
-Path("{REMOTE_DIR}/.env").chmod(0o600)
-print("Wrote server .env from the Workbench Supabase stack")
+
+env_path = Path("{REMOTE_DIR}/.env")
+existing = {{}}
+if env_path.exists():
+    for raw in env_path.read_text().splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        existing[key.strip()] = value.strip().strip('"').strip("'")
+
+def keep(key: str, default: str = "") -> str:
+    value = existing.get(key, "").strip()
+    return value if value else default
+
+encryption_key = keep("ENCRYPTION_KEY") or secrets.token_hex(32)
+lines = [
+    "PORT=3001",
+    "SUPABASE_URL=http://kong:8000",
+    f"SUPABASE_ANON_KEY={{anon}}",
+    f"SUPABASE_SERVICE_ROLE_KEY={{service}}",
+    "SUPABASE_PUBLIC_URL=https://supabase.powersource.work",
+    f"ENCRYPTION_KEY={{encryption_key}}",
+    f"APP_PUBLIC_ORIGIN={{keep('APP_PUBLIC_ORIGIN')}}",
+    f"APP_PUBLIC_ORIGIN_ALLOWLIST={{keep('APP_PUBLIC_ORIGIN_ALLOWLIST')}}",
+    f"GOOGLE_CLIENT_ID={{keep('GOOGLE_CLIENT_ID')}}",
+    f"GOOGLE_CLIENT_SECRET={{keep('GOOGLE_CLIENT_SECRET')}}",
+    f"GOOGLE_REDIRECT_URI={{keep('GOOGLE_REDIRECT_URI', 'https://api.powersource.work/mail/oauth/google/callback')}}",
+    f"GOOGLE_CALENDAR_REDIRECT_URI={{keep('GOOGLE_CALENDAR_REDIRECT_URI', 'https://api.powersource.work/calendar/oauth/google/callback')}}",
+    f"GOOGLE_CALENDAR_WEBHOOK_URL={{keep('GOOGLE_CALENDAR_WEBHOOK_URL', 'https://api.powersource.work/calendar/webhooks/google')}}",
+    "HERMES_PROFILES_ROOT=/var/lib/workbench/hermes-profiles",
+    "HERMES_ORG_SKILLS_ROOT=/app/assets/harness/org-skills",
+    "",
+]
+env_path.write_text("\\n".join(lines))
+env_path.chmod(0o600)
+print("Merged server .env (Supabase keys refreshed; OAuth/encryption preserved)")
 PY
 
 BUILD_DIR=$(mktemp -d /tmp/workbench-backend-build.XXXXXX)
@@ -133,16 +167,26 @@ trap 'rm -rf "$BUILD_DIR" "$REMOTE_TAR"' EXIT
 tar -xzf "$REMOTE_TAR" -C "$BUILD_DIR" --strip-components=1
 docker build --no-cache -t "$IMAGE_NAME" "$BUILD_DIR"
 
+docker exec supabase-db psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "CREATE TABLE IF NOT EXISTS public.workbench_schema_migrations (filename text PRIMARY KEY, applied_at timestamptz NOT NULL DEFAULT now());"
+docker exec supabase-db psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "INSERT INTO public.workbench_schema_migrations (filename) SELECT '20260903113749_direct_supabase_auth.sql' WHERE to_regclass('public.work_profiles') IS NOT NULL ON CONFLICT (filename) DO NOTHING;"
+for sql in "$BUILD_DIR"/migrations/*.sql; do
+  name=$(basename "$sql")
+  applied=$(docker exec supabase-db psql -U postgres -d postgres -tAc "SELECT 1 FROM public.workbench_schema_migrations WHERE filename = '$name'" | tr -d '[:space:]')
+  if [ "$applied" = "1" ]; then
+    echo "skip $name"
+    continue
+  fi
+  echo "apply $name"
+  docker exec -i supabase-db psql -U postgres -d postgres -v ON_ERROR_STOP=1 < "$sql"
+  docker exec supabase-db psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "INSERT INTO public.workbench_schema_migrations (filename) VALUES ('$name');"
+done
+
 cat > "$COMPOSE_DIR/$COMPOSE_FILE" << 'COMPOSE_EOF'
 {COMPOSE_CONTENT}COMPOSE_EOF
 
 find "$REMOTE_DIR" -mindepth 1 ! -name '.env' -exec rm -rf {{}} +
 cd "$COMPOSE_DIR"
 docker compose -f "$COMPOSE_FILE" up -d --force-recreate workbench-api
-
-if ! docker exec supabase-db psql -U postgres -d postgres -tAc "select to_regclass('public.work_profiles')" | grep -q work_profiles; then
-  docker exec -i supabase-db psql -U postgres -d postgres < "$BUILD_DIR/migrations/direct_supabase_auth.sql"
-fi
 curl -sf http://127.0.0.1:3001/health
 echo
 """

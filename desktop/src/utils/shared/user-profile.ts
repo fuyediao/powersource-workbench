@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js'
+import { publicContactEmail, usernameFromAuthUser } from '@/utils/auth/workbench-username'
 
 /**
  * Reads the first non-empty string from OAuth / user metadata candidates.
@@ -51,16 +52,21 @@ export function resolveUserDisplayName(
   const meta = user?.user_metadata as Record<string, unknown> | undefined
   const identityData = user?.identities?.[0]?.identity_data as Record<string, unknown> | undefined
   const named = firstString(
+    meta?.display_name,
     meta?.full_name,
     meta?.name,
-    meta?.display_name,
+    meta?.username,
     identityData?.full_name,
     identityData?.name,
   )
   if (named) {
     return named
   }
-  const email = (user?.email ?? fallbackEmail).trim()
+  const username = usernameFromAuthUser(user)
+  if (username) {
+    return username
+  }
+  const email = publicContactEmail(user?.email ?? fallbackEmail)
   if (email.includes('@')) {
     return email.split('@')[0] || email
   }

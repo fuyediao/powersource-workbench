@@ -58,6 +58,7 @@ import {
   subscribeAskAiSearch,
   takePendingAskAiSearchQuery,
 } from '@/utils/ask-ai/ask-ai-search-request'
+import { usernameFromAuthUser } from '@/utils/auth/workbench-username'
 import { resolveUserAvatarUrl, resolveUserDisplayName } from '@/utils/shared/user-profile'
 import {
   BotIcon,
@@ -808,7 +809,7 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
 
   const currentModeEntry = MODES.find((x) => x.id === mode)
   const welcomeName =
-    getWelcomeGivenName(displayName) || user.email?.split('@')[0] || t('chat.welcome.guest')
+    getWelcomeGivenName(displayName) || usernameFromAuthUser(user) || t('chat.welcome.guest')
   const welcomeDescription =
     t(mode === 'quick' ? 'chat.welcome.descriptionQuick' : 'chat.welcome.descriptionThink')
   const WelcomeIcon = MessageSquareIcon

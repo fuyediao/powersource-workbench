@@ -4,9 +4,11 @@ import {
   createProfile,
   deleteProfileAvatar,
   fetchProfile,
+  fetchWorkUsername,
   uploadProfileAvatar,
   upsertProfileFields,
 } from '@/services/profile-api'
+import { publicContactEmail, usernameFromAuthUser } from '@/utils/auth/workbench-username'
 import type { UserRole } from '@/types/crm-settings'
 import type { GroupRecord } from '@/services/groups-api'
 import { resolvePhoneCountryIso } from '@/utils/settings/phone-number-parts'
@@ -83,7 +85,7 @@ export function useProfile(
       if (oauthImg?.trim()) {
         setOauthAvatarUrl(oauthImg.trim())
       }
-      setPrimaryAuthEmail(user.email ?? '')
+      setPrimaryAuthEmail(publicContactEmail(user.email))
       const googleIdentity = user.identities?.find((identity) => identity.provider === 'google') as
         | { identity_data?: Record<string, unknown> | null }
         | undefined
@@ -102,26 +104,33 @@ export function useProfile(
         setOauthAvatarUrl(gData.picture.trim())
       }
 
+      const workUsername = (await fetchWorkUsername(user.id)) || usernameFromAuthUser(user)
       let row = await fetchProfile(user.id)
       if (!row) {
+        const seedName =
+          (meta?.display_name as string | undefined) ??
+          (meta?.full_name as string | undefined) ??
+          workUsername
         row = await createProfile({
           id: user.id,
-          email: user.email,
-          displayName: (meta?.full_name as string | undefined) ?? user.email ?? '',
+          email: publicContactEmail(user.email) || null,
+          displayName: seedName,
           avatarUrl: oauthImg ?? null,
+          employeeId: workUsername || null,
         })
       }
       if (row) {
         setDisplayName(row.display_name ?? '')
-        setEmail(row.email ?? user.email ?? '')
+        setEmail(publicContactEmail(row.email))
         setBio(row.bio ?? '')
         setPhoneNumber(row.phone_number ?? '')
         setPhoneCountry(resolvePhoneCountryIso(row.phone_country, row.phone_number ?? ''))
         setAvatarUrl(row.avatar_url ?? '')
-        setEmployeeId(row.employee_id ?? '')
+        setEmployeeId(workUsername || row.employee_id || '')
       } else {
-        setDisplayName((meta?.full_name as string | undefined) ?? '')
-        setEmail(user.email ?? '')
+        setDisplayName((meta?.display_name as string | undefined) ?? (meta?.full_name as string | undefined) ?? '')
+        setEmail('')
+        setEmployeeId(workUsername)
       }
     } finally {
       setIsLoading(false)
@@ -166,7 +175,8 @@ export function useProfile(
         bio,
         phone_number: phoneNumber,
         phone_country: phoneCountry || null,
-        email: email || null,
+        email: publicContactEmail(email) || null,
+        employee_id: employeeId || null,
       })
       if (!ok) {
         setSaveError('error')

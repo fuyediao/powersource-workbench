@@ -74,7 +74,6 @@ export function useSettingsRoles(userId: string | null | undefined): SettingsRol
       preferences: true,
       oaErp: true,
       ai: true,
-      mcp: true,
       privacy: true,
       theme: true,
       page: true,

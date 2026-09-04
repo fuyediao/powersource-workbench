@@ -34,7 +34,6 @@ import { GlobalLeadersSection } from '@/components/settings/sections/global-lead
 import { OaErpSection } from '@/components/settings/sections/oa-erp-section'
 import { FeedbackSection } from '@/components/settings/sections/feedback-section'
 import { OpenSourceSection } from '@/components/settings/sections/open-source-section'
-import { McpSection } from '@/components/settings/sections/mcp-section'
 import { subscribeSettingsSectionRequest } from '@/utils/settings/settings-section-request'
 
 interface SettingsPanelProps {
@@ -250,8 +249,6 @@ export function SettingsPanel({
         return <PreferencesSection onRestoreDefaults={onRestoreDefaults} />
       case 'ai':
         return <AiSection userId={userId} />
-      case 'mcp':
-        return <McpSection />
       case 'privacy':
         return <PrivacySection user={user} />
       case 'theme':

@@ -10,7 +10,7 @@ Electron desktop client for the PowerSource group workbench. It includes the des
 
 The renderer posts login to `https://api.powersource.work` and reads workspace rows from `https://supabase.powersource.work`. It never receives a secret or legacy service-role key. Packaged builds load from the secure `workbench://app` origin.
 
-Window, tray, and installer icons use the POWERSOURCE mark in `public/app-icon.svg`. After editing that file, run `npm run icons:rasterize` and `npm run icons:nsis`.
+Window, tray, and installer icons use the POWERSOURCE mark in `public/app-icon.svg`. The 16x16 ICNS and ICO slot uses the simplified mark in `public/app-icon-16.svg` so Finder does not show a pink smear. After editing either file, run `npm run icons:rasterize` and `npm run icons:nsis`.
 
 ## Production
 

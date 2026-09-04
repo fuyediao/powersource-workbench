@@ -6,6 +6,7 @@ import type { SettingsRolesState } from '@/hooks/use-settings-roles'
 import { useDialogPresence } from '@/hooks/use-dialog-presence'
 import { PhoneInput } from '@/components/settings/phone-input'
 import { ChevronDownIcon } from '@/icons/AllIcons'
+import { publicContactEmail } from '@/utils/auth/workbench-username'
 
 interface ProfileSectionProps {
   user: User | null
@@ -40,7 +41,8 @@ export function ProfileSection({
 
   const displayName = profile.displayName || fallbackDisplayName
   const avatarUrl = profile.avatarUrl || fallbackAvatarUrl
-  const email = profile.email || fallbackEmail
+  const email = profile.email || publicContactEmail(fallbackEmail)
+  const showEmail = Boolean(email) || profile.canChooseDisplayEmail
 
   const emailOptions = profile.canChooseDisplayEmail
     ? [
@@ -150,7 +152,7 @@ export function ProfileSection({
             <img src={avatarUrl} alt="" referrerPolicy="no-referrer" className="size-full object-cover" />
           ) : (
             <span className="grid size-full place-items-center text-lg font-extrabold text-brand">
-              {(displayName.trim()[0] || email.trim()[0] || 'G').toUpperCase()}
+              {(displayName.trim()[0] || profile.employeeId.trim()[0] || 'W').toUpperCase()}
             </span>
           )}
         </button>
@@ -248,8 +250,8 @@ export function ProfileSection({
           />
         </label>
 
-        {profile.canChooseDisplayEmail ? (
-          isEditing ? (
+        {showEmail ? (
+          profile.canChooseDisplayEmail && isEditing ? (
             <div className="relative min-w-0 space-y-1.5" ref={emailMenuRef}>
               <span className="text-xs font-semibold text-muted">
                 {t('settings.profile.emailDisplayChoice')}
@@ -306,17 +308,14 @@ export function ProfileSection({
           ) : (
             <div className="min-w-0 space-y-1">
               <p className="text-xs font-semibold text-muted">
-                {t('settings.profile.emailDisplayChoice')}
+                {profile.canChooseDisplayEmail
+                  ? t('settings.profile.emailDisplayChoice')
+                  : t('settings.profile.email')}
               </p>
               <p className={`truncate ${fieldClass}`}>{email}</p>
             </div>
           )
-        ) : (
-          <div className="min-w-0 space-y-1">
-            <p className="text-xs font-semibold text-muted">{t('settings.profile.email')}</p>
-            <p className={`truncate ${fieldClass}`}>{email}</p>
-          </div>
-        )}
+        ) : null}
       </div>
 
       <label className="block space-y-1.5">

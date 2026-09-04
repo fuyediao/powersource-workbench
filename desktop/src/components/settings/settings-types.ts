@@ -6,7 +6,6 @@ export type SettingsSection =
   | 'preferences'
   | 'oaErp'
   | 'ai'
-  | 'mcp'
   | 'privacy'
   | 'theme'
   | 'page'
@@ -29,7 +28,6 @@ export const SECTION_ORDER: SettingsSection[] = [
   'preferences',
   'privacy',
   'ai',
-  'mcp',
   'theme',
   'background',
   'page',
@@ -52,7 +50,6 @@ export const DEFAULT_VISIBLE_SECTIONS: SettingsSection[] = [
   'preferences',
   'privacy',
   'ai',
-  'mcp',
   'theme',
   'background',
   'page',
@@ -114,7 +111,7 @@ function normalizePersistedSection(value: string): SettingsSection | null {
   if (value === 'language') {
     return 'preferences'
   }
-  if (value === 'harness') {
+  if (value === 'harness' || value === 'mcp') {
     return 'ai'
   }
   if (value === 'deskPet') {

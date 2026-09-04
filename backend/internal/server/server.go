@@ -2,20 +2,24 @@
 package server
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/fuyediao/powersource-workbench/backend/internal/aihttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/auth"
+	"github.com/fuyediao/powersource-workbench/backend/internal/calendar"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
+	"github.com/fuyediao/powersource-workbench/backend/internal/mail"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 	"github.com/fuyediao/powersource-workbench/backend/internal/start"
 )
 
-// New builds the Workbench API handler.
-func New(env config.Env) http.Handler {
-	sb := supabase.New(env.SupabaseURL, env.SupabaseAnonKey, env.SupabaseServiceRoleKey)
+// New builds the Workbench API handler and starts background workers.
+func New(ctx context.Context, env config.Env) http.Handler {
+	sb := supabase.NewService(env.SupabaseURL, env.ResolvedSupabasePublicURL(), env.SupabaseServiceRoleKey, env.SupabaseAnonKey)
 	authHandler := auth.New(sb)
 
 	r := chi.NewRouter()
@@ -29,5 +33,18 @@ func New(env config.Env) http.Handler {
 	r.Get("/auth/me", authHandler.Me)
 	r.Post("/auth/invitations", authHandler.CreateInvitation)
 	r.Mount("/start", start.New().Routes())
+
+	aiHandler := aihttp.New(env, sb)
+	r.Mount("/ai", aiHandler.Routes())
+	aiHandler.StartWorkers(ctx)
+
+	mailHandler := mail.New(env, sb)
+	r.Mount("/mail", mailHandler.Routes())
+	mailHandler.StartScheduler(ctx)
+
+	calendarHandler := calendar.New(env, sb)
+	r.Mount("/calendar", calendarHandler.Routes())
+	calendarHandler.StartWatchWorkers(ctx)
+
 	return r
 }

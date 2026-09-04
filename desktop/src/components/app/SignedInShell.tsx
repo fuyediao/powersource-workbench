@@ -18,6 +18,7 @@ import { StatusLoading } from '@/components/common/status-loading'
 import { FUNCTIONS_CATEGORY_ID } from '@/constants/rail-categories'
 import { isFeatureTabId, type FeatureTabId } from '@/constants/feature-tabs'
 import { isBrowserTabId } from '@/utils/settings/link-open-preference'
+import { publicContactEmail } from '@/utils/auth/workbench-username'
 import { resolveUserAvatarUrl, resolveUserDisplayName } from '@/utils/shared/user-profile'
 
 /** Settings is loaded only when the Settings tab is open. */
@@ -106,7 +107,7 @@ export function SignedInShell({
 }: SignedInShellProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(FUNCTIONS_CATEGORY_ID)
   const slide = useTabSlideDirection(screen)
-  const email = user.email ?? ''
+  const email = publicContactEmail(user.email)
   const showHome = screen === 'home'
   const showSettings = screen === 'settings'
   const settingsMounted = openTabs.includes('settings')
