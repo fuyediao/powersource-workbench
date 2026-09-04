@@ -14,7 +14,7 @@ not an npm install and not a side `vendor/` tree.
   <https://github.com/schedule-x/schedule-x/blob/v3.7.3/LICENSE>
   (not copied into each package folder)
 - **Reason**: keep the calendar stack auditable and patchable next to Workbench chrome
-  (brand token bridge in `src/styles/calendar-host.css`, personal/group Supabase
+  (brand token bridge in `src/styles/calendar-host.css`, personal Supabase
   scope). Runtime still uses Preact inside the calendar engine; Workbench shell stays
   React via the in-tree adapter.
 - **Lint**: oxlint ignores `src/lib/schedule-x/**` (upstream style). Root `tsc`

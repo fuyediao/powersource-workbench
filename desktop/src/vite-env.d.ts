@@ -373,8 +373,6 @@ interface OrdersMenuViewState {
 }
 
 type CalendarMenuCommand =
-  | 'scope:personal'
-  | 'scope:group'
   | 'event:new'
   | 'calendar:add'
   | 'ics:import'
@@ -384,17 +382,11 @@ type CalendarMenuCommand =
   | 'view:next'
 
 type CalendarMenuAction =
-  | { type: 'select-group'; groupId: string }
   | { type: 'set-view'; view: string }
   | { type: 'toggle-calendar'; id: string }
   | { type: 'rename-calendar'; id: string }
   | { type: 'delete-calendar'; id: string }
   | { type: 'command'; id: CalendarMenuCommand }
-
-interface CalendarMenuGroup {
-  id: string
-  label: string
-}
 
 interface CalendarMenuCalendar {
   id: string
@@ -405,11 +397,8 @@ interface CalendarMenuCalendar {
 }
 
 interface CalendarMenuLabels {
-  scope: string
   calendars: string
   view: string
-  personal: string
-  group: string
   newEvent: string
   addCalendar: string
   showCalendar: string
@@ -429,10 +418,6 @@ interface CalendarMenuLabels {
 }
 
 interface CalendarMenuViewState {
-  mode: 'personal' | 'group'
-  groups: CalendarMenuGroup[]
-  selectedGroupId: string | null
-  canSwitchGroups: boolean
   canCreate: boolean
   calendars: CalendarMenuCalendar[]
   selectedView: string

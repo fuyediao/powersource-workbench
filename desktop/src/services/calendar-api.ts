@@ -493,48 +493,6 @@ export async function createPersonalCalendarEvent(
 }
 
 /**
- * Creates a group calendar event.
- * @param groupId - Target group.
- * @param userId - Auth user id (created_by).
- * @param write - Event fields.
- * @returns Created record.
- */
-export async function createGroupCalendarEvent(
-  groupId: string,
-  userId: string,
-  write: CalendarEventWrite,
-): Promise<CalendarEventRecord> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const { data, error } = await supabase
-    .from('calendar_events')
-    .insert({
-      title: write.title,
-      description: write.description ?? null,
-      start_at: write.startAt,
-      end_at: write.endAt,
-      all_day: write.allDay,
-      owner_user_id: null,
-      group_id: groupId,
-      created_by: userId,
-      calendar_id: write.calendarId ?? null,
-      rrule: write.rrule ?? null,
-      exdate: write.exdates ?? [],
-      source: 'workbench',
-    })
-    .select(EVENT_SELECT)
-    .single()
-  if (error) {
-    throw error
-  }
-  const row = data as EventRow
-  await replaceEventAttendees(row.id, write.attendeeUserIds ?? [])
-  const attendees = await loadAttendeesByEventIds([row.id])
-  return mapEvent(row, attendees.get(row.id) ?? [])
-}
-
-/**
  * Updates an existing calendar event by id.
  * @param eventId - Event uuid (master id for recurring).
  * @param write - Fields to update.

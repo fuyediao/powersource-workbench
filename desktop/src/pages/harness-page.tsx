@@ -19,7 +19,6 @@ import { HarnessOverlayCaption } from '@/components/harness/harness-overlay-capt
 import { HarnessScheduledPanel } from '@/components/harness/harness-scheduled-panel'
 import { HarnessTranscript } from '@/components/harness/harness-transcript'
 import { HarnessUtilitySidebar, type HarnessUtilityPage } from '@/components/harness/harness-utility-sidebar'
-import type { HarnessOfficePanelRequest } from '@/components/harness/harness-office-panel'
 import { HarnessToolsPanel } from '@/components/harness/harness-tools-panel'
 import {
   harnessItemsFromHistory,
@@ -42,7 +41,6 @@ import {
   type ElectronAiModelSelection,
 } from '@/chat/ai-model-catalog'
 import { withCatalogReasoning } from '@/utils/harness/reasoning-effort'
-import { parseHarnessOfficeOpenResult } from '@/utils/harness/office-tool-result'
 import { resolveHarnessUtilityWidth, HARNESS_MIDDLE_CONTENT_WIDTH } from '@/utils/harness/utility-layout'
 import { listAiModels } from '@/services/ai-api'
 import { useAiKeys } from '@/hooks/use-ai-keys'
@@ -188,8 +186,6 @@ function HarnessWorkspace({
     page: HarnessUtilityPage
     nonce: number
   } | null>(null)
-  const [officeRequest, setOfficeRequest] = useState<HarnessOfficePanelRequest | null>(null)
-  const processedOfficeToolRef = useRef<string | null>(null)
   const [computerUseTarget, setComputerUseTarget] = useState<HarnessComputerTarget | null>(
     loadHarnessComputerUseTarget,
   )
@@ -468,23 +464,6 @@ function HarnessWorkspace({
       utilityManualWidth,
     ],
   )
-
-  useEffect(() => {
-    const item = session.items.findLast((candidate) =>
-      candidate.type === 'crmToolCall'
-      && candidate.tool === 'open_office_file'
-      && candidate.status === 'completed',
-    )
-    if (!item || item.id === processedOfficeToolRef.current || item.type !== 'crmToolCall') return
-    const opened = parseHarnessOfficeOpenResult(item.result)
-    processedOfficeToolRef.current = item.id
-    if (!opened) return
-    setOfficeRequest((current) => ({
-      ...opened,
-      nonce: (current?.nonce ?? 0) + 1,
-    }))
-    openUtilityPage('office')
-  }, [openUtilityPage, session.items])
 
   /**
    * Archives the current conversation Canvas, clears the live folder, and closes Canvas tabs.
@@ -926,7 +905,6 @@ function HarnessWorkspace({
         userId={userId}
         canvasEpoch={canvasEpoch}
         canvasRevision={canvasRevision}
-        officeRequest={officeRequest}
         focusPage={utilityFocus}
         onWidthChange={(next) => {
           setUtilityManualWidth(true)

@@ -16,17 +16,12 @@ import {
   FileTextIcon,
   FolderIcon,
   GlobeIcon,
-  PageIcon,
   PlusIcon,
   TerminalIcon,
 } from '@/icons/AllIcons'
 import { HarnessBrowserPanel } from '@/components/harness/harness-browser-panel'
 import { HarnessCanvasPanel } from '@/components/harness/harness-canvas-panel'
 import { HarnessFilesPanel } from '@/components/harness/harness-files-panel'
-import {
-  HarnessOfficePanel,
-  type HarnessOfficePanelRequest,
-} from '@/components/harness/harness-office-panel'
 import { HarnessReviewPanel } from '@/components/harness/harness-review-panel'
 import { HarnessTerminalPanel } from '@/components/harness/harness-terminal-panel'
 import {
@@ -35,7 +30,7 @@ import {
   clampHarnessUtilityWidth,
 } from '@/utils/harness/utility-layout'
 
-export type HarnessUtilityPage = 'review' | 'terminal' | 'browser' | 'files' | 'canvas' | 'office'
+export type HarnessUtilityPage = 'review' | 'terminal' | 'browser' | 'files' | 'canvas'
 
 interface HarnessUtilitySidebarProps {
   /** Whether the complete utility workspace is visible. */
@@ -61,8 +56,6 @@ interface HarnessUtilitySidebarProps {
   canvasEpoch?: number
   /** Increments when live Canvas files were replaced so the preview remounts. */
   canvasRevision?: number
-  /** Latest cloud Office file requested by a Harness tool call. */
-  officeRequest?: HarnessOfficePanelRequest | null
 }
 
 interface UtilityTab {
@@ -76,7 +69,7 @@ interface ResizeSession {
   currentWidth: number
 }
 
-const UTILITY_PAGES: HarnessUtilityPage[] = ['review', 'terminal', 'browser', 'files', 'canvas', 'office']
+const UTILITY_PAGES: HarnessUtilityPage[] = ['review', 'terminal', 'browser', 'files', 'canvas']
 
 const PAGE_ICONS: Record<
   HarnessUtilityPage,
@@ -87,7 +80,6 @@ const PAGE_ICONS: Record<
   browser: GlobeIcon,
   files: FolderIcon,
   canvas: CanvasIcon,
-  office: PageIcon,
 }
 
 /**
@@ -107,7 +99,6 @@ function UtilityPage({
   cwd,
   userId,
   canvasRevision,
-  officeRequest,
 }: {
   page: HarnessUtilityPage
   tabId: string
@@ -115,7 +106,6 @@ function UtilityPage({
   cwd: string | null
   userId: string | null
   canvasRevision: number
-  officeRequest: HarnessOfficePanelRequest | null
 }) {
   if (page === 'review') return <HarnessReviewPanel cwd={cwd} />
   if (page === 'terminal') {
@@ -126,9 +116,6 @@ function UtilityPage({
   }
   if (page === 'canvas') {
     return <HarnessCanvasPanel key={`canvas-${canvasRevision}`} cwd={cwd} active={visible} />
-  }
-  if (page === 'office') {
-    return <HarnessOfficePanel userId={userId} request={officeRequest} />
   }
   return <HarnessFilesPanel cwd={cwd} />
 }
@@ -175,7 +162,6 @@ export function HarnessUtilitySidebar({
   focusPage = null,
   canvasEpoch = 0,
   canvasRevision = 0,
-  officeRequest = null,
 }: HarnessUtilitySidebarProps) {
   const { t } = useTranslation()
   const [tabs, setTabs] = useState<UtilityTab[]>([])
@@ -455,7 +441,6 @@ export function HarnessUtilitySidebar({
                     cwd={cwd}
                     userId={userId}
                     canvasRevision={canvasRevision}
-                    officeRequest={officeRequest}
                   />
                 </div>
               )

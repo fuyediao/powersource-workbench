@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Locked desktop Calendar to personal calendars and removed the Calendar group switcher.
+- Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.
 - Removed Gmail mailbox linking and Google Calendar connect/sync. Mail still uses IMAP/SMTP. Calendar still stores events in Supabase.
 - Copied Ask, Harness, Mail, and Calendar backends onto workbench-api on `api.powersource.work`, plus curated SQL on `supabase.powersource.work` for profiles, history, leftover customers, Mail, and Calendar.
 - Showed the Workbench username (`psxxxx`) as the desktop profile employee id and hid the Auth placeholder email (`name@users.invalid`).

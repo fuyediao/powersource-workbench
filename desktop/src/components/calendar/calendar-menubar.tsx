@@ -1,5 +1,5 @@
 /**
- * Calendar top menubar: Personal/Group scope pill and optional group switcher.
+ * Calendar top menubar: named calendars, ICS, and new event.
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -7,9 +7,8 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { CheckIcon, ChevronDownIcon } from '@/icons/AllIcons'
 import { useDialogPresence } from '@/hooks/use-dialog-presence'
-import type { CalendarCapabilities, CalendarScopeMode } from '@/hooks/use-calendar-scope'
+import type { CalendarCapabilities } from '@/hooks/use-calendar-scope'
 import type { CalendarListRecord } from '@/services/calendar-calendars-api'
-import type { GroupRecord } from '@/services/groups-api'
 import { CalendarColorSwatches } from '@/components/calendar/calendar-color-swatches'
 import { usesNativeCalendarMenu } from '@/utils/calendar/calendar-menu'
 
@@ -17,12 +16,6 @@ const GROUP_MENU_PANEL =
   'fixed z-100 max-h-64 min-w-[11rem] origin-top overflow-y-auto rounded-2xl border border-zinc-950/10 bg-white py-1 shadow-xl dark:border-white/10 dark:bg-zinc-900'
 
 export interface CalendarMenubarProps {
-  mode: CalendarScopeMode
-  onModeChange: (mode: CalendarScopeMode) => void
-  canSwitchGroups: boolean
-  switchableGroups: GroupRecord[]
-  selectedGroupId: string | null
-  onGroupChange: (groupId: string) => void
   capabilities: CalendarCapabilities
   onNewEvent: () => void
   calendars: CalendarListRecord[]
@@ -42,17 +35,11 @@ export interface CalendarMenubarProps {
 }
 
 /**
- * Glass calendar menubar with sliding Personal/Group pill.
- * @param props - Scope and action handlers.
+ * Glass calendar menubar with named-calendar visibility controls.
+ * @param props - Action handlers.
  * @returns Menubar element.
  */
 export function CalendarMenubar({
-  mode,
-  onModeChange,
-  canSwitchGroups,
-  switchableGroups,
-  selectedGroupId,
-  onGroupChange,
   capabilities,
   onNewEvent,
   calendars,
@@ -66,94 +53,22 @@ export function CalendarMenubar({
   onExportIcs,
 }: CalendarMenubarProps) {
   const { t } = useTranslation()
-  const [groupMenuOpen, setGroupMenuOpen] = useState(false)
   const [calendarsMenuOpen, setCalendarsMenuOpen] = useState(false)
   const [colorPickerId, setColorPickerId] = useState<string | null>(null)
-  const [menuPos, setMenuPos] = useState({ top: 0, left: 0, width: 176 })
   const [calendarsMenuPos, setCalendarsMenuPos] = useState({ top: 0, left: 0, width: 240 })
   const [calendarCtx, setCalendarCtx] = useState<{
     calendar: CalendarListRecord
     top: number
     left: number
   } | null>(null)
-  const groupMenuPresence = useDialogPresence(groupMenuOpen, 180)
   const calendarsMenuPresence = useDialogPresence(calendarsMenuOpen, 180)
   const calendarCtxPresence = useDialogPresence(Boolean(calendarCtx), 180)
-  const showGroupSwitcher = mode === 'group' && canSwitchGroups && switchableGroups.length > 0
-  const groupSwitcherPresence = useDialogPresence(showGroupSwitcher, 200)
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLUListElement>(null)
   const calendarsTriggerRef = useRef<HTMLButtonElement>(null)
   const calendarsMenuRef = useRef<HTMLDivElement>(null)
   const calendarCtxRef = useRef<HTMLUListElement>(null)
-  const scopeTrackRef = useRef<HTMLDivElement>(null)
-  const personalBtnRef = useRef<HTMLButtonElement>(null)
-  const groupBtnRef = useRef<HTMLButtonElement>(null)
-  const [scopePill, setScopePill] = useState({ x: 0, width: 0, ready: false })
-  const selectedGroupName =
-    switchableGroups.find((group) => group.id === selectedGroupId)?.name ??
-    t('calendar.scope.groupSwitcher')
   const calendarCtxTarget = calendarCtx?.calendar ?? null
   const visibleCount =
     visibleCalendarIds.size === 0 ? calendars.length : visibleCalendarIds.size
-
-  /**
-   * Measures the active Personal/Group chip for the sliding pill.
-   * @returns Nothing.
-   */
-  function syncScopePill(): void {
-    const track = scopeTrackRef.current
-    const active = mode === 'personal' ? personalBtnRef.current : groupBtnRef.current
-    if (!track || !active) {
-      return
-    }
-    setScopePill({
-      x: active.offsetLeft,
-      width: active.offsetWidth,
-      ready: true,
-    })
-  }
-
-  useLayoutEffect(() => {
-    syncScopePill()
-  }, [mode, t])
-
-  useEffect(() => {
-    const track = scopeTrackRef.current
-    if (!track) {
-      return
-    }
-    /**
-     * Keeps the scope pill aligned after layout / locale changes.
-     * @returns Nothing.
-     */
-    function handleResize(): void {
-      syncScopePill()
-    }
-    window.addEventListener('resize', handleResize)
-    const observer = new ResizeObserver(handleResize)
-    observer.observe(track)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      observer.disconnect()
-    }
-  }, [mode])
-
-  /**
-   * Anchors the portaled menu under the trigger.
-   * @returns Nothing.
-   */
-  function updateMenuPosition(): void {
-    const rect = triggerRef.current?.getBoundingClientRect()
-    if (!rect) {
-      return
-    }
-    setMenuPos({
-      top: Math.round(rect.bottom + 6),
-      left: Math.round(rect.left),
-      width: Math.max(176, Math.round(rect.width)),
-    })
-  }
 
   /**
    * Anchors the calendars dropdown under its trigger (right-aligned).
@@ -182,58 +97,6 @@ export function CalendarMenubar({
     }
     updateCalendarsMenuPosition()
   }, [calendarsMenuOpen, calendars.length])
-
-  useLayoutEffect(() => {
-    if (!groupMenuOpen) {
-      return
-    }
-    updateMenuPosition()
-  }, [groupMenuOpen])
-
-  useEffect(() => {
-    if (!groupMenuOpen) {
-      return
-    }
-    /**
-     * Closes when clicking outside the trigger and portaled menu.
-     * @param event - Pointer event.
-     * @returns Nothing.
-     */
-    function handlePointerDown(event: MouseEvent): void {
-      const target = event.target as Node
-      if (triggerRef.current?.contains(target) || menuRef.current?.contains(target)) {
-        return
-      }
-      setGroupMenuOpen(false)
-    }
-    /**
-     * Closes on Escape.
-     * @param event - Keyboard event.
-     * @returns Nothing.
-     */
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Escape') {
-        setGroupMenuOpen(false)
-      }
-    }
-    /**
-     * Repositions on scroll/resize while open.
-     * @returns Nothing.
-     */
-    function handleReposition(): void {
-      updateMenuPosition()
-    }
-    document.addEventListener('mousedown', handlePointerDown)
-    document.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('resize', handleReposition)
-    window.addEventListener('scroll', handleReposition, true)
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown)
-      document.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('resize', handleReposition)
-      window.removeEventListener('scroll', handleReposition, true)
-    }
-  }, [groupMenuOpen])
 
   useEffect(() => {
     if (!calendarsMenuOpen) {
@@ -320,125 +183,12 @@ export function CalendarMenubar({
     }
   }, [calendarCtx])
 
-  useEffect(() => {
-    if (mode !== 'group') {
-      setGroupMenuOpen(false)
-    }
-  }, [mode])
-
   if (usesNativeCalendarMenu()) {
     return null
   }
 
   return (
     <div className="calendar-menubar flex h-9 shrink-0 items-center gap-2 border-b border-ink/8 bg-white/55 px-3 backdrop-blur-xl dark:bg-zinc-950/40">
-      <div
-        ref={scopeTrackRef}
-        role="group"
-        aria-label={t('calendar.scope.toggle')}
-        className="relative flex items-center rounded-full bg-ink/5 p-0.5"
-      >
-        <span
-          aria-hidden
-          className="pointer-events-none absolute top-0.5 left-0 bottom-0.5 rounded-full bg-white shadow-sm transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] dark:bg-zinc-900"
-          style={{
-            width: scopePill.width,
-            opacity: scopePill.ready ? 1 : 0,
-            transform: `translateX(${scopePill.x}px)`,
-          }}
-        />
-        <button
-          ref={personalBtnRef}
-          type="button"
-          aria-pressed={mode === 'personal'}
-          className={[
-            'relative z-10 rounded-full px-3 py-1 text-xs font-bold transition-colors duration-300',
-            mode === 'personal' ? 'text-brand' : 'text-muted',
-          ].join(' ')}
-          onClick={() => onModeChange('personal')}
-        >
-          {t('calendar.scope.personal')}
-        </button>
-        <button
-          ref={groupBtnRef}
-          type="button"
-          aria-pressed={mode === 'group'}
-          className={[
-            'relative z-10 rounded-full px-3 py-1 text-xs font-bold transition-colors duration-300',
-            mode === 'group' ? 'text-brand' : 'text-muted',
-          ].join(' ')}
-          onClick={() => onModeChange('group')}
-        >
-          {t('calendar.scope.group')}
-        </button>
-      </div>
-
-      {groupSwitcherPresence.mounted ? (
-        <div
-          className={[
-            'transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
-            groupSwitcherPresence.leaving
-              ? '-translate-y-0.5 opacity-0'
-              : 'translate-y-0 opacity-100',
-          ].join(' ')}
-        >
-          <button
-            ref={triggerRef}
-            type="button"
-            className="inline-flex max-w-48 items-center gap-1 rounded-full bg-ink/5 px-2.5 py-1 text-xs font-semibold text-ink transition hover:bg-ink/8"
-            aria-expanded={groupMenuOpen}
-            aria-haspopup="listbox"
-            onClick={() => setGroupMenuOpen((open) => !open)}
-          >
-            <span className="truncate">{selectedGroupName}</span>
-            <ChevronDownIcon
-              className={[
-                'size-3.5 shrink-0 text-muted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
-                groupMenuOpen ? 'rotate-180' : '',
-              ].join(' ')}
-              aria-hidden
-            />
-          </button>
-        </div>
-      ) : null}
-
-      {groupMenuPresence.mounted
-        ? createPortal(
-            <ul
-              ref={menuRef}
-              role="listbox"
-              className={[
-                GROUP_MENU_PANEL,
-                groupMenuPresence.leaving ? 'animate-dropdown-out' : 'animate-dropdown-in',
-              ].join(' ')}
-              style={{ top: menuPos.top, left: menuPos.left, width: menuPos.width }}
-            >
-              {switchableGroups.map((group) => {
-                const selected = group.id === selectedGroupId
-                return (
-                  <li key={group.id} role="option" aria-selected={selected}>
-                    <button
-                      type="button"
-                      className={[
-                        'flex w-full items-center gap-2 px-3 py-2 text-left text-xs font-semibold transition',
-                        selected ? 'bg-brand/10 text-brand' : 'text-ink hover:bg-ink/5',
-                      ].join(' ')}
-                      onClick={() => {
-                        onGroupChange(group.id)
-                        setGroupMenuOpen(false)
-                      }}
-                    >
-                      <span className="min-w-0 flex-1 truncate">{group.name}</span>
-                      {selected ? <CheckIcon className="size-3.5 shrink-0" /> : null}
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>,
-            document.body,
-          )
-        : null}
-
       {calendarCtxPresence.mounted && calendarCtx
         ? createPortal(
             <ul

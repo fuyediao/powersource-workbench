@@ -231,11 +231,8 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
       calendarLabels:
         screen === 'calendar' && localeReady
           ? {
-              scope: t('calendar.menu.scope'),
               calendars: t('calendar.menu.calendars'),
               view: t('calendar.menu.view'),
-              personal: t('calendar.scope.personal'),
-              group: t('calendar.scope.group'),
               newEvent: t('calendar.newEvent'),
               addCalendar: t('calendar.calendars.add'),
               showCalendar: t('calendar.menu.show'),

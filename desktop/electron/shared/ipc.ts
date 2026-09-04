@@ -852,8 +852,6 @@ export type OrdersMenuViewState = {
 
 /** Calendar native-menu command ids (everything except radios / toggles). */
 export const CALENDAR_MENU_COMMANDS = [
-  'scope:personal',
-  'scope:group',
   'event:new',
   'calendar:add',
   'ics:import',
@@ -868,18 +866,11 @@ export type CalendarMenuCommand = (typeof CALENDAR_MENU_COMMANDS)[number]
 
 /** Native Calendar menu action. */
 export type CalendarMenuAction =
-  | { type: 'select-group'; groupId: string }
   | { type: 'set-view'; view: string }
   | { type: 'toggle-calendar'; id: string }
   | { type: 'rename-calendar'; id: string }
   | { type: 'delete-calendar'; id: string }
   | { type: 'command'; id: CalendarMenuCommand }
-
-/** One group row in the native Calendar Scope menu. */
-export type CalendarMenuGroup = {
-  id: string
-  label: string
-}
 
 /** One named calendar in the native Calendars menu. */
 export type CalendarMenuCalendar = {
@@ -892,11 +883,8 @@ export type CalendarMenuCalendar = {
 
 /** i18n labels for the macOS Calendar application menus. */
 export type CalendarMenuLabels = {
-  scope: string
   calendars: string
   view: string
-  personal: string
-  group: string
   newEvent: string
   addCalendar: string
   showCalendar: string
@@ -917,10 +905,6 @@ export type CalendarMenuLabels = {
 
 /** Live Calendar-menu radios, checkboxes, and enablement. */
 export type CalendarMenuViewState = {
-  mode: 'personal' | 'group'
-  groups: CalendarMenuGroup[]
-  selectedGroupId: string | null
-  canSwitchGroups: boolean
   canCreate: boolean
   calendars: CalendarMenuCalendar[]
   selectedView: string
@@ -1297,9 +1281,6 @@ export function isCalendarMenuAction(value: unknown): value is CalendarMenuActio
     return false
   }
   const record = value as Record<string, unknown>
-  if (record.type === 'select-group') {
-    return typeof record.groupId === 'string' && record.groupId.length > 0
-  }
   if (record.type === 'set-view') {
     return typeof record.view === 'string' && record.view.length > 0
   }

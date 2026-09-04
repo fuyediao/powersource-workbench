@@ -212,7 +212,7 @@ test('covers the shared model control, Computer Use, tools, schedules, library, 
     }
     await expect.poll(() => utilitySidebar.evaluate((element) => element.getBoundingClientRect().width)).toBeGreaterThan(initialUtilityWidth + 60)
     await expect(utilitySidebar.locator('kbd')).toHaveCount(0)
-    for (const label of ['Review', 'Terminal', 'Browser', 'Files', 'Canvas', 'Office']) {
+    for (const label of ['Review', 'Terminal', 'Browser', 'Files', 'Canvas']) {
       await expect(running.page.getByRole('button', { name: label, exact: true })).toBeVisible()
     }
     await expect(running.page.getByRole('button', { name: 'Side conversation', exact: true })).toHaveCount(0)
@@ -222,7 +222,7 @@ test('covers the shared model control, Computer Use, tools, schedules, library, 
     const addTab = running.page.getByTestId('harness-utility-add-tab')
     await expect(addTab).toBeVisible()
     await addTab.click()
-    for (const label of ['Terminal', 'Browser', 'Files', 'Canvas', 'Office']) {
+    for (const label of ['Terminal', 'Browser', 'Files', 'Canvas']) {
       await expect(running.page.getByRole('menuitem', { name: label, exact: true })).toBeVisible()
     }
     await running.page.getByRole('menuitem', { name: 'Terminal', exact: true }).click()
@@ -253,11 +253,6 @@ test('covers the shared model control, Computer Use, tools, schedules, library, 
     await expect.poll(() => canvasPreviewText(running.app)).toContain('Edited Canvas')
     await running.page.getByRole('button', { name: 'document.md', exact: true }).click()
     await expect(running.page.getByRole('heading', { name: 'Canvas document' })).toBeVisible()
-    await addTab.click()
-    await running.page.getByRole('menuitem', { name: 'Office', exact: true }).click()
-    await expect(running.page.getByText('Sign in to open the Office library.', { exact: true })).toBeVisible()
-    await expect(utilitySidebar.getByTestId('harness-utility-tab')).toHaveCount(6)
-    await utilitySidebar.getByRole('button', { name: 'Close Office', exact: true }).click()
     await expect(utilitySidebar.getByTestId('harness-utility-tab')).toHaveCount(5)
     await utilitySidebar.getByRole('button', { name: 'Close Review', exact: true }).click()
     await expect(utilitySidebar.getByTestId('harness-utility-tab')).toHaveCount(4)

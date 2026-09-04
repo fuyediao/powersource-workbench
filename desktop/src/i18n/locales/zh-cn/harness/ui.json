@@ -23,8 +23,7 @@
     "terminal": "终端",
     "browser": "浏览器",
     "files": "文件",
-    "canvas": "Canvas",
-    "office": "Office"
+    "canvas": "Canvas"
   },
   "utility": {
     "back": "返回",
@@ -32,8 +31,6 @@
     "closeTab": "关闭{{name}}",
     "resize": "调整工作区工具宽度",
     "refresh": "刷新",
-    "officeRefresh": "刷新 Office 文件库",
-    "officeSignIn": "请先登录以打开 Office 文件库。",
     "loading": "正在加载…",
     "unavailable": "本机工作区桥接不可用。",
     "loadError": "无法加载工作区。",

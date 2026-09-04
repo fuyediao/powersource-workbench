@@ -23,8 +23,7 @@
     "terminal": "終端",
     "browser": "瀏覽器",
     "files": "檔案",
-    "canvas": "Canvas",
-    "office": "Office"
+    "canvas": "Canvas"
   },
   "utility": {
     "back": "返回",
@@ -32,8 +31,6 @@
     "closeTab": "關閉{{name}}",
     "resize": "調整工作區工具寬度",
     "refresh": "重新整理",
-    "officeRefresh": "重新整理 Office 文件庫",
-    "officeSignIn": "請先登入以開啟 Office 文件庫。",
     "loading": "正在載入…",
     "unavailable": "本機工作區橋接無法使用。",
     "loadError": "無法載入工作區。",

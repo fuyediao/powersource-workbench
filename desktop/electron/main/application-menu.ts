@@ -47,7 +47,6 @@ import {
   type OrdersMenuViewState,
   type CalendarMenuAction,
   type CalendarMenuCalendar,
-  type CalendarMenuGroup,
   type CalendarMenuLabels,
   type CalendarMenuViewState,
   type TeamMenuAction,
@@ -413,11 +412,8 @@ const DEFAULT_ORDERS_VIEW: OrdersMenuViewState = {
 }
 
 const DEFAULT_CALENDAR_LABELS: CalendarMenuLabels = {
-  scope: 'Scope',
   calendars: 'Calendars',
   view: 'View',
-  personal: 'Personal',
-  group: 'Group',
   newEvent: 'New event',
   addCalendar: 'Add calendar',
   showCalendar: 'Show',
@@ -437,10 +433,6 @@ const DEFAULT_CALENDAR_LABELS: CalendarMenuLabels = {
 }
 
 const DEFAULT_CALENDAR_VIEW: CalendarMenuViewState = {
-  mode: 'personal',
-  groups: [],
-  selectedGroupId: null,
-  canSwitchGroups: false,
   canCreate: false,
   calendars: [],
   selectedView: 'month-grid',
@@ -1657,32 +1649,6 @@ function sanitizeCalendarLabels(value: unknown): CalendarMenuLabels | undefined 
 }
 
 /**
- * Sanitizes renderer-provided Calendar group rows.
- * @param value - Candidate list.
- * @returns Valid group rows.
- */
-function sanitizeCalendarGroups(value: unknown): CalendarMenuGroup[] {
-  if (!Array.isArray(value)) {
-    return []
-  }
-  const groups: CalendarMenuGroup[] = []
-  for (const raw of value) {
-    if (!raw || typeof raw !== 'object') {
-      continue
-    }
-    const record = raw as Record<string, unknown>
-    if (typeof record.id !== 'string' || record.id.length === 0) {
-      continue
-    }
-    if (typeof record.label !== 'string' || record.label.length === 0) {
-      continue
-    }
-    groups.push({ id: record.id, label: record.label })
-  }
-  return groups
-}
-
-/**
  * Sanitizes renderer-provided named calendar rows.
  * @param value - Candidate list.
  * @returns Valid calendar rows.
@@ -1724,19 +1690,11 @@ function sanitizeCalendarView(value: unknown): CalendarMenuViewState | undefined
     return undefined
   }
   const record = value as Record<string, unknown>
-  const selectedGroupId =
-    typeof record.selectedGroupId === 'string' && record.selectedGroupId.length > 0
-      ? record.selectedGroupId
-      : null
   const selectedView =
     typeof record.selectedView === 'string' && record.selectedView.length > 0
       ? record.selectedView
       : DEFAULT_CALENDAR_VIEW.selectedView
   return {
-    mode: record.mode === 'group' ? 'group' : 'personal',
-    groups: sanitizeCalendarGroups(record.groups),
-    selectedGroupId,
-    canSwitchGroups: Boolean(record.canSwitchGroups),
     canCreate: Boolean(record.canCreate),
     calendars: sanitizeCalendarCalendars(record.calendars),
     selectedView,
@@ -1756,7 +1714,7 @@ const CALENDAR_VIEW_RADIOS: Array<{
 ]
 
 /**
- * Builds native Calendar menus (Scope / Calendars / View).
+ * Builds native Calendar menus (Calendars / View).
  * @param labels - Translated item labels.
  * @param view - Live radios, checkboxes, and enablement.
  * @returns Menu template fragments.
@@ -1766,32 +1724,6 @@ function buildCalendarMenus(
   view: CalendarMenuViewState | undefined,
 ): MenuItemConstructorOptions[] {
   const state = view ?? DEFAULT_CALENDAR_VIEW
-  const scopeItems: MenuItemConstructorOptions[] = [
-    {
-      label: labels.personal,
-      type: 'radio',
-      checked: state.mode === 'personal',
-      click: () => sendCalendarAction({ type: 'command', id: 'scope:personal' }),
-    },
-    {
-      label: labels.group,
-      type: 'radio',
-      checked: state.mode === 'group',
-      click: () => sendCalendarAction({ type: 'command', id: 'scope:group' }),
-    },
-  ]
-  if (state.mode === 'group' && state.canSwitchGroups && state.groups.length > 0) {
-    scopeItems.push({ type: 'separator' })
-    for (const group of state.groups) {
-      scopeItems.push({
-        label: group.label,
-        type: 'radio',
-        checked: group.id === state.selectedGroupId,
-        click: () => sendCalendarAction({ type: 'select-group', groupId: group.id }),
-      })
-    }
-  }
-
   const calendarItems: MenuItemConstructorOptions[] = state.calendars.map((calendar) => ({
     label: calendar.label,
     submenu: [
@@ -1863,10 +1795,6 @@ function buildCalendarMenus(
   )
 
   const menus: MenuItemConstructorOptions[] = [
-    {
-      label: labels.scope,
-      submenu: scopeItems,
-    },
     {
       label: labels.calendars,
       submenu: calendarItems,

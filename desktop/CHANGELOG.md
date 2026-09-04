@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Locked Calendar to the signed-in user's personal calendars and removed the Personal/Group switcher.
+- Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.
 - Removed Gmail OAuth and Google Calendar connect/sync from Mail and Calendar. IMAP mailboxes and native calendars stay.
 - Ask, Harness, Mail, and Calendar keep the existing GeoCRM-shaped HTTP contracts; workbench-api on `api.powersource.work` now serves those routes.
 - Showed the Workbench username (`psxxxx`) as the profile employee id and hid the Auth placeholder email (`name@users.invalid`).

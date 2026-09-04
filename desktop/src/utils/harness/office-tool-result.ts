@@ -1,6 +1,6 @@
 import type { OfficeFeatureId } from '@/constants/office-folder'
 
-/** One successful `open_office_file` result ready for the Office utility page. */
+/** One successful `open_office_file` result. */
 export interface HarnessOfficeOpenResult {
   fileId: string
   kind: OfficeFeatureId
@@ -14,7 +14,7 @@ function isOfficeKind(value: string): value is OfficeFeatureId {
 /**
  * Parses the JSON text returned by the first-party `open_office_file` tool.
  * @param value - Dynamic-tool result text.
- * @returns File identity for the embedded editor, or null for an error payload.
+ * @returns File identity, or null for an error payload.
  */
 export function parseHarnessOfficeOpenResult(value: string): HarnessOfficeOpenResult | null {
   if (!value.trim()) return null

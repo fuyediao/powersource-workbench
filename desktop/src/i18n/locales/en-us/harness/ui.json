@@ -23,8 +23,7 @@
     "terminal": "Terminal",
     "browser": "Browser",
     "files": "Files",
-    "canvas": "Canvas",
-    "office": "Office"
+    "canvas": "Canvas"
   },
   "utility": {
     "back": "Back",
@@ -32,8 +31,6 @@
     "closeTab": "Close {{name}}",
     "resize": "Resize workspace tools",
     "refresh": "Refresh",
-    "officeRefresh": "Refresh Office library",
-    "officeSignIn": "Sign in to open the Office library.",
     "loading": "Loading…",
     "unavailable": "The local workspace bridge is unavailable.",
     "loadError": "Unable to load the workspace.",

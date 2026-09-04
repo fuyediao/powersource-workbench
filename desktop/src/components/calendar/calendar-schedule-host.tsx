@@ -21,12 +21,11 @@ import { createResizePlugin } from '@schedule-x/resize'
 import { ScheduleXCalendar, useCalendarApp } from '@schedule-x/react'
 import type { CalendarAppSingleton } from '@schedule-x/shared'
 import { CalendarEventDialog } from '@/components/calendar/calendar-event-dialog'
-import type { CalendarCapabilities, CalendarScopeMode } from '@/hooks/use-calendar-scope'
+import type { CalendarCapabilities } from '@/hooks/use-calendar-scope'
 import { toScheduleXCalendars, type CalendarListRecord } from '@/services/calendar-calendars-api'
 import {
   applyRecurringCalendarDelete,
   applyRecurringCalendarEdit,
-  createGroupCalendarEvent,
   createPersonalCalendarEvent,
   deleteCalendarEvent,
   getCalendarEvent,
@@ -41,7 +40,6 @@ import {
   type CalendarEventRecord,
   type CalendarEventWrite,
 } from '@/services/calendar-api'
-import { fetchGroupMembers, type ProfileSnippet } from '@/services/groups-api'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import {
   loadCalendarDefaultView,
@@ -69,8 +67,6 @@ import '@/styles/calendar-host.css'
 
 export interface CalendarScheduleHostProps {
   userId: string
-  mode: CalendarScopeMode
-  selectedGroupId: string | null
   capabilities: CalendarCapabilities
   /** Bumps when parent wants a new-event dialog (toolbar button). */
   newEventRequestId: number
@@ -168,13 +164,11 @@ function buildDraftWrite(
 
 /**
  * Heavy Schedule-X grid + event dialog (Aura-style deferred chunk).
- * @param props - User, scope, and toolbar create signal.
+ * @param props - User, write capabilities, and toolbar create signal.
  * @returns Calendar host UI.
  */
 export function CalendarScheduleHost({
   userId,
-  mode,
-  selectedGroupId,
   capabilities,
   newEventRequestId,
   reloadRequestId = 0,
@@ -185,10 +179,6 @@ export function CalendarScheduleHost({
   const { t, i18n } = useTranslation()
   const capsRef = useRef(capabilities)
   capsRef.current = capabilities
-  const modeRef = useRef(mode)
-  modeRef.current = mode
-  const groupRef = useRef(selectedGroupId)
-  groupRef.current = selectedGroupId
   const userIdRef = useRef(userId)
   userIdRef.current = userId
   const visibleRef = useRef(visibleCalendarIds)
@@ -208,7 +198,6 @@ export function CalendarScheduleHost({
   const [dialogOpen, setDialogOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [inviteCandidates, setInviteCandidates] = useState<ProfileSnippet[]>([])
   const reloadTokenRef = useRef(0)
   const lastNewEventRequestRef = useRef(0)
   const lastReloadRequestRef = useRef(0)
@@ -245,7 +234,6 @@ export function CalendarScheduleHost({
       const scheduleEvents = snapshot.records.flatMap((record) => {
         byId.set(record.id, record)
         const isInviteeOnly =
-          modeRef.current === 'personal' &&
           record.ownerUserId !== userId &&
           record.attendees.some((attendee) => attendee.userId === userId)
         if (
@@ -282,7 +270,7 @@ export function CalendarScheduleHost({
   )
 
   /**
-   * Reloads events for the active scope into the Schedule-X events service.
+   * Reloads personal calendar events into the Schedule-X events service.
    * @param options - Pass `refresh: false` to reuse the CalendarPage prefetch cache.
    * @returns Nothing.
    */
@@ -290,22 +278,10 @@ export function CalendarScheduleHost({
     async (options?: { refresh?: boolean }) => {
       const token = ++reloadTokenRef.current
       try {
-        const scope =
-          modeRef.current === 'personal'
-            ? { ownerUserId: userId }
-            : groupRef.current
-              ? { groupId: groupRef.current }
-              : null
-        if (!scope) {
-          if (eventsService.eventsFacade) {
-            eventsService.set([])
-          }
-          return
-        }
         const activeView =
           calendarSingletonRef.current?.calendarState.view.value ?? defaultView
         const snapshot = await loadCalendarGridSnapshot(
-          scope,
+          { ownerUserId: userId },
           t('calendar.calendars.defaultName'),
           String(activeView),
           { refresh: options?.refresh ?? true },
@@ -328,7 +304,7 @@ export function CalendarScheduleHost({
         setError(detail ? `${t('calendar.loadError')} ${detail}` : t('calendar.loadError'))
       }
     },
-    [applyGridSnapshot, defaultView, eventsService, t, userId],
+    [applyGridSnapshot, defaultView, t, userId],
   )
 
   const calendar = useCalendarApp(
@@ -419,10 +395,7 @@ export function CalendarScheduleHost({
                 return
               }
               const me = userIdRef.current
-              const canManageEvent =
-                modeRef.current === 'personal'
-                  ? record.ownerUserId === me
-                  : capsRef.current.canEdit
+              const canManageEvent = record.ownerUserId === me
               const myAttendee = record.attendees.find((attendee) => attendee.userId === me)
               const occurrenceStartAt =
                 occurrenceStartFromScheduleId(scheduleId) ??
@@ -563,46 +536,13 @@ export function CalendarScheduleHost({
   }, [calendar])
 
   useEffect(() => {
-    if (mode !== 'group' || !selectedGroupId) {
-      setInviteCandidates([])
-      return
-    }
-    let cancelled = false
-    void (async () => {
-      try {
-        const members = await fetchGroupMembers(selectedGroupId)
-        if (cancelled) {
-          return
-        }
-        const profiles = members
-          .map((member) => member.user)
-          .filter((profile): profile is ProfileSnippet => Boolean(profile))
-          .filter((profile) => profile.id !== userId)
-        const unique = new Map<string, ProfileSnippet>()
-        for (const profile of profiles) {
-          unique.set(profile.id, profile)
-        }
-        setInviteCandidates([...unique.values()])
-      } catch (err) {
-        console.error(err)
-        if (!cancelled) {
-          setInviteCandidates([])
-        }
-      }
-    })()
-    return () => {
-      cancelled = true
-    }
-  }, [mode, selectedGroupId, userId])
-
-  useEffect(() => {
     setFading(true)
     void reloadEvents({ refresh: false }).finally(() => {
       if (calendarReadyRef.current) {
         setFading(false)
       }
     })
-  }, [reloadEvents, mode, selectedGroupId, capabilities.canEdit, visibleCalendarIds])
+  }, [reloadEvents, capabilities.canEdit, visibleCalendarIds])
 
   useEffect(() => {
     if (!calendarReady) {
@@ -642,20 +582,8 @@ export function CalendarScheduleHost({
       }, 400)
     }
 
-    const channelName =
-      mode === 'personal'
-        ? `calendar-events-owner:${userId}`
-        : selectedGroupId
-          ? `calendar-events-group:${selectedGroupId}`
-          : null
-    if (!channelName) {
-      return
-    }
-
-    const filter =
-      mode === 'personal'
-        ? `owner_user_id=eq.${userId}`
-        : `group_id=eq.${selectedGroupId}`
+    const channelName = `calendar-events-owner:${userId}`
+    const filter = `owner_user_id=eq.${userId}`
 
     const channel = client
       .channel(channelName)
@@ -672,10 +600,7 @@ export function CalendarScheduleHost({
           event: '*',
           schema: 'public',
           table: 'calendars',
-          filter:
-            mode === 'personal'
-              ? `owner_user_id=eq.${userId}`
-              : `group_id=eq.${selectedGroupId}`,
+          filter: `owner_user_id=eq.${userId}`,
         },
         () => {
           scheduleReload()
@@ -689,7 +614,7 @@ export function CalendarScheduleHost({
       }
       void client.removeChannel(channel)
     }
-  }, [calendarReady, mode, selectedGroupId, userId, reloadEvents])
+  }, [calendarReady, userId, reloadEvents])
 
   useEffect(() => {
     if (newEventRequestId === 0 || newEventRequestId === lastNewEventRequestRef.current) {
@@ -748,18 +673,12 @@ export function CalendarScheduleHost({
   }, [defaultCalendarId])
 
   /**
-   * Creates an event in the active personal/group scope.
+   * Creates an event on the signed-in user's personal calendar.
    * @param write - Event fields.
    * @returns Created record.
    */
   async function createInScope(write: CalendarEventWrite): Promise<CalendarEventRecord> {
-    if (mode === 'personal') {
-      return createPersonalCalendarEvent(userId, write)
-    }
-    if (selectedGroupId) {
-      return createGroupCalendarEvent(selectedGroupId, userId, write)
-    }
-    throw new Error('No group selected')
+    return createPersonalCalendarEvent(userId, write)
   }
 
   /**
@@ -907,8 +826,8 @@ export function CalendarScheduleHost({
           mode={dialog.mode}
           initial={dialog.initial}
           calendars={calendars}
-          inviteCandidates={inviteCandidates}
-          inviteRemoteSearch={mode === 'personal'}
+          inviteCandidates={[]}
+          inviteRemoteSearch
           currentUserId={userId}
           isRecurringSeries={Boolean(dialog.initial.rrule && dialog.occurrenceStartAt)}
           canManageEvent={dialog.canManageEvent}

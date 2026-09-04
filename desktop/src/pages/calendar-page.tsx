@@ -2,20 +2,20 @@
  * Calendar feature page shell (Aura-style): paint chrome first, defer Schedule-X.
  */
 
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { User } from '@supabase/supabase-js'
 import { CalendarMenubar } from '@/components/calendar/calendar-menubar'
 import { CalendarNameDialog } from '@/components/calendar/calendar-name-dialog'
 import { StatusLoading } from '@/components/common/status-loading'
-import { useCalendarScope } from '@/hooks/use-calendar-scope'
+import { PERSONAL_CALENDAR_CAPABILITIES } from '@/hooks/use-calendar-scope'
 import {
   createCalendar,
   deleteCalendar,
   updateCalendar,
   type CalendarListRecord,
 } from '@/services/calendar-calendars-api'
-import { createGroupCalendarEvent, createPersonalCalendarEvent, listCalendarEvents } from '@/services/calendar-api'
+import { createPersonalCalendarEvent, listCalendarEvents } from '@/services/calendar-api'
 import { downloadBlob, pickBinaryFile } from '@/office/office-file-io'
 import { parseIcs, serializeIcs } from '@/utils/calendar/calendar-ics'
 import { loadCalendarGridSnapshot } from '@/utils/calendar/calendar-grid-load'
@@ -44,7 +44,8 @@ interface CalendarPageProps {
  */
 export function CalendarPage({ userId }: CalendarPageProps) {
   const { t } = useTranslation()
-  const scope = useCalendarScope(userId)
+  const capabilities = PERSONAL_CALENDAR_CAPABILITIES
+  const personalScope = useMemo(() => ({ ownerUserId: userId }), [userId])
   const [newEventRequestId, setNewEventRequestId] = useState(0)
   const [reloadRequestId, setReloadRequestId] = useState(0)
   const [calendars, setCalendars] = useState<CalendarListRecord[]>([])
@@ -56,23 +57,9 @@ export function CalendarPage({ userId }: CalendarPageProps) {
   const [savingCalendarName, setSavingCalendarName] = useState(false)
 
   useEffect(() => {
-    setCalendars([])
-    setVisibleCalendarIds(new Set())
-  }, [scope.mode, scope.selectedGroupId])
-
-  useEffect(() => {
-    const scopeKey =
-      scope.mode === 'personal'
-        ? { ownerUserId: userId }
-        : scope.selectedGroupId
-          ? { groupId: scope.selectedGroupId }
-          : null
-    if (!scopeKey) {
-      return
-    }
     let cancelled = false
     void loadCalendarGridSnapshot(
-      scopeKey,
+      personalScope,
       t('calendar.calendars.defaultName'),
       loadCalendarDefaultView(),
     )
@@ -87,7 +74,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
     return () => {
       cancelled = true
     }
-  }, [scope.mode, scope.selectedGroupId, t, userId])
+  }, [personalScope, t])
 
   /**
    * Toggles a named calendar in the visibility filter.
@@ -115,14 +102,14 @@ export function CalendarPage({ userId }: CalendarPageProps) {
    * @returns Nothing.
    */
   const handleAddCalendar = useCallback(() => {
-    if (!scope.capabilities.canCreate) {
+    if (!capabilities.canCreate) {
       return
     }
     setNameDialogMode('create')
     setRenamingCalendar(null)
     setNameDialogMounted(true)
     setNameDialogOpen(true)
-  }, [scope.capabilities.canCreate])
+  }, [capabilities.canCreate])
 
   /**
    * Opens the rename dialog for a named calendar.
@@ -131,7 +118,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
    */
   const handleRenameCalendar = useCallback(
     (calendar: CalendarListRecord) => {
-      if (scope.capabilities.readOnly) {
+      if (capabilities.readOnly) {
         return
       }
       setNameDialogMode('rename')
@@ -139,7 +126,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       setNameDialogMounted(true)
       setNameDialogOpen(true)
     },
-    [scope.capabilities.readOnly],
+    [capabilities.readOnly],
   )
 
   /**
@@ -171,18 +158,9 @@ export function CalendarPage({ userId }: CalendarPageProps) {
           return
         }
 
-        const scopeKey =
-          scope.mode === 'personal'
-            ? { ownerUserId: userId }
-            : scope.selectedGroupId
-              ? { groupId: scope.selectedGroupId }
-              : null
-        if (!scopeKey) {
-          return
-        }
         setSavingCalendarName(true)
         try {
-          const created = await createCalendar(scopeKey, payload.name, payload.color)
+          const created = await createCalendar(personalScope, payload.name, payload.color)
           setCalendars((prev) => [...prev, created])
           setReloadRequestId((id) => id + 1)
           setNameDialogOpen(false)
@@ -193,7 +171,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         }
       })()
     },
-    [nameDialogMode, renamingCalendar, scope.mode, scope.selectedGroupId, userId],
+    [nameDialogMode, personalScope, renamingCalendar],
   )
 
   /**
@@ -271,7 +249,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
    * @returns Nothing.
    */
   const handleImportIcs = useCallback(() => {
-    if (!scope.capabilities.canCreate) {
+    if (!capabilities.canCreate) {
       return
     }
     void (async () => {
@@ -294,7 +272,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       let created = 0
       try {
         for (const draft of drafts) {
-          const write = {
+          await createPersonalCalendarEvent(userId, {
             title: draft.title,
             description: draft.description,
             startAt: draft.startAt,
@@ -303,14 +281,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
             calendarId: target.id,
             rrule: draft.rrule,
             exdates: draft.exdate,
-          }
-          if (scope.mode === 'personal') {
-            await createPersonalCalendarEvent(userId, write)
-          } else if (scope.selectedGroupId) {
-            await createGroupCalendarEvent(scope.selectedGroupId, userId, write)
-          } else {
-            return
-          }
+          })
           created += 1
         }
         setReloadRequestId((id) => id + 1)
@@ -320,14 +291,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         window.alert(t('calendar.ics.importFailed'))
       }
     })()
-  }, [
-    calendars,
-    scope.capabilities.canCreate,
-    scope.mode,
-    scope.selectedGroupId,
-    t,
-    userId,
-  ])
+  }, [calendars, capabilities.canCreate, t, userId])
 
   /**
    * Exports events from visible named calendars as a downloadable .ics file.
@@ -335,15 +299,6 @@ export function CalendarPage({ userId }: CalendarPageProps) {
    */
   const handleExportIcs = useCallback(() => {
     void (async () => {
-      const scopeKey =
-        scope.mode === 'personal'
-          ? { ownerUserId: userId }
-          : scope.selectedGroupId
-            ? { groupId: scope.selectedGroupId }
-            : null
-      if (!scopeKey) {
-        return
-      }
       const now = Date.now()
       const rangeStart = new Date(now)
       rangeStart.setMonth(rangeStart.getMonth() - 12)
@@ -351,7 +306,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       rangeEnd.setMonth(rangeEnd.getMonth() + 12)
       try {
         const records = await listCalendarEvents(
-          scopeKey,
+          personalScope,
           rangeStart.toISOString(),
           rangeEnd.toISOString(),
         )
@@ -393,14 +348,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         window.alert(t('calendar.ics.exportFailed'))
       }
     })()
-  }, [
-    calendars,
-    scope.mode,
-    scope.selectedGroupId,
-    t,
-    userId,
-    visibleCalendarIds,
-  ])
+  }, [calendars, personalScope, t, visibleCalendarIds])
 
   useEffect(() => {
     return () => unregisterCalendarMenuHost()
@@ -408,8 +356,6 @@ export function CalendarPage({ userId }: CalendarPageProps) {
 
   useEffect(() => {
     patchCalendarMenuHandlers({
-      setMode: scope.setMode,
-      selectGroup: scope.setSelectedGroupId,
       newEvent: () => {
         setNewEventRequestId((id) => id + 1)
       },
@@ -438,38 +384,25 @@ export function CalendarPage({ userId }: CalendarPageProps) {
     handleImportIcs,
     handleRenameCalendar,
     handleToggleCalendarVisibility,
-    scope.setMode,
-    scope.setSelectedGroupId,
   ])
 
   useEffect(() => {
     const allVisible = visibleCalendarIds.size === 0
     setCalendarMenuView({
-      mode: scope.mode,
-      groups: scope.switchableGroups.map((group) => ({
-        id: group.id,
-        label: group.name,
-      })),
-      selectedGroupId: scope.selectedGroupId,
-      canSwitchGroups: scope.canSwitchGroups,
-      canCreate: scope.capabilities.canCreate,
+      canCreate: capabilities.canCreate,
       calendars: calendars.map((calendar) => ({
         id: calendar.id,
         label: calendar.name,
         visible: allVisible || visibleCalendarIds.has(calendar.id),
-        canRename: !scope.capabilities.readOnly,
-        canDelete: scope.capabilities.canDelete && calendars.length > 1,
+        canRename: !capabilities.readOnly,
+        canDelete: capabilities.canDelete && calendars.length > 1,
       })),
     })
   }, [
     calendars,
-    scope.canSwitchGroups,
-    scope.capabilities.canCreate,
-    scope.capabilities.canDelete,
-    scope.capabilities.readOnly,
-    scope.mode,
-    scope.selectedGroupId,
-    scope.switchableGroups,
+    capabilities.canCreate,
+    capabilities.canDelete,
+    capabilities.readOnly,
     visibleCalendarIds,
   ])
 
@@ -479,18 +412,12 @@ export function CalendarPage({ userId }: CalendarPageProps) {
     <div
       className={[
         'calendar-page feature-page flex h-dvh max-h-dvh min-h-0 flex-col overflow-hidden text-ink',
-        scope.capabilities.readOnly ? 'is-readonly' : '',
+        capabilities.readOnly ? 'is-readonly' : '',
         nativeCalendarMenu ? 'is-native-menu' : '',
       ].join(' ')}
     >
       <CalendarMenubar
-        mode={scope.mode}
-        onModeChange={scope.setMode}
-        canSwitchGroups={scope.canSwitchGroups}
-        switchableGroups={scope.switchableGroups}
-        selectedGroupId={scope.selectedGroupId}
-        onGroupChange={scope.setSelectedGroupId}
-        capabilities={scope.capabilities}
+        capabilities={capabilities}
         onNewEvent={() => setNewEventRequestId((id) => id + 1)}
         calendars={calendars}
         visibleCalendarIds={visibleCalendarIds}
@@ -507,9 +434,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       >
         <CalendarScheduleHost
           userId={userId}
-          mode={scope.mode}
-          selectedGroupId={scope.selectedGroupId}
-          capabilities={scope.capabilities}
+          capabilities={capabilities}
           newEventRequestId={newEventRequestId}
           reloadRequestId={reloadRequestId}
           calendars={calendars}
