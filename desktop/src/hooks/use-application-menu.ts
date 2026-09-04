@@ -209,7 +209,6 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
           ? {
               mode: t('chat.menu.mode'),
               model: t('chat.menu.model'),
-              mapSearch: t('chat.menu.mapSearch'),
               quick: t('chat.input.modeQuick'),
               think: t('chat.input.modeThink'),
               notConfigured: t('chat.modelSelector.notConfigured'),

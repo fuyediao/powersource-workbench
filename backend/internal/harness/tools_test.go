@@ -26,6 +26,22 @@ func TestOfficeToolDoesNotRequireHarnessProfileStorage(t *testing.T) {
 	}
 }
 
+func TestSearchHarnessSessionsReturnsEmpty(t *testing.T) {
+	h := &Handler{}
+	got, err := h.searchHarnessSessions(context.Background(), "user-id", []byte(`{"query":"anything"}`))
+	if err != nil {
+		t.Fatalf("searchHarnessSessions() error = %v", err)
+	}
+	payload, ok := got.(map[string]any)
+	if !ok {
+		t.Fatalf("got %T, want map", got)
+	}
+	sessions, ok := payload["sessions"].([]any)
+	if !ok || len(sessions) != 0 {
+		t.Fatalf("sessions = %#v, want empty slice", payload["sessions"])
+	}
+}
+
 func TestMailToolsRefuseWithoutDesktopMail(t *testing.T) {
 	h := &Handler{
 		hasModuleFn: func(_ context.Context, _ string, key string) (bool, error) {

@@ -142,51 +142,6 @@ export interface Database {
         }>
         Relationships: []
       }
-      history: {
-        Row: {
-          id: string
-          user_id: string
-          query: string
-          messages: Json | null
-          locations: Json | null
-          search_location: Json | null
-          group_id: string | null
-          created_by_user_id: string | null
-          assistant_kind: 'ask' | 'agent'
-          harness_thread_id: string | null
-          harness_items: Json | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          query: string
-          messages?: Json | null
-          locations?: Json | null
-          search_location?: Json | null
-          group_id?: string | null
-          created_by_user_id?: string | null
-          assistant_kind?: 'ask' | 'agent'
-          harness_thread_id?: string | null
-          harness_items?: Json | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: Partial<{
-          query: string
-          messages: Json | null
-          locations: Json | null
-          search_location: Json | null
-          group_id: string | null
-          created_by_user_id: string | null
-          assistant_kind: 'ask' | 'agent'
-          harness_thread_id?: string | null
-          harness_items?: Json | null
-          updated_at: string
-        }>
-        Relationships: []
-      }
       search_history: {
         Row: {
           id: string

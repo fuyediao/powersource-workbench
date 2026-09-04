@@ -1,6 +1,6 @@
 # PowerSource Workbench API
 
-Go login, invitation, Home widget proxy, and the Ask / Harness / Mail backends for the Workbench desktop client. Password exchange and Auth Admin calls stay on this process. Live weather, FX, market quotes, news, and search suggestions are fetched here and returned to Electron. Native calendar events, Ask history, and leftover customer rows stay on the desktop Supabase Data API with the user JWT.
+Go login, invitation, Home widget proxy, and the Ask / Harness / Mail backends for the Workbench desktop client. Password exchange and Auth Admin calls stay on this process. Live weather, FX, market quotes, news, and search suggestions are fetched here and returned to Electron. Native calendar events and leftover customer rows stay on the desktop Supabase Data API with the user JWT. Ask and Harness transcripts are stored in Electron SQLite on the signed-in machine, not on this API.
 
 The production host is `https://api.powersource.work` on the Workbench VPS. It talks to `https://supabase.powersource.work` (internally `http://kong:8000`). Do not point this service at the GeoCRM `powersource.app` stack.
 
@@ -22,7 +22,7 @@ The production host is `https://api.powersource.work` on the Workbench VPS. It t
 | `GET` | `/start/weather/search` | City search (`q`, `language`). |
 | `GET` | `/start/currency/catalog` | Fiat and crypto FX catalog. |
 | `GET` | `/start/currency/convert` | FX conversion (`amount`, `from`, `to`). |
-| `*` | `/ai/*` | Ask chat, mapchat, customer/KOL summary, model catalog, BYOK ping. |
+| `*` | `/ai/*` | Ask chat, customer/KOL summary, model catalog, BYOK ping. |
 | `*` | `/ai/harness/*` | Harness memory, review, cron, wake, skills, experts, tools. |
 | `*` | `/mail/*` | IMAP accounts, sync, send, and mail-by-customer. |
 | `GET` | `/health` | Liveness. |
@@ -33,7 +33,7 @@ Login accepts a username only. Email is rejected. The first super administrator 
 
 `/start/*` is public (no JWT). The desktop reaches it through the Electron main process, not from the renderer to Open-Meteo, Yahoo Finance, CoinGecko, or the FX CDN.
 
-IMAP and SMTP run inside the workbench-api container, not in Electron. Native calendar events stay on the desktop Supabase Data API.
+IMAP and SMTP run inside the workbench-api container, not in Electron. Native calendar events stay on the desktop Supabase Data API. Ask and Harness conversation lists live in the desktop SQLite file.
 
 ## Harness volume
 

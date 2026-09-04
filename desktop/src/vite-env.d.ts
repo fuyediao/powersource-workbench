@@ -292,7 +292,6 @@ interface ChatMenuProviderOption {
 interface ChatMenuLabels {
   mode: string
   model: string
-  mapSearch: string
   quick: string
   think: string
   notConfigured: string
@@ -302,14 +301,12 @@ interface ChatMenuViewState {
   thinkMode: 'quick' | 'think'
   provider: ChatMenuProviderId
   modelId: string
-  mapSearch: boolean
   providers: ChatMenuProviderOption[]
 }
 
 type ChatMenuAction =
   | { type: 'set-think'; mode: 'quick' | 'think' }
   | { type: 'set-model'; provider: ChatMenuProviderId; modelId: string }
-  | { type: 'set-map-search'; enabled: boolean }
 
 type ClashMenuAction =
   | 'sidebar:expanded'
@@ -854,6 +851,22 @@ interface WorkbenchBridge {
       userId: string,
       historyId: string,
     ) => Promise<import('../electron/shared/home-settings').HomeSearchHistoryItemDto[]>
+  }
+  chatHistory: {
+    list: (
+      userId: string,
+      kind: import('../electron/shared/chat-history').ChatHistoryKind,
+    ) => Promise<import('../electron/shared/chat-history').ChatHistoryRowDto[]>
+    add: (
+      userId: string,
+      input: import('../electron/shared/chat-history').ChatHistoryCreateInput,
+    ) => Promise<import('../electron/shared/chat-history').ChatHistoryRowDto>
+    update: (
+      userId: string,
+      historyId: string,
+      updates: import('../electron/shared/chat-history').ChatHistoryUpdateInput,
+    ) => Promise<import('../electron/shared/chat-history').ChatHistoryRowDto | null>
+    remove: (userId: string, historyId: string) => Promise<boolean>
   }
   harness: {
     testMode: boolean

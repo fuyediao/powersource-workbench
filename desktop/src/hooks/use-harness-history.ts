@@ -1,5 +1,5 @@
 /**
- * Cloud-backed Harness history with one row per Codex thread.
+ * Local-backed Harness history with one row per Codex thread.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -56,7 +56,7 @@ export function harnessItemsFromHistory(record: HistoryRecord): HarnessItem[] {
 }
 
 /**
- * Builds cross-device fallback instructions from a stored transcript.
+ * Builds fallback instructions from a stored transcript on this machine.
  * @param record - History record being continued.
  * @returns English scaffolding plus the original conversation text.
  */
@@ -133,7 +133,6 @@ export function useHarnessHistory(
       if (currentId) {
         await updateHistory(currentId, {
           messages,
-          locations: [],
           harnessThreadId: threadId,
           harnessItems: currentItems,
           assistantKind: 'agent',
@@ -145,7 +144,6 @@ export function useHarnessHistory(
       const created = await addHistory(userId, {
         query: firstUser?.content.trim() || 'Harness',
         messages,
-        locations: [],
         harnessThreadId: threadId,
         harnessItems: currentItems,
         assistantKind: 'agent',

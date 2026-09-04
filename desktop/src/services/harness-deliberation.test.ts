@@ -18,11 +18,11 @@ describe('Harness model deliberation', () => {
 
   it('keeps proposals independent, cross-reviews only peers, and emits one synthesis', async () => {
     vi.mocked(postAiChat)
-      .mockResolvedValueOnce({ content: 'Proposal A', locations: [], locationSetId: null })
-      .mockResolvedValueOnce({ content: 'Proposal B', locations: [], locationSetId: null })
-      .mockResolvedValueOnce({ content: 'Review B', locations: [], locationSetId: null })
-      .mockResolvedValueOnce({ content: 'Review A', locations: [], locationSetId: null })
-      .mockResolvedValueOnce({ content: 'Unique final answer', locations: [], locationSetId: null })
+      .mockResolvedValueOnce({ content: 'Proposal A' })
+      .mockResolvedValueOnce({ content: 'Proposal B' })
+      .mockResolvedValueOnce({ content: 'Review B' })
+      .mockResolvedValueOnce({ content: 'Review A' })
+      .mockResolvedValueOnce({ content: 'Unique final answer' })
 
     const result = await runHarnessDeliberation('Solve this.', [], config)
 

@@ -1,5 +1,5 @@
 /**
- * Chat page bridge for the macOS native application menu (Mode + Map + Model).
+ * Chat page bridge for the macOS native application menu (Mode + Model).
  */
 
 export type ChatMenuProviderId = string
@@ -20,19 +20,16 @@ export type ChatMenuViewState = {
   thinkMode: 'quick' | 'think'
   provider: ChatMenuProviderId
   modelId: string
-  mapSearch: boolean
   providers: ChatMenuProviderOption[]
 }
 
 export type ChatMenuAction =
   | { type: 'set-think'; mode: 'quick' | 'think' }
   | { type: 'set-model'; provider: ChatMenuProviderId; modelId: string }
-  | { type: 'set-map-search'; enabled: boolean }
 
 type ChatMenuHandlers = {
   setThinkMode?: (mode: 'quick' | 'think') => void
   setModel?: (provider: ChatMenuProviderId, modelId: string) => void
-  setMapSearch?: (enabled: boolean) => void
 }
 
 type SnapshotListener = () => void
@@ -41,7 +38,6 @@ const DEFAULT_VIEW: ChatMenuViewState = {
   thinkMode: 'quick',
   provider: 'gemini',
   modelId: 'gemini-3.1-pro-preview',
-  mapSearch: false,
   providers: [],
 }
 
@@ -94,7 +90,6 @@ function viewEquals(left: ChatMenuViewState, right: ChatMenuViewState): boolean 
     left.thinkMode !== right.thinkMode ||
     left.provider !== right.provider ||
     left.modelId !== right.modelId ||
-    left.mapSearch !== right.mapSearch ||
     left.providers.length !== right.providers.length
   ) {
     return false
@@ -191,9 +186,6 @@ export function dispatchChatMenuAction(action: ChatMenuAction): void {
       return
     case 'set-model':
       handlers.setModel?.(action.provider, action.modelId)
-      return
-    case 'set-map-search':
-      handlers.setMapSearch?.(action.enabled)
       return
     default:
       return

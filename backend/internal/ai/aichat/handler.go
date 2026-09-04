@@ -5,13 +5,11 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/catalog"
-	"github.com/fuyediao/powersource-workbench/backend/internal/ai/location"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/model"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
@@ -52,19 +50,12 @@ type requestBody struct {
 	Prompt          string           `json:"prompt"`
 	History         []historyMessage `json:"history"`
 	Image           *requestImage    `json:"image"`
-	Map             bool             `json:"map"`
 	WebSearch       bool             `json:"webSearch"`
-	Latitude        *float64         `json:"latitude"`
-	Longitude       *float64         `json:"longitude"`
 	ReasoningEffort string           `json:"reasoningEffort"`
 }
 
 type responseBody struct {
 	Content string `json:"content"`
-	// Locations are pins parsed from ```mjson when Map is true (never nil).
-	Locations []location.Location `json:"locations"`
-	// LocationSetID is the persisted `agent_location_sets` id, or null.
-	LocationSetID *string `json:"locationSetId"`
 }
 
 const maxScreenshotBytes = 2 << 20
@@ -90,7 +81,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if mode == "" {
 		mode = "think"
 	}
-	systemPrompt, ok := SystemPromptForAsk(mode, body.Map, body.WebSearch)
+	systemPrompt, ok := SystemPromptForAsk(mode, body.WebSearch)
 	if !ok {
 		writeErr(w, http.StatusBadRequest, "invalid_mode", "Mode must be think or quick.")
 		return
@@ -119,19 +110,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userPrompt := BuildUserPrompt(body.History, prompt)
-	if body.Map && body.Latitude != nil && body.Longitude != nil {
-		userPrompt = fmt.Sprintf(
-			"[User Context: My current location is Latitude %g, Longitude %g. Search widely around this area.]\n\n%s",
-			*body.Latitude, *body.Longitude, userPrompt,
-		)
-	}
 	if len(images) > 0 {
 		userPrompt = ScreenshotUserPrefix + userPrompt
 	}
 	opts := ai.CompleteOptions{
 		VendorModelID:   vendorModelID,
 		Images:          images,
-		GoogleSearch:    (body.Map || body.WebSearch) && providerID == "gemini",
+		GoogleSearch:    body.WebSearch && providerID == "gemini",
 		ReasoningEffort: catalog.ClampReasoningEffort(providerID, vendorModelID, body.ReasoningEffort),
 	}
 	var content string
@@ -146,23 +131,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	locations := []location.Location{}
-	var locationSetID *string
-	if body.Map {
-		var prose string
-		locations, prose = location.ParseAndStrip(content)
-		content = prose
-		if len(locations) > 0 {
-			if id, persistErr := location.Persist(r.Context(), h.sb, authmw.UserIDFrom(r), "aichat", "map", locations); persistErr == nil && id != "" {
-				locationSetID = &id
-			}
-		}
-	}
-
 	httpx.WriteJSON(w, http.StatusOK, responseBody{
-		Content:       content,
-		Locations:     locations,
-		LocationSetID: locationSetID,
+		Content: content,
 	})
 }
 

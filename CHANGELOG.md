@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Stored Ask and Harness transcripts in local SQLite on this PC. Dropped the unused company `history` and `agent_location_sets` tables.
+- Removed Ask Map search (composer toggle, native Chat menu, map pins, and `/ai/mapchat`). Home and Spotlight Ask AI web search stays.
 - Greeted Ask and Ask AI with the profile person name instead of the Workbench username (employee id).
 - Stopped copying the Workbench login username into `profiles.display_name`.
 - Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.

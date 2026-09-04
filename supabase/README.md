@@ -13,6 +13,7 @@ GeoCRM on `powersource.app` is a behavior reference only. Do not apply these mig
 | `20260904120100_groups_customers_mail_calendar.sql` | Groups, leftover customers/contacts, Mail, Calendar, write-grant tables. |
 | `20260904140000_drop_gmail_google_calendar.sql` | Drop unused Gmail OAuth and Google Calendar sync tables. |
 | `20260904150000_profile_display_name_not_username.sql` | Stop copying the login username into `profiles.display_name`. |
+| `20260905030000_drop_history_and_map_pins.sql` | Drop `history` and `agent_location_sets` (transcripts are local SQLite). |
 
 `scripts/deploy-remote.py` applies these files in name order and records them in `public.workbench_schema_migrations`.
 

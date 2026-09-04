@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench API are documented here.
 
 ## Unreleased
 
+- Stopped reading Ask/Harness transcripts from Supabase. `search_harness_sessions` on the VPS returns an empty list; the desktop intercepts that tool against local SQLite.
+- Removed POST `/ai/mapchat` and Ask map-pin parsing. Ask chat returns assistant text only. Gemini Google Search still runs when the client sends `webSearch`.
 - Removed Gmail OAuth and Google Calendar from workbench-api. Mail keeps IMAP/SMTP. Native calendar events stay on the desktop Supabase Data API.
 - Copied Ask, Harness, Mail, and Calendar HTTP from GeoCRM onto workbench-api (`/ai/*`, `/ai/harness/*`, `/mail/*`, `/calendar/*`) with a Workbench ACL adapter for active `work_profiles`.
 - Added curated SQL for profiles, history, groups, leftover customers, Mail, and Calendar. Deploy applies those migrations and merges encryption and Hermes volume settings without wiping existing secrets.

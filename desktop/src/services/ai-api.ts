@@ -1,7 +1,6 @@
 import { resolveApiBaseUrl } from '@/config/deployment-urls'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import type { ChatMessage } from '@/chat/chat-types'
-import type { ShopLocation } from '@/types/chat'
 
 /** Gateway model slugs used by workbench-api `/ai/*`. */
 export type AiGatewayModel = string
@@ -30,11 +29,9 @@ export interface AiConnectivityResponse {
   models: AiConnectivityModelResult[]
 }
 
-/** Response shape from /ai/mapchat. */
-export interface AiLocationsResponse {
+/** Response shape from POST /ai/aichat. */
+export interface AiChatResponse {
   content: string
-  locations: ShopLocation[]
-  locationSetId: string | null
 }
 
 /** Error from AI gateway helpers. */
@@ -146,8 +143,8 @@ async function aiRequest<T>(
 /**
  * Ask-mode chat via POST /ai/aichat.
  *
- * @param params - Model, mode, prompt, optional history, vendor modelId, screenshot, Map search, and web search
- * @returns Assistant text plus any server-parsed map pins
+ * @param params - Model, mode, prompt, optional history, vendor modelId, screenshot, and web search
+ * @returns Assistant text
  */
 export async function postAiChat(params: {
   model: AiGatewayModel
@@ -156,21 +153,14 @@ export async function postAiChat(params: {
   prompt: string
   history?: ChatMessage[]
   image?: { mimeType: string; data: string }
-  map?: boolean
   webSearch?: boolean
   reasoningEffort?: string
-  latitude?: number
-  longitude?: number
   signal?: AbortSignal
-}): Promise<AiLocationsResponse> {
+}): Promise<AiChatResponse> {
   const history = (params.history ?? [])
     .filter((m) => (m.role === 'user' || m.role === 'model') && m.content.trim())
     .map((m) => ({ role: m.role, content: m.content }))
-  const res = await aiRequest<{
-    content: string
-    locations?: ShopLocation[]
-    locationSetId?: string | null
-  }>(
+  const res = await aiRequest<{ content: string }>(
     '/ai/aichat',
     {
       model: params.model,
@@ -179,46 +169,12 @@ export async function postAiChat(params: {
       prompt: params.prompt,
       history,
       ...(params.image ? { image: params.image } : {}),
-      ...(params.map ? { map: true } : {}),
       ...(params.webSearch ? { webSearch: true } : {}),
       ...(params.reasoningEffort ? { reasoningEffort: params.reasoningEffort } : {}),
-      ...(params.latitude != null ? { latitude: params.latitude } : {}),
-      ...(params.longitude != null ? { longitude: params.longitude } : {}),
     },
     params.signal,
   )
-  return {
-    content: res.content,
-    locations: res.locations ?? [],
-    locationSetId: res.locationSetId ?? null,
-  }
-}
-
-/**
- * Map chat via POST /ai/mapchat (places near optional coordinates).
- *
- * @param params - Prompt, optional model, modelId, and lat/lng
- * @returns Assistant text plus shop locations to plot
- */
-export async function postMapChat(params: {
-  model?: AiGatewayModel
-  modelId?: string
-  prompt: string
-  latitude?: number
-  longitude?: number
-  signal?: AbortSignal
-}): Promise<AiLocationsResponse> {
-  return aiRequest<AiLocationsResponse>(
-    '/ai/mapchat',
-    {
-      model: params.model ?? 'gemini',
-      ...(params.modelId ? { modelId: params.modelId } : {}),
-      prompt: params.prompt,
-      ...(params.latitude != null ? { latitude: params.latitude } : {}),
-      ...(params.longitude != null ? { longitude: params.longitude } : {}),
-    },
-    params.signal,
-  )
+  return { content: res.content }
 }
 
 /** One row from GET /ai/models. */

@@ -348,7 +348,7 @@ export const FIRST_PARTY_DYNAMIC_TOOLS: readonly FirstPartyDynamicTool[] = [
     type: 'function',
     name: 'search_harness_sessions',
     description:
-      'Search the signed-in user\'s own recent Harness session history and return matching transcripts for continuity.',
+      'Search this computer\'s recent Harness transcripts and return matching sessions for continuity.',
     inputSchema: {
       type: 'object',
       properties: {

@@ -214,6 +214,9 @@ export const OA_ERP_CREDENTIALS_IPC_CHANNEL = 'workbench:oa-erp-credentials'
 /** IPC channel for the desktop AI model allowlist (Settings → AI → Models, local SQLite). */
 export const AI_MODEL_ALLOWLIST_IPC_CHANNEL = 'workbench:ai-model-allowlist'
 
+/** IPC channel for Ask and Harness conversation transcripts (local SQLite). */
+export const CHAT_HISTORY_IPC_CHANNEL = 'workbench:chat-history'
+
 /** One explicit enable/disable override row from the AI model allowlist. */
 export interface AiModelAllowlistRow {
   provider: string
@@ -751,7 +754,6 @@ export type ChatMenuProviderOption = {
 export type ChatMenuLabels = {
   mode: string
   model: string
-  mapSearch: string
   quick: string
   think: string
   notConfigured: string
@@ -762,7 +764,6 @@ export type ChatMenuViewState = {
   thinkMode: 'quick' | 'think'
   provider: ChatMenuProviderId
   modelId: string
-  mapSearch: boolean
   providers: ChatMenuProviderOption[]
 }
 
@@ -770,7 +771,6 @@ export type ChatMenuViewState = {
 export type ChatMenuAction =
   | { type: 'set-think'; mode: 'quick' | 'think' }
   | { type: 'set-model'; provider: ChatMenuProviderId; modelId: string }
-  | { type: 'set-map-search'; enabled: boolean }
 
 /** Native Clash / Settings / Admin-rail menu commands (sidebar mode radios). */
 export const CLASH_MENU_ACTIONS = [
@@ -1223,9 +1223,6 @@ export function isChatMenuAction(value: unknown): value is ChatMenuAction {
       typeof record.modelId === 'string' &&
       record.modelId.length > 0
     )
-  }
-  if (record.type === 'set-map-search') {
-    return typeof record.enabled === 'boolean'
   }
   return false
 }

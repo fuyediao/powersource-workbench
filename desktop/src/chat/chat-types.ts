@@ -2,10 +2,10 @@
  * Shared chat types for the Electron chat UI and engines.
  */
 
-import type { ChatMessage, HistoryInput, ShopLocation, Coordinates } from '@/types/chat'
+import type { ChatMessage, HistoryInput } from '@/types/chat'
 import type { ChatModeType } from '@/prompts/system-instruction'
 
-export type { ChatMessage, HistoryInput, ShopLocation, Coordinates }
+export type { ChatMessage, HistoryInput }
 export type { ChatModeType }
 
 /** AI model identifier for the chat engine (catalog provider slug). */
@@ -16,7 +16,6 @@ export interface SendMessageParams {
   model: ChatModelId
   prompt: string
   historyMessages?: ChatMessage[]
-  location?: Coordinates
   mode: ChatModeType
   signal?: AbortSignal
 }
@@ -32,5 +31,4 @@ export interface ChatApiKeys {
 /** Result from the chat engine after a successful send. */
 export interface SendMessageResult {
   message: ChatMessage
-  locations: ShopLocation[]
 }

@@ -13,7 +13,7 @@ export type { ChatModeType }
 /**
  * Run a single Ask send via the AI gateway.
  *
- * @param params - Model, prompt, location, mode, api keys (compat), optional screenshot, optional web search, optional abort
+ * @param params - Model, prompt, mode, api keys (compat), optional screenshot, optional web search, optional abort
  * @returns SendMessageResult or throws
  */
 export async function runSendMessage(params: {
@@ -21,8 +21,6 @@ export async function runSendMessage(params: {
   modelId?: string
   prompt: string
   historyMessages?: ChatMessage[]
-  location?: { latitude: number; longitude: number }
-  mapSearch?: boolean
   webSearch?: boolean
   mode: ChatModeType
   apiKeys: ChatApiKeys
@@ -34,8 +32,6 @@ export async function runSendMessage(params: {
     modelId,
     prompt,
     historyMessages,
-    location,
-    mapSearch,
     webSearch,
     mode,
     image,
@@ -58,14 +54,10 @@ export async function runSendMessage(params: {
     prompt,
     history: historyMessages,
     image,
-    map: Boolean(mapSearch),
     webSearch: Boolean(webSearch),
-    latitude: mapSearch ? location?.latitude : undefined,
-    longitude: mapSearch ? location?.longitude : undefined,
     signal,
   })
   const thinkingTimeSeconds = (performance.now() - startTime) / 1000
-  const locations = response.locations ?? []
 
   return {
     message: {
@@ -74,8 +66,6 @@ export async function runSendMessage(params: {
       content: response.content,
       timestamp: Date.now(),
       thinkingTime: thinkingTimeSeconds,
-      ...(locations.length > 0 ? { relatedShops: locations } : {}),
     },
-    locations,
   }
 }

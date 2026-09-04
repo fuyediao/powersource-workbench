@@ -14,7 +14,6 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/aichat"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/customer"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/kol"
-	"github.com/fuyediao/powersource-workbench/backend/internal/ai/mapchat"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/models"
 	providershttp "github.com/fuyediao/powersource-workbench/backend/internal/ai/providershttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/settings"
@@ -61,7 +60,6 @@ func (h *Handler) Routes() chi.Router {
 	r.Group(func(pr chi.Router) {
 		pr.Use(authmw.RequireUser(h.sb, authmw.DefaultUnauthorized))
 		pr.Method(http.MethodPost, "/aichat", aichat.New(h.sb, h.aiC))
-		pr.Method(http.MethodPost, "/mapchat", mapchat.New(h.sb, h.aiC))
 		pr.Method(http.MethodPost, "/customer/summary", customer.New(h.sb, h.aiC))
 		pr.Method(http.MethodPost, "/kol/summary", kol.New(h.sb, h.aiC))
 		pr.Method(http.MethodPost, "/settings/ping", settings.New(h.sb, h.aiC))

@@ -361,7 +361,6 @@ const DEFAULT_OFFICE_VIEW: OfficeMenuViewState = {
 const DEFAULT_CHAT_LABELS: ChatMenuLabels = {
   mode: 'Mode',
   model: 'Cloud Models',
-  mapSearch: 'Map',
   quick: 'Quick',
   think: 'Think',
   notConfigured: 'Not Configured',
@@ -371,7 +370,6 @@ const DEFAULT_CHAT_VIEW: ChatMenuViewState = {
   thinkMode: 'quick',
   provider: 'gemini',
   modelId: 'gemini-3.1-pro-preview',
-  mapSearch: false,
   providers: [],
 }
 
@@ -1239,7 +1237,6 @@ function sanitizeChatView(value: unknown): ChatMenuViewState | undefined {
     thinkMode: record.thinkMode === 'think' ? 'think' : 'quick',
     provider,
     modelId,
-    mapSearch: record.mapSearch === true,
     providers: sanitizeChatProviders(record.providers),
   }
 }
@@ -1259,7 +1256,7 @@ function chatModelMenuLabel(title: string, suffix?: string): string {
 }
 
 /**
- * Builds Chat Mode + Map + Model menus. Cloud Models is a flat radio list of
+ * Builds Chat Mode + Model menus. Cloud Models is a flat radio list of
  * combined vendor · model labels (same as the in-window picker).
  * @param labels - Translated Chat menu labels.
  * @param view - Live radios and catalog.
@@ -1322,18 +1319,6 @@ function buildChatMenus(
     {
       label: labels.mode,
       submenu: modeSubmenu,
-    },
-    {
-      label: labels.mapSearch,
-      submenu: [
-        {
-          label: labels.mapSearch,
-          type: 'checkbox',
-          checked: state.mapSearch,
-          click: (menuItem) =>
-            sendChatAction({ type: 'set-map-search', enabled: menuItem.checked }),
-        },
-      ],
     },
     {
       label: labels.model,

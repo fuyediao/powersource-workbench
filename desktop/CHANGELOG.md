@@ -4,6 +4,8 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Stored Ask and Harness transcripts in local SQLite (`chat-history.sqlite` under Electron userData). Company `history` rows are not imported.
+- Removed Ask Map search from the composer and the native Chat menu. Home and Spotlight Ask AI web search stays.
 - Greeted Ask and Ask AI with the profile person name instead of the Workbench username (employee id).
 - Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.
 - Locked Calendar to the signed-in user's personal calendars and removed the Personal/Group switcher.

@@ -21,7 +21,6 @@ import { useAiKeys } from '@/hooks/use-ai-keys'
 import { useChatHistory } from '@/hooks/use-chat-history'
 import { useClawdBridgeReporter } from '@/hooks/use-clawd-bridge'
 import { useLoadingTimer } from '@/hooks/use-loading-timer'
-import { useLinkOpen } from '@/hooks/link-open-context'
 import {
   runSendMessage,
   buildHistoryInput,
@@ -49,11 +48,10 @@ import {
   stopMicrophoneRecording,
   transcribeAudioWithGemini,
 } from '@/services/speech-to-text'
-import type { ChatAssistantKind, ChatMessage, ShopLocation } from '@/types/chat'
+import type { ChatAssistantKind, ChatMessage } from '@/types/chat'
 import { AiCombinedModelPicker } from '@/components/chat/ai-combined-model-picker'
 import { ChatMarkdown } from '@/components/chat/chat-markdown'
 import { loadChatKindSession, saveChatKindSession } from '@/utils/chat/assistant-kind'
-import { readBrowserGeolocation } from '@/utils/chat/read-geolocation'
 import {
   subscribeAskAiSearch,
   takePendingAskAiSearchQuery,
@@ -66,7 +64,6 @@ import {
   ChevronRightIcon,
   CopyIcon,
   CpuIcon,
-  MapPinIcon,
   MessageSquareIcon,
   MicIcon,
   PlusIcon,
@@ -135,17 +132,6 @@ function isVoiceInputSupported(): boolean {
 }
 
 /**
- * Builds a Google Maps search URL for a shop location.
- *
- * @param loc - Shop location pin
- * @returns HTTPS maps URL
- */
-function googleMapsUrlForLocation(loc: ShopLocation): string {
-  const q = encodeURIComponent(loc.name || `${loc.latitude},${loc.longitude}`)
-  return `https://www.google.com/maps/search/?api=1&query=${q}&query_place_id=${loc.latitude},${loc.longitude}`
-}
-
-/**
  * Transcript and composer for the Ask surface.
  *
  * @param props - Kind, visibility, signed-in user, and shared catalog
@@ -166,7 +152,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   ref,
 ) {
   const { t, i18n } = useTranslation()
-  const { openUrl } = useLinkOpen()
   const { keys: aiKeys } = useAiKeys(userId)
   const { addHistory, updateHistory } = useChatHistory()
   const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
@@ -205,7 +190,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
     () => loadElectronAiModelSelection(kind)?.modelId ?? 'gemini-3.1-pro-preview',
   )
   const [mode, setModeState] = useState<ChatModeType>('quick')
-  const [mapSearch, setMapSearch] = useState(false)
   useClawdBridgeReporter({
     sessionId: 'ask',
     loading: isLoading,
@@ -277,16 +261,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
     [aiKeys],
   )
 
-  const allLocations = useMemo(() => {
-    const map = new Map<string, ShopLocation>()
-    messages.forEach((msg) => {
-      msg.relatedShops?.forEach((s) => {
-        if (!map.has(s.name)) map.set(s.name, s)
-      })
-    })
-    return Array.from(map.values())
-  }, [messages])
-
   const handleAssistantCodeBlockClick = useCallback((e: ReactMouseEvent<HTMLDivElement>) => {
     const el = (e.target as HTMLElement).closest?.('[data-chat-code-action]')
     if (!el) return
@@ -334,7 +308,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       if (opts?.webSearch) {
         webSearchRef.current = true
       }
-      const useMap = mapSearch && !useWebSearch
 
       const userMsg: ChatMessage = {
         id: crypto.randomUUID(),
@@ -352,21 +325,17 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       abortControllerRef.current = controller
 
       try {
-        const searchLocation = useMap ? await readBrowserGeolocation() : undefined
         const result = await runSendMessage({
           model,
           modelId,
           prompt: text,
           historyMessages: requestHistoryMessages,
           mode,
-          mapSearch: useMap,
           webSearch: useWebSearch,
-          location: searchLocation,
           apiKeys,
           signal: controller.signal,
         })
         const responseMessage = result.message
-        const responseLocations = result.locations
 
         if (controller.signal.aborted) {
           return
@@ -375,13 +344,7 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
         setMessages((prev) => [...prev, responseMessage])
 
         const newMessages = [...requestHistoryMessages, responseMessage]
-        const input = buildHistoryInput(
-          newMessages,
-          text,
-          allLocations.concat(responseLocations),
-          searchLocation ?? null,
-          kind,
-        )
+        const input = buildHistoryInput(newMessages, text, kind)
         if (!opts?.newThread && currentHistoryId) {
           await updateHistory(currentHistoryId, input)
         } else {
@@ -404,12 +367,10 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       model,
       modelId,
       mode,
-      mapSearch,
       kind,
       hasApiKey,
       apiKeys,
       messages,
-      allLocations,
       currentHistoryId,
       userId,
       t,
@@ -463,20 +424,16 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       abortControllerRef.current = controller
       const historySlice = messages.slice(0, idx)
       try {
-        const searchLocation = mapSearch ? await readBrowserGeolocation() : undefined
         const result = await runSendMessage({
           model,
           modelId,
           prompt: query,
           historyMessages: historySlice,
           mode,
-          mapSearch,
-          location: searchLocation,
           apiKeys,
           signal: controller.signal,
         })
         const responseMessage = result.message
-        const responseLocations = result.locations
 
         if (controller.signal.aborted) {
           return
@@ -487,8 +444,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
           await updateHistory(currentHistoryId, {
             query,
             messages: newMessages,
-            locations: allLocations.concat(responseLocations),
-            searchLocation,
           })
           onHistoryMutated(kind)
         }
@@ -507,10 +462,8 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       model,
       modelId,
       mode,
-      mapSearch,
       apiKeys,
       currentHistoryId,
-      allLocations,
       updateHistory,
       onHistoryMutated,
       kind,
@@ -639,10 +592,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
         setModelIdState(nextModelId)
         saveElectronAiModelSelection({ provider, modelId: nextModelId }, kind)
       },
-      setMapSearch: (enabled) => {
-        setMapSearch(enabled)
-        if (enabled) void readBrowserGeolocation()
-      },
     })
     return () => {
       unregisterChatMenuHost()
@@ -657,7 +606,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
       thinkMode: mode === 'think' ? 'think' : 'quick',
       provider: model,
       modelId,
-      mapSearch,
       providers: groupAiModelsByProvider(catalogModels).map(({ provider, models }) => {
         const providerLabel = t(providerLabelKey(provider), {
           defaultValue: providerDisplayName(provider),
@@ -679,7 +627,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   }, [
     catalogModels,
     hasApiKey,
-    mapSearch,
     model,
     modelId,
     mode,
@@ -803,38 +750,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   const WelcomeIcon = MessageSquareIcon
 
   const composerActionRadius = nativeApplicationMenu ? 'rounded-full' : 'rounded-lg'
-
-  /**
-   * Turns Map search on or off and requests GPS when enabling.
-   * @returns Nothing.
-   */
-  const toggleMapSearch = useCallback((): void => {
-    setMapSearch((current) => {
-      const next = !current
-      if (next) void readBrowserGeolocation()
-      return next
-    })
-  }, [])
-
-  const mapToggleControl = (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={mapSearch}
-      onClick={toggleMapSearch}
-      className={`${CHAT_MENU_TRIGGER} ${mapSearch ? 'text-brand' : ''}`}
-      title={t('chat.input.mapSearch')}
-    >
-      <MapPinIcon className="size-[15px] shrink-0" aria-hidden />
-      <span className="hidden sm:inline">{t('chat.input.mapSearch')}</span>
-      <span
-        className={`h-4 w-7 rounded-full p-0.5 transition ${mapSearch ? 'bg-brand' : 'bg-zinc-400/50'}`}
-        aria-hidden
-      >
-        <span className={`block size-3 rounded-full bg-white transition ${mapSearch ? 'translate-x-3' : ''}`} />
-      </span>
-    </button>
-  )
 
   const composerActionControl = (
     <div className="relative size-[34px] shrink-0">
@@ -1005,21 +920,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
                                   <CopyIcon className="size-4" aria-hidden />
                                 </button>
                               </div>
-                              {msg.relatedShops && msg.relatedShops.length > 0 ? (
-                                <div className="flex flex-wrap gap-1.5">
-                                  {msg.relatedShops.map((loc) => (
-                                    <button
-                                      key={`${loc.name}-${loc.latitude}-${loc.longitude}`}
-                                      type="button"
-                                      onClick={() => openUrl(googleMapsUrlForLocation(loc))}
-                                      className="inline-flex items-center gap-1 rounded-lg border border-brand/30 bg-brand/10 px-2 py-1 text-xs text-brand transition-colors hover:bg-brand/20"
-                                    >
-                                      <MapPinIcon className="size-3" aria-hidden />
-                                      <span className="max-w-[140px] truncate">{loc.name}</span>
-                                    </button>
-                                  ))}
-                                </div>
-                              ) : null}
                             </div>
                             {msg.thinkingTime !== undefined ? (
                               <div className="flex items-center gap-1.5 font-mono text-[10px] text-brand/80">
@@ -1160,7 +1060,6 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
                         ) : null}
                       </div>
                       ) : null}
-                      {kind === 'ask' ? mapToggleControl : null}
                     </div>
 
                     <div className="ml-auto flex items-center gap-1.5 sm:gap-2">

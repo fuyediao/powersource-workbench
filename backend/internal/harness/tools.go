@@ -174,49 +174,10 @@ func (h *Handler) readHarnessResource(profile string, raw json.RawMessage) (any,
 	return LibraryEntry{Name: name, Summary: skillSummary(string(body)), Scope: "personal", Body: string(body)}, nil
 }
 
-// searchHarnessSessions finds the caller's own recent Agent histories and
-// filters them in memory so search text cannot alter the PostgREST expression.
-func (h *Handler) searchHarnessSessions(ctx context.Context, userID string, raw json.RawMessage) (any, error) {
-	var args struct {
-		Query string `json:"query"`
-		Limit int    `json:"limit"`
-	}
-	if len(raw) > 0 {
-		_ = json.Unmarshal(raw, &args)
-	}
-	if args.Limit < 1 || args.Limit > 20 {
-		args.Limit = 10
-	}
-	var rows []struct {
-		ID           string          `json:"id"`
-		Query        string          `json:"query"`
-		Response     string          `json:"response"`
-		CreatedAt    string          `json:"created_at"`
-		HarnessItems json.RawMessage `json:"harness_items"`
-	}
-	err := h.sb.From("history").
-		Select("id,query,response,created_at,harness_items").
-		Eq("user_id", userID).
-		Eq("created_by_user_id", userID).
-		Eq("assistant_kind", "agent").
-		Order("created_at", false).
-		Limit(100).
-		Exec(ctx, &rows)
-	if err != nil {
-		return nil, err
-	}
-	term := strings.ToLower(strings.TrimSpace(args.Query))
-	out := make([]any, 0, args.Limit)
-	for _, row := range rows {
-		if term != "" && !strings.Contains(strings.ToLower(row.Query+"\n"+row.Response+"\n"+string(row.HarnessItems)), term) {
-			continue
-		}
-		out = append(out, row)
-		if len(out) == args.Limit {
-			break
-		}
-	}
-	return map[string]any{"sessions": out}, nil
+// searchHarnessSessions is a VPS no-op. Transcripts live in Electron SQLite;
+// the desktop Codex host intercepts this tool against the local database.
+func (h *Handler) searchHarnessSessions(_ context.Context, _ string, _ json.RawMessage) (any, error) {
+	return map[string]any{"sessions": []any{}}, nil
 }
 
 // callTool runs one GeoCRM tool for the signed-in user.

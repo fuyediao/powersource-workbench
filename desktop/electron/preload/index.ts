@@ -17,12 +17,11 @@ import type {
   HomeLibrarySiteHitDto,
 } from '../shared/home-library'
 import type {
-  HomeMarketAssetDto,
-  HomeSearchHistoryItemDto,
-  HomeSettingsRecord,
-  HomeTodoItemDto,
-  HomeWallpaperItemDto,
-} from '../shared/home-settings'
+  ChatHistoryCreateInput,
+  ChatHistoryKind,
+  ChatHistoryRowDto,
+  ChatHistoryUpdateInput,
+} from '../shared/chat-history'
 import {
   CLAWD_BRIDGE_IPC_CHANNEL,
   type ClawdBridgeActivity,
@@ -69,6 +68,7 @@ import {
   HOME_SETTINGS_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
+  CHAT_HISTORY_IPC_CHANNEL,
   type AiModelAllowlistRow,
   SPOTLIGHT_IPC_CHANNEL,
   SPOTLIGHT_SHOWN_EVENT,
@@ -586,6 +586,53 @@ contextBridge.exposeInMainWorld('workbench', {
         userId,
         historyId,
       ) as Promise<HomeSearchHistoryItemDto[]>,
+  },
+  chatHistory: {
+    /**
+     * Lists Ask or Harness conversations stored on this machine.
+     * @param userId - Auth user id.
+     * @param kind - Ask or agent.
+     * @returns Newest-first rows.
+     */
+    list: (userId: string, kind: ChatHistoryKind): Promise<ChatHistoryRowDto[]> =>
+      ipcRenderer.invoke(CHAT_HISTORY_IPC_CHANNEL, 'list', userId, kind) as Promise<
+        ChatHistoryRowDto[]
+      >,
+    /**
+     * Inserts or upserts one conversation.
+     * @param userId - Auth user id.
+     * @param input - Create payload.
+     * @returns Stored row.
+     */
+    add: (userId: string, input: ChatHistoryCreateInput): Promise<ChatHistoryRowDto> =>
+      ipcRenderer.invoke(CHAT_HISTORY_IPC_CHANNEL, 'add', userId, input) as Promise<ChatHistoryRowDto>,
+    /**
+     * Updates one conversation owned by the user.
+     * @param userId - Auth user id.
+     * @param historyId - Row id.
+     * @param updates - Patch.
+     * @returns Updated row, or null.
+     */
+    update: (
+      userId: string,
+      historyId: string,
+      updates: ChatHistoryUpdateInput,
+    ): Promise<ChatHistoryRowDto | null> =>
+      ipcRenderer.invoke(
+        CHAT_HISTORY_IPC_CHANNEL,
+        'update',
+        userId,
+        historyId,
+        updates,
+      ) as Promise<ChatHistoryRowDto | null>,
+    /**
+     * Deletes one conversation owned by the user.
+     * @param userId - Auth user id.
+     * @param historyId - Row id.
+     * @returns True when a row was removed.
+     */
+    remove: (userId: string, historyId: string): Promise<boolean> =>
+      ipcRenderer.invoke(CHAT_HISTORY_IPC_CHANNEL, 'remove', userId, historyId) as Promise<boolean>,
   },
   oaErpCredentials: {
     /**

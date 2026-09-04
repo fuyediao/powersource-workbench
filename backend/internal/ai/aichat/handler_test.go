@@ -49,25 +49,6 @@ func TestScreenshotUserPrefixIsEnglish(t *testing.T) {
 	}
 }
 
-func TestMapSearchSuffixIsEnglish(t *testing.T) {
-	for _, r := range MapSearchSuffix {
-		if r >= 0x4e00 && r <= 0x9fff {
-			t.Fatalf("MapSearchSuffix contains CJK rune %q", r)
-		}
-	}
-	if !strings.Contains(MapSearchSuffix, "mjson") {
-		t.Fatal("MapSearchSuffix should mention mjson")
-	}
-	prompt, ok := SystemPromptForAsk("quick", true, false)
-	if !ok || !strings.Contains(prompt, MapSearchSuffix) {
-		t.Fatal("SystemPromptForAsk(quick, true, false) should append MapSearchSuffix")
-	}
-	plain, ok := SystemPromptForAsk("think", false, false)
-	if !ok || strings.Contains(plain, "mjson") {
-		t.Fatal("SystemPromptForAsk(think, false, false) should stay the Think prompt")
-	}
-}
-
 func TestWebSearchSuffixIsEnglish(t *testing.T) {
 	for _, r := range WebSearchSuffix {
 		if r >= 0x4e00 && r <= 0x9fff {
@@ -77,11 +58,12 @@ func TestWebSearchSuffixIsEnglish(t *testing.T) {
 	if !strings.Contains(WebSearchSuffix, "WEB SEARCH IS ACTIVE") {
 		t.Fatal("WebSearchSuffix should mention WEB SEARCH IS ACTIVE")
 	}
-	prompt, ok := SystemPromptForAsk("quick", false, true)
+	prompt, ok := SystemPromptForAsk("quick", true)
 	if !ok || !strings.Contains(prompt, WebSearchSuffix) {
-		t.Fatal("SystemPromptForAsk(quick, false, true) should append WebSearchSuffix")
+		t.Fatal("SystemPromptForAsk(quick, true) should append WebSearchSuffix")
 	}
-	if strings.Contains(prompt, "mjson") {
-		t.Fatal("web search must not append the map mjson contract")
+	plain, ok := SystemPromptForAsk("think", false)
+	if !ok || strings.Contains(plain, "WEB SEARCH IS ACTIVE") {
+		t.Fatal("SystemPromptForAsk(think, false) should stay the Think prompt")
 	}
 }

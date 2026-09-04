@@ -16,6 +16,7 @@ import {
   HOME_SETTINGS_IPC_CHANNEL,
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
+  CHAT_HISTORY_IPC_CHANNEL,
   WINDOW_IPC_CHANNEL,
   type ApplicationMenuState,
 } from '../shared/ipc'
@@ -88,6 +89,17 @@ import {
   listAiModelAllowlist,
   setAiModelAllowlistOverride,
 } from './ai-model-allowlist'
+import {
+  addChatHistory,
+  listChatHistory,
+  removeChatHistory,
+  updateChatHistory,
+} from './chat-history'
+import {
+  parseChatHistoryKind,
+  type ChatHistoryCreateInput,
+  type ChatHistoryUpdateInput,
+} from '../shared/chat-history'
 import { checkForDesktopUpdate } from './app-updates'
 import { installDesktopUpdate } from './app-update-install'
 import { isAuxiliaryWindow } from './auxiliary-windows'
@@ -242,6 +254,60 @@ function optionalBytes(value: unknown): Uint8Array | null {
     return null
   }
   return requiredBytes(value, 'Wallpaper thumbnail')
+}
+
+/**
+ * Reads a create payload for local chat history.
+ * @param value - Untrusted IPC body.
+ * @returns Create input.
+ */
+function parseChatHistoryCreateInput(value: unknown): ChatHistoryCreateInput {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Chat history payload is required.')
+  }
+  const raw = value as Record<string, unknown>
+  if (typeof raw.query !== 'string') {
+    throw new Error('Chat history query is required.')
+  }
+  if (!Array.isArray(raw.messages)) {
+    throw new Error('Chat history messages must be an array.')
+  }
+  return {
+    id: typeof raw.id === 'string' ? raw.id : undefined,
+    query: raw.query,
+    messages: raw.messages,
+    assistantKind: parseChatHistoryKind(raw.assistantKind),
+    harnessThreadId: typeof raw.harnessThreadId === 'string' ? raw.harnessThreadId : null,
+    harnessItems: Array.isArray(raw.harnessItems) ? raw.harnessItems : null,
+    createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : undefined,
+    updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : undefined,
+  }
+}
+
+/**
+ * Reads an update payload for local chat history.
+ * @param value - Untrusted IPC body.
+ * @returns Update patch.
+ */
+function parseChatHistoryUpdateInput(value: unknown): ChatHistoryUpdateInput {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Chat history update is required.')
+  }
+  const raw = value as Record<string, unknown>
+  const patch: ChatHistoryUpdateInput = {}
+  if (typeof raw.query === 'string') {
+    patch.query = raw.query
+  }
+  if (Array.isArray(raw.messages)) {
+    patch.messages = raw.messages
+  }
+  if (raw.harnessThreadId === null || typeof raw.harnessThreadId === 'string') {
+    patch.harnessThreadId = raw.harnessThreadId
+  }
+  if (raw.harnessItems === null || Array.isArray(raw.harnessItems)) {
+    patch.harnessItems = raw.harnessItems
+  }
+  return patch
 }
 
 /**
@@ -701,6 +767,38 @@ export function registerIpcHandlers(): void {
         return null
       }
       throw new Error(`Unknown AI model allowlist method: ${method}`)
+    },
+  )
+
+  ipcMain.handle(
+    CHAT_HISTORY_IPC_CHANNEL,
+    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
+      if (method === 'list') {
+        return listChatHistory(
+          requiredString(args[0], 'Chat history user id'),
+          parseChatHistoryKind(args[1]),
+        )
+      }
+      if (method === 'add') {
+        return addChatHistory(
+          requiredString(args[0], 'Chat history user id'),
+          parseChatHistoryCreateInput(args[1]),
+        )
+      }
+      if (method === 'update') {
+        return updateChatHistory(
+          requiredString(args[0], 'Chat history user id'),
+          requiredString(args[1], 'Chat history id'),
+          parseChatHistoryUpdateInput(args[2]),
+        )
+      }
+      if (method === 'remove') {
+        return removeChatHistory(
+          requiredString(args[0], 'Chat history user id'),
+          requiredString(args[1], 'Chat history id'),
+        )
+      }
+      throw new Error(`Unknown chat history method: ${method}`)
     },
   )
 

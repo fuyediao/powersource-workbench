@@ -2,8 +2,6 @@ package aichat
 
 import (
 	"strings"
-
-	"github.com/fuyediao/powersource-workbench/backend/internal/ai/location"
 )
 
 // SystemThink is the Ask "Think" mode system instruction (English).
@@ -11,11 +9,6 @@ const SystemThink = `You are a helpful, thoughtful assistant. Answer the user's 
 
 // SystemQuick is the Ask "Quick" mode system instruction (English).
 const SystemQuick = `You are a helpful assistant. Give short, direct answers. Be concise and to the point.`
-
-// MapSearchSuffix is the restored Search Map skill overlay when the Ask Map toggle is on.
-const MapSearchSuffix = `MAP SEARCH IS ACTIVE — use the location search contract below.
-
-` + location.MapSearchInstructions
 
 // ScreenshotUserPrefix is prepended when the client sends a window screenshot.
 // Instruction text is English; the model may still reply in the user's language.
@@ -40,14 +33,11 @@ func SystemPromptForMode(mode string) (string, bool) {
 	}
 }
 
-// SystemPromptForAsk returns think/quick, plus map-pin or web-search instructions.
-func SystemPromptForAsk(mode string, mapSearch, webSearch bool) (string, bool) {
+// SystemPromptForAsk returns think/quick, plus web-search instructions when requested.
+func SystemPromptForAsk(mode string, webSearch bool) (string, bool) {
 	systemPrompt, ok := SystemPromptForMode(mode)
 	if !ok {
 		return "", false
-	}
-	if mapSearch {
-		return systemPrompt + "\n\n" + MapSearchSuffix, true
 	}
 	if webSearch {
 		return systemPrompt + "\n\n" + WebSearchSuffix, true

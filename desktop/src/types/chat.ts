@@ -1,63 +1,4 @@
-import type { FavoritePriority } from '@/types/favorite'
 import type { HarnessItem } from '@/types/harness'
-
-/** Minimal grounding metadata chunk (server may attach extra fields). */
-export type GroundingChunk = unknown
-
-export interface Coordinates {
-  latitude: number
-  longitude: number
-}
-
-/** Map pin / shop location returned by map or Ask responses. */
-export interface ShopLocation {
-  /** Stable id when projecting CRM / competitor rows onto the map. */
-  id?: string
-  name: string
-  latitude: number
-  longitude: number
-  openSunday?: boolean
-  address?: string
-  country?: string | null
-  stateProvince?: string | null
-  city?: string | null
-  addressLine1?: string | null
-  addressLine2?: string | null
-  postalCode?: string | null
-  hours?: string
-  distance?: string
-  description?: string
-  website?: string
-  tags?: string[]
-  /** Optional when a favorite is projected onto the map. */
-  priority?: FavoritePriority
-  /** Explicit pin color (CRM layers); overrides priority color when set. */
-  pinColor?: string
-}
-
-/**
- * Stable marker / selection key for a shop pin.
- * @param shop - Shop location.
- * @returns Id when present, otherwise name.
- */
-export function shopMarkerKey(shop: ShopLocation): string {
-  return shop.id ?? shop.name
-}
-
-/** One saved map viewport in the location hierarchy stack. */
-export interface LocationView {
-  center: Coordinates
-  zoom: number
-  shops: ShopLocation[]
-  query?: string
-}
-
-/** Backward/forward stacks around the current map viewport. */
-export interface LocationHierarchy {
-  current: LocationView
-  history: LocationView[]
-  forward: LocationView[]
-}
 
 /** One message in an AI chat thread. */
 export interface ChatMessage {
@@ -67,11 +8,10 @@ export interface ChatMessage {
   timestamp: number
   thinkingTime?: number
   groundingMetadata?: {
-    groundingChunks: GroundingChunk[]
+    groundingChunks: unknown[]
     groundingSupports?: unknown[]
     webSearchQueries?: string[]
   }
-  relatedShops?: ShopLocation[]
   /** Data URL of a captured page screenshot (Ask AI sidebar only; not persisted). */
   screenshotDataUrl?: string
 }
@@ -88,14 +28,12 @@ export function parseChatAssistantKind(value: unknown): ChatAssistantKind {
   return value === 'agent' ? 'agent' : 'ask'
 }
 
-/** Persisted chat history row (Supabase `history` table). */
+/** Persisted chat history row (local SQLite). */
 export interface HistoryRecord {
   id: string
   userId: string
   query: string
   messages: ChatMessage[]
-  locations: ShopLocation[]
-  searchLocation?: Coordinates
   groupId?: string | null
   createdByUserId?: string | null
   assistantKind: ChatAssistantKind
@@ -111,8 +49,6 @@ export interface HistoryRecord {
 export interface HistoryInput {
   query: string
   messages: ChatMessage[]
-  locations: ShopLocation[]
-  searchLocation?: Coordinates
   assistantKind?: ChatAssistantKind
   harnessThreadId?: string | null
   harnessItems?: HarnessItem[]

@@ -253,7 +253,7 @@ func TestBroadDomainCoverage(t *testing.T) {
 	allowed := allowedEntities(admin)
 	for _, required := range []string{
 		"customers", "customer_contacts", "calendar_events", "calendars",
-		"mail_messages", "mail_accounts", "team_profiles", "ask_history", "agent_history",
+		"mail_messages", "mail_accounts", "team_profiles",
 	} {
 		if !contains(allowed, required) {
 			t.Fatalf("entity %s missing from the tool surface", required)

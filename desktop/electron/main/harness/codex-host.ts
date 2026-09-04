@@ -28,6 +28,7 @@ import {
 } from './harness-api'
 import { resolveHarnessWorkFolder, ensureHarnessCanvasFolder } from './work-folder'
 import { expandMailAttachments, uploadHarnessLocalFile } from './local-tool-input'
+import { searchHarnessSessions } from '../chat-history'
 import { mergeWorkAgentInstructions } from '../../shared/harness-work-agent'
 
 /** Appended to the user turn when the composer Canvas toggle is on. */
@@ -129,6 +130,26 @@ function formatProtocolValue(value: unknown): string {
     return JSON.stringify(value, null, 2)
   } catch {
     return String(value)
+  }
+}
+
+/**
+ * Reads the auth user id from a session JWT payload without verifying the signature.
+ * The token was already accepted by workbench-api; this only scopes local SQLite.
+ * @param token - Session JWT.
+ * @returns User id, or empty.
+ */
+function userIdFromAccessToken(token: string): string {
+  const parts = token.split('.')
+  if (parts.length < 2) {
+    return ''
+  }
+  try {
+    const json = Buffer.from(parts[1], 'base64url').toString('utf8')
+    const payload = JSON.parse(json) as { sub?: unknown }
+    return typeof payload.sub === 'string' ? payload.sub.trim() : ''
+  } catch {
+    return ''
   }
 }
 
@@ -1165,6 +1186,30 @@ export class CodexHost {
         result: {
           contentItems: [{ type: 'inputText', text: JSON.stringify({ error: 'This tool is not granted to the active profile.' }) }],
           success: false,
+        },
+      })
+      return
+    }
+    if (tool === 'search_harness_sessions') {
+      const userId = userIdFromAccessToken(this.accessToken)
+      if (!userId) {
+        this.write({
+          id: rpcId,
+          result: {
+            contentItems: [{ type: 'inputText', text: JSON.stringify({ error: 'Sign in required.' }) }],
+            success: false,
+          },
+        })
+        return
+      }
+      const query = typeof args.query === 'string' ? args.query : ''
+      const limit = typeof args.limit === 'number' ? args.limit : 10
+      const sessions = searchHarnessSessions(userId, query, limit)
+      this.write({
+        id: rpcId,
+        result: {
+          contentItems: [{ type: 'inputText', text: JSON.stringify({ sessions }) }],
+          success: true,
         },
       })
       return
