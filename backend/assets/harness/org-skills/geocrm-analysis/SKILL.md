@@ -40,8 +40,6 @@ Arguments:
 | `follow_ups` | `scheduled_at` | none |
 | `customer_work_items` | `due_date` | none |
 | `leads` | `created_at` (or `date_field=claimed_at`) | none |
-| `calendar_events` | `start_at` | none |
-| `mail_messages` | `received_at` | none |
 | `kols` | `created_at` | `total_amount` |
 | `competitor_lines` | `created_at` | `price` |
 

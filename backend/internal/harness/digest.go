@@ -11,8 +11,8 @@ import (
 )
 
 // digestEntities picks first-party datasets from a scheduled-task prompt.
-// Unknown prompts fall back to a small office set (follow-ups, pipeline,
-// mail, calendar).
+// Mail and Calendar live on the desktop SQLite store, so VPS jobs never
+// summarize those. Unknown prompts fall back to leftover customers.
 func digestEntities(prompt string) []string {
 	p := strings.ToLower(prompt)
 	var out []string
@@ -23,12 +23,6 @@ func digestEntities(prompt string) []string {
 			}
 		}
 		out = append(out, entity)
-	}
-	if strings.Contains(p, "mail") || strings.Contains(p, "inbox") || strings.Contains(p, "unread") {
-		add("mail_messages")
-	}
-	if strings.Contains(p, "calendar") || strings.Contains(p, "agenda") || strings.Contains(p, "meeting") {
-		add("calendar_events")
 	}
 	if strings.Contains(p, "follow") {
 		add("follow_ups")
@@ -46,7 +40,7 @@ func digestEntities(prompt string) []string {
 		add("customers")
 	}
 	if len(out) == 0 {
-		return []string{"follow_ups", "opportunities", "mail_messages", "calendar_events"}
+		return []string{"customers"}
 	}
 	return out
 }

@@ -10,7 +10,6 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/aihttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/auth"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
-	"github.com/fuyediao/powersource-workbench/backend/internal/mail"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 	"github.com/fuyediao/powersource-workbench/backend/internal/start"
@@ -36,10 +35,6 @@ func New(ctx context.Context, env config.Env) http.Handler {
 	aiHandler := aihttp.New(env, sb)
 	r.Mount("/ai", aiHandler.Routes())
 	aiHandler.StartWorkers(ctx)
-
-	mailHandler := mail.New(env, sb)
-	r.Mount("/mail", mailHandler.Routes())
-	mailHandler.StartScheduler(ctx)
 
 	return r
 }

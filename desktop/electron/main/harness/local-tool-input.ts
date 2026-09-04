@@ -69,7 +69,7 @@ export async function readHarnessLocalFile(
  * Expands path-only mail attachments into the backend's bounded base64 representation.
  * @param workFolder - Harness workspace root.
  * @param args - Dynamic-tool arguments.
- * @returns Arguments ready for the Harness API.
+ * @returns Arguments ready for local SMTP send.
  */
 export async function expandMailAttachments(
   workFolder: string,

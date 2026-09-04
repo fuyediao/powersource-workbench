@@ -17,6 +17,8 @@ import {
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
   CHAT_HISTORY_IPC_CHANNEL,
+  CALENDAR_IPC_CHANNEL,
+  MAIL_IPC_CHANNEL,
   WINDOW_IPC_CHANNEL,
   type ApplicationMenuState,
 } from '../shared/ipc'
@@ -100,6 +102,25 @@ import {
   type ChatHistoryCreateInput,
   type ChatHistoryUpdateInput,
 } from '../shared/chat-history'
+import {
+  isCalendarEventWriteDto,
+  isCalendarScopeDto,
+  type CalendarAttendeeStatus,
+} from '../shared/calendar'
+import {
+  createCalendar,
+  createPersonalCalendarEvent,
+  deleteCalendar,
+  deleteCalendarEvent,
+  ensureDefaultCalendar,
+  getCalendarEvent,
+  listCalendarEvents,
+  listCalendars,
+  updateCalendar,
+  updateCalendarAttendeeRsvp,
+  updateCalendarEvent,
+} from './calendar-store'
+import { handleMailIpc } from './mail/handler'
 import { checkForDesktopUpdate } from './app-updates'
 import { installDesktopUpdate } from './app-update-install'
 import { isAuxiliaryWindow } from './auxiliary-windows'
@@ -799,6 +820,97 @@ export function registerIpcHandlers(): void {
         )
       }
       throw new Error(`Unknown chat history method: ${method}`)
+    },
+  )
+
+  ipcMain.handle(
+    CALENDAR_IPC_CHANNEL,
+    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
+      const userId = requiredString(args[0], 'Calendar user id')
+      if (method === 'listCalendars') {
+        if (!isCalendarScopeDto(args[1])) {
+          throw new Error('Calendar scope is invalid.')
+        }
+        return listCalendars(args[1])
+      }
+      if (method === 'ensureDefault') {
+        if (!isCalendarScopeDto(args[1])) {
+          throw new Error('Calendar scope is invalid.')
+        }
+        return ensureDefaultCalendar(args[1], requiredString(args[2], 'Default calendar name'))
+      }
+      if (method === 'createCalendar') {
+        if (!isCalendarScopeDto(args[1])) {
+          throw new Error('Calendar scope is invalid.')
+        }
+        return createCalendar(
+          args[1],
+          requiredString(args[2], 'Calendar name'),
+          typeof args[3] === 'string' ? args[3] : undefined,
+        )
+      }
+      if (method === 'updateCalendar') {
+        const patch = (args[2] ?? {}) as { name?: string; color?: string }
+        return updateCalendar(userId, requiredString(args[1], 'Calendar id'), patch)
+      }
+      if (method === 'deleteCalendar') {
+        deleteCalendar(userId, requiredString(args[1], 'Calendar id'))
+        return null
+      }
+      if (method === 'listEvents') {
+        if (!isCalendarScopeDto(args[1])) {
+          throw new Error('Calendar scope is invalid.')
+        }
+        return listCalendarEvents(
+          userId,
+          args[1],
+          requiredString(args[2], 'Calendar range start'),
+          requiredString(args[3], 'Calendar range end'),
+        )
+      }
+      if (method === 'getEvent') {
+        return getCalendarEvent(userId, requiredString(args[1], 'Calendar event id'))
+      }
+      if (method === 'createEvent') {
+        if (!isCalendarEventWriteDto(args[1])) {
+          throw new Error('Calendar event write is invalid.')
+        }
+        return createPersonalCalendarEvent(userId, args[1])
+      }
+      if (method === 'updateEvent') {
+        if (!isCalendarEventWriteDto(args[2])) {
+          throw new Error('Calendar event write is invalid.')
+        }
+        return updateCalendarEvent(userId, requiredString(args[1], 'Calendar event id'), args[2])
+      }
+      if (method === 'deleteEvent') {
+        deleteCalendarEvent(userId, requiredString(args[1], 'Calendar event id'))
+        return null
+      }
+      if (method === 'rsvp') {
+        const status = args[2]
+        if (
+          status !== 'invited' &&
+          status !== 'accepted' &&
+          status !== 'declined' &&
+          status !== 'tentative'
+        ) {
+          throw new Error('Calendar RSVP status is invalid.')
+        }
+        return updateCalendarAttendeeRsvp(
+          requiredString(args[1], 'Calendar event id'),
+          userId,
+          status as CalendarAttendeeStatus,
+        )
+      }
+      throw new Error(`Unknown calendar method: ${method}`)
+    },
+  )
+
+  ipcMain.handle(
+    MAIL_IPC_CHANNEL,
+    async (_event, method: string, ...args: unknown[]): Promise<unknown> => {
+      return handleMailIpc(method, requiredString(args[0], 'Mail user id'), args.slice(1))
     },
   )
 

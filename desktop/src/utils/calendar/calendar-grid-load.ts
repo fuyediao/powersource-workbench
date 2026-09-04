@@ -44,7 +44,7 @@ export function isWideCalendarGridView(view: string): boolean {
 }
 
 /**
- * Inclusive ISO window used to query `calendar_events`.
+ * Inclusive ISO window used to query the local calendar store.
  * @param view - View that determines range width.
  * @returns Range instants.
  */

@@ -115,11 +115,11 @@ export const FIRST_PARTY_DYNAMIC_TOOLS: readonly FirstPartyDynamicTool[] = [
     type: 'function',
     name: 'send_mail',
     description:
-      'Send an email from a mailbox owned by the signed-in user. Workbench always pauses for explicit approval before transmitting the message. Never claim the message was sent until this tool returns ok.',
+      'Send an email from a mailbox stored on this PC (SQLite plus local attachment files). Workbench always pauses for explicit approval before SMTP. Mail bodies never go to company cloud storage. Never claim the message was sent until this tool returns ok.',
     inputSchema: {
       type: 'object',
       properties: {
-        mailAccountId: { type: 'string', description: 'Owned mail_accounts UUID.' },
+        mailAccountId: { type: 'string', description: 'Local mailbox id on this PC.' },
         to: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },
         cc: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },
         bcc: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },
@@ -142,11 +142,11 @@ export const FIRST_PARTY_DYNAMIC_TOOLS: readonly FirstPartyDynamicTool[] = [
     type: 'function',
     name: 'save_mail_draft',
     description:
-      'Save an email draft in a mailbox owned by the signed-in user. Use this when the user wants to review the message in Mail before sending.',
+      'Save an email draft in the local Mail database on this PC. Use this when the user wants to review the message in Mail before sending. Drafts are not stored in company cloud.',
     inputSchema: {
       type: 'object',
       properties: {
-        mailAccountId: { type: 'string', description: 'Owned mail_accounts UUID.' },
+        mailAccountId: { type: 'string', description: 'Local mailbox id on this PC.' },
         to: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },
         cc: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },
         bcc: { type: 'array', items: { type: 'object', properties: { email: { type: 'string' }, name: { type: 'string' } }, required: ['email'], additionalProperties: false } },

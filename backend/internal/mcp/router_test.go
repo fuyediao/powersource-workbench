@@ -213,37 +213,14 @@ func TestSummarizeRecordsAggregatesCustomers(t *testing.T) {
 	}
 }
 
-func TestSummarizeRecordsAggregatesMail(t *testing.T) {
-	fake := newFakeRest(t, map[string]string{
-		"mail_messages": `[
-			{"id":"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa","received_at":"2026-07-05T00:00:00+08:00","is_read":true,"is_sent":false,"is_draft":false},
-			{"id":"bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb","received_at":"2026-07-18T00:00:00+08:00","is_read":false,"is_sent":false,"is_draft":false}
-		]`,
-	})
-	acc := memberAccess("desktop_mail")
-	acc.Unrestricted = true
-	payload, err := summarizeRecords(context.Background(), fake.client(), acc, lookupEntity("mail_messages"), summarizeArgs{
-		Period: periodArgs{Period: periodMonth, Year: 2026, Month: 7, Timezone: "Asia/Taipei"},
-	})
-	if err != nil {
-		t.Fatalf("summarizeRecords: %v", err)
-	}
-	totals, _ := payload["totals"].(map[string]any)
-	if totals["count"] != 2 {
-		t.Fatalf("count = %v", totals["count"])
-	}
-}
-
-func TestSelfScopedEntityIgnoresGroups(t *testing.T) {
-	fake := newFakeRest(t, nil)
-	acc := memberAccess("desktop_mail")
-
-	if _, err := searchRecords(context.Background(), fake.client(), acc, lookupEntity("mail_accounts"), "", nil, "", false, 5, 0); err != nil {
-		t.Fatalf("searchRecords: %v", err)
-	}
-	query := fake.queryFor("mail_accounts")
-	if !strings.Contains(query, "owner_user_id=eq."+acc.UserID) {
-		t.Fatalf("query %q is not scoped to the caller", query)
+func TestMailAndCalendarAreNotCloudEntities(t *testing.T) {
+	for _, key := range []string{
+		"mail_accounts", "mail_threads", "mail_messages", "mail_message_bodies",
+		"calendars", "calendar_events",
+	} {
+		if lookupEntity(key) != nil {
+			t.Fatalf("%s must not be a cloud MCP entity", key)
+		}
 	}
 }
 

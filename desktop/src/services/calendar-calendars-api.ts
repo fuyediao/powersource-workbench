@@ -1,8 +1,8 @@
 /**
- * Named calendar CRUD against `calendars` (Supabase RLS).
+ * Named calendar CRUD against local Electron SQLite.
  */
 
-import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 /** Persisted named calendar. */
 export interface CalendarListRecord {
@@ -12,7 +12,7 @@ export interface CalendarListRecord {
   ownerUserId: string | null
   groupId: string | null
   isDefault: boolean
-  /** Mirrored Google calendar id when this row syncs with Google. */
+  /** Unused Google id kept so existing UI types stay stable. */
   googleCalendarId: string | null
   createdAt: string
   updatedAt: string
@@ -20,9 +20,6 @@ export interface CalendarListRecord {
 
 /** Scope for listing/creating calendars. */
 export type CalendarListScope = { ownerUserId: string } | { groupId: string }
-
-const CALENDAR_SELECT =
-  'id, name, color, owner_user_id, group_id, is_default, google_calendar_id, created_at, updated_at'
 
 /** Preset swatches for named calendars (create / edit UI). */
 export const CALENDAR_COLOR_PALETTE = [
@@ -39,32 +36,35 @@ export const CALENDAR_COLOR_PALETTE = [
 const DEFAULT_COLORS = CALENDAR_COLOR_PALETTE
 
 /**
- * Maps a DB row to {@link CalendarListRecord}.
- * @param row - Raw calendars row.
- * @returns Mapped record.
+ * Returns the local calendar IPC bridge.
+ * @returns Calendar API.
  */
-function mapCalendar(row: {
-  id: string
-  name: string
-  color: string
-  owner_user_id: string | null
-  group_id: string | null
-  is_default: boolean
-  google_calendar_id?: string | null
-  created_at: string
-  updated_at: string
-}): CalendarListRecord {
-  return {
-    id: row.id,
-    name: row.name,
-    color: row.color,
-    ownerUserId: row.owner_user_id,
-    groupId: row.group_id,
-    isDefault: row.is_default,
-    googleCalendarId: row.google_calendar_id ?? null,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+function calendarBridge(): NonNullable<Window['workbench']>['calendar'] {
+  const api = window.workbench?.calendar
+  if (!api) {
+    throw new Error('Calendar is only available in the desktop app.')
   }
+  return api
+}
+
+/**
+ * Resolves the signed-in user id for calendar IPC.
+ * @returns Auth user id.
+ */
+async function requireSignedInUserId(): Promise<string> {
+  if (!supabase) {
+    throw new Error('Sign in required.')
+  }
+  const { data } = await supabase.auth.getSession()
+  if (data.session?.user.id) {
+    return data.session.user.id
+  }
+  const { data: refreshed } = await supabase.auth.refreshSession()
+  const userId = refreshed.session?.user.id
+  if (!userId) {
+    throw new Error('Sign in required.')
+  }
+  return userId
 }
 
 /**
@@ -73,22 +73,11 @@ function mapCalendar(row: {
  * @returns Calendar records.
  */
 export async function listCalendars(scope: CalendarListScope): Promise<CalendarListRecord[]> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!window.workbench?.calendar) {
     return []
   }
-  let query = supabase.from('calendars').select(CALENDAR_SELECT).order('created_at', {
-    ascending: true,
-  })
-  if ('ownerUserId' in scope) {
-    query = query.eq('owner_user_id', scope.ownerUserId)
-  } else {
-    query = query.eq('group_id', scope.groupId)
-  }
-  const { data, error } = await query
-  if (error) {
-    throw error
-  }
-  return (data ?? []).map(mapCalendar)
+  const userId = await requireSignedInUserId()
+  return calendarBridge().listCalendars(userId, scope)
 }
 
 /**
@@ -105,33 +94,8 @@ export async function ensureDefaultCalendar(
   if (existing.length > 0) {
     return existing
   }
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  if ('ownerUserId' in scope) {
-    const { error } = await supabase.from('calendars').insert({
-      name: defaultName,
-      color: DEFAULT_COLORS[0],
-      owner_user_id: scope.ownerUserId,
-      group_id: null,
-      is_default: true,
-    })
-    if (error) {
-      throw error
-    }
-  } else {
-    const { error } = await supabase.from('calendars').insert({
-      name: defaultName,
-      color: DEFAULT_COLORS[0],
-      owner_user_id: null,
-      group_id: scope.groupId,
-      is_default: true,
-    })
-    if (error) {
-      throw error
-    }
-  }
-  return listCalendars(scope)
+  const userId = await requireSignedInUserId()
+  return calendarBridge().ensureDefault(userId, scope, defaultName)
 }
 
 /**
@@ -146,43 +110,8 @@ export async function createCalendar(
   name: string,
   color?: string,
 ): Promise<CalendarListRecord> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const existing = await listCalendars(scope)
-  const colorPick = color ?? DEFAULT_COLORS[existing.length % DEFAULT_COLORS.length] ?? DEFAULT_COLORS[0]
-  if ('ownerUserId' in scope) {
-    const { data, error } = await supabase
-      .from('calendars')
-      .insert({
-        name: name.trim() || 'Calendar',
-        color: colorPick,
-        owner_user_id: scope.ownerUserId,
-        group_id: null,
-        is_default: false,
-      })
-      .select(CALENDAR_SELECT)
-      .single()
-    if (error) {
-      throw error
-    }
-    return mapCalendar(data)
-  }
-  const { data, error } = await supabase
-    .from('calendars')
-    .insert({
-      name: name.trim() || 'Calendar',
-      color: colorPick,
-      owner_user_id: null,
-      group_id: scope.groupId,
-      is_default: false,
-    })
-    .select(CALENDAR_SELECT)
-    .single()
-  if (error) {
-    throw error
-  }
-  return mapCalendar(data)
+  const userId = await requireSignedInUserId()
+  return calendarBridge().createCalendar(userId, scope, name, color)
 }
 
 /**
@@ -195,28 +124,12 @@ export async function updateCalendar(
   calendarId: string,
   patch: { name?: string; color?: string },
 ): Promise<CalendarListRecord> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const { data, error } = await supabase
-    .from('calendars')
-    .update({
-      ...(patch.name !== undefined ? { name: patch.name.trim() || 'Calendar' } : {}),
-      ...(patch.color !== undefined ? { color: patch.color } : {}),
-    })
-    .eq('id', calendarId)
-    .select(CALENDAR_SELECT)
-    .single()
-  if (error) {
-    throw error
-  }
-  return mapCalendar(data)
+  const userId = await requireSignedInUserId()
+  return calendarBridge().updateCalendar(userId, calendarId, patch)
 }
 
 /**
- * Deletes a named calendar. When the target is the default and other calendars
- * remain, promotes the oldest sibling to default first (RLS forbids deleting
- * `is_default` rows). Refuses to delete the last calendar in the scope.
+ * Deletes a named calendar. Refuses to delete the last calendar in the scope.
  * @param calendar - Calendar to remove.
  * @param siblings - All calendars in the same personal/group scope.
  * @returns Nothing.
@@ -225,39 +138,11 @@ export async function deleteCalendar(
   calendar: CalendarListRecord,
   siblings: CalendarListRecord[],
 ): Promise<void> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
   if (siblings.length <= 1) {
     throw new Error('Cannot delete the last calendar')
   }
-  if (calendar.isDefault) {
-    const next = siblings
-      .filter((row) => row.id !== calendar.id)
-      .sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0]
-    if (!next) {
-      throw new Error('Cannot delete the last calendar')
-    }
-    // Demote first so a unique default index never sees two true rows.
-    const { error: demoteError } = await supabase
-      .from('calendars')
-      .update({ is_default: false })
-      .eq('id', calendar.id)
-    if (demoteError) {
-      throw demoteError
-    }
-    const { error: promoteError } = await supabase
-      .from('calendars')
-      .update({ is_default: true })
-      .eq('id', next.id)
-    if (promoteError) {
-      throw promoteError
-    }
-  }
-  const { error } = await supabase.from('calendars').delete().eq('id', calendar.id)
-  if (error) {
-    throw error
-  }
+  const userId = await requireSignedInUserId()
+  await calendarBridge().deleteCalendar(userId, calendar.id)
 }
 
 /**

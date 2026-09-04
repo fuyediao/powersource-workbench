@@ -33,14 +33,15 @@ Entity selection is by keyword in the prompt:
 
 | Prompt contains | Entity summarized |
 |-----------------|-------------------|
-| mail, inbox, unread | `mail_messages` |
-| calendar, agenda, meeting | `calendar_events` |
 | follow | `follow_ups` |
 | work, task | `customer_work_items` |
 | opportunit, pipeline | `opportunities` |
 | order, sales, erp | `orders` |
 | customer | `customers` |
-| none of the above | follow_ups, opportunities, mail_messages, calendar_events |
+| none of the above | `customers` |
+
+Mail and Calendar live on this PC. A VPS job cannot search inboxes or
+agendas. Use `target=thisPc` when the prompt needs local Mail or Calendar.
 
 The digest is stored as the job's last result and shown in the Scheduled
 page. It cannot write files, edit Office documents, or search the web.

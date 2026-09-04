@@ -77,9 +77,9 @@ const GMAIL_SYSTEM_LABELS: Array<{ id: string; i18nKey: string; countId?: string
 const FOLDER_ROLE_ORDER = ['inbox', 'sent', 'drafts', 'spam', 'trash', 'archive'] as const
 
 /**
- * Maps AliMail mail_folders.role values to the virtual label tokens used by
- * `/mail/messages?label=`. AliMail sync writes those labels on each message
- * but historically left `folder_id` null, so filtering by folder UUID returns
+ * Maps AliMail mail_folders.role values to virtual label tokens used by
+ * listMessages. AliMail sync writes those labels on each message but
+ * historically left `folder_id` null, so filtering by folder UUID returns
  * an empty list even when the mailbox has mail.
  */
 const ALI_ROLE_TO_LABEL: Record<string, string> = {
@@ -94,7 +94,7 @@ const ALI_ROLE_TO_LABEL: Record<string, string> = {
 
 /**
  * Builds the sidebar nav id for one AliMail folder.
- * @param folder - Folder row from `/mail/folders`.
+ * @param folder - Folder row from the local mailbox store.
  * @returns Label-based nav when the role is known; otherwise folder id.
  */
 function aliFolderNavId(folder: MailFolderInfo): MailNavId {
@@ -219,7 +219,7 @@ function navToFilters(navId: MailNavId): { folderId?: string; label?: string } {
 }
 
 /**
- * Electron mail workspace state against workbench-api `/mail/*`.
+ * Electron mail workspace state against local SQLite and IMAP/SMTP on this PC.
  * @returns Mailbox, folder, list, and reader controls.
  */
 export function useMail(): UseMailResult {

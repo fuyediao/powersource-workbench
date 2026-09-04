@@ -1,10 +1,10 @@
 /**
- * Calendar event CRUD against `calendar_events` (Supabase RLS).
+ * Calendar event CRUD against local Electron SQLite.
  */
 
 import 'temporal-polyfill/global'
 import type { CalendarEvent } from '@schedule-x/calendar'
-import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import {
   expandRruleOccurrences,
   isOccurrenceExcluded,
@@ -68,147 +68,36 @@ export interface CalendarEventWrite {
   attendeeUserIds?: string[]
 }
 
-const EVENT_SELECT =
-  'id, title, description, start_at, end_at, all_day, owner_user_id, group_id, created_by, created_at, updated_at, source, google_event_id, google_calendar_id, google_etag, google_updated_at, calendar_id, rrule, exdate'
-
-type EventRow = {
-  id: string
-  title: string
-  description: string | null
-  start_at: string
-  end_at: string
-  all_day: boolean
-  owner_user_id: string | null
-  group_id: string | null
-  created_by: string
-  created_at: string
-  updated_at: string
-  source?: string | null
-  google_event_id?: string | null
-  google_calendar_id?: string | null
-  google_etag?: string | null
-  google_updated_at?: string | null
-  calendar_id?: string | null
-  rrule?: string | null
-  exdate?: string[] | null
+/**
+ * Returns the local calendar IPC bridge.
+ * @returns Calendar API.
+ */
+function calendarBridge(): NonNullable<Window['workbench']>['calendar'] {
+  const api = window.workbench?.calendar
+  if (!api) {
+    throw new Error('Calendar is only available in the desktop app.')
+  }
+  return api
 }
 
 /**
- * Normalizes a stored attendee status string.
- * @param value - Raw status from Postgres.
- * @returns Known RSVP status.
+ * Resolves the signed-in user id for calendar IPC.
+ * @returns Auth user id.
  */
-function normalizeAttendeeStatus(value: string | null | undefined): CalendarAttendeeStatus {
-  if (
-    value === 'accepted' ||
-    value === 'declined' ||
-    value === 'tentative' ||
-    value === 'invited'
-  ) {
-    return value
-  }
-  return 'invited'
-}
-
-/**
- * Maps a DB row to {@link CalendarEventRecord}.
- * @param row - Raw calendar_events row.
- * @param attendees - Invitee rows for this event.
- * @returns Mapped record.
- */
-function mapEvent(row: EventRow, attendees: CalendarAttendee[] = []): CalendarEventRecord {
-  const source = row.source === 'google' ? 'google' : 'workbench'
-  return {
-    id: row.id,
-    title: row.title,
-    description: row.description,
-    startAt: row.start_at,
-    endAt: row.end_at,
-    allDay: row.all_day,
-    ownerUserId: row.owner_user_id,
-    groupId: row.group_id,
-    createdBy: row.created_by,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-    source,
-    googleEventId: row.google_event_id ?? null,
-    googleCalendarId: row.google_calendar_id ?? null,
-    googleEtag: row.google_etag ?? null,
-    googleUpdatedAt: row.google_updated_at ?? null,
-    calendarId: row.calendar_id ?? null,
-    rrule: row.rrule ?? null,
-    exdates: row.exdate ?? [],
-    attendees,
-    attendeeUserIds: attendees.map((attendee) => attendee.userId),
-  }
-}
-
-/**
- * Loads attendees for a set of events.
- * @param eventIds - Event uuids.
- * @returns Map of event id → attendees.
- */
-async function loadAttendeesByEventIds(
-  eventIds: string[],
-): Promise<Map<string, CalendarAttendee[]>> {
-  const map = new Map<string, CalendarAttendee[]>()
-  if (!supabase || eventIds.length === 0) {
-    return map
-  }
-  const { data, error } = await supabase
-    .from('calendar_event_attendees')
-    .select('event_id, user_id, status')
-    .in('event_id', eventIds)
-  if (error) {
-    throw error
-  }
-  for (const row of data ?? []) {
-    const eventId = row.event_id as string
-    const list = map.get(eventId) ?? []
-    list.push({
-      userId: row.user_id as string,
-      status: normalizeAttendeeStatus(row.status as string | null),
-    })
-    map.set(eventId, list)
-  }
-  return map
-}
-
-/**
- * Replaces attendees for one event, preserving RSVP status for retained users.
- * @param eventId - Event uuid.
- * @param userIds - Desired invitee ids.
- * @returns Nothing.
- */
-async function replaceEventAttendees(eventId: string, userIds: string[]): Promise<void> {
+async function requireSignedInUserId(): Promise<string> {
   if (!supabase) {
-    throw new Error('Supabase is not configured')
+    throw new Error('Sign in required.')
   }
-  const unique = [...new Set(userIds.filter(Boolean))]
-  const existing = await loadAttendeesByEventIds([eventId])
-  const statusByUser = new Map(
-    (existing.get(eventId) ?? []).map((attendee) => [attendee.userId, attendee.status]),
-  )
-  const { error: deleteError } = await supabase
-    .from('calendar_event_attendees')
-    .delete()
-    .eq('event_id', eventId)
-  if (deleteError) {
-    throw deleteError
+  const { data } = await supabase.auth.getSession()
+  if (data.session?.user.id) {
+    return data.session.user.id
   }
-  if (unique.length === 0) {
-    return
+  const { data: refreshed } = await supabase.auth.refreshSession()
+  const userId = refreshed.session?.user.id
+  if (!userId) {
+    throw new Error('Sign in required.')
   }
-  const { error: insertError } = await supabase.from('calendar_event_attendees').insert(
-    unique.map((userId) => ({
-      event_id: eventId,
-      user_id: userId,
-      status: statusByUser.get(userId) ?? 'invited',
-    })),
-  )
-  if (insertError) {
-    throw insertError
-  }
+  return userId
 }
 
 /**
@@ -386,69 +275,11 @@ export async function listCalendarEvents(
   rangeStartIso: string,
   rangeEndIso: string,
 ): Promise<CalendarEventRecord[]> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!window.workbench?.calendar) {
     return []
   }
-
-  let rows: EventRow[] = []
-  if ('ownerUserId' in scope) {
-    const { data: ownedData, error: ownedError } = await supabase
-      .from('calendar_events')
-      .select(EVENT_SELECT)
-      .eq('owner_user_id', scope.ownerUserId)
-      .lt('start_at', rangeEndIso)
-      .or(`rrule.not.is.null,end_at.gt."${rangeStartIso}"`)
-      .order('start_at', { ascending: true })
-    if (ownedError) {
-      throw ownedError
-    }
-    const owned = (ownedData ?? []) as EventRow[]
-    const { data: inviteRows, error: inviteError } = await supabase
-      .from('calendar_event_attendees')
-      .select('event_id')
-      .eq('user_id', scope.ownerUserId)
-    if (inviteError) {
-      throw inviteError
-    }
-    const ownedIds = new Set(owned.map((row) => row.id))
-    const inviteIds = [
-      ...new Set((inviteRows ?? []).map((row) => row.event_id as string)),
-    ].filter((id) => !ownedIds.has(id))
-    let invited: EventRow[] = []
-    if (inviteIds.length > 0) {
-      const { data: invitedData, error: invitedError } = await supabase
-        .from('calendar_events')
-        .select(EVENT_SELECT)
-        .in('id', inviteIds)
-        .lt('start_at', rangeEndIso)
-        .or(`rrule.not.is.null,end_at.gt."${rangeStartIso}"`)
-        .order('start_at', { ascending: true })
-      if (invitedError) {
-        throw invitedError
-      }
-      invited = (invitedData ?? []) as EventRow[]
-    }
-    const byId = new Map<string, EventRow>()
-    for (const row of [...owned, ...invited]) {
-      byId.set(row.id, row)
-    }
-    rows = [...byId.values()].sort((a, b) => a.start_at.localeCompare(b.start_at))
-  } else {
-    const { data, error } = await supabase
-      .from('calendar_events')
-      .select(EVENT_SELECT)
-      .eq('group_id', scope.groupId)
-      .lt('start_at', rangeEndIso)
-      .or(`rrule.not.is.null,end_at.gt."${rangeStartIso}"`)
-      .order('start_at', { ascending: true })
-    if (error) {
-      throw error
-    }
-    rows = (data ?? []) as EventRow[]
-  }
-
-  const attendees = await loadAttendeesByEventIds(rows.map((row) => row.id))
-  return rows.map((row) => mapEvent(row, attendees.get(row.id) ?? []))
+  const userId = await requireSignedInUserId()
+  return calendarBridge().listEvents(userId, scope, rangeStartIso, rangeEndIso)
 }
 
 /**
@@ -461,35 +292,7 @@ export async function createPersonalCalendarEvent(
   userId: string,
   write: CalendarEventWrite,
 ): Promise<CalendarEventRecord> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const { data, error } = await supabase
-    .from('calendar_events')
-    .insert({
-      title: write.title,
-      description: write.description ?? null,
-      start_at: write.startAt,
-      end_at: write.endAt,
-      all_day: write.allDay,
-      owner_user_id: userId,
-      group_id: null,
-      created_by: userId,
-      calendar_id: write.calendarId ?? null,
-      rrule: write.rrule ?? null,
-      exdate: write.exdates ?? [],
-      source: 'workbench',
-    })
-    .select(EVENT_SELECT)
-    .single()
-  if (error) {
-    throw error
-  }
-  const row = data as EventRow
-  const userIds = write.attendeeUserIds ?? []
-  await replaceEventAttendees(row.id, userIds)
-  const attendees = await loadAttendeesByEventIds([row.id])
-  return mapEvent(row, attendees.get(row.id) ?? [])
+  return calendarBridge().createEvent(userId, write)
 }
 
 /**
@@ -502,34 +305,8 @@ export async function updateCalendarEvent(
   eventId: string,
   write: CalendarEventWrite,
 ): Promise<CalendarEventRecord> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const masterId = masterIdFromScheduleId(eventId)
-  const { data, error } = await supabase
-    .from('calendar_events')
-    .update({
-      title: write.title,
-      description: write.description ?? null,
-      start_at: write.startAt,
-      end_at: write.endAt,
-      all_day: write.allDay,
-      calendar_id: write.calendarId ?? null,
-      rrule: write.rrule ?? null,
-      ...(write.exdates !== undefined ? { exdate: write.exdates } : {}),
-    })
-    .eq('id', masterId)
-    .select(EVENT_SELECT)
-    .single()
-  if (error) {
-    throw error
-  }
-  const row = data as EventRow
-  if (write.attendeeUserIds !== undefined) {
-    await replaceEventAttendees(masterId, write.attendeeUserIds)
-  }
-  const attendees = await loadAttendeesByEventIds([masterId])
-  return mapEvent(row, attendees.get(masterId) ?? [])
+  const userId = await requireSignedInUserId()
+  return calendarBridge().updateEvent(userId, masterIdFromScheduleId(eventId), write)
 }
 
 /**
@@ -643,7 +420,6 @@ export async function applyRecurringCalendarEdit(params: {
     return
   }
 
-  // following
   await truncateCalendarEventBefore(master.id, occurrenceStartIso)
   await createEvent({
     ...write,
@@ -679,14 +455,8 @@ export async function applyRecurringCalendarDelete(params: {
  * @returns Nothing.
  */
 export async function deleteCalendarEvent(eventId: string): Promise<void> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const masterId = masterIdFromScheduleId(eventId)
-  const { error } = await supabase.from('calendar_events').delete().eq('id', masterId)
-  if (error) {
-    throw error
-  }
+  const userId = await requireSignedInUserId()
+  await calendarBridge().deleteEvent(userId, masterIdFromScheduleId(eventId))
 }
 
 /**
@@ -697,30 +467,17 @@ export async function deleteCalendarEvent(eventId: string): Promise<void> {
 export async function getCalendarEvent(
   eventId: string,
 ): Promise<CalendarEventRecord | null> {
-  if (!supabase) {
+  if (!window.workbench?.calendar) {
     return null
   }
-  const masterId = masterIdFromScheduleId(eventId)
-  const { data, error } = await supabase
-    .from('calendar_events')
-    .select(EVENT_SELECT)
-    .eq('id', masterId)
-    .maybeSingle()
-  if (error) {
-    throw error
-  }
-  if (!data) {
-    return null
-  }
-  const row = data as EventRow
-  const attendees = await loadAttendeesByEventIds([masterId])
-  return mapEvent(row, attendees.get(masterId) ?? [])
+  const userId = await requireSignedInUserId()
+  return calendarBridge().getEvent(userId, masterIdFromScheduleId(eventId))
 }
 
 /**
  * Updates the caller's RSVP status on an event.
  * @param eventId - Master event uuid.
- * @param userId - Attendee user id (must match auth.uid via RLS).
+ * @param userId - Attendee user id.
  * @param status - New RSVP status.
  * @returns Updated attendee status.
  */
@@ -729,22 +486,5 @@ export async function updateCalendarAttendeeRsvp(
   userId: string,
   status: CalendarAttendeeStatus,
 ): Promise<CalendarAttendeeStatus> {
-  if (!supabase) {
-    throw new Error('Supabase is not configured')
-  }
-  const masterId = masterIdFromScheduleId(eventId)
-  const { data, error } = await supabase
-    .from('calendar_event_attendees')
-    .update({ status })
-    .eq('event_id', masterId)
-    .eq('user_id', userId)
-    .select('status')
-    .maybeSingle()
-  if (error) {
-    throw error
-  }
-  if (!data) {
-    throw new Error('Attendee row not found')
-  }
-  return normalizeAttendeeStatus(data.status as string | null)
+  return calendarBridge().rsvp(userId, masterIdFromScheduleId(eventId), status)
 }

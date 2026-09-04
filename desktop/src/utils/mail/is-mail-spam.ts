@@ -1,6 +1,6 @@
 /**
  * Reports whether a message should be treated as spam for toolbar actions.
- * @param labels - Message labels from `/mail/messages`.
+ * @param labels - Message labels from the local mailbox store.
  * @param isSpamNav - True when the sidebar is on the spam folder.
  * @returns True when Report not spam should be offered.
  */

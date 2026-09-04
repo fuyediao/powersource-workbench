@@ -868,6 +868,147 @@ interface WorkbenchBridge {
     ) => Promise<import('../electron/shared/chat-history').ChatHistoryRowDto | null>
     remove: (userId: string, historyId: string) => Promise<boolean>
   }
+  calendar: {
+    listCalendars: (
+      userId: string,
+      scope: import('../electron/shared/calendar').CalendarScopeDto,
+    ) => Promise<import('../electron/shared/calendar').CalendarListRecordDto[]>
+    ensureDefault: (
+      userId: string,
+      scope: import('../electron/shared/calendar').CalendarScopeDto,
+      defaultName: string,
+    ) => Promise<import('../electron/shared/calendar').CalendarListRecordDto[]>
+    createCalendar: (
+      userId: string,
+      scope: import('../electron/shared/calendar').CalendarScopeDto,
+      name: string,
+      color?: string,
+    ) => Promise<import('../electron/shared/calendar').CalendarListRecordDto>
+    updateCalendar: (
+      userId: string,
+      calendarId: string,
+      patch: { name?: string; color?: string },
+    ) => Promise<import('../electron/shared/calendar').CalendarListRecordDto>
+    deleteCalendar: (userId: string, calendarId: string) => Promise<void>
+    listEvents: (
+      userId: string,
+      scope: import('../electron/shared/calendar').CalendarScopeDto,
+      rangeStartIso: string,
+      rangeEndIso: string,
+    ) => Promise<import('../electron/shared/calendar').CalendarEventRecordDto[]>
+    getEvent: (
+      userId: string,
+      eventId: string,
+    ) => Promise<import('../electron/shared/calendar').CalendarEventRecordDto | null>
+    createEvent: (
+      userId: string,
+      write: import('../electron/shared/calendar').CalendarEventWriteDto,
+    ) => Promise<import('../electron/shared/calendar').CalendarEventRecordDto>
+    updateEvent: (
+      userId: string,
+      eventId: string,
+      write: import('../electron/shared/calendar').CalendarEventWriteDto,
+    ) => Promise<import('../electron/shared/calendar').CalendarEventRecordDto>
+    deleteEvent: (userId: string, eventId: string) => Promise<void>
+    rsvp: (
+      userId: string,
+      eventId: string,
+      status: import('../electron/shared/calendar').CalendarAttendeeStatus,
+    ) => Promise<import('../electron/shared/calendar').CalendarAttendeeStatus>
+  }
+  mail: {
+    presets: (userId: string) => Promise<Record<string, import('../electron/shared/mail-types').MailProviderPreset>>
+    addImap: (
+      userId: string,
+      provider: import('../electron/shared/mail-types').MailProvider,
+      email: string,
+      displayName: string | null,
+      config: import('../electron/shared/mail-types').MailImapSmtpConfig,
+    ) => Promise<{ id: string; email: string; provider: string }>
+    listAccounts: (userId: string) => Promise<import('../electron/shared/mail-types').MailAccount[]>
+    listFolders: (
+      userId: string,
+      accountId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailFolderInfo[]>
+    listLabels: (
+      userId: string,
+      accountId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailLabel[]>
+    folderCounts: (
+      userId: string,
+      accountId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailFolderCountsResponse>
+    listMessages: (
+      userId: string,
+      accountId: string,
+      options: {
+        folderId?: string
+        label?: string
+        q?: string
+        page?: number
+        threadId?: string
+        category?: string
+      },
+    ) => Promise<import('../electron/shared/mail-types').MailMessagePage>
+    getDetail: (
+      userId: string,
+      messageId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailMessageDetail>
+    markRead: (userId: string, messageId: string, isRead: boolean) => Promise<void>
+    toggleStar: (userId: string, messageId: string, starred: boolean) => Promise<void>
+    bulk: (
+      userId: string,
+      messageIds: string[],
+      action: import('../electron/shared/mail-types').MailBulkAction,
+      extra: { label?: string; snoozeUntil?: string },
+    ) => Promise<{ updated: number }>
+    sync: (userId: string, accountId: string) => Promise<{ jobId: string }>
+    historicalSync: (userId: string, accountId: string) => Promise<{ jobId: string }>
+    fetchSyncJob: (
+      userId: string,
+      jobId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailSyncJobStatus>
+    saveDraft: (
+      userId: string,
+      req: import('../electron/shared/mail-types').MailDraftRequest,
+    ) => Promise<{ id: string }>
+    updateDraft: (
+      userId: string,
+      draftId: string,
+      req: import('../electron/shared/mail-types').MailDraftRequest,
+    ) => Promise<void>
+    deleteDraft: (userId: string, draftId: string) => Promise<void>
+    send: (
+      userId: string,
+      req: import('../electron/shared/mail-types').MailSendRequest,
+    ) => Promise<{ ok: boolean; jobId: string | null }>
+    downloadAttachment: (
+      userId: string,
+      messageId: string,
+      attachmentId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailBinaryDto>
+    downloadEml: (
+      userId: string,
+      messageId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailBinaryDto>
+    disconnect: (userId: string, accountId: string) => Promise<void>
+    deleteAccount: (userId: string, accountId: string) => Promise<void>
+    updateAccount: (userId: string, accountId: string, displayName: string | null) => Promise<void>
+    test: (
+      userId: string,
+      accountId: string,
+    ) => Promise<import('../electron/shared/mail-types').MailAccountTestResult>
+    unreadSummary: (userId: string) => Promise<number>
+    emptyFolder: (
+      userId: string,
+      accountId: string,
+      role: 'trash' | 'spam',
+    ) => Promise<{ updated: number }>
+    listSyncTasks: (
+      userId: string,
+      options?: { accountId?: string | null; status?: string; limit?: number },
+    ) => Promise<import('../electron/shared/mail-types').MailSyncTaskPage>
+  }
   harness: {
     testMode: boolean
     getDevicePreferences: (legacyValue?: unknown) => Promise<{

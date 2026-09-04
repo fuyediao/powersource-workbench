@@ -14,31 +14,22 @@ import (
 
 func TestDigestEntitiesFromPrompt(t *testing.T) {
 	got := digestEntities("Summarize unread mail and today's calendar")
-	if len(got) < 2 {
-		t.Fatalf("expected mail + calendar, got %v", got)
+	if containsStr(got, "mail_messages") || containsStr(got, "calendar_events") {
+		t.Fatalf("VPS digest must not query local mail/calendar, got %v", got)
 	}
-	joined := stringsJoin(got)
-	if !containsStr(got, "mail_messages") || !containsStr(got, "calendar_events") {
-		t.Fatalf("digestEntities = %s", joined)
+	if !containsStr(got, "customers") {
+		t.Fatalf("mail/calendar prompts should fall back to customers, got %v", got)
 	}
 }
 
 func TestDigestEntitiesDefaultOfficeSet(t *testing.T) {
 	got := digestEntities("Weekly review")
-	if !containsStr(got, "follow_ups") || !containsStr(got, "opportunities") {
+	if !containsStr(got, "customers") {
 		t.Fatalf("default set = %v", got)
 	}
-}
-
-func stringsJoin(items []string) string {
-	out := ""
-	for i, s := range items {
-		if i > 0 {
-			out += ","
-		}
-		out += s
+	if containsStr(got, "mail_messages") || containsStr(got, "calendar_events") {
+		t.Fatalf("default set still has local-only entities: %v", got)
 	}
-	return out
 }
 
 func containsStr(items []string, want string) bool {

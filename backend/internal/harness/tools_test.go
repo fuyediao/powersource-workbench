@@ -64,3 +64,26 @@ func TestMailToolsRefuseWithoutDesktopMail(t *testing.T) {
 		}
 	}
 }
+
+func TestMailToolsRefuseOnVpsEvenWithDesktopMail(t *testing.T) {
+	h := &Handler{
+		hasModuleFn: func(_ context.Context, _ string, key string) (bool, error) {
+			return key == "desktop_agent" || key == "desktop_mail", nil
+		},
+	}
+	for _, tool := range []string{"send_mail", "save_mail_draft"} {
+		rec := expertRequest(
+			t,
+			h.Routes(),
+			http.MethodPost,
+			"/tools/"+tool,
+			`{"arguments":{"mailAccountId":"mailbox"}}`,
+		)
+		if rec.Code != http.StatusOK {
+			t.Fatalf("%s status=%d body=%s", tool, rec.Code, rec.Body.String())
+		}
+		if !strings.Contains(rec.Body.String(), `"isError":true`) || !strings.Contains(rec.Body.String(), "Workbench desktop") {
+			t.Fatalf("%s unexpected body=%s", tool, rec.Body.String())
+		}
+	}
+}

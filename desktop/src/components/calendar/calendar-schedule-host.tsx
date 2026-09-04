@@ -40,7 +40,6 @@ import {
   type CalendarEventRecord,
   type CalendarEventWrite,
 } from '@/services/calendar-api'
-import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import {
   loadCalendarDefaultView,
   saveCalendarDefaultView,
@@ -563,58 +562,6 @@ export function CalendarScheduleHost({
     setFading(true)
     void reloadEvents({ refresh: true }).finally(() => setFading(false))
   }, [reloadRequestId, reloadEvents])
-
-  /**
-   * Reloads the grid when push sync (or another client) mutates calendar rows.
-   */
-  useEffect(() => {
-    if (!calendarReady || !isSupabaseConfigured || !supabase) {
-      return
-    }
-    const client = supabase
-    let debounceTimer: ReturnType<typeof setTimeout> | null = null
-    const scheduleReload = (): void => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer)
-      }
-      debounceTimer = setTimeout(() => {
-        void reloadEvents()
-      }, 400)
-    }
-
-    const channelName = `calendar-events-owner:${userId}`
-    const filter = `owner_user_id=eq.${userId}`
-
-    const channel = client
-      .channel(channelName)
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'calendar_events', filter },
-        () => {
-          scheduleReload()
-        },
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'calendars',
-          filter: `owner_user_id=eq.${userId}`,
-        },
-        () => {
-          scheduleReload()
-        },
-      )
-      .subscribe()
-
-    return () => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer)
-      }
-      void client.removeChannel(channel)
-    }
-  }, [calendarReady, userId, reloadEvents])
 
   useEffect(() => {
     if (newEventRequestId === 0 || newEventRequestId === lastNewEventRequestRef.current) {

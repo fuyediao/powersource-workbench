@@ -11,7 +11,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"github.com/fuyediao/powersource-workbench/backend/internal/mail"
 	"github.com/fuyediao/powersource-workbench/backend/internal/mcp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/office"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
@@ -54,7 +53,7 @@ func (h *Handler) callHarnessOwnedTool(
 	switch tool {
 	case "web_search":
 		return h.runWebSearch(ctx, userID, raw)
-	case "send_mail":
+	case "send_mail", "save_mail_draft":
 		allowed, err := h.hasDesktopModule(ctx, userID, "desktop_mail")
 		if err != nil {
 			return nil, err
@@ -62,28 +61,7 @@ func (h *Handler) callHarnessOwnedTool(
 		if !allowed {
 			return nil, errors.New("Mail is not enabled for this account")
 		}
-		var args mail.SendRequest
-		if err := json.Unmarshal(raw, &args); err != nil {
-			return nil, err
-		}
-		return mail.New(h.env, h.sb).SendForUser(ctx, userID, args)
-	case "save_mail_draft":
-		allowed, err := h.hasDesktopModule(ctx, userID, "desktop_mail")
-		if err != nil {
-			return nil, err
-		}
-		if !allowed {
-			return nil, errors.New("Mail is not enabled for this account")
-		}
-		var args mail.DraftRequest
-		if err := json.Unmarshal(raw, &args); err != nil {
-			return nil, err
-		}
-		draftID, err := mail.New(h.env, h.sb).SaveDraftForUser(ctx, userID, args)
-		if err != nil {
-			return nil, err
-		}
-		return map[string]any{"draftId": draftID}, nil
+		return nil, errors.New("Mail is stored on this user's Workbench desktop. Send and drafts run in Electron, not on the VPS.")
 	case "read_harness_resource":
 		return h.readHarnessResource(profile, raw)
 	case "search_harness_sessions":

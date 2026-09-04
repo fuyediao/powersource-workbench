@@ -46,7 +46,8 @@ what the person asked for; report any field the server normalized.
 Typical entities with insert grants: `customers`, `customer_contacts`,
 `customer_addresses`, `customer_visit_log`, `opportunities`, `follow_ups`,
 `kols`, `competitor_shops`, `competitor_lines`, `leads`, `crm_products`,
-`calendar_events`, `folio_pages`, and NEXDOT or T&E rows for those admins.
+`folio_pages`, and NEXDOT or T&E rows for those admins. Calendar events are
+not company-cloud rows; they live in the desktop Calendar app.
 
 ## Update
 

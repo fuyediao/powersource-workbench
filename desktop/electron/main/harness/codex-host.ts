@@ -29,6 +29,12 @@ import {
 import { resolveHarnessWorkFolder, ensureHarnessCanvasFolder } from './work-folder'
 import { expandMailAttachments, uploadHarnessLocalFile } from './local-tool-input'
 import { searchHarnessSessions } from '../chat-history'
+import {
+  mailDraftRequestFromHarnessArgs,
+  mailSendRequestFromHarnessArgs,
+  saveMailDraftForUser,
+  sendMailForUser,
+} from '../mail/handler'
 import { mergeWorkAgentInstructions } from '../../shared/harness-work-agent'
 
 /** Appended to the user turn when the composer Canvas toggle is on. */
@@ -1214,6 +1220,138 @@ export class CodexHost {
       })
       return
     }
+    if (tool === 'send_mail' || tool === 'save_mail_draft') {
+      const userId = userIdFromAccessToken(this.accessToken)
+      if (!userId) {
+        this.write({
+          id: rpcId,
+          result: {
+            contentItems: [{ type: 'inputText', text: JSON.stringify({ error: 'Sign in required.' }) }],
+            success: false,
+          },
+        })
+        return
+      }
+      let resolvedArgs = args
+      try {
+        resolvedArgs = await expandMailAttachments(this.workFolder, args)
+      } catch (error) {
+        this.write({
+          id: rpcId,
+          result: {
+            contentItems: [
+              {
+                type: 'inputText',
+                text: JSON.stringify({
+                  error: error instanceof Error ? error.message : 'Mail attachment failed.',
+                }),
+              },
+            ],
+            success: false,
+          },
+        })
+        return
+      }
+      if (tool === 'send_mail') {
+        const requestId = `send-mail:${String(rpcId)}:${randomUUID()}`
+        const recipients = Array.isArray(resolvedArgs.to)
+          ? resolvedArgs.to.flatMap((entry) => {
+              if (!entry || typeof entry !== 'object') return []
+              const email = (entry as Record<string, unknown>).email
+              return typeof email === 'string' ? [email] : []
+            })
+          : []
+        const attachments = Array.isArray(args.attachments)
+          ? args.attachments.flatMap((entry) => {
+              if (!entry || typeof entry !== 'object') return []
+              const record = entry as Record<string, unknown>
+              const value = typeof record.filename === 'string' ? record.filename : record.path
+              return typeof value === 'string' ? [path.basename(value)] : []
+            })
+          : []
+        const ccRecipients = Array.isArray(resolvedArgs.cc)
+          ? resolvedArgs.cc.flatMap((entry) => {
+              if (!entry || typeof entry !== 'object') return []
+              const email = (entry as Record<string, unknown>).email
+              return typeof email === 'string' ? [email] : []
+            })
+          : []
+        const decision = await new Promise<HarnessApprovalDecisionWire>((resolve) => {
+          this.computerApprovals.set(requestId, resolve)
+          this.emit({
+            type: 'approvalRequested',
+            request: {
+              requestId,
+              kind: 'sendMail',
+              itemId: String(rpcId),
+              reason: 'Sending mail always requires confirmation.',
+              command: null,
+              cwd: null,
+              changes: null,
+              computerAction: null,
+              screenshotDataUrl: null,
+              mail: {
+                to: recipients,
+                cc: ccRecipients,
+                subject: typeof resolvedArgs.subject === 'string' ? resolvedArgs.subject : '',
+                snippet:
+                  typeof resolvedArgs.bodyText === 'string'
+                    ? resolvedArgs.bodyText.slice(0, 240)
+                    : '',
+                attachments,
+              },
+            },
+          })
+        })
+        if (decision === 'decline') {
+          this.write({
+            id: rpcId,
+            result: {
+              contentItems: [{ type: 'inputText', text: JSON.stringify({ error: 'Mail send declined.' }) }],
+              success: false,
+            },
+          })
+          return
+        }
+      }
+      try {
+        if (tool === 'send_mail') {
+          const sent = await sendMailForUser(userId, mailSendRequestFromHarnessArgs(resolvedArgs))
+          this.write({
+            id: rpcId,
+            result: {
+              contentItems: [{ type: 'inputText', text: JSON.stringify({ ok: sent.ok }) }],
+              success: sent.ok,
+            },
+          })
+          return
+        }
+        const draft = saveMailDraftForUser(userId, mailDraftRequestFromHarnessArgs(resolvedArgs))
+        this.write({
+          id: rpcId,
+          result: {
+            contentItems: [{ type: 'inputText', text: JSON.stringify({ draftId: draft.id }) }],
+            success: true,
+          },
+        })
+      } catch (error) {
+        this.write({
+          id: rpcId,
+          result: {
+            contentItems: [
+              {
+                type: 'inputText',
+                text: JSON.stringify({
+                  error: error instanceof Error ? error.message : 'Mail failed.',
+                }),
+              },
+            ],
+            success: false,
+          },
+        })
+      }
+      return
+    }
     if (!this.accessToken || !this.apiBaseUrl) {
       this.write({
         id: rpcId,
@@ -1237,73 +1375,7 @@ export class CodexHost {
       })
       return
     }
-    let resolvedArgs = args
-    if (tool === 'send_mail' || tool === 'save_mail_draft') {
-      resolvedArgs = await expandMailAttachments(this.workFolder, args)
-    }
-    if (tool === 'send_mail') {
-      const requestId = `send-mail:${String(rpcId)}:${randomUUID()}`
-      const recipients = Array.isArray(resolvedArgs.to)
-        ? resolvedArgs.to.flatMap((entry) => {
-            if (!entry || typeof entry !== 'object') return []
-            const email = (entry as Record<string, unknown>).email
-            return typeof email === 'string' ? [email] : []
-          })
-        : []
-      const attachments = Array.isArray(args.attachments)
-        ? args.attachments.flatMap((entry) => {
-            if (!entry || typeof entry !== 'object') return []
-            const record = entry as Record<string, unknown>
-            const value = typeof record.filename === 'string' ? record.filename : record.path
-            return typeof value === 'string' ? [path.basename(value)] : []
-        })
-        : []
-      const ccRecipients = Array.isArray(resolvedArgs.cc)
-        ? resolvedArgs.cc.flatMap((entry) => {
-            if (!entry || typeof entry !== 'object') return []
-            const email = (entry as Record<string, unknown>).email
-            return typeof email === 'string' ? [email] : []
-          })
-        : []
-      const decision = await new Promise<HarnessApprovalDecisionWire>((resolve) => {
-        this.computerApprovals.set(requestId, resolve)
-        this.emit({
-          type: 'approvalRequested',
-          request: {
-            requestId,
-            kind: 'sendMail',
-            itemId: String(rpcId),
-            reason: 'Sending mail always requires confirmation.',
-            command: null,
-            cwd: null,
-            changes: null,
-            computerAction: null,
-            screenshotDataUrl: null,
-            mail: {
-              to: recipients,
-              cc: ccRecipients,
-              subject: typeof resolvedArgs.subject === 'string' ? resolvedArgs.subject : '',
-              snippet:
-                typeof resolvedArgs.bodyText === 'string'
-                  ? resolvedArgs.bodyText.slice(0, 240)
-                  : '',
-              attachments,
-            },
-          },
-        })
-      })
-      if (decision === 'decline') {
-        this.write({
-          id: rpcId,
-          result: {
-            contentItems: [{ type: 'inputText', text: JSON.stringify({ error: 'Mail send declined.' }) }],
-            success: false,
-          },
-        })
-        return
-      }
-    }
-    const result = await callTool(tool, resolvedArgs)
+    const result = await callTool(tool, args)
     this.write({
       id: rpcId,
       result: {

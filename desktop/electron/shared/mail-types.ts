@@ -1,4 +1,4 @@
-/** Mail types for the renderer and Electron main (local IMAP/SMTP store). */
+/** Mail types shared by Electron main, preload, and the renderer. */
 
 /** Mail provider ids for IMAP mailboxes stored on this PC. */
 export type MailProvider = 'gmail' | 'alibaba' | 'imap'

@@ -4,14 +4,17 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Stored Mail in local SQLite (`mail.sqlite`) with attachment files under Electron userData. IMAP/SMTP runs in the desktop main process. Company mail tables and Storage are not used.
+- Stored Calendar in local SQLite (`calendar.sqlite`) under Electron userData. Company calendar tables are not used.
+- Stopped Calendar from subscribing to dropped company Realtime tables; the grid reloads from local SQLite only.
 - Stored Ask and Harness transcripts in local SQLite (`chat-history.sqlite` under Electron userData). Company `history` rows are not imported.
 - Removed Ask Map search from the composer and the native Chat menu. Home and Spotlight Ask AI web search stays.
 - Greeted Ask and Ask AI with the profile person name instead of the Workbench username (employee id).
 - Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.
 - Locked Calendar to the signed-in user's personal calendars and removed the Personal/Group switcher.
 - Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.
-- Removed Gmail OAuth and Google Calendar connect/sync from Mail and Calendar. IMAP mailboxes and native calendars stay.
-- Ask, Harness, Mail, and Calendar keep the existing GeoCRM-shaped HTTP contracts; workbench-api on `api.powersource.work` now serves those routes.
+- Removed Gmail OAuth and Google Calendar connect/sync from Mail and Calendar. IMAP later runs in Electron. Native calendars later use local SQLite.
+- Ask and Harness keep GeoCRM-shaped HTTP contracts on workbench-api. Mail and Calendar later moved off that API onto this PC.
 - Showed the Workbench username (`psxxxx`) as the profile employee id and hid the Auth placeholder email (`name@users.invalid`).
 - Removed the Settings Model Context Protocol page. Workbench has no first-party MCP server or access keys; Harness can still attach third-party MCP servers.
 - Regenerated the Mac ICNS 16x16 slot from a simplified brand SVG so Finder no longer shows a pink bilinear shrink of the 1024px mark.

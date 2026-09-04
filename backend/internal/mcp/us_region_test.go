@@ -73,11 +73,11 @@ func TestSupportsUsRegion(t *testing.T) {
 	if !supportsUsRegion(lookupEntity("customer_contacts")) {
 		t.Fatal("customer_contacts should support us_region via customer_id")
 	}
-	if supportsUsRegion(lookupEntity("mail_messages")) {
-		t.Fatal("mail_messages has no customer_id; us_region should be unsupported")
+	if supportsUsRegion(lookupEntity("groups")) {
+		t.Fatal("groups should not support us_region")
 	}
-	if supportsUsRegion(lookupEntity("calendars")) {
-		t.Fatal("calendars should not support us_region")
+	if supportsUsRegion(lookupEntity("team_profiles")) {
+		t.Fatal("team_profiles should not support us_region")
 	}
 }
 

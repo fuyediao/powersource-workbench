@@ -178,21 +178,6 @@ var reportProfiles = map[string]reportProfile{
 	"folio_pages": {
 		DateField: "created_at",
 	},
-	"calendar_events": {
-		DateField:  "start_at",
-		Breakdowns: []string{"all_day"},
-	},
-	"mail_accounts": {
-		DateField:  "created_at",
-		Breakdowns: []string{"provider", "status"},
-	},
-	"mail_threads": {
-		DateField: "last_message_at",
-	},
-	"mail_messages": {
-		DateField:  "received_at",
-		Breakdowns: []string{"is_read", "is_sent", "is_draft"},
-	},
 	"channel_conversations": {
 		DateField:  "last_message_at",
 		Breakdowns: []string{"provider"},

@@ -34,7 +34,7 @@ permissions. A permission error is an answer, not an obstacle. Report it.
 | Week / month / quarter / half-year / year totals | `summarize_records` | `geocrm-analysis` |
 | One customer, before a visit or call | all of the above on customer-linked entities | `geocrm-customer-brief` |
 | Pipeline hygiene, overdue follow-ups | opportunities, follow_ups, leads, work items | `geocrm-pipeline-review` |
-| Mail triage, agenda | mail_*, calendar_events | `geocrm-mail-calendar` |
+| Mail triage, agenda | Mail and Calendar apps on this PC | `geocrm-mail-calendar` |
 | Send mail or save a draft | `send_mail`, `save_mail_draft` | `geocrm-mail-calendar` |
 | Insert / update / delete rows | `create_record`, `update_record`, `delete_record` | `geocrm-data-entry` |
 | Upload a CRM image or document | `list_upload_kinds`, `upload_file`, `delete_file` | `geocrm-data-entry` |
@@ -76,8 +76,6 @@ Read the matching skill with `read_harness_resource` (`kind` = `skills`,
 - `desktop_map_leads`: `leads`, `lead_contacts`
 - `desktop_map_competitors`: `competitor_shops`, `competitor_lines`
 - `desktop_map_favorites` / `desktop_map`: `favorites`, `search_history`
-- `desktop_mail`: `mail_accounts`, `mail_threads`, `mail_messages`, `mail_message_bodies`
-- `desktop_calendar`: `calendars`, `calendar_events`
 - `desktop_messages`: `channel_conversations`, `channel_messages`
 - `desktop_team`: `groups`, `group_members`, `team_profiles`
 - `desktop_nexdot`, `desktop_te_admin`, `desktop_folio`: NEXDOT, T&E, and Folio metadata

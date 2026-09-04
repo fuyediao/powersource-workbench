@@ -49,7 +49,7 @@ export type AdminModuleKey = (typeof ADMIN_MODULE_KEYS)[number]
 
 /**
  * Sidebar modules that never take a per-member create / edit / delete grant.
- * Mail is driven by `/mail/*` and does not use `canWriteModule`.
+ * Mail is stored on this PC and does not use `canWriteModule`.
  * Sales Board is a read-only aggregate view.
  */
 export const ADMIN_MODULES_WITHOUT_MEMBER_WRITES = [

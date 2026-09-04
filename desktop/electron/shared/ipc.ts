@@ -217,6 +217,12 @@ export const AI_MODEL_ALLOWLIST_IPC_CHANNEL = 'workbench:ai-model-allowlist'
 /** IPC channel for Ask and Harness conversation transcripts (local SQLite). */
 export const CHAT_HISTORY_IPC_CHANNEL = 'workbench:chat-history'
 
+/** IPC channel for personal calendars and events (local SQLite). */
+export const CALENDAR_IPC_CHANNEL = 'workbench:calendar'
+
+/** IPC channel for IMAP mailboxes, messages, and attachments (local SQLite + files). */
+export const MAIL_IPC_CHANNEL = 'workbench:mail'
+
 /** One explicit enable/disable override row from the AI model allowlist. */
 export interface AiModelAllowlistRow {
   provider: string

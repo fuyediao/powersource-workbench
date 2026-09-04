@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Stored Mail (IMAP/SMTP, bodies, attachments) and Calendar on this PC in Electron SQLite. Dropped the unused company mail and calendar tables plus the `mail-attachments` Storage bucket.
 - Stored Ask and Harness transcripts in local SQLite on this PC. Dropped the unused company `history` and `agent_location_sets` tables.
 - Removed Ask Map search (composer toggle, native Chat menu, map pins, and `/ai/mapchat`). Home and Spotlight Ask AI web search stays.
 - Greeted Ask and Ask AI with the profile person name instead of the Workbench username (employee id).
@@ -11,7 +12,7 @@ All notable changes to PowerSource Workbench are documented here.
 - Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.
 - Locked desktop Calendar to personal calendars and removed the Calendar group switcher.
 - Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.
-- Removed Gmail mailbox linking and Google Calendar connect/sync. Mail still uses IMAP/SMTP. Calendar still stores events in Supabase.
+- Removed Gmail mailbox linking and Google Calendar connect/sync. Mail later moved IMAP/SMTP onto this PC. Calendar later moved events onto this PC.
 - Copied Ask, Harness, Mail, and Calendar backends onto workbench-api on `api.powersource.work`, plus curated SQL on `supabase.powersource.work` for profiles, history, leftover customers, Mail, and Calendar.
 - Showed the Workbench username (`psxxxx`) as the desktop profile employee id and hid the Auth placeholder email (`name@users.invalid`).
 - Removed the desktop Settings Model Context Protocol page. Workbench has no first-party MCP server or access keys; Harness can still attach third-party MCP servers.

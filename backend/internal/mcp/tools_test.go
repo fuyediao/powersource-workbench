@@ -140,7 +140,7 @@ func TestBuildToolsHidesWriteToolsWithoutGrants(t *testing.T) {
 }
 
 func TestSearchToolEnumMatchesGrantedEntities(t *testing.T) {
-	acc := memberAccess("desktop_mail")
+	acc := memberAccess("desktop_admin")
 	for _, tool := range buildTools(acc) {
 		if tool.Name != toolSearchRecords {
 			continue
@@ -148,11 +148,11 @@ func TestSearchToolEnumMatchesGrantedEntities(t *testing.T) {
 		properties, _ := tool.InputSchema["properties"].(map[string]any)
 		entityProp, _ := properties["entity"].(map[string]any)
 		enum, _ := entityProp["enum"].([]string)
-		if !contains(enum, "mail_messages") {
-			t.Fatal("mail_messages missing from the entity enum")
+		if !contains(enum, "customers") {
+			t.Fatal("customers missing from the entity enum")
 		}
-		if contains(enum, "customers") {
-			t.Fatal("customers leaked into the entity enum without desktop_admin")
+		if contains(enum, "mail_messages") {
+			t.Fatal("mail_messages leaked after local-only mail")
 		}
 		return
 	}
@@ -224,9 +224,7 @@ func TestSensitiveColumnsAreNeverProjected(t *testing.T) {
 		"profiles":              true,
 		"proxy_agent_accounts":  true,
 		"folio_pages":           true,
-		"mail_message_bodies":   true,
 		"channel_messages":      true,
-		"mail_accounts":         true,
 		"customer_documents":    true,
 		"groups":                true,
 		"product_catalog_price": true,
@@ -252,8 +250,7 @@ func TestBroadDomainCoverage(t *testing.T) {
 	admin := &access{UserID: "3f2504e0-4f89-11d3-9a0c-0305e82c3301", Unrestricted: true, modules: map[string]bool{}, writes: map[string]bool{}}
 	allowed := allowedEntities(admin)
 	for _, required := range []string{
-		"customers", "customer_contacts", "calendar_events", "calendars",
-		"mail_messages", "mail_accounts", "team_profiles",
+		"customers", "customer_contacts", "team_profiles",
 	} {
 		if !contains(allowed, required) {
 			t.Fatalf("entity %s missing from the tool surface", required)
@@ -348,10 +345,10 @@ func TestDescribeEntitiesIncludesQueryHints(t *testing.T) {
 }
 
 func TestRangeableEntitiesCoverCRMCore(t *testing.T) {
-	acc := memberAccess("desktop_admin", "desktop_calendar", "desktop_mail")
+	acc := memberAccess("desktop_admin")
 	keys := rangeableEntities(acc)
 	for _, required := range []string{
-		"customers", "customer_contacts", "calendar_events", "mail_messages",
+		"customers", "customer_contacts",
 	} {
 		if !contains(keys, required) {
 			t.Fatalf("period reports missing entity %s", required)
@@ -360,32 +357,26 @@ func TestRangeableEntitiesCoverCRMCore(t *testing.T) {
 	if defaultReportDateField(lookupEntity("customers")) != "created_at" {
 		t.Fatal("customers should report on created_at")
 	}
-	if defaultReportDateField(lookupEntity("calendar_events")) != "start_at" {
-		t.Fatal("calendar_events should report on start_at")
-	}
-	if defaultReportDateField(lookupEntity("mail_messages")) != "received_at" {
-		t.Fatal("mail_messages should report on received_at")
-	}
 }
 
 func TestRelatedEntitiesHidesUngrantedKeys(t *testing.T) {
-	acc := memberAccess("desktop_mail")
+	acc := memberAccess("desktop_admin")
 	payload := describeEntities(acc)
 	entities, _ := payload["entities"].([]map[string]any)
 	for _, item := range entities {
-		if item["entity"] != "mail_messages" {
+		if item["entity"] != "customer_contacts" {
 			continue
 		}
 		related, _ := item["related_entities"].([]string)
-		if contains(related, "customers") {
-			t.Fatal("mail_messages related_entities leaked customers without desktop_admin")
+		if contains(related, "mail_threads") {
+			t.Fatal("customer_contacts related_entities leaked mail_threads")
 		}
-		if !contains(related, "mail_threads") {
-			t.Fatal("mail_messages related_entities dropped mail_threads")
+		if !contains(related, "customers") {
+			t.Fatal("customer_contacts related_entities dropped customers")
 		}
 		return
 	}
-	t.Fatal("mail_messages missing from list_entities")
+	t.Fatal("customer_contacts missing from list_entities")
 }
 
 func TestValidateRecordIDRejectsBusinessKeys(t *testing.T) {

@@ -65,10 +65,10 @@ type entity struct {
 	Hint string
 }
 
-// entities is the Workbench registry: only tables that exist after the curated
-// Ask / Mail / Calendar / leftover-customer migrations. Orders, Folio,
-// channels, T&E, NEXDOT, and map entities stay out so list_entities does not
-// advertise missing tables.
+// entities is the Workbench registry: leftover customer and team tables on
+// company Postgres. Mail and Calendar live in Electron SQLite on this PC.
+// Orders, Folio, channels, T&E, NEXDOT, and map entities stay out so
+// list_entities does not advertise missing tables.
 var entities = []entity{
 	{
 		Key: "customers", Table: "customers", Gate: "desktop_admin",
@@ -97,81 +97,6 @@ var entities = []entity{
 		Rangeable:  []string{"created_at", "updated_at"},
 		Related:    []string{"customers"},
 		Hint:       "Filter by customer_id (UUID from customers). Email and name are search fields, not get_record ids. Period reports: summarize_records on created_at.",
-	},
-	{
-		Key: "calendars", Table: "calendars", Gate: "desktop_calendar",
-		Desc:       "Personal and group calendars.",
-		Columns:    "*",
-		Search:     []string{"name"},
-		OrderCol:   "updated_at",
-		Scope:      scopeOwnerOrGroup,
-		ScopeCol:   "owner_user_id",
-		Write:      &writeGate{Domain: "calendar", Resource: "calendars"},
-		Filterable: []string{"id", "group_id", "owner_user_id", "is_default"},
-		Rangeable:  []string{"created_at", "updated_at"},
-	},
-	{
-		Key: "calendar_events", Table: "calendar_events", Gate: "desktop_calendar",
-		Desc:       "Calendar events with start, end, all-day flag, and description.",
-		Columns:    "*",
-		Search:     []string{"title", "description"},
-		OrderCol:   "start_at",
-		Scope:      scopeOwnerOrGroup,
-		ScopeCol:   "owner_user_id",
-		Write:      &writeGate{Domain: "calendar", Resource: "events"},
-		Filterable: []string{"id", "group_id", "owner_user_id", "all_day"},
-		Rangeable:  []string{"start_at", "end_at", "created_at"},
-		Related:    []string{"calendars"},
-		Hint:       "Period reports: summarize_records on start_at, or start_at_gte / start_at_lt.",
-	},
-	{
-		Key: "mail_accounts", Table: "mail_accounts", Gate: "desktop_mail",
-		Desc:       "Connected mailboxes, owned by a single user (never shared). OAuth tokens and passwords are stored elsewhere and never returned.",
-		Columns:    "id,owner_user_id,provider,email,display_name,auth_type,is_primary,status,last_sync_at,created_at,updated_at",
-		Search:     []string{"email", "display_name", "provider"},
-		OrderCol:   "updated_at",
-		Scope:      scopeSelf,
-		ScopeCol:   "owner_user_id",
-		Filterable: []string{"id", "owner_user_id", "provider", "status"},
-		Rangeable:  []string{"created_at", "updated_at", "last_sync_at"},
-	},
-	{
-		Key: "mail_threads", Table: "mail_threads", Gate: "desktop_mail",
-		Desc:       "Mail conversation threads with subject, snippet, and counts.",
-		Columns:    "*",
-		Search:     []string{"subject", "snippet"},
-		OrderCol:   "last_message_at",
-		Scope:      scopeParent,
-		Parent:     &parentRef{Column: "mail_account_id", Entity: "mail_accounts", ParentColumn: "id"},
-		Filterable: []string{"id", "mail_account_id", "is_starred", "has_attachments"},
-		Rangeable:  []string{"last_message_at"},
-		Hint:       "Period reports: summarize_records on last_message_at.",
-	},
-	{
-		Key: "mail_messages", Table: "mail_messages", Gate: "desktop_mail",
-		Desc:       "Mail message headers and snippets. Use mail_message_bodies for the full text.",
-		Columns:    "*",
-		Search:     []string{"subject", "snippet", "from_address", "from_name"},
-		OrderCol:   "received_at",
-		Scope:      scopeParent,
-		Parent:     &parentRef{Column: "mail_account_id", Entity: "mail_accounts", ParentColumn: "id"},
-		Filterable: []string{"id", "mail_account_id", "thread_id", "folder_id", "is_read", "is_sent", "is_draft"},
-		Rangeable:  []string{"received_at", "created_at"},
-		Related:    []string{"mail_threads", "mail_message_bodies"},
-		Hint:       "Search subject or from_address. Full body is mail_message_bodies filtered by message_id. Period reports: summarize_records on received_at.",
-	},
-	{
-		Key: "mail_message_bodies", Table: "mail_message_bodies", Gate: "desktop_mail",
-		Desc:       "Plain-text and HTML bodies for a mail message. Raw MIME files are not exposed.",
-		Columns:    "id,message_id,body_text,body_html,created_at",
-		Search:     []string{"body_text"},
-		OrderCol:   "created_at",
-		Scope:      scopeParent,
-		Parent:     &parentRef{Column: "message_id", Entity: "mail_messages", ParentColumn: "id"},
-		Filterable: []string{"id", "message_id"},
-		Rangeable:  []string{"created_at"},
-		Related:    []string{"mail_messages"},
-		Hint:       "Filter by message_id. Fetch one body at a time; HTML can be large.",
 	},
 	{
 		Key: "groups", Table: "groups", Gate: "desktop_team",

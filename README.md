@@ -8,7 +8,7 @@ GeoCRM on `powersource.app` is a behavior reference only. Workbench runs on its 
 
 - `desktop/`: Electron, React, Tailwind CSS, local search, settings, and direct Supabase Data API access.
 - `backend/`: Go API (`workbench-api`). Password grants, invitation creation, and Home widget proxies (`/start/*`) stay here.
-- `supabase/`: Database migrations for Workbench profiles and invitations.
+- `supabase/`: Database migrations for Workbench profiles and leftover customer rows. Mail and Calendar are not stored here.
 - `scripts/`: Ignored environment generation, VPS deploy, and the one-time administrator bootstrap.
 - `web/`: Reserved for a future web client.
 

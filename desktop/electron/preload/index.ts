@@ -22,6 +22,31 @@ import type {
   ChatHistoryRowDto,
   ChatHistoryUpdateInput,
 } from '../shared/chat-history'
+import type {
+  CalendarEventRecordDto,
+  CalendarEventWriteDto,
+  CalendarListRecordDto,
+  CalendarScopeDto,
+  CalendarAttendeeStatus,
+} from '../shared/calendar'
+import type {
+  MailAccount,
+  MailAccountTestResult,
+  MailBinaryDto,
+  MailBulkAction,
+  MailDraftRequest,
+  MailFolderCountsResponse,
+  MailFolderInfo,
+  MailImapSmtpConfig,
+  MailLabel,
+  MailMessageDetail,
+  MailMessagePage,
+  MailProvider,
+  MailProviderPreset,
+  MailSendRequest,
+  MailSyncJobStatus,
+  MailSyncTaskPage,
+} from '../shared/mail-types'
 import {
   CLAWD_BRIDGE_IPC_CHANNEL,
   type ClawdBridgeActivity,
@@ -69,6 +94,8 @@ import {
   OA_ERP_CREDENTIALS_IPC_CHANNEL,
   AI_MODEL_ALLOWLIST_IPC_CHANNEL,
   CHAT_HISTORY_IPC_CHANNEL,
+  CALENDAR_IPC_CHANNEL,
+  MAIL_IPC_CHANNEL,
   type AiModelAllowlistRow,
   SPOTLIGHT_IPC_CHANNEL,
   SPOTLIGHT_SHOWN_EVENT,
@@ -633,6 +660,471 @@ contextBridge.exposeInMainWorld('workbench', {
      */
     remove: (userId: string, historyId: string): Promise<boolean> =>
       ipcRenderer.invoke(CHAT_HISTORY_IPC_CHANNEL, 'remove', userId, historyId) as Promise<boolean>,
+  },
+  calendar: {
+    /**
+     * Lists named calendars for a personal or group scope on this machine.
+     * @param userId - Auth user id.
+     * @param scope - Owner or group.
+     * @returns Calendar records.
+     */
+    listCalendars: (userId: string, scope: CalendarScopeDto): Promise<CalendarListRecordDto[]> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'listCalendars', userId, scope) as Promise<
+        CalendarListRecordDto[]
+      >,
+    /**
+     * Ensures a default calendar exists for the scope.
+     * @param userId - Auth user id.
+     * @param scope - Owner or group.
+     * @param defaultName - Localized default name.
+     * @returns Full calendar list.
+     */
+    ensureDefault: (
+      userId: string,
+      scope: CalendarScopeDto,
+      defaultName: string,
+    ): Promise<CalendarListRecordDto[]> =>
+      ipcRenderer.invoke(
+        CALENDAR_IPC_CHANNEL,
+        'ensureDefault',
+        userId,
+        scope,
+        defaultName,
+      ) as Promise<CalendarListRecordDto[]>,
+    /**
+     * Creates a named calendar.
+     * @param userId - Auth user id.
+     * @param scope - Owner or group.
+     * @param name - Display name.
+     * @param color - Optional hex color.
+     * @returns Created record.
+     */
+    createCalendar: (
+      userId: string,
+      scope: CalendarScopeDto,
+      name: string,
+      color?: string,
+    ): Promise<CalendarListRecordDto> =>
+      ipcRenderer.invoke(
+        CALENDAR_IPC_CHANNEL,
+        'createCalendar',
+        userId,
+        scope,
+        name,
+        color,
+      ) as Promise<CalendarListRecordDto>,
+    /**
+     * Updates a named calendar.
+     * @param userId - Auth user id.
+     * @param calendarId - Calendar id.
+     * @param patch - Name and/or color.
+     * @returns Updated record.
+     */
+    updateCalendar: (
+      userId: string,
+      calendarId: string,
+      patch: { name?: string; color?: string },
+    ): Promise<CalendarListRecordDto> =>
+      ipcRenderer.invoke(
+        CALENDAR_IPC_CHANNEL,
+        'updateCalendar',
+        userId,
+        calendarId,
+        patch,
+      ) as Promise<CalendarListRecordDto>,
+    /**
+     * Deletes a named calendar.
+     * @param userId - Auth user id.
+     * @param calendarId - Calendar id.
+     * @returns Nothing.
+     */
+    deleteCalendar: (userId: string, calendarId: string): Promise<void> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'deleteCalendar', userId, calendarId) as Promise<void>,
+    /**
+     * Lists events overlapping a time window.
+     * @param userId - Auth user id.
+     * @param scope - Owner or group.
+     * @param rangeStartIso - Window start.
+     * @param rangeEndIso - Window end.
+     * @returns Event records.
+     */
+    listEvents: (
+      userId: string,
+      scope: CalendarScopeDto,
+      rangeStartIso: string,
+      rangeEndIso: string,
+    ): Promise<CalendarEventRecordDto[]> =>
+      ipcRenderer.invoke(
+        CALENDAR_IPC_CHANNEL,
+        'listEvents',
+        userId,
+        scope,
+        rangeStartIso,
+        rangeEndIso,
+      ) as Promise<CalendarEventRecordDto[]>,
+    /**
+     * Loads one event including attendees.
+     * @param userId - Auth user id.
+     * @param eventId - Event id.
+     * @returns Record or null.
+     */
+    getEvent: (userId: string, eventId: string): Promise<CalendarEventRecordDto | null> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'getEvent', userId, eventId) as Promise<
+        CalendarEventRecordDto | null
+      >,
+    /**
+     * Creates a personal calendar event.
+     * @param userId - Auth user id.
+     * @param write - Event fields.
+     * @returns Created record.
+     */
+    createEvent: (userId: string, write: CalendarEventWriteDto): Promise<CalendarEventRecordDto> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'createEvent', userId, write) as Promise<
+        CalendarEventRecordDto
+      >,
+    /**
+     * Updates an existing calendar event.
+     * @param userId - Auth user id.
+     * @param eventId - Event id.
+     * @param write - Fields to update.
+     * @returns Updated record.
+     */
+    updateEvent: (
+      userId: string,
+      eventId: string,
+      write: CalendarEventWriteDto,
+    ): Promise<CalendarEventRecordDto> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'updateEvent', userId, eventId, write) as Promise<
+        CalendarEventRecordDto
+      >,
+    /**
+     * Deletes a calendar event.
+     * @param userId - Auth user id.
+     * @param eventId - Event id.
+     * @returns Nothing.
+     */
+    deleteEvent: (userId: string, eventId: string): Promise<void> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'deleteEvent', userId, eventId) as Promise<void>,
+    /**
+     * Updates the caller's RSVP status.
+     * @param userId - Auth user id.
+     * @param eventId - Event id.
+     * @param status - New RSVP status.
+     * @returns Updated status.
+     */
+    rsvp: (
+      userId: string,
+      eventId: string,
+      status: CalendarAttendeeStatus,
+    ): Promise<CalendarAttendeeStatus> =>
+      ipcRenderer.invoke(CALENDAR_IPC_CHANNEL, 'rsvp', userId, eventId, status) as Promise<
+        CalendarAttendeeStatus
+      >,
+  },
+  mail: {
+    /**
+     * Loads IMAP/SMTP presets keyed by provider id.
+     * @param userId - Auth user id.
+     * @returns Preset map.
+     */
+    presets: (userId: string): Promise<Record<string, MailProviderPreset>> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'presets', userId) as Promise<
+        Record<string, MailProviderPreset>
+      >,
+    /**
+     * Adds an IMAP/SMTP mailbox after a successful login test.
+     * @param userId - Auth user id.
+     * @param provider - Provider id.
+     * @param email - Address.
+     * @param displayName - Optional label.
+     * @param config - Server credentials.
+     * @returns Created account.
+     */
+    addImap: (
+      userId: string,
+      provider: MailProvider,
+      email: string,
+      displayName: string | null,
+      config: MailImapSmtpConfig,
+    ): Promise<{ id: string; email: string; provider: string }> =>
+      ipcRenderer.invoke(
+        MAIL_IPC_CHANNEL,
+        'addImap',
+        userId,
+        provider,
+        email,
+        displayName,
+        config,
+      ) as Promise<{ id: string; email: string; provider: string }>,
+    /**
+     * Lists mailboxes the current user can access.
+     * @param userId - Auth user id.
+     * @returns Accounts.
+     */
+    listAccounts: (userId: string): Promise<MailAccount[]> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'listAccounts', userId) as Promise<MailAccount[]>,
+    /**
+     * Lists IMAP folders for an account.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @returns Folders.
+     */
+    listFolders: (userId: string, accountId: string): Promise<MailFolderInfo[]> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'listFolders', userId, accountId) as Promise<
+        MailFolderInfo[]
+      >,
+    /**
+     * Lists user labels (empty for IMAP).
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @returns Labels.
+     */
+    listLabels: (userId: string, accountId: string): Promise<MailLabel[]> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'listLabels', userId, accountId) as Promise<MailLabel[]>,
+    /**
+     * Sidebar unread counts for one mailbox.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @returns Count maps.
+     */
+    folderCounts: (userId: string, accountId: string): Promise<MailFolderCountsResponse> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'folderCounts', userId, accountId) as Promise<
+        MailFolderCountsResponse
+      >,
+    /**
+     * Lists messages for the active folder / label.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @param options - Filters.
+     * @returns Page of messages.
+     */
+    listMessages: (
+      userId: string,
+      accountId: string,
+      options: {
+        folderId?: string
+        label?: string
+        q?: string
+        page?: number
+        threadId?: string
+        category?: string
+      },
+    ): Promise<MailMessagePage> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'listMessages', userId, accountId, options) as Promise<
+        MailMessagePage
+      >,
+    /**
+     * Loads one message body.
+     * @param userId - Auth user id.
+     * @param messageId - Message id.
+     * @returns Detail.
+     */
+    getDetail: (userId: string, messageId: string): Promise<MailMessageDetail> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'getDetail', userId, messageId) as Promise<
+        MailMessageDetail
+      >,
+    /**
+     * Marks a message read or unread.
+     * @param userId - Auth user id.
+     * @param messageId - Message id.
+     * @param isRead - New read flag.
+     * @returns Nothing.
+     */
+    markRead: (userId: string, messageId: string, isRead: boolean): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'markRead', userId, messageId, isRead) as Promise<void>,
+    /**
+     * Toggles the starred flag.
+     * @param userId - Auth user id.
+     * @param messageId - Message id.
+     * @param starred - New star flag.
+     * @returns Nothing.
+     */
+    toggleStar: (userId: string, messageId: string, starred: boolean): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'toggleStar', userId, messageId, starred) as Promise<void>,
+    /**
+     * Runs a bulk mailbox action.
+     * @param userId - Auth user id.
+     * @param messageIds - Target ids.
+     * @param action - Bulk action.
+     * @param extra - Optional label or snooze wake time.
+     * @returns Updated count.
+     */
+    bulk: (
+      userId: string,
+      messageIds: string[],
+      action: MailBulkAction,
+      extra: { label?: string; snoozeUntil?: string },
+    ): Promise<{ updated: number }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'bulk', userId, messageIds, action, extra) as Promise<{
+        updated: number
+      }>,
+    /**
+     * Starts an incremental sync job.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @returns Running job id.
+     */
+    sync: (userId: string, accountId: string): Promise<{ jobId: string }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'sync', userId, accountId) as Promise<{ jobId: string }>,
+    /**
+     * Starts a historical sync.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @returns Job id.
+     */
+    historicalSync: (userId: string, accountId: string): Promise<{ jobId: string }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'historicalSync', userId, accountId) as Promise<{
+        jobId: string
+      }>,
+    /**
+     * Reads a sync job snapshot.
+     * @param userId - Auth user id.
+     * @param jobId - Job id.
+     * @returns Status.
+     */
+    fetchSyncJob: (userId: string, jobId: string): Promise<MailSyncJobStatus> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'fetchSyncJob', userId, jobId) as Promise<
+        MailSyncJobStatus
+      >,
+    /**
+     * Saves a new local draft.
+     * @param userId - Auth user id.
+     * @param req - Draft fields.
+     * @returns Created draft id.
+     */
+    saveDraft: (userId: string, req: MailDraftRequest): Promise<{ id: string }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'saveDraft', userId, req) as Promise<{ id: string }>,
+    /**
+     * Updates an existing draft.
+     * @param userId - Auth user id.
+     * @param draftId - Draft id.
+     * @param req - Fields.
+     * @returns Nothing.
+     */
+    updateDraft: (userId: string, draftId: string, req: MailDraftRequest): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'updateDraft', userId, draftId, req) as Promise<void>,
+    /**
+     * Deletes a draft.
+     * @param userId - Auth user id.
+     * @param draftId - Draft id.
+     * @returns Nothing.
+     */
+    deleteDraft: (userId: string, draftId: string): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'deleteDraft', userId, draftId) as Promise<void>,
+    /**
+     * Sends a message from a connected mailbox.
+     * @param userId - Auth user id.
+     * @param req - Recipients and body.
+     * @returns Result.
+     */
+    send: (userId: string, req: MailSendRequest): Promise<{ ok: boolean; jobId: string | null }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'send', userId, req) as Promise<{
+        ok: boolean
+        jobId: string | null
+      }>,
+    /**
+     * Downloads an attachment as bytes.
+     * @param userId - Auth user id.
+     * @param messageId - Message id.
+     * @param attachmentId - Attachment id.
+     * @returns Binary payload.
+     */
+    downloadAttachment: (
+      userId: string,
+      messageId: string,
+      attachmentId: string,
+    ): Promise<MailBinaryDto> =>
+      ipcRenderer.invoke(
+        MAIL_IPC_CHANNEL,
+        'downloadAttachment',
+        userId,
+        messageId,
+        attachmentId,
+      ) as Promise<MailBinaryDto>,
+    /**
+     * Downloads a reconstructed .eml snapshot.
+     * @param userId - Auth user id.
+     * @param messageId - Message id.
+     * @returns Binary payload.
+     */
+    downloadEml: (userId: string, messageId: string): Promise<MailBinaryDto> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'downloadEml', userId, messageId) as Promise<MailBinaryDto>,
+    /**
+     * Disconnects a mailbox.
+     * @param userId - Auth user id.
+     * @param accountId - Account id.
+     * @returns Nothing.
+     */
+    disconnect: (userId: string, accountId: string): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'disconnect', userId, accountId) as Promise<void>,
+    /**
+     * Permanently deletes a mailbox.
+     * @param userId - Auth user id.
+     * @param accountId - Account id.
+     * @returns Nothing.
+     */
+    deleteAccount: (userId: string, accountId: string): Promise<void> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'deleteAccount', userId, accountId) as Promise<void>,
+    /**
+     * Renames an IMAP mailbox display name.
+     * @param userId - Auth user id.
+     * @param accountId - Account id.
+     * @param displayName - New name, or null to clear.
+     * @returns Nothing.
+     */
+    updateAccount: (userId: string, accountId: string, displayName: string | null): Promise<void> =>
+      ipcRenderer.invoke(
+        MAIL_IPC_CHANNEL,
+        'updateAccount',
+        userId,
+        accountId,
+        displayName,
+      ) as Promise<void>,
+    /**
+     * Tests IMAP credentials.
+     * @param userId - Auth user id.
+     * @param accountId - Account id.
+     * @returns Test result.
+     */
+    test: (userId: string, accountId: string): Promise<MailAccountTestResult> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'test', userId, accountId) as Promise<
+        MailAccountTestResult
+      >,
+    /**
+     * Inbox unread count across accessible mailboxes.
+     * @param userId - Auth user id.
+     * @returns Total unread.
+     */
+    unreadSummary: (userId: string): Promise<number> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'unreadSummary', userId) as Promise<number>,
+    /**
+     * Permanently deletes every message in trash or spam.
+     * @param userId - Auth user id.
+     * @param accountId - Mailbox id.
+     * @param role - Folder role.
+     * @returns Deleted count.
+     */
+    emptyFolder: (
+      userId: string,
+      accountId: string,
+      role: 'trash' | 'spam',
+    ): Promise<{ updated: number }> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'emptyFolder', userId, accountId, role) as Promise<{
+        updated: number
+      }>,
+    /**
+     * Lists pending / failed remote sync tasks (Outbox).
+     * @param userId - Auth user id.
+     * @param options - Optional account filter.
+     * @returns Task page.
+     */
+    listSyncTasks: (
+      userId: string,
+      options?: { accountId?: string | null; status?: string; limit?: number },
+    ): Promise<MailSyncTaskPage> =>
+      ipcRenderer.invoke(MAIL_IPC_CHANNEL, 'listSyncTasks', userId, options ?? {}) as Promise<
+        MailSyncTaskPage
+      >,
   },
   oaErpCredentials: {
     /**
