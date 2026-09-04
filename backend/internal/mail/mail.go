@@ -1,8 +1,9 @@
-// Package mail implements the /mail/* routes: Gmail OAuth, AliMail IMAP/SMTP
-// account management, message sync, and the mailbox read/list/send surface.
+// Package mail implements the /mail/* routes: AliMail IMAP/SMTP account
+// management, message sync, and the mailbox read/list/send surface.
 // Provider-specific protocol code lives in the gmail and alimail subpackages;
 // this package owns generic mailbox CRUD (accounts, messages, drafts, folders)
 // and dispatches sync/send/test/hydrate/labels to the matching provider client.
+// Gmail OAuth linking is not offered; leftover Gmail rows still sync if present.
 package mail
 
 import (
@@ -46,11 +47,9 @@ func (h *Handler) Routes() chi.Router {
 	r.Get("/provider-presets", func(w http.ResponseWriter, _ *http.Request) {
 		httpx.WriteJSON(w, http.StatusOK, alimail.Presets())
 	})
-	r.Get("/oauth/google/callback", h.googleCallback)
 
 	r.Group(func(pr chi.Router) {
 		pr.Use(authmw.RequireUser(h.sb, authmw.DefaultUnauthorized))
-		pr.Post("/accounts/google/link", h.googleLink)
 		pr.Post("/accounts/imap", h.addImap)
 		pr.Get("/accounts", h.listAccounts)
 		pr.Post("/send", h.send)

@@ -8,104 +8,11 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/mail/alimail"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
-	"github.com/fuyediao/powersource-workbench/backend/internal/shared/idutil"
-	"github.com/fuyediao/powersource-workbench/backend/internal/shared/origin"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
 
 const accountListColumns = "id,provider,email,display_name,avatar_url,auth_type,is_primary," +
 	"is_auto_linked,status,error_message,last_sync_at,historical_sync_completed_at,created_at"
-
-func (h *Handler) googleLink(w http.ResponseWriter, r *http.Request) {
-	userID := authmw.UserIDFrom(r)
-	var body struct {
-		LoginHint    string `json:"loginHint"`
-		ReturnOrigin string `json:"returnOrigin"`
-	}
-	_ = httpx.DecodeJSON(r, &body)
-	returnOrigin := h.pickValidatedReturnOrigin(body.ReturnOrigin)
-	if returnOrigin == "" {
-		mailErr(w, http.StatusBadRequest, "Invalid returnOrigin. Configure APP_PUBLIC_ORIGIN or APP_PUBLIC_ORIGIN_ALLOWLIST (comma-separated). When multiple origins are allowed, send returnOrigin (e.g. window.location.origin) from the client.")
-		return
-	}
-	state := userID + ":" + idutil.UUIDv4()
-	if err := h.sb.From("mail_oauth_states").Insert(map[string]any{
-		"user_id": userID, "state": state, "return_origin": returnOrigin, "created_at": nowISO(),
-	}).Exec(r.Context(), nil); err != nil {
-		mailJSON(w, http.StatusInternalServerError, map[string]any{"error": err.Error()})
-		return
-	}
-	mailJSON(w, http.StatusOK, map[string]any{"url": h.gmail.BuildAuthURL(state, body.LoginHint)})
-}
-
-func (h *Handler) googleCallback(w http.ResponseWriter, r *http.Request) {
-	code := r.URL.Query().Get("code")
-	state := r.URL.Query().Get("state")
-	if code == "" || state == "" {
-		mailErr(w, http.StatusBadRequest, "Missing code or state")
-		return
-	}
-	userID := strings.SplitN(state, ":", 2)[0]
-	if userID == "" {
-		mailErr(w, http.StatusBadRequest, "Invalid state")
-		return
-	}
-	var stateRow struct {
-		State        string  `json:"state"`
-		ReturnOrigin *string `json:"return_origin"`
-	}
-	found, _ := h.sb.From("mail_oauth_states").Select("state,return_origin").Eq("user_id", userID).Eq("state", state).MaybeSingle(r.Context(), &stateRow)
-	if !found {
-		mailErr(w, http.StatusForbidden, "State mismatch")
-		return
-	}
-	storedReturn := ""
-	if stateRow.ReturnOrigin != nil && *stateRow.ReturnOrigin != "" {
-		storedReturn = origin.NormalizeBrowserOrigin(*stateRow.ReturnOrigin)
-	}
-	allowed := h.allowedPublicOrigins()
-	if storedReturn != "" && len(allowed) > 0 && !containsStr(allowed, storedReturn) {
-		_ = h.sb.From("mail_oauth_states").Delete().Eq("state", state).Exec(r.Context(), nil)
-		mailErr(w, http.StatusForbidden, "Invalid OAuth return target")
-		return
-	}
-	_ = h.sb.From("mail_oauth_states").Delete().Eq("state", state).Exec(r.Context(), nil)
-
-	tokens, err := h.gmail.ExchangeCode(r.Context(), code)
-	if err != nil {
-		mailErr(w, http.StatusBadRequest, "OAuth token exchange failed: "+err.Error())
-		return
-	}
-	userInfo, err := h.gmail.GetUserInfo(r.Context(), tokens.AccessToken)
-	if err != nil {
-		mailErr(w, http.StatusBadRequest, err.Error())
-		return
-	}
-	var account struct {
-		ID string `json:"id"`
-	}
-	avatar := any(nil)
-	if v := strings.TrimSpace(userInfo.Picture); v != "" {
-		avatar = v
-	}
-	if err := h.sb.From("mail_accounts").Upsert(map[string]any{
-		"owner_user_id": userID, "provider": "gmail",
-		"email": userInfo.Email, "display_name": userInfo.Name, "avatar_url": avatar,
-		"auth_type": "oauth", "is_auto_linked": true, "oauth_scope": tokens.Scope,
-		"status": "active",
-	}, "owner_user_id,email").Returning().Select("id").Single(r.Context(), &account); err != nil || account.ID == "" {
-		mailJSON(w, http.StatusInternalServerError, map[string]any{"error": "Failed to save mail account"})
-		return
-	}
-
-	_ = h.gmail.SaveTokens(r.Context(), account.ID, tokens)
-
-	redirectBase := storedReturn
-	if redirectBase == "" {
-		redirectBase = h.appPublicOrigin()
-	}
-	http.Redirect(w, r, redirectBase+"/admin/mail?linked=gmail", http.StatusFound)
-}
 
 func (h *Handler) addImap(w http.ResponseWriter, r *http.Request) {
 	userID := authmw.UserIDFrom(r)

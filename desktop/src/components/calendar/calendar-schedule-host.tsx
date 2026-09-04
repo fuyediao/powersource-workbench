@@ -41,10 +41,6 @@ import {
   type CalendarEventRecord,
   type CalendarEventWrite,
 } from '@/services/calendar-api'
-import {
-  deleteGoogleCalendarEventRemote,
-  pushCalendarEventToGoogle,
-} from '@/services/calendar-google-api'
 import { fetchGroupMembers, type ProfileSnippet } from '@/services/groups-api'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import {
@@ -78,7 +74,7 @@ export interface CalendarScheduleHostProps {
   capabilities: CalendarCapabilities
   /** Bumps when parent wants a new-event dialog (toolbar button). */
   newEventRequestId: number
-  /** Bumps when parent wants events reloaded (e.g. after Google sync). */
+  /** Bumps when parent wants events reloaded (e.g. after ICS import). */
   reloadRequestId?: number
   /** Named calendars for the active scope (managed by page). */
   calendars: CalendarListRecord[]
@@ -86,13 +82,6 @@ export interface CalendarScheduleHostProps {
   visibleCalendarIds: Set<string>
   /** Called after default calendar ensure / when host needs parent refresh. */
   onCalendarsChange: (calendars: CalendarListRecord[]) => void
-  /**
-   * When non-null (linked Google account), hide Google mirror calendars whose
-   * google_calendar_id is not in this selection.
-   */
-  selectedGoogleCalendarIds?: string[] | null
-  /** When true, Google-sourced / Google-mapped events are editable and pushed. */
-  googleCanWrite?: boolean
 }
 
 interface DialogState {
@@ -192,8 +181,6 @@ export function CalendarScheduleHost({
   calendars,
   visibleCalendarIds,
   onCalendarsChange,
-  selectedGoogleCalendarIds = null,
-  googleCanWrite = false,
 }: CalendarScheduleHostProps) {
   const { t, i18n } = useTranslation()
   const capsRef = useRef(capabilities)
@@ -204,16 +191,10 @@ export function CalendarScheduleHost({
   groupRef.current = selectedGroupId
   const userIdRef = useRef(userId)
   userIdRef.current = userId
-  const calendarsRef = useRef(calendars)
-  calendarsRef.current = calendars
   const visibleRef = useRef(visibleCalendarIds)
   visibleRef.current = visibleCalendarIds
   const onCalendarsChangeRef = useRef(onCalendarsChange)
   onCalendarsChangeRef.current = onCalendarsChange
-  const googleCanWriteRef = useRef(googleCanWrite)
-  googleCanWriteRef.current = googleCanWrite
-  const selectedGoogleCalendarIdsRef = useRef(selectedGoogleCalendarIds)
-  selectedGoogleCalendarIdsRef.current = selectedGoogleCalendarIds
 
   const eventsService = useMemo(() => createEventsServicePlugin(), [])
   const dragPlugin = useMemo(() => createDragAndDropPlugin(15), [])
@@ -231,7 +212,6 @@ export function CalendarScheduleHost({
   const reloadTokenRef = useRef(0)
   const lastNewEventRequestRef = useRef(0)
   const lastReloadRequestRef = useRef(0)
-  const googleEventIdsRef = useRef(new Set<string>())
   const recordsByIdRef = useRef(new Map<string, CalendarEventRecord>())
   const [defaultView] = useState(() => loadCalendarDefaultView())
   const calendarSingletonRef = useRef<CalendarAppSingleton | null>(null)
@@ -253,31 +233,17 @@ export function CalendarScheduleHost({
         return
       }
       const disableInteraction = !capsRef.current.canEdit
-      const selectedGoogle = selectedGoogleCalendarIdsRef.current
-      const uiCalendars =
-        selectedGoogle == null
-          ? snapshot.calendars
-          : snapshot.calendars.filter((calendar) => {
-              if (!calendar.googleCalendarId) {
-                return true
-              }
-              return selectedGoogle.includes(calendar.googleCalendarId)
-            })
+      const uiCalendars = snapshot.calendars
       onCalendarsChangeRef.current(snapshot.calendars)
       const singleton = calendarSingletonRef.current
       if (singleton) {
         singleton.config.calendars.value = toScheduleXCalendars(uiCalendars)
       }
-      const googleIds = new Set<string>()
       const byId = new Map<string, CalendarEventRecord>()
       const visible = visibleRef.current
       const knownCalendarIds = new Set(uiCalendars.map((calendar) => calendar.id))
-      const googleWritable = googleCanWriteRef.current
       const scheduleEvents = snapshot.records.flatMap((record) => {
         byId.set(record.id, record)
-        if (record.source === 'google') {
-          googleIds.add(record.id)
-        }
         const isInviteeOnly =
           modeRef.current === 'personal' &&
           record.ownerUserId !== userId &&
@@ -297,10 +263,9 @@ export function CalendarScheduleHost({
         ) {
           return []
         }
-        const googleLocked = record.source === 'google' && !googleWritable
         try {
           return recordToScheduleEvents(record, {
-            disableInteraction: disableInteraction || googleLocked,
+            disableInteraction,
             rangeStartIso: snapshot.rangeStart,
             rangeEndIso: snapshot.rangeEnd,
           })
@@ -310,7 +275,6 @@ export function CalendarScheduleHost({
         }
       })
       recordsByIdRef.current = byId
-      googleEventIdsRef.current = googleIds
       eventsService.set(scheduleEvents)
       setError(null)
     },
@@ -389,9 +353,6 @@ export function CalendarScheduleHost({
         },
         onBeforeEventUpdate: (oldEvent) => {
           const masterId = masterIdFromScheduleId(String(oldEvent.id))
-          if (googleEventIdsRef.current.has(masterId) && !googleCanWriteRef.current) {
-            return false
-          }
           const record = recordsByIdRef.current.get(masterId)
           if (record?.rrule) {
             return false
@@ -403,10 +364,6 @@ export function CalendarScheduleHost({
             return
           }
           const masterId = masterIdFromScheduleId(String(event.id))
-          if (googleEventIdsRef.current.has(masterId) && !googleCanWriteRef.current) {
-            void reloadEvents()
-            return
-          }
           const existing = recordsByIdRef.current.get(masterId)
           const write = scheduleEventToWrite(event)
           write.rrule = existing?.rrule ?? null
@@ -414,12 +371,6 @@ export function CalendarScheduleHost({
           void (async () => {
             try {
               await updateCalendarEvent(masterId, write)
-              if (
-                googleCanWriteRef.current &&
-                (existing?.source === 'google' || isGoogleMappedCalendar(write.calendarId))
-              ) {
-                await pushCalendarEventToGoogle(masterId)
-              }
               setError(null)
             } catch (err) {
               console.error(err)
@@ -461,10 +412,6 @@ export function CalendarScheduleHost({
         onEventClick: (event) => {
           const scheduleId = String(event.id)
           const masterId = masterIdFromScheduleId(scheduleId)
-          if (googleEventIdsRef.current.has(masterId) && !googleCanWriteRef.current) {
-            setError(t('calendar.google.readOnlyEvent'))
-            return
-          }
           void (async () => {
             try {
               const record = await getCalendarEvent(masterId)
@@ -801,38 +748,6 @@ export function CalendarScheduleHost({
   }, [defaultCalendarId])
 
   /**
-   * Returns whether a named calendar mirrors a Google calendar.
-   * @param calendarId - Local calendars.id or null.
-   * @returns True when Google-mapped.
-   */
-  function isGoogleMappedCalendar(calendarId: string | null | undefined): boolean {
-    if (!calendarId) {
-      return false
-    }
-    return calendarsRef.current.some(
-      (calendar) => calendar.id === calendarId && Boolean(calendar.googleCalendarId),
-    )
-  }
-
-  /**
-   * Pushes a local event to Google when write sync is enabled.
-   * @param record - Persisted event (or id + fields for mapping check).
-   * @returns Nothing.
-   */
-  async function pushIfGoogleLinked(record: {
-    id: string
-    source: string
-    calendarId: string | null
-  }): Promise<void> {
-    if (!googleCanWriteRef.current) {
-      return
-    }
-    if (record.source === 'google' || isGoogleMappedCalendar(record.calendarId)) {
-      await pushCalendarEventToGoogle(record.id)
-    }
-  }
-
-  /**
    * Creates an event in the active personal/group scope.
    * @param write - Event fields.
    * @returns Created record.
@@ -863,8 +778,7 @@ export function CalendarScheduleHost({
     setSaving(true)
     try {
       if (dialog.mode === 'create') {
-        const created = await createInScope(write)
-        await pushIfGoogleLinked(created)
+        await createInScope(write)
       } else if (dialog.eventId) {
         const master = await getCalendarEvent(dialog.eventId)
         if (!master) {
@@ -878,14 +792,8 @@ export function CalendarScheduleHost({
             write,
             createEvent: createInScope,
           })
-          await pushIfGoogleLinked(master)
         } else {
           await updateCalendarEvent(dialog.eventId, write)
-          await pushIfGoogleLinked({
-            id: dialog.eventId,
-            source: master.source,
-            calendarId: write.calendarId ?? master.calendarId,
-          })
         }
       }
       setDialogOpen(false)
@@ -927,18 +835,6 @@ export function CalendarScheduleHost({
           scope,
           occurrenceStartIso: dialog.occurrenceStartAt,
         })
-        if (
-          googleCanWriteRef.current &&
-          (master.source === 'google' || isGoogleMappedCalendar(master.calendarId))
-        ) {
-          await pushCalendarEventToGoogle(master.id)
-        }
-      } else if (
-        googleCanWriteRef.current &&
-        (master.source === 'google' ||
-          (isGoogleMappedCalendar(master.calendarId) && Boolean(master.googleEventId)))
-      ) {
-        await deleteGoogleCalendarEventRemote(dialog.eventId)
       } else {
         await deleteCalendarEvent(dialog.eventId)
       }

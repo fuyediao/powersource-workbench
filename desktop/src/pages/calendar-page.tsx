@@ -2,13 +2,12 @@
  * Calendar feature page shell (Aura-style): paint chrome first, defer Schedule-X.
  */
 
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { User } from '@supabase/supabase-js'
 import { CalendarMenubar } from '@/components/calendar/calendar-menubar'
 import { CalendarNameDialog } from '@/components/calendar/calendar-name-dialog'
 import { StatusLoading } from '@/components/common/status-loading'
-import { useCalendarGoogle } from '@/hooks/use-calendar-google'
 import { useCalendarScope } from '@/hooks/use-calendar-scope'
 import {
   createCalendar,
@@ -46,7 +45,6 @@ interface CalendarPageProps {
 export function CalendarPage({ userId }: CalendarPageProps) {
   const { t } = useTranslation()
   const scope = useCalendarScope(userId)
-  const google = useCalendarGoogle()
   const [newEventRequestId, setNewEventRequestId] = useState(0)
   const [reloadRequestId, setReloadRequestId] = useState(0)
   const [calendars, setCalendars] = useState<CalendarListRecord[]>([])
@@ -92,30 +90,13 @@ export function CalendarPage({ userId }: CalendarPageProps) {
   }, [scope.mode, scope.selectedGroupId, t, userId])
 
   /**
-   * Named calendars shown in the UI: hide Google mirrors that are unchecked
-   * while the account is linked (rows stay in the database).
-   */
-  const displayCalendars = useMemo(() => {
-    if (scope.mode !== 'personal' || !google.account || google.needsReauth) {
-      return calendars
-    }
-    const selected = new Set(google.account.selectedGoogleCalendarIds)
-    return calendars.filter((calendar) => {
-      if (!calendar.googleCalendarId) {
-        return true
-      }
-      return selected.has(calendar.googleCalendarId)
-    })
-  }, [calendars, google.account, google.needsReauth, scope.mode])
-
-  /**
    * Toggles a named calendar in the visibility filter.
    * @param calendarId - Calendar uuid.
    * @returns Nothing.
    */
   const handleToggleCalendarVisibility = useCallback((calendarId: string) => {
     setVisibleCalendarIds((prev) => {
-      const allIds = new Set(displayCalendars.map((calendar) => calendar.id))
+      const allIds = new Set(calendars.map((calendar) => calendar.id))
       const next = new Set(prev.size === 0 ? allIds : prev)
       if (next.has(calendarId)) {
         next.delete(calendarId)
@@ -127,7 +108,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       }
       return next
     })
-  }, [displayCalendars])
+  }, [calendars])
 
   /**
    * Opens the add-calendar name dialog (Electron does not support window.prompt).
@@ -305,7 +286,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         return
       }
       const target =
-        displayCalendars.find((calendar) => calendar.isDefault) ?? displayCalendars[0] ?? null
+        calendars.find((calendar) => calendar.isDefault) ?? calendars[0] ?? null
       if (!target) {
         window.alert(t('calendar.ics.importNoCalendar'))
         return
@@ -340,7 +321,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       }
     })()
   }, [
-    displayCalendars,
+    calendars,
     scope.capabilities.canCreate,
     scope.mode,
     scope.selectedGroupId,
@@ -378,7 +359,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
           visibleCalendarIds.size === 0
             ? null
             : visibleCalendarIds
-        const known = new Set(displayCalendars.map((calendar) => calendar.id))
+        const known = new Set(calendars.map((calendar) => calendar.id))
         const drafts = records
           .filter((record) => {
             if (record.calendarId && !known.has(record.calendarId)) {
@@ -413,7 +394,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       }
     })()
   }, [
-    displayCalendars,
+    calendars,
     scope.mode,
     scope.selectedGroupId,
     t,
@@ -437,68 +418,20 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       exportIcs: handleExportIcs,
       toggleCalendar: handleToggleCalendarVisibility,
       renameCalendar: (calendarId) => {
-        const calendar = displayCalendars.find((row) => row.id === calendarId)
+        const calendar = calendars.find((row) => row.id === calendarId)
         if (calendar) {
           handleRenameCalendar(calendar)
         }
       },
       deleteCalendar: (calendarId) => {
-        const calendar = displayCalendars.find((row) => row.id === calendarId)
+        const calendar = calendars.find((row) => row.id === calendarId)
         if (calendar) {
           handleDeleteCalendar(calendar)
         }
       },
-      googleConnect: () => {
-        void google.connect().then((ok) => {
-          if (ok) {
-            setReloadRequestId((id) => id + 1)
-          }
-        })
-      },
-      googleSync: () => {
-        void (async () => {
-          const ok = await google.sync()
-          if (ok) {
-            setReloadRequestId((id) => id + 1)
-          }
-        })()
-      },
-      googleDisconnect: () => {
-        if (!window.confirm(t('calendar.google.confirmDisconnect'))) {
-          return
-        }
-        void google.disconnect()
-      },
-      toggleGoogleCalendar: (calendarId) => {
-        const selectedIds = new Set(google.account?.selectedGoogleCalendarIds ?? [])
-        const selected = !selectedIds.has(calendarId)
-        if (selected) {
-          selectedIds.add(calendarId)
-        } else {
-          selectedIds.delete(calendarId)
-        }
-        void (async () => {
-          const ok = await google.setSelection([...selectedIds])
-          if (!ok) {
-            return
-          }
-          setReloadRequestId((id) => id + 1)
-          if (selected) {
-            const synced = await google.sync()
-            if (synced) {
-              setReloadRequestId((id) => id + 1)
-            }
-          }
-        })()
-      },
     })
   }, [
-    displayCalendars,
-    google.account,
-    google.connect,
-    google.disconnect,
-    google.setSelection,
-    google.sync,
+    calendars,
     handleAddCalendar,
     handleDeleteCalendar,
     handleExportIcs,
@@ -507,7 +440,6 @@ export function CalendarPage({ userId }: CalendarPageProps) {
     handleToggleCalendarVisibility,
     scope.setMode,
     scope.setSelectedGroupId,
-    t,
   ])
 
   useEffect(() => {
@@ -521,35 +453,16 @@ export function CalendarPage({ userId }: CalendarPageProps) {
       selectedGroupId: scope.selectedGroupId,
       canSwitchGroups: scope.canSwitchGroups,
       canCreate: scope.capabilities.canCreate,
-      calendars: displayCalendars.map((calendar) => ({
+      calendars: calendars.map((calendar) => ({
         id: calendar.id,
         label: calendar.name,
         visible: allVisible || visibleCalendarIds.has(calendar.id),
         canRename: !scope.capabilities.readOnly,
-        canDelete: scope.capabilities.canDelete && displayCalendars.length > 1,
-      })),
-      showConnectionMenu: scope.mode === 'personal',
-      googleEmail: google.account?.email ?? null,
-      googleConnecting: google.isConnecting,
-      googleSyncing: google.isSyncing,
-      googleNeedsReauth: google.needsReauth,
-      googleCalendars: google.googleCalendars.map((item) => ({
-        id: item.id,
-        label: item.summary,
-        selected: item.selected,
-        enabled:
-          item.accessRole === 'owner' ||
-          item.accessRole === 'writer' ||
-          item.accessRole === 'reader',
+        canDelete: scope.capabilities.canDelete && calendars.length > 1,
       })),
     })
   }, [
-    displayCalendars,
-    google.account?.email,
-    google.googleCalendars,
-    google.isConnecting,
-    google.isSyncing,
-    google.needsReauth,
+    calendars,
     scope.canSwitchGroups,
     scope.capabilities.canCreate,
     scope.capabilities.canDelete,
@@ -579,7 +492,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         onGroupChange={scope.setSelectedGroupId}
         capabilities={scope.capabilities}
         onNewEvent={() => setNewEventRequestId((id) => id + 1)}
-        calendars={displayCalendars}
+        calendars={calendars}
         visibleCalendarIds={visibleCalendarIds}
         onToggleCalendarVisibility={handleToggleCalendarVisibility}
         onAddCalendar={handleAddCalendar}
@@ -588,85 +501,7 @@ export function CalendarPage({ userId }: CalendarPageProps) {
         onChangeCalendarColor={handleChangeCalendarColor}
         onImportIcs={handleImportIcs}
         onExportIcs={handleExportIcs}
-        google={
-          scope.mode === 'personal'
-            ? {
-                email: google.account?.email ?? null,
-                isLoading: google.isLoading,
-                isConnecting: google.isConnecting,
-                isSyncing: google.isSyncing,
-                needsReauth: google.needsReauth,
-                error: google.error,
-                calendars: google.googleCalendars.map((item) => ({
-                  id: item.id,
-                  summary: item.summary,
-                  selected: item.selected,
-                  accessRole: item.accessRole,
-                })),
-                onConnect: () => {
-                  void google.connect().then((ok) => {
-                    if (ok) {
-                      setReloadRequestId((id) => id + 1)
-                    }
-                  })
-                },
-                onSync: () => {
-                  void (async () => {
-                    const ok = await google.sync()
-                    if (ok) {
-                      setReloadRequestId((id) => id + 1)
-                    }
-                  })()
-                },
-                onToggleCalendar: (calendarId, selected) => {
-                  const next = new Set(google.account?.selectedGoogleCalendarIds ?? [])
-                  if (selected) {
-                    next.add(calendarId)
-                  } else {
-                    next.delete(calendarId)
-                  }
-                  void (async () => {
-                    const ok = await google.setSelection([...next])
-                    if (!ok) {
-                      return
-                    }
-                    // Uncheck: hide immediately. Check: refresh mirrors then import in background.
-                    setReloadRequestId((id) => id + 1)
-                    if (selected) {
-                      const synced = await google.sync()
-                      if (synced) {
-                        setReloadRequestId((id) => id + 1)
-                      }
-                    }
-                  })()
-                },
-                onDisconnect: () => {
-                  if (!window.confirm(t('calendar.google.confirmDisconnect'))) {
-                    return
-                  }
-                  void google.disconnect()
-                },
-              }
-            : undefined
-        }
       />
-      {scope.mode === 'personal' && (google.isSyncing || google.error || google.needsReauth) ? (
-        <p
-          className={[
-            'shrink-0 border-b px-3 py-1.5 text-xs font-medium',
-            google.error || google.needsReauth
-              ? 'border-red-500/20 bg-red-500/10 text-red-700 dark:text-red-300'
-              : 'border-ink/8 bg-ink/4 text-muted',
-          ].join(' ')}
-          title={google.error ?? undefined}
-        >
-          {google.isSyncing
-            ? t('calendar.google.syncing')
-            : google.needsReauth
-              ? t('calendar.google.reauthHint')
-              : `${t('calendar.google.error')}: ${google.error}`}
-        </p>
-      ) : null}
       <Suspense
         fallback={<StatusLoading />}
       >
@@ -680,12 +515,6 @@ export function CalendarPage({ userId }: CalendarPageProps) {
           calendars={calendars}
           visibleCalendarIds={visibleCalendarIds}
           onCalendarsChange={setCalendars}
-          selectedGoogleCalendarIds={
-            scope.mode === 'personal' && google.account && !google.needsReauth
-              ? google.account.selectedGoogleCalendarIds
-              : null
-          }
-          googleCanWrite={scope.mode === 'personal' && google.canWrite}
         />
       </Suspense>
       {nameDialogMounted ? (

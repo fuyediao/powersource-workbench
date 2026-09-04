@@ -122,7 +122,7 @@ function mapAccount(raw: Record<string, unknown>): MailAccount {
   return {
     id: String(raw.id),
     provider:
-      raw.provider === 'alibaba' ? 'alibaba' : raw.provider === 'imap' ? 'imap' : 'gmail',
+      raw.provider === 'alibaba' ? 'alibaba' : 'imap',
     email: String(raw.email),
     displayName: typeof raw.display_name === 'string' ? raw.display_name : null,
     avatarUrl: typeof raw.avatar_url === 'string' ? raw.avatar_url : null,
@@ -201,30 +201,6 @@ function mapMessageDetail(raw: Record<string, unknown>): MailMessageDetail {
         sizeBytes: typeof row.size_bytes === 'number' ? row.size_bytes : null,
       })),
   }
-}
-
-/**
- * Starts Gmail OAuth; open the returned URL in the system browser.
- * @param loginHint - Optional Google account hint.
- * @param returnOrigin - Allowed public web origin for the callback redirect.
- * @returns Google authorization URL.
- */
-export async function startGmailOAuth(loginHint?: string, returnOrigin?: string): Promise<string> {
-  const payload: { loginHint?: string; returnOrigin?: string } = {}
-  if (loginHint) {
-    payload.loginHint = loginHint
-  }
-  if (returnOrigin) {
-    payload.returnOrigin = returnOrigin
-  }
-  const data = await mailFetch<{ url?: string }>('/mail/accounts/google/link', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  })
-  if (typeof data.url !== 'string' || data.url.length === 0) {
-    throw new Error('Failed to start Gmail OAuth')
-  }
-  return data.url
 }
 
 /**

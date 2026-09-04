@@ -3,8 +3,8 @@
 Packages backend/, uploads a build archive, compiles in a temporary directory
 on the VPS, and recreates the workbench-api container on supabase_default.
 Only /opt/workbench-backend/.env persists. Server keys are copied from the
-existing /opt/supabase-project/.env on that host. Extra Ask/Mail/Calendar/Harness
-keys are merged in place so Google OAuth secrets and ENCRYPTION_KEY survive
+existing /opt/supabase-project/.env on that host. Extra Ask/Mail/Harness
+keys are merged in place so ENCRYPTION_KEY survives
 rebuilds. This script does not touch the powersource.app GeoCRM stack.
 """
 
@@ -148,18 +148,13 @@ lines = [
     f"ENCRYPTION_KEY={{encryption_key}}",
     f"APP_PUBLIC_ORIGIN={{keep('APP_PUBLIC_ORIGIN')}}",
     f"APP_PUBLIC_ORIGIN_ALLOWLIST={{keep('APP_PUBLIC_ORIGIN_ALLOWLIST')}}",
-    f"GOOGLE_CLIENT_ID={{keep('GOOGLE_CLIENT_ID')}}",
-    f"GOOGLE_CLIENT_SECRET={{keep('GOOGLE_CLIENT_SECRET')}}",
-    f"GOOGLE_REDIRECT_URI={{keep('GOOGLE_REDIRECT_URI', 'https://api.powersource.work/mail/oauth/google/callback')}}",
-    f"GOOGLE_CALENDAR_REDIRECT_URI={{keep('GOOGLE_CALENDAR_REDIRECT_URI', 'https://api.powersource.work/calendar/oauth/google/callback')}}",
-    f"GOOGLE_CALENDAR_WEBHOOK_URL={{keep('GOOGLE_CALENDAR_WEBHOOK_URL', 'https://api.powersource.work/calendar/webhooks/google')}}",
     "HERMES_PROFILES_ROOT=/var/lib/workbench/hermes-profiles",
     "HERMES_ORG_SKILLS_ROOT=/app/assets/harness/org-skills",
     "",
 ]
 env_path.write_text("\\n".join(lines))
 env_path.chmod(0o600)
-print("Merged server .env (Supabase keys refreshed; OAuth/encryption preserved)")
+print("Merged server .env (Supabase keys refreshed; encryption preserved)")
 PY
 
 BUILD_DIR=$(mktemp -d /tmp/workbench-backend-build.XXXXXX)

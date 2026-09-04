@@ -861,9 +861,6 @@ export const CALENDAR_MENU_COMMANDS = [
   'view:today',
   'view:previous',
   'view:next',
-  'google:connect',
-  'google:sync',
-  'google:disconnect',
 ] as const
 
 /** Calendar native-menu command id. */
@@ -876,7 +873,6 @@ export type CalendarMenuAction =
   | { type: 'toggle-calendar'; id: string }
   | { type: 'rename-calendar'; id: string }
   | { type: 'delete-calendar'; id: string }
-  | { type: 'toggle-google-calendar'; id: string }
   | { type: 'command'; id: CalendarMenuCommand }
 
 /** One group row in the native Calendar Scope menu. */
@@ -894,19 +890,10 @@ export type CalendarMenuCalendar = {
   canDelete: boolean
 }
 
-/** One Google calendar row in the native Connection menu. */
-export type CalendarMenuGoogleCalendar = {
-  id: string
-  label: string
-  selected: boolean
-  enabled: boolean
-}
-
 /** i18n labels for the macOS Calendar application menus. */
 export type CalendarMenuLabels = {
   scope: string
   calendars: string
-  connection: string
   view: string
   personal: string
   group: string
@@ -926,12 +913,6 @@ export type CalendarMenuLabels = {
   viewYear: string
   viewList: string
   viewFourDays: string
-  connect: string
-  connecting: string
-  reauth: string
-  sync: string
-  syncing: string
-  disconnect: string
 }
 
 /** Live Calendar-menu radios, checkboxes, and enablement. */
@@ -943,12 +924,6 @@ export type CalendarMenuViewState = {
   canCreate: boolean
   calendars: CalendarMenuCalendar[]
   selectedView: string
-  showConnectionMenu: boolean
-  googleEmail: string | null
-  googleConnecting: boolean
-  googleSyncing: boolean
-  googleNeedsReauth: boolean
-  googleCalendars: CalendarMenuGoogleCalendar[]
 }
 
 /** Team native-menu command ids (everything except radios). */
@@ -1331,8 +1306,7 @@ export function isCalendarMenuAction(value: unknown): value is CalendarMenuActio
   if (
     record.type === 'toggle-calendar' ||
     record.type === 'rename-calendar' ||
-    record.type === 'delete-calendar' ||
-    record.type === 'toggle-google-calendar'
+    record.type === 'delete-calendar'
   ) {
     return typeof record.id === 'string' && record.id.length > 0
   }

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import i18n from '@/i18n'
-import { resolveAppPublicOrigin } from '@/config/deployment-urls'
 import {
   addImapAccount,
   bulkMailMessages,
@@ -26,7 +25,6 @@ import {
   renameMailLabel,
   saveMailDraft,
   sendMail,
-  startGmailOAuth,
   startHistoricalMailSync,
   syncMailAccount,
   testMailAccount,
@@ -56,7 +54,6 @@ import {
   loadMailAccountSelectionPref,
   saveMailAccountSelectionPref,
 } from '@/utils/mail/mail-prefs'
-import { openExternalUrl } from '@/utils/shared/api'
 import {
   officeKindFromFileName,
   openOfficeDocument,
@@ -188,8 +185,6 @@ export interface UseMailResult {
   syncActiveAccount: () => Promise<void>
   historicalSync: (since?: string) => Promise<void>
   reloadAccounts: () => Promise<void>
-  connectGmail: () => Promise<boolean>
-  cancelGmailWait: () => void
   connectImap: (
     provider: MailProvider,
     email: string,
@@ -207,7 +202,6 @@ export interface UseMailResult {
   deleteAccount: (accountId: string) => Promise<boolean>
   testAccount: (accountId: string) => Promise<MailAccountTestResult>
   renameAccount: (accountId: string, displayName: string | null) => Promise<boolean>
-  isConnectingGmail: boolean
   isSending: boolean
   sendError: string | null
 }
@@ -257,13 +251,11 @@ export function useMail(): UseMailResult {
   const [isSyncing, setIsSyncing] = useState(false)
   const [accountError, setAccountError] = useState<string | null>(null)
   const [messageError, setMessageError] = useState<string | null>(null)
-  const [isConnectingGmail, setIsConnectingGmail] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const [sendError, setSendError] = useState<string | null>(null)
   const [undo, setUndo] = useState<MailUndoState | null>(null)
   const [syncTasks, setSyncTasks] = useState<MailSyncTask[]>([])
   const previewUrlRef = useRef<string | null>(null)
-  const gmailWaitAbortRef = useRef(false)
   const loadingMoreRef = useRef(false)
 
   const selectedAccount = useMemo(
@@ -741,50 +733,6 @@ export function useMail(): UseMailResult {
     }
   }, [accounts, debouncedQuery, loadAccounts, loadMessages, loadSidebar, messages, navId, selectedAccountId, unifiedInbox])
 
-  const cancelGmailWait = useCallback((): void => {
-    gmailWaitAbortRef.current = true
-    setIsConnectingGmail(false)
-  }, [])
-
-  const connectGmail = useCallback(async (): Promise<boolean> => {
-    setIsConnectingGmail(true)
-    setAccountError(null)
-    gmailWaitAbortRef.current = false
-    try {
-      const before = await listMailAccounts()
-      const existingIds = new Set(before.map((account) => account.id))
-      const returnOrigin = resolveAppPublicOrigin()
-      const url = await startGmailOAuth(undefined, returnOrigin || undefined)
-      await openExternalUrl(url)
-      const deadline = Date.now() + 3 * 60 * 1000
-      while (Date.now() < deadline && !gmailWaitAbortRef.current) {
-        await new Promise((resolve) => {
-          window.setTimeout(resolve, 2000)
-        })
-        if (gmailWaitAbortRef.current) {
-          return false
-        }
-        const next = await listMailAccounts()
-        const added = next.find((account) => !existingIds.has(account.id))
-        if (added) {
-          setAccounts(next)
-          setSelectedAccountId(added.id)
-          return true
-        }
-      }
-      if (!gmailWaitAbortRef.current) {
-        setAccountError('Gmail sign-in timed out. If you finished in the browser, sync or reopen Mail.')
-        await loadAccounts()
-      }
-      return false
-    } catch (error) {
-      setAccountError(error instanceof Error ? error.message : 'Failed to start Gmail OAuth')
-      return false
-    } finally {
-      setIsConnectingGmail(false)
-    }
-  }, [loadAccounts])
-
   const connectImap = useCallback(
     async (
       provider: MailProvider,
@@ -1210,8 +1158,6 @@ export function useMail(): UseMailResult {
     syncActiveAccount,
     historicalSync,
     reloadAccounts: loadAccounts,
-    connectGmail,
-    cancelGmailWait,
     connectImap,
     sendMessage,
     saveDraft,
@@ -1224,7 +1170,6 @@ export function useMail(): UseMailResult {
     deleteAccount,
     testAccount,
     renameAccount,
-    isConnectingGmail,
     isSending,
     sendError,
   }

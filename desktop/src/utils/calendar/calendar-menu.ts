@@ -15,9 +15,6 @@ export const CALENDAR_MENU_COMMANDS = [
   'view:today',
   'view:previous',
   'view:next',
-  'google:connect',
-  'google:sync',
-  'google:disconnect',
 ] as const
 
 /** Native Calendar menu command id. */
@@ -30,7 +27,6 @@ export type CalendarMenuAction =
   | { type: 'toggle-calendar'; id: string }
   | { type: 'rename-calendar'; id: string }
   | { type: 'delete-calendar'; id: string }
-  | { type: 'toggle-google-calendar'; id: string }
   | { type: 'command'; id: CalendarMenuCommand }
 
 /** One group row in the native Scope menu. */
@@ -48,14 +44,6 @@ export type CalendarMenuCalendar = {
   canDelete: boolean
 }
 
-/** One Google calendar row in the native Connection menu. */
-export type CalendarMenuGoogleCalendar = {
-  id: string
-  label: string
-  selected: boolean
-  enabled: boolean
-}
-
 /** Live Calendar-menu radios, checkboxes, and enablement. */
 export type CalendarMenuViewState = {
   mode: 'personal' | 'group'
@@ -65,12 +53,6 @@ export type CalendarMenuViewState = {
   canCreate: boolean
   calendars: CalendarMenuCalendar[]
   selectedView: string
-  showConnectionMenu: boolean
-  googleEmail: string | null
-  googleConnecting: boolean
-  googleSyncing: boolean
-  googleNeedsReauth: boolean
-  googleCalendars: CalendarMenuGoogleCalendar[]
 }
 
 type CalendarMenuHandlers = {
@@ -87,10 +69,6 @@ type CalendarMenuHandlers = {
   today?: () => void
   previous?: () => void
   next?: () => void
-  googleConnect?: () => void
-  googleSync?: () => void
-  googleDisconnect?: () => void
-  toggleGoogleCalendar?: (id: string) => void
 }
 
 type SnapshotListener = () => void
@@ -103,12 +81,6 @@ const DEFAULT_VIEW: CalendarMenuViewState = {
   canCreate: false,
   calendars: [],
   selectedView: 'month-grid',
-  showConnectionMenu: false,
-  googleEmail: null,
-  googleConnecting: false,
-  googleSyncing: false,
-  googleNeedsReauth: false,
-  googleCalendars: [],
 }
 
 let handlers: CalendarMenuHandlers = {}
@@ -116,7 +88,6 @@ let snapshot: CalendarMenuViewState = {
   ...DEFAULT_VIEW,
   groups: [],
   calendars: [],
-  googleCalendars: [],
 }
 const snapshotListeners = new Set<SnapshotListener>()
 
@@ -150,24 +121,6 @@ function calendarEquals(
 }
 
 /**
- * Returns whether two Google-calendar rows match.
- * @param left - Current row.
- * @param right - Candidate row.
- * @returns True when every field matches.
- */
-function googleEquals(
-  left: CalendarMenuGoogleCalendar,
-  right: CalendarMenuGoogleCalendar,
-): boolean {
-  return (
-    left.id === right.id &&
-    left.label === right.label &&
-    left.selected === right.selected &&
-    left.enabled === right.enabled
-  )
-}
-
-/**
  * Returns whether two Calendar-menu snapshots are equivalent.
  * @param left - Current snapshot.
  * @param right - Candidate snapshot.
@@ -180,14 +133,8 @@ function viewEquals(left: CalendarMenuViewState, right: CalendarMenuViewState): 
     left.canSwitchGroups !== right.canSwitchGroups ||
     left.canCreate !== right.canCreate ||
     left.selectedView !== right.selectedView ||
-    left.showConnectionMenu !== right.showConnectionMenu ||
-    left.googleEmail !== right.googleEmail ||
-    left.googleConnecting !== right.googleConnecting ||
-    left.googleSyncing !== right.googleSyncing ||
-    left.googleNeedsReauth !== right.googleNeedsReauth ||
     left.groups.length !== right.groups.length ||
-    left.calendars.length !== right.calendars.length ||
-    left.googleCalendars.length !== right.googleCalendars.length
+    left.calendars.length !== right.calendars.length
   ) {
     return false
   }
@@ -199,10 +146,6 @@ function viewEquals(left: CalendarMenuViewState, right: CalendarMenuViewState): 
     left.calendars.every((row, index) => {
       const other = right.calendars[index]
       return other !== undefined && calendarEquals(row, other)
-    }) &&
-    left.googleCalendars.every((row, index) => {
-      const other = right.googleCalendars[index]
-      return other !== undefined && googleEquals(row, other)
     })
   )
 }
@@ -257,9 +200,6 @@ export function setCalendarMenuView(patch: Partial<CalendarMenuViewState>): void
     calendars: patch.calendars
       ? patch.calendars.map((row) => ({ ...row }))
       : snapshot.calendars,
-    googleCalendars: patch.googleCalendars
-      ? patch.googleCalendars.map((row) => ({ ...row }))
-      : snapshot.googleCalendars,
   }
   if (viewEquals(snapshot, next)) {
     return
@@ -301,7 +241,6 @@ export function unregisterCalendarMenuHost(): void {
     ...DEFAULT_VIEW,
     groups: [],
     calendars: [],
-    googleCalendars: [],
   }
   if (viewEquals(snapshot, empty)) {
     return
@@ -336,10 +275,6 @@ export function dispatchCalendarMenuAction(action: CalendarMenuAction): void {
     handlers.deleteCalendar?.(action.id)
     return
   }
-  if (action.type === 'toggle-google-calendar') {
-    handlers.toggleGoogleCalendar?.(action.id)
-    return
-  }
   switch (action.id) {
     case 'scope:personal':
       handlers.setMode?.('personal')
@@ -367,15 +302,6 @@ export function dispatchCalendarMenuAction(action: CalendarMenuAction): void {
       return
     case 'view:next':
       handlers.next?.()
-      return
-    case 'google:connect':
-      handlers.googleConnect?.()
-      return
-    case 'google:sync':
-      handlers.googleSync?.()
-      return
-    case 'google:disconnect':
-      handlers.googleDisconnect?.()
       return
     default:
       return

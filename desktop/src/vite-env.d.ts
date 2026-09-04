@@ -382,9 +382,6 @@ type CalendarMenuCommand =
   | 'view:today'
   | 'view:previous'
   | 'view:next'
-  | 'google:connect'
-  | 'google:sync'
-  | 'google:disconnect'
 
 type CalendarMenuAction =
   | { type: 'select-group'; groupId: string }
@@ -392,7 +389,6 @@ type CalendarMenuAction =
   | { type: 'toggle-calendar'; id: string }
   | { type: 'rename-calendar'; id: string }
   | { type: 'delete-calendar'; id: string }
-  | { type: 'toggle-google-calendar'; id: string }
   | { type: 'command'; id: CalendarMenuCommand }
 
 interface CalendarMenuGroup {
@@ -408,17 +404,9 @@ interface CalendarMenuCalendar {
   canDelete: boolean
 }
 
-interface CalendarMenuGoogleCalendar {
-  id: string
-  label: string
-  selected: boolean
-  enabled: boolean
-}
-
 interface CalendarMenuLabels {
   scope: string
   calendars: string
-  connection: string
   view: string
   personal: string
   group: string
@@ -438,12 +426,6 @@ interface CalendarMenuLabels {
   viewYear: string
   viewList: string
   viewFourDays: string
-  connect: string
-  connecting: string
-  reauth: string
-  sync: string
-  syncing: string
-  disconnect: string
 }
 
 interface CalendarMenuViewState {
@@ -454,12 +436,6 @@ interface CalendarMenuViewState {
   canCreate: boolean
   calendars: CalendarMenuCalendar[]
   selectedView: string
-  showConnectionMenu: boolean
-  googleEmail: string | null
-  googleConnecting: boolean
-  googleSyncing: boolean
-  googleNeedsReauth: boolean
-  googleCalendars: CalendarMenuGoogleCalendar[]
 }
 
 type TeamMenuCommand = 'period:current'

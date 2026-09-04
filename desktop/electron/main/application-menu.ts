@@ -47,7 +47,6 @@ import {
   type OrdersMenuViewState,
   type CalendarMenuAction,
   type CalendarMenuCalendar,
-  type CalendarMenuGoogleCalendar,
   type CalendarMenuGroup,
   type CalendarMenuLabels,
   type CalendarMenuViewState,
@@ -416,7 +415,6 @@ const DEFAULT_ORDERS_VIEW: OrdersMenuViewState = {
 const DEFAULT_CALENDAR_LABELS: CalendarMenuLabels = {
   scope: 'Scope',
   calendars: 'Calendars',
-  connection: 'Connection',
   view: 'View',
   personal: 'Personal',
   group: 'Group',
@@ -436,12 +434,6 @@ const DEFAULT_CALENDAR_LABELS: CalendarMenuLabels = {
   viewYear: 'Year',
   viewList: 'Schedule',
   viewFourDays: '4 days',
-  connect: 'Connect Google',
-  connecting: 'Waiting…',
-  reauth: 'Reconnect Google',
-  sync: 'Sync Google',
-  syncing: 'Syncing…',
-  disconnect: 'Disconnect',
 }
 
 const DEFAULT_CALENDAR_VIEW: CalendarMenuViewState = {
@@ -452,12 +444,6 @@ const DEFAULT_CALENDAR_VIEW: CalendarMenuViewState = {
   canCreate: false,
   calendars: [],
   selectedView: 'month-grid',
-  showConnectionMenu: false,
-  googleEmail: null,
-  googleConnecting: false,
-  googleSyncing: false,
-  googleNeedsReauth: false,
-  googleCalendars: [],
 }
 
 const DEFAULT_TEAM_LABELS: TeamMenuLabels = {
@@ -1729,37 +1715,6 @@ function sanitizeCalendarCalendars(value: unknown): CalendarMenuCalendar[] {
 }
 
 /**
- * Sanitizes renderer-provided Google calendar rows.
- * @param value - Candidate list.
- * @returns Valid Google calendar rows.
- */
-function sanitizeCalendarGoogleCalendars(value: unknown): CalendarMenuGoogleCalendar[] {
-  if (!Array.isArray(value)) {
-    return []
-  }
-  const calendars: CalendarMenuGoogleCalendar[] = []
-  for (const raw of value) {
-    if (!raw || typeof raw !== 'object') {
-      continue
-    }
-    const record = raw as Record<string, unknown>
-    if (typeof record.id !== 'string' || record.id.length === 0) {
-      continue
-    }
-    if (typeof record.label !== 'string' || record.label.length === 0) {
-      continue
-    }
-    calendars.push({
-      id: record.id,
-      label: record.label,
-      selected: Boolean(record.selected),
-      enabled: Boolean(record.enabled),
-    })
-  }
-  return calendars
-}
-
-/**
  * Sanitizes renderer-provided Calendar menu view state.
  * @param value - Candidate snapshot.
  * @returns View state, or undefined when missing.
@@ -1773,10 +1728,6 @@ function sanitizeCalendarView(value: unknown): CalendarMenuViewState | undefined
     typeof record.selectedGroupId === 'string' && record.selectedGroupId.length > 0
       ? record.selectedGroupId
       : null
-  const googleEmail =
-    typeof record.googleEmail === 'string' && record.googleEmail.length > 0
-      ? record.googleEmail
-      : null
   const selectedView =
     typeof record.selectedView === 'string' && record.selectedView.length > 0
       ? record.selectedView
@@ -1789,12 +1740,6 @@ function sanitizeCalendarView(value: unknown): CalendarMenuViewState | undefined
     canCreate: Boolean(record.canCreate),
     calendars: sanitizeCalendarCalendars(record.calendars),
     selectedView,
-    showConnectionMenu: Boolean(record.showConnectionMenu),
-    googleEmail,
-    googleConnecting: Boolean(record.googleConnecting),
-    googleSyncing: Boolean(record.googleSyncing),
-    googleNeedsReauth: Boolean(record.googleNeedsReauth),
-    googleCalendars: sanitizeCalendarGoogleCalendars(record.googleCalendars),
   }
 }
 
@@ -1811,7 +1756,7 @@ const CALENDAR_VIEW_RADIOS: Array<{
 ]
 
 /**
- * Builds native Calendar menus (Scope / Calendars / Connection / View).
+ * Builds native Calendar menus (Scope / Calendars / View).
  * @param labels - Translated item labels.
  * @param view - Live radios, checkboxes, and enablement.
  * @returns Menu template fragments.
@@ -1927,57 +1872,6 @@ function buildCalendarMenus(
       submenu: calendarItems,
     },
   ]
-
-  if (state.showConnectionMenu) {
-    const connectionItems: MenuItemConstructorOptions[] = []
-    if (state.googleEmail) {
-      connectionItems.push({
-        label: state.googleEmail,
-        enabled: false,
-      })
-      if (state.googleNeedsReauth) {
-        connectionItems.push({
-          label: state.googleConnecting ? labels.connecting : labels.reauth,
-          enabled: !state.googleConnecting,
-          click: () => sendCalendarAction({ type: 'command', id: 'google:connect' }),
-        })
-      } else {
-        for (const googleCalendar of state.googleCalendars) {
-          connectionItems.push({
-            label: googleCalendar.label,
-            type: 'checkbox',
-            checked: googleCalendar.selected,
-            enabled: googleCalendar.enabled,
-            click: () =>
-              sendCalendarAction({
-                type: 'toggle-google-calendar',
-                id: googleCalendar.id,
-              }),
-          })
-        }
-        connectionItems.push({
-          label: state.googleSyncing ? labels.syncing : labels.sync,
-          enabled: !state.googleSyncing,
-          click: () => sendCalendarAction({ type: 'command', id: 'google:sync' }),
-        })
-      }
-      connectionItems.push({
-        label: labels.disconnect,
-        enabled: !state.googleSyncing && !state.googleConnecting,
-        click: () => sendCalendarAction({ type: 'command', id: 'google:disconnect' }),
-      })
-    } else {
-      connectionItems.push({
-        label: state.googleConnecting ? labels.connecting : labels.connect,
-        enabled: !state.googleConnecting,
-        click: () => sendCalendarAction({ type: 'command', id: 'google:connect' }),
-      })
-    }
-    menus.push({
-      label: labels.connection,
-      submenu: connectionItems,
-    })
-  }
 
   menus.push({
     label: labels.view,

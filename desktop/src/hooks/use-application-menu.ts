@@ -233,7 +233,6 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
           ? {
               scope: t('calendar.menu.scope'),
               calendars: t('calendar.menu.calendars'),
-              connection: t('calendar.google.connectionMenu'),
               view: t('calendar.menu.view'),
               personal: t('calendar.scope.personal'),
               group: t('calendar.scope.group'),
@@ -253,12 +252,6 @@ export function useApplicationMenu(options: UseApplicationMenuOptions): void {
               viewYear: t('calendar.menu.year'),
               viewList: t('calendar.menu.list'),
               viewFourDays: t('calendar.menu.fourDays'),
-              connect: t('calendar.google.connect'),
-              connecting: t('calendar.google.connecting'),
-              reauth: t('calendar.google.reauth'),
-              sync: t('calendar.google.sync'),
-              syncing: t('calendar.google.syncing'),
-              disconnect: t('calendar.google.disconnect'),
             }
           : undefined,
       calendarView: screen === 'calendar' && localeReady ? calendarView : undefined,

@@ -5,8 +5,6 @@ import (
 	"mime"
 	"strings"
 	"time"
-
-	"github.com/fuyediao/powersource-workbench/backend/internal/shared/origin"
 )
 
 // mailAddr is a parsed email address with an optional display name, used in
@@ -81,28 +79,13 @@ func (h *Handler) hasMailAccountAccess(ctx context.Context, userID, mailAccountI
 	return false
 }
 
-func (h *Handler) originCfg() origin.Config {
-	return origin.Config{
-		AppPublicOriginAllowlist: h.env.AppPublicOriginAllowlist,
-		PublicOrigin:             h.env.AppPublicOrigin,
-		RedirectURIFallback:      h.env.GoogleRedirectURI,
-	}
-}
-
-func (h *Handler) allowedPublicOrigins() []string {
-	return h.originCfg().AllowedPublicOrigins()
-}
-
-func (h *Handler) appPublicOrigin() string {
-	return h.originCfg().AppPublicOrigin()
-}
-
-func (h *Handler) pickValidatedReturnOrigin(clientReturnOrigin string) string {
-	return h.originCfg().PickValidatedReturnOrigin(clientReturnOrigin)
-}
-
 func containsStr(list []string, value string) bool {
-	return origin.Contains(list, value)
+	for _, item := range list {
+		if item == value {
+			return true
+		}
+	}
+	return false
 }
 
 func nowISO() string { return time.Now().UTC().Format(time.RFC3339Nano) }

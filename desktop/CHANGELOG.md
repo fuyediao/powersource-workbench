@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Removed Gmail OAuth and Google Calendar connect/sync from Mail and Calendar. IMAP mailboxes and native calendars stay.
 - Ask, Harness, Mail, and Calendar keep the existing GeoCRM-shaped HTTP contracts; workbench-api on `api.powersource.work` now serves those routes.
 - Showed the Workbench username (`psxxxx`) as the profile employee id and hid the Auth placeholder email (`name@users.invalid`).
 - Removed the Settings Model Context Protocol page. Workbench has no first-party MCP server or access keys; Harness can still attach third-party MCP servers.

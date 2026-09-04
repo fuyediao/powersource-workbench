@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Removed Gmail mailbox linking and Google Calendar connect/sync. Mail still uses IMAP/SMTP. Calendar still stores events in Supabase.
 - Copied Ask, Harness, Mail, and Calendar backends onto workbench-api on `api.powersource.work`, plus curated SQL on `supabase.powersource.work` for profiles, history, leftover customers, Mail, and Calendar.
 - Showed the Workbench username (`psxxxx`) as the desktop profile employee id and hid the Auth placeholder email (`name@users.invalid`).
 - Removed the desktop Settings Model Context Protocol page. Workbench has no first-party MCP server or access keys; Harness can still attach third-party MCP servers.

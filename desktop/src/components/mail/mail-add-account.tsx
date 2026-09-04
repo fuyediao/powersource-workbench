@@ -8,7 +8,6 @@ import {
   CloseIcon,
   EyeIcon,
   EyeOffIcon,
-  GoogleIcon,
   MailIcon,
 } from '@/icons/AllIcons'
 import { getProviderPresets } from '@/services/mail-api'
@@ -52,10 +51,7 @@ interface MailAddAccountProps {
   open: boolean
   variant: 'onboarding' | 'add'
   error: string | null
-  isConnectingGmail: boolean
   onClose: () => void
-  onConnectGmail: () => Promise<boolean>
-  onCancelGmail: () => void
   onConnectImap: (
     provider: MailProvider,
     email: string,
@@ -73,10 +69,7 @@ export function MailAddAccount({
   open,
   variant,
   error,
-  isConnectingGmail,
   onClose,
-  onConnectGmail,
-  onCancelGmail,
   onConnectImap,
 }: MailAddAccountProps) {
   const { t } = useTranslation()
@@ -173,7 +166,6 @@ export function MailAddAccount({
         goToStep('welcome')
         return
       }
-      onCancelGmail()
       onClose()
       return
     }
@@ -187,16 +179,6 @@ export function MailAddAccount({
     }
     if (step === 'imap-servers') {
       goToStep('imap-name')
-    }
-  }
-
-  /**
-   * Starts Gmail OAuth and closes on success.
-   */
-  async function handleGmail(): Promise<void> {
-    const ok = await onConnectGmail()
-    if (ok) {
-      onClose()
     }
   }
 
@@ -244,7 +226,6 @@ export function MailAddAccount({
         className={`absolute inset-0 bg-mail-overlay backdrop-blur-sm ${backdropClass}`}
         aria-label={t('actions.close')}
         onClick={() => {
-          onCancelGmail()
           if (variant === 'add') {
             onClose()
           }
@@ -278,7 +259,6 @@ export function MailAddAccount({
               className="rounded-lg p-1 text-muted hover:bg-mail-row-hover hover:text-ink"
               aria-label={t('actions.close')}
               onClick={() => {
-                onCancelGmail()
                 onClose()
               }}
             >
@@ -313,23 +293,7 @@ export function MailAddAccount({
             <div className="flex flex-1 flex-col gap-2 pt-2">
               <button
                 type="button"
-                className="mail-provider-row flex items-center gap-4 rounded-xl px-3 py-3 text-left disabled:opacity-40"
-                disabled={isConnectingGmail}
-                onClick={() => void handleGmail()}
-              >
-                <span className="flex h-8 w-11 shrink-0 items-center justify-center">
-                  <GoogleIcon className="size-8" aria-hidden />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-mail-dialog-title">{t('mail.provider.gmail')}</span>
-                  <span className="block text-xs text-muted">{t('mail.provider.gmailHint')}</span>
-                </span>
-                <ChevronRightIcon className="size-4 shrink-0 text-muted" />
-              </button>
-              <button
-                type="button"
-                className="mail-provider-row flex items-center gap-4 rounded-xl px-3 py-3 text-left disabled:opacity-40"
-                disabled={isConnectingGmail}
+                className="mail-provider-row flex items-center gap-4 rounded-xl px-3 py-3 text-left"
                 onClick={() => startImapWizard('alibaba')}
               >
                 <span className="flex h-8 w-11 shrink-0 items-center justify-center">
@@ -343,8 +307,7 @@ export function MailAddAccount({
               </button>
               <button
                 type="button"
-                className="mail-provider-row flex items-center gap-4 rounded-xl px-3 py-3 text-left disabled:opacity-40"
-                disabled={isConnectingGmail}
+                className="mail-provider-row flex items-center gap-4 rounded-xl px-3 py-3 text-left"
                 onClick={() => startImapWizard('imap')}
               >
                 <span className="flex h-8 w-11 shrink-0 items-center justify-center">
@@ -356,9 +319,6 @@ export function MailAddAccount({
                 </span>
                 <ChevronRightIcon className="size-4 shrink-0 text-muted" />
               </button>
-              {isConnectingGmail ? (
-                <p className="mt-4 text-center text-sm font-medium text-muted">{t('mail.oauthWaiting')}</p>
-              ) : null}
               {error ? (
                 <p className="mt-3 rounded-lg bg-mail-danger-bg px-3 py-2 text-xs text-mail-danger">{error}</p>
               ) : null}

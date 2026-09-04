@@ -9,7 +9,6 @@ import (
 
 	"github.com/fuyediao/powersource-workbench/backend/internal/aihttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/auth"
-	"github.com/fuyediao/powersource-workbench/backend/internal/calendar"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
 	"github.com/fuyediao/powersource-workbench/backend/internal/mail"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
@@ -41,10 +40,6 @@ func New(ctx context.Context, env config.Env) http.Handler {
 	mailHandler := mail.New(env, sb)
 	r.Mount("/mail", mailHandler.Routes())
 	mailHandler.StartScheduler(ctx)
-
-	calendarHandler := calendar.New(env, sb)
-	r.Mount("/calendar", calendarHandler.Routes())
-	calendarHandler.StartWatchWorkers(ctx)
 
 	return r
 }

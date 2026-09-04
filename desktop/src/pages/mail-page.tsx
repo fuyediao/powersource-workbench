@@ -432,10 +432,7 @@ export function MailPage({ userId }: MailPageProps) {
           open
           variant="onboarding"
           error={mail.accountError}
-          isConnectingGmail={mail.isConnectingGmail}
           onClose={() => undefined}
-          onConnectGmail={mail.connectGmail}
-          onCancelGmail={mail.cancelGmailWait}
           onConnectImap={mail.connectImap}
         />
       </div>
@@ -796,10 +793,7 @@ export function MailPage({ userId }: MailPageProps) {
         open={addAccountOpen}
         variant="add"
         error={mail.accountError}
-        isConnectingGmail={mail.isConnectingGmail}
         onClose={() => setAddAccountOpen(false)}
-        onConnectGmail={mail.connectGmail}
-        onCancelGmail={mail.cancelGmailWait}
         onConnectImap={mail.connectImap}
       />
     </div>

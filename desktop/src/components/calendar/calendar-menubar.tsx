@@ -39,25 +39,6 @@ export interface CalendarMenubarProps {
   onImportIcs?: () => void
   /** Export visible calendar events as .ics. */
   onExportIcs?: () => void
-  /** Personal-scope Google Calendar link controls (omit on group). */
-  google?: {
-    email: string | null
-    isLoading: boolean
-    isConnecting: boolean
-    isSyncing: boolean
-    needsReauth: boolean
-    error: string | null
-    calendars: Array<{
-      id: string
-      summary: string
-      selected: boolean
-      accessRole: string
-    }>
-    onConnect: () => void
-    onSync: () => void
-    onToggleCalendar: (calendarId: string, selected: boolean) => void
-    onDisconnect: () => void
-  }
 }
 
 /**
@@ -83,16 +64,13 @@ export function CalendarMenubar({
   onChangeCalendarColor,
   onImportIcs,
   onExportIcs,
-  google,
 }: CalendarMenubarProps) {
   const { t } = useTranslation()
   const [groupMenuOpen, setGroupMenuOpen] = useState(false)
   const [calendarsMenuOpen, setCalendarsMenuOpen] = useState(false)
-  const [connectionMenuOpen, setConnectionMenuOpen] = useState(false)
   const [colorPickerId, setColorPickerId] = useState<string | null>(null)
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0, width: 176 })
   const [calendarsMenuPos, setCalendarsMenuPos] = useState({ top: 0, left: 0, width: 240 })
-  const [connectionMenuPos, setConnectionMenuPos] = useState({ top: 0, left: 0, width: 260 })
   const [calendarCtx, setCalendarCtx] = useState<{
     calendar: CalendarListRecord
     top: number
@@ -100,7 +78,6 @@ export function CalendarMenubar({
   } | null>(null)
   const groupMenuPresence = useDialogPresence(groupMenuOpen, 180)
   const calendarsMenuPresence = useDialogPresence(calendarsMenuOpen, 180)
-  const connectionMenuPresence = useDialogPresence(connectionMenuOpen, 180)
   const calendarCtxPresence = useDialogPresence(Boolean(calendarCtx), 180)
   const showGroupSwitcher = mode === 'group' && canSwitchGroups && switchableGroups.length > 0
   const groupSwitcherPresence = useDialogPresence(showGroupSwitcher, 200)
@@ -108,8 +85,6 @@ export function CalendarMenubar({
   const menuRef = useRef<HTMLUListElement>(null)
   const calendarsTriggerRef = useRef<HTMLButtonElement>(null)
   const calendarsMenuRef = useRef<HTMLDivElement>(null)
-  const connectionTriggerRef = useRef<HTMLButtonElement>(null)
-  const connectionMenuRef = useRef<HTMLDivElement>(null)
   const calendarCtxRef = useRef<HTMLUListElement>(null)
   const scopeTrackRef = useRef<HTMLDivElement>(null)
   const personalBtnRef = useRef<HTMLButtonElement>(null)
@@ -207,34 +182,6 @@ export function CalendarMenubar({
     }
     updateCalendarsMenuPosition()
   }, [calendarsMenuOpen, calendars.length])
-
-  /**
-   * Anchors the Google connection dropdown under its trigger (right-aligned).
-   * @returns Nothing.
-   */
-  function updateConnectionMenuPosition(): void {
-    const rect = connectionTriggerRef.current?.getBoundingClientRect()
-    if (!rect) {
-      return
-    }
-    const width = 280
-    const left = Math.min(
-      Math.max(8, Math.round(rect.right - width)),
-      window.innerWidth - width - 8,
-    )
-    setConnectionMenuPos({
-      top: Math.round(rect.bottom + 6),
-      left,
-      width,
-    })
-  }
-
-  useLayoutEffect(() => {
-    if (!connectionMenuOpen) {
-      return
-    }
-    updateConnectionMenuPosition()
-  }, [connectionMenuOpen, google?.email, google?.calendars.length])
 
   useLayoutEffect(() => {
     if (!groupMenuOpen) {
@@ -338,60 +285,6 @@ export function CalendarMenubar({
       window.removeEventListener('scroll', handleReposition, true)
     }
   }, [calendarsMenuOpen])
-
-  useEffect(() => {
-    if (!connectionMenuOpen) {
-      return
-    }
-    /**
-     * Closes connection menu on outside click.
-     * @param event - Pointer event.
-     * @returns Nothing.
-     */
-    function handlePointerDown(event: MouseEvent): void {
-      const target = event.target as Node
-      if (
-        connectionTriggerRef.current?.contains(target) ||
-        connectionMenuRef.current?.contains(target)
-      ) {
-        return
-      }
-      setConnectionMenuOpen(false)
-    }
-    /**
-     * Closes connection menu on Escape.
-     * @param event - Keyboard event.
-     * @returns Nothing.
-     */
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Escape') {
-        setConnectionMenuOpen(false)
-      }
-    }
-    /**
-     * Repositions on scroll/resize.
-     * @returns Nothing.
-     */
-    function handleReposition(): void {
-      updateConnectionMenuPosition()
-    }
-    document.addEventListener('mousedown', handlePointerDown)
-    document.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('resize', handleReposition)
-    window.addEventListener('scroll', handleReposition, true)
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown)
-      document.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('resize', handleReposition)
-      window.removeEventListener('scroll', handleReposition, true)
-    }
-  }, [connectionMenuOpen])
-
-  useEffect(() => {
-    if (mode !== 'personal') {
-      setConnectionMenuOpen(false)
-    }
-  }, [mode])
 
   useEffect(() => {
     if (!calendarCtx) {
@@ -624,7 +517,6 @@ export function CalendarMenubar({
           aria-haspopup="menu"
           onClick={() => {
             setCalendarsMenuOpen((open) => !open)
-            setConnectionMenuOpen(false)
             setCalendarCtx(null)
             setColorPickerId(null)
           }}
@@ -640,31 +532,6 @@ export function CalendarMenubar({
             aria-hidden
           />
         </button>
-        {mode === 'personal' && google ? (
-          <button
-            ref={connectionTriggerRef}
-            type="button"
-            className="inline-flex max-w-40 items-center gap-1 rounded-full bg-ink/5 px-2.5 py-1 text-xs font-semibold text-ink transition hover:bg-ink/8"
-            aria-expanded={connectionMenuOpen}
-            aria-haspopup="menu"
-            title={google.email ?? undefined}
-            onClick={() => {
-              setConnectionMenuOpen((open) => !open)
-              setCalendarsMenuOpen(false)
-              setCalendarCtx(null)
-              setColorPickerId(null)
-            }}
-          >
-            <span className="truncate">{t('calendar.google.connectionMenu')}</span>
-            <ChevronDownIcon
-              className={[
-                'size-3.5 shrink-0 text-muted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
-                connectionMenuOpen ? 'rotate-180' : '',
-              ].join(' ')}
-              aria-hidden
-            />
-          </button>
-        ) : null}
         {capabilities.readOnly ? (
           <span className="text-[11px] font-medium text-muted">{t('calendar.readOnly')}</span>
         ) : null}
@@ -818,156 +685,6 @@ export function CalendarMenubar({
                 >
                   {t('calendar.ics.export')}
                 </button>
-              ) : null}
-            </div>,
-            document.body,
-          )
-        : null}
-
-      {connectionMenuPresence.mounted && mode === 'personal' && google
-        ? createPortal(
-            <div
-              ref={connectionMenuRef}
-              role="menu"
-              className={[
-                'fixed z-100 max-h-[min(70dvh,24rem)] origin-top overflow-y-auto rounded-2xl border border-zinc-950/10 bg-white py-1 shadow-xl dark:border-white/10 dark:bg-zinc-900',
-                connectionMenuPresence.leaving
-                  ? 'animate-dropdown-out'
-                  : 'animate-dropdown-in',
-              ].join(' ')}
-              style={{
-                top: connectionMenuPos.top,
-                left: connectionMenuPos.left,
-                width: connectionMenuPos.width,
-              }}
-            >
-              <p className="px-3 pt-2 pb-1 text-[10px] font-bold tracking-wide text-muted uppercase">
-                {t('calendar.google.section')}
-              </p>
-              {google.email ? (
-                <>
-                  <p
-                    className="truncate px-3 py-1 text-[11px] font-medium text-muted"
-                    title={google.email}
-                  >
-                    {google.email}
-                  </p>
-                  {google.needsReauth ? (
-                    <button
-                      type="button"
-                      role="menuitem"
-                      disabled={google.isConnecting}
-                      className="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-ink transition hover:bg-ink/5 disabled:opacity-50"
-                      onClick={() => {
-                        setConnectionMenuOpen(false)
-                        google.onConnect()
-                      }}
-                    >
-                      {google.isConnecting
-                        ? t('calendar.google.connecting')
-                        : t('calendar.google.reauth')}
-                    </button>
-                  ) : (
-                    <>
-                      {google.calendars.length > 0 ? (
-                        <div className="max-h-40 overflow-y-auto border-y border-ink/5 py-1">
-                          <p className="px-3 pb-1 text-[10px] font-semibold text-muted">
-                            {t('calendar.google.calendarsHeading')}
-                          </p>
-                          {google.calendars.map((item) => {
-                            const canSelect =
-                              item.accessRole === 'owner' ||
-                              item.accessRole === 'writer' ||
-                              item.accessRole === 'reader'
-                            const readOnlyRole =
-                              item.accessRole === 'reader' ||
-                              item.accessRole === 'freeBusyReader'
-                            return (
-                              <label
-                                key={item.id}
-                                className={[
-                                  'flex items-center gap-2 px-3 py-1.5 text-xs text-ink',
-                                  canSelect
-                                    ? 'cursor-pointer hover:bg-ink/5'
-                                    : 'cursor-not-allowed opacity-50',
-                                ].join(' ')}
-                                title={
-                                  readOnlyRole && canSelect
-                                    ? t('calendar.google.readOnlyCalendar')
-                                    : undefined
-                                }
-                              >
-                                <input
-                                  type="checkbox"
-                                  className="size-3.5 accent-brand"
-                                  checked={item.selected}
-                                  disabled={!canSelect}
-                                  onChange={(event) => {
-                                    google.onToggleCalendar(item.id, event.target.checked)
-                                  }}
-                                />
-                                <span className="min-w-0 flex-1 truncate font-medium">
-                                  {item.summary}
-                                </span>
-                              </label>
-                            )
-                          })}
-                        </div>
-                      ) : null}
-                      <button
-                        type="button"
-                        role="menuitem"
-                        disabled={google.isSyncing}
-                        className="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-ink transition hover:bg-ink/5 disabled:opacity-50"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          google.onSync()
-                        }}
-                      >
-                        {google.isSyncing
-                          ? t('calendar.google.syncing')
-                          : t('calendar.google.sync')}
-                      </button>
-                    </>
-                  )}
-                  <button
-                    type="button"
-                    role="menuitem"
-                    disabled={google.isSyncing || google.isConnecting}
-                    className="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-muted transition hover:bg-ink/5 hover:text-ink disabled:opacity-50"
-                    title={t('calendar.google.disconnectHint')}
-                    onClick={() => {
-                      setConnectionMenuOpen(false)
-                      google.onDisconnect()
-                    }}
-                  >
-                    {t('calendar.google.disconnect')}
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  role="menuitem"
-                  disabled={google.isConnecting || google.isLoading}
-                  className="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-ink transition hover:bg-ink/5 disabled:opacity-50"
-                  onClick={() => {
-                    setConnectionMenuOpen(false)
-                    google.onConnect()
-                  }}
-                >
-                  {google.isConnecting
-                    ? t('calendar.google.connecting')
-                    : t('calendar.google.connect')}
-                </button>
-              )}
-              {google.error ? (
-                <p
-                  className="px-3 py-1 text-[10px] font-medium text-rose-500"
-                  title={google.error}
-                >
-                  {t('calendar.google.error')}
-                </p>
               ) : null}
             </div>,
             document.body,

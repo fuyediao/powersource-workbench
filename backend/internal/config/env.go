@@ -19,11 +19,9 @@ type Env struct {
 	AppPublicOrigin          string
 	AppPublicOriginAllowlist string
 
-	GoogleClientID            string
-	GoogleClientSecret        string
-	GoogleRedirectURI         string
-	GoogleCalendarRedirectURI string
-	GoogleCalendarWebhookURL  string
+	GoogleClientID     string
+	GoogleClientSecret string
+	GoogleRedirectURI  string
 
 	HermesProfilesRoot  string
 	HermesOrgSkillsRoot string
@@ -52,11 +50,9 @@ func Load() Env {
 		AppPublicOrigin:          strings.TrimRight(strings.TrimSpace(os.Getenv("APP_PUBLIC_ORIGIN")), "/"),
 		AppPublicOriginAllowlist: strings.TrimSpace(os.Getenv("APP_PUBLIC_ORIGIN_ALLOWLIST")),
 
-		GoogleClientID:            strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID")),
-		GoogleClientSecret:        strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_SECRET")),
-		GoogleRedirectURI:         strings.TrimSpace(os.Getenv("GOOGLE_REDIRECT_URI")),
-		GoogleCalendarRedirectURI: strings.TrimSpace(os.Getenv("GOOGLE_CALENDAR_REDIRECT_URI")),
-		GoogleCalendarWebhookURL:  strings.TrimSpace(os.Getenv("GOOGLE_CALENDAR_WEBHOOK_URL")),
+		GoogleClientID:     strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID")),
+		GoogleClientSecret: strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_SECRET")),
+		GoogleRedirectURI:  strings.TrimSpace(os.Getenv("GOOGLE_REDIRECT_URI")),
 
 		HermesProfilesRoot:  strings.TrimSpace(os.Getenv("HERMES_PROFILES_ROOT")),
 		HermesOrgSkillsRoot: strings.TrimSpace(os.Getenv("HERMES_ORG_SKILLS_ROOT")),
