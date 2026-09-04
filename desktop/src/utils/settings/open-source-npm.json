@@ -1,10 +1,5 @@
 [
   {
-    "name": "@blocksuite/affine",
-    "license": "MIT",
-    "homepage": ""
-  },
-  {
     "name": "@dnd-kit/core",
     "license": "MIT",
     "homepage": "https://github.com/clauderic/dnd-kit"
@@ -63,11 +58,6 @@
     "name": "@supabase/supabase-js",
     "license": "MIT",
     "homepage": "https://github.com/supabase/supabase-js/tree/master/packages/core/supabase-js"
-  },
-  {
-    "name": "@toeverything/theme",
-    "license": "SEE PACKAGE",
-    "homepage": "toeverything/design"
   },
   {
     "name": "@viz-js/viz",
@@ -180,21 +170,6 @@
     "homepage": "git://github.com/mourner/kdbush"
   },
   {
-    "name": "leaflet",
-    "license": "BSD-2-Clause",
-    "homepage": "https://leafletjs.com/"
-  },
-  {
-    "name": "leaflet.markercluster",
-    "license": "MIT",
-    "homepage": "https://github.com/Leaflet/Leaflet.markercluster"
-  },
-  {
-    "name": "lit",
-    "license": "BSD-3-Clause",
-    "homepage": "https://lit.dev/"
-  },
-  {
     "name": "lodash-es",
     "license": "MIT",
     "homepage": "https://lodash.com/custom-builds"
@@ -213,11 +188,6 @@
     "name": "mermaid",
     "license": "MIT",
     "homepage": "https://github.com/mermaid-js/mermaid"
-  },
-  {
-    "name": "monaco-editor",
-    "license": "MIT",
-    "homepage": "https://github.com/microsoft/monaco-editor"
   },
   {
     "name": "nanoid",
@@ -353,15 +323,5 @@
     "name": "unist-util-visit",
     "license": "MIT",
     "homepage": "syntax-tree/unist-util-visit"
-  },
-  {
-    "name": "y-protocols",
-    "license": "MIT",
-    "homepage": "https://github.com/yjs/y-protocols#readme"
-  },
-  {
-    "name": "yjs",
-    "license": "MIT",
-    "homepage": "https://docs.yjs.dev"
   }
 ]
