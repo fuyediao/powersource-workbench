@@ -1,11 +1,4 @@
 {
-  "linkedAccounts": {
-    "google": "Google",
-    "googleConnected": "Connected",
-    "googleDescription": "Link your Google account to sign in with Google after using your company email.",
-    "linkButton": "Link Google Account",
-    "linkFailed": "Failed to link Google account. Manual linking may be disabled on the server, or this Google account is already linked to another user."
-  },
   "password": {
     "changePassword": "Change Password",
     "confirm": "Confirm New Password",

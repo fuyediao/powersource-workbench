@@ -1,15 +1,10 @@
 {
   "avatar": {
-    "restoreGoogle": "恢復 Google 頭像",
     "upload": "上傳頭像"
   },
   "bio": "個人簡介",
   "displayName": "顯示名稱",
   "email": "電子郵件",
-  "emailDisplayChoice": "顯示用郵箱",
-  "emailOptionPrimary": "{{email}}（主要）",
-  "emailOptionGoogle": "{{email}}（Google）",
-  "useGoogleName": "使用 Google 名稱：{{name}}",
   "edit": "編輯",
   "employeeId": "工號",
   "organization": {

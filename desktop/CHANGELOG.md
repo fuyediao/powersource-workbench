@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.
 - Locked Calendar to the signed-in user's personal calendars and removed the Personal/Group switcher.
 - Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.
 - Removed Gmail OAuth and Google Calendar connect/sync from Mail and Calendar. IMAP mailboxes and native calendars stay.

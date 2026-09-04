@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import {
   createProfile,
-  deleteProfileAvatar,
   fetchProfile,
   fetchWorkUsername,
   uploadProfileAvatar,
@@ -40,10 +39,6 @@ export function useProfile(
   const [avatarUrl, setAvatarUrl] = useState('')
   const [employeeId, setEmployeeId] = useState('')
   const [oauthAvatarUrl, setOauthAvatarUrl] = useState('')
-  const [primaryAuthEmail, setPrimaryAuthEmail] = useState('')
-  const [googleIdentityEmail, setGoogleIdentityEmail] = useState('')
-  const [googleIdentityName, setGoogleIdentityName] = useState('')
-  const [isGoogleUser, setIsGoogleUser] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [isAvatarUploading, setIsAvatarUploading] = useState(false)
@@ -84,24 +79,6 @@ export function useProfile(
       const oauthImg = (meta?.picture ?? meta?.avatar_url) as string | undefined
       if (oauthImg?.trim()) {
         setOauthAvatarUrl(oauthImg.trim())
-      }
-      setPrimaryAuthEmail(publicContactEmail(user.email))
-      const googleIdentity = user.identities?.find((identity) => identity.provider === 'google') as
-        | { identity_data?: Record<string, unknown> | null }
-        | undefined
-      setIsGoogleUser(Boolean(googleIdentity))
-      const gData = googleIdentity?.identity_data
-      const gEmail = typeof gData?.email === 'string' ? gData.email.trim() : ''
-      const gName =
-        typeof gData?.full_name === 'string'
-          ? gData.full_name.trim()
-          : typeof gData?.name === 'string'
-            ? gData.name.trim()
-            : ''
-      setGoogleIdentityEmail(gEmail)
-      setGoogleIdentityName(gName)
-      if (typeof gData?.picture === 'string' && gData.picture.trim()) {
-        setOauthAvatarUrl(gData.picture.trim())
       }
 
       const workUsername = (await fetchWorkUsername(user.id)) || usernameFromAuthUser(user)
@@ -159,7 +136,7 @@ export function useProfile(
   }
 
   /**
-   * Persists display name, bio, phone, and current email choice.
+   * Persists display name, bio, phone, and contact email.
    * @returns True on success.
    */
   async function saveProfile(): Promise<boolean> {
@@ -212,27 +189,6 @@ export function useProfile(
     flashSaveSuccess()
   }
 
-  /**
-   * Restores the Google OAuth avatar and clears custom storage object.
-   * @returns Nothing.
-   */
-  async function restoreGoogleAvatar(): Promise<void> {
-    if (!user || !oauthAvatarUrl) {
-      return
-    }
-    await deleteProfileAvatar(user.id)
-    await upsertProfileFields(user.id, { avatar_url: oauthAvatarUrl, avatar_index: null })
-    setAvatarUrl(oauthAvatarUrl)
-    flashSaveSuccess()
-  }
-
-  const canChooseDisplayEmail = Boolean(
-    primaryAuthEmail &&
-      googleIdentityEmail &&
-      primaryAuthEmail.trim().toLowerCase() !== googleIdentityEmail.trim().toLowerCase(),
-  )
-
-  const hasCustomUpload = Boolean(avatarUrl && avatarUrl !== oauthAvatarUrl)
   const displayAvatarUrl = avatarUrl || oauthAvatarUrl || null
 
   return {
@@ -245,30 +201,16 @@ export function useProfile(
     phoneCountry,
     setPhoneCountry,
     email,
-    setEmail,
     avatarUrl: displayAvatarUrl,
     employeeId,
-    oauthAvatarUrl,
-    primaryAuthEmail,
-    googleIdentityEmail,
-    googleIdentityName,
-    isGoogleUser,
     isLoading,
     isSaving,
     isAvatarUploading,
     saveSuccess,
     saveError,
     organizationLabel,
-    canChooseDisplayEmail,
-    hasCustomUpload,
     saveProfile,
     reloadProfile,
     uploadAvatar,
-    restoreGoogleAvatar,
-    applyGoogleName: () => {
-      if (googleIdentityName) {
-        setDisplayName(googleIdentityName)
-      }
-    },
   }
 }

@@ -1,11 +1,4 @@
 {
-  "linkedAccounts": {
-    "google": "Google",
-    "googleConnected": "已連結",
-    "googleDescription": "綁定 Google 帳號後，即可在使用公司郵箱後再以 Google 登入。",
-    "linkButton": "連結 Google 帳號",
-    "linkFailed": "連結 Google 帳號失敗。伺服器可能未啟用手動連結，或此 Google 帳號已連結到其他用戶。"
-  },
   "password": {
     "changePassword": "修改密碼",
     "confirm": "確認新密碼",

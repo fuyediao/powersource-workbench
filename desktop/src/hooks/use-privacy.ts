@@ -1,41 +1,27 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
-import { AUTH_DEEP_LINK_URI } from '@/shared/ipc'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
-import { openExternalUrl } from '@/utils/shared/api'
 
 const PASSWORD_MIN_LENGTH = 8
 
 /**
- * Privacy settings: password and Google account link.
+ * Privacy settings: login password.
  * @param user - Signed-in Supabase user.
  * @returns Privacy state and actions.
  */
 export function usePrivacy(user: User | null | undefined) {
   const [hasPasswordSet, setHasPasswordSet] = useState(false)
-  const [hasGoogleLinked, setHasGoogleLinked] = useState(false)
-  const [googleEmail, setGoogleEmail] = useState('')
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null)
   const [isPasswordSaving, setIsPasswordSaving] = useState(false)
-  const [googleLinkError, setGoogleLinkError] = useState<string | null>(null)
-  const [isLinkingGoogle, setIsLinkingGoogle] = useState(false)
 
   const refreshIdentities = useCallback(() => {
     if (!user) {
       setHasPasswordSet(false)
-      setHasGoogleLinked(false)
-      setGoogleEmail('')
       return
     }
     const meta = user.user_metadata as Record<string, unknown> | undefined
     setHasPasswordSet(Boolean(meta?.password_set) || user.app_metadata?.provider === 'email')
-    const google = user.identities?.find((identity) => identity.provider === 'google') as
-      | { identity_data?: Record<string, unknown> | null }
-      | undefined
-    setHasGoogleLinked(Boolean(google))
-    const gEmail = google?.identity_data?.email
-    setGoogleEmail(typeof gEmail === 'string' ? gEmail : '')
     if (user.identities?.some((identity) => identity.provider === 'email')) {
       setHasPasswordSet(true)
     }
@@ -122,54 +108,13 @@ export function usePrivacy(user: User | null | undefined) {
     }
   }
 
-  /**
-   * Starts Google identity linking via system browser + deep link.
-   * @returns Nothing.
-   */
-  async function linkGoogleAccount(): Promise<void> {
-    if (!isSupabaseConfigured || !supabase) {
-      setGoogleLinkError('not_configured')
-      return
-    }
-    setIsLinkingGoogle(true)
-    setGoogleLinkError(null)
-    try {
-      const { data, error } = await supabase.auth.linkIdentity({
-        provider: 'google',
-        options: {
-          redirectTo: AUTH_DEEP_LINK_URI,
-          skipBrowserRedirect: true,
-        },
-      })
-      if (error) {
-        setGoogleLinkError(error.message)
-        return
-      }
-      const url = data?.url
-      if (!url) {
-        setGoogleLinkError('link_failed')
-        return
-      }
-      await openExternalUrl(url)
-    } catch (err) {
-      setGoogleLinkError(err instanceof Error ? err.message : 'link_failed')
-    } finally {
-      setIsLinkingGoogle(false)
-    }
-  }
-
   return {
     hasPasswordSet,
-    hasGoogleLinked,
-    googleEmail,
     passwordError,
     passwordSuccess,
     isPasswordSaving,
-    googleLinkError,
-    isLinkingGoogle,
     passwordMinLength: PASSWORD_MIN_LENGTH,
     setPassword,
     changePassword,
-    linkGoogleAccount,
   }
 }

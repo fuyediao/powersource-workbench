@@ -1,11 +1,4 @@
 {
-  "linkedAccounts": {
-    "google": "Google",
-    "googleConnected": "已链接",
-    "googleDescription": "绑定 Google 账户后，即可在使用公司邮箱后再以 Google 登录。",
-    "linkButton": "链接 Google 账户",
-    "linkFailed": "链接 Google 账户失败。服务器可能未启用手动链接，或此 Google 账户已链接到其他用户。"
-  },
   "password": {
     "changePassword": "修改密码",
     "confirm": "确认新密码",

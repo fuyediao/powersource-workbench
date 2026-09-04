@@ -269,7 +269,7 @@ export function ChatPage({ userId, user }: ChatPageProps) {
                   </div>
                 </div>
               ) : (
-                <p className="px-3 py-6 text-center text-sm text-muted">{t('chat.ui.noHistory')}</p>
+                <p className="px-3 py-6 text-center text-sm text-muted">{t('chat.noHistory')}</p>
               )}
               {showHistorySearch && filteredHistory.length === 0 && sidebarSearchQuery.trim() ? (
                 <p className="px-3 text-center text-sm text-muted">

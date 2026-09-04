@@ -8,7 +8,7 @@ interface PrivacySectionProps {
 }
 
 /**
- * Privacy & security: password and Google account link.
+ * Privacy & security: login password.
  * @param props - Signed-in user.
  * @returns Privacy settings UI.
  */
@@ -99,35 +99,6 @@ export function PrivacySection({ user }: PrivacySectionProps) {
             {t('settings.privacy.password.errors.mismatch')}
           </p>
         ) : null}
-      </section>
-
-      <section className="space-y-3">
-        <p className="text-xs font-semibold text-muted">{t('settings.privacy.linkedAccounts.google')}</p>
-        {privacy.hasGoogleLinked ? (
-          <p className="text-sm text-brand">
-            {t('settings.privacy.linkedAccounts.googleConnected')}
-            {privacy.googleEmail ? ` · ${privacy.googleEmail}` : ''}
-          </p>
-        ) : (
-          <>
-            <p className="text-sm text-muted">{t('settings.privacy.linkedAccounts.googleDescription')}</p>
-            <button
-              type="button"
-              className="rounded-2xl bg-brand/10 px-4 py-2.5 text-sm font-bold text-brand transition hover:bg-brand/15 disabled:opacity-50"
-              disabled={privacy.isLinkingGoogle}
-              onClick={() => {
-                void privacy.linkGoogleAccount()
-              }}
-            >
-              {t('settings.privacy.linkedAccounts.linkButton')}
-            </button>
-            {privacy.googleLinkError ? (
-              <p className="text-sm font-semibold text-red-500">
-                {t('settings.privacy.linkedAccounts.linkFailed')}
-              </p>
-            ) : null}
-          </>
-        )}
       </section>
     </div>
   )

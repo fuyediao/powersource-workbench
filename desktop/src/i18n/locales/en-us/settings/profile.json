@@ -1,15 +1,10 @@
 {
   "avatar": {
-    "restoreGoogle": "Restore Google avatar",
     "upload": "Upload Avatar"
   },
   "bio": "Bio",
   "displayName": "Display Name",
   "email": "Email",
-  "emailDisplayChoice": "Display email",
-  "emailOptionPrimary": "{{email}} (primary)",
-  "emailOptionGoogle": "{{email}} (Google)",
-  "useGoogleName": "Use Google name: {{name}}",
   "edit": "Edit",
   "employeeId": "Employee ID",
   "organization": {
