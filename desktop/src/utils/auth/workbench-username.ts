@@ -38,6 +38,40 @@ export function publicContactEmail(email: string | null | undefined): string {
   return trimmed
 }
 
+/** Workbench employee-id usernames (`ps0000`, `ps1234`). */
+const WORKBENCH_EMPLOYEE_ID_RE = /^ps\d+$/i
+
+/**
+ * Returns whether a string is a Workbench employee-id username, not a personal name.
+ * @param value - Candidate display name or username.
+ * @returns True for `ps` plus digits.
+ */
+export function isWorkbenchEmployeeId(value: string | null | undefined): boolean {
+  return Boolean(value && WORKBENCH_EMPLOYEE_ID_RE.test(value.trim()))
+}
+
+/**
+ * Returns whether a string is this user's login username (employee id).
+ * Used so greetings and profile name fields never treat `ps0000` as a person name.
+ * @param value - Candidate display name.
+ * @param user - Signed-in Supabase user, when known.
+ * @returns True when the value is the login id.
+ */
+export function isLoginUsernameNotPersonName(
+  value: string | null | undefined,
+  user?: User | null | undefined,
+): boolean {
+  const trimmed = value?.trim() ?? ''
+  if (!trimmed) {
+    return false
+  }
+  if (isWorkbenchEmployeeId(trimmed)) {
+    return true
+  }
+  const login = usernameFromAuthUser(user)
+  return Boolean(login) && trimmed.toLowerCase() === login
+}
+
 /**
  * Resolves the Workbench login username from Auth metadata or the placeholder email.
  * @param user - Signed-in Supabase user.

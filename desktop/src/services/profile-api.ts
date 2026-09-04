@@ -68,25 +68,38 @@ export async function fetchProfile(userId: string): Promise<ProfileRow | null> {
 }
 
 /**
+ * Loads the Workbench login username and person name for the signed-in user.
+ * @param userId - Auth user id.
+ * @returns Username and display name (empty strings when missing).
+ */
+export async function fetchWorkProfileIdentity(
+  userId: string,
+): Promise<{ username: string; displayName: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { username: '', displayName: '' }
+  }
+  const { data, error } = await supabase
+    .from('work_profiles')
+    .select('username, display_name')
+    .eq('id', userId)
+    .maybeSingle()
+  if (error) {
+    console.error('fetchWorkProfileIdentity', error)
+    return { username: '', displayName: '' }
+  }
+  const username = typeof data?.username === 'string' ? data.username.trim().toLowerCase() : ''
+  const displayName = typeof data?.display_name === 'string' ? data.display_name.trim() : ''
+  return { username, displayName }
+}
+
+/**
  * Loads the Workbench login username for the signed-in user.
  * @param userId - Auth user id.
  * @returns Username, or empty when missing.
  */
 export async function fetchWorkUsername(userId: string): Promise<string> {
-  if (!isSupabaseConfigured || !supabase) {
-    return ''
-  }
-  const { data, error } = await supabase
-    .from('work_profiles')
-    .select('username')
-    .eq('id', userId)
-    .maybeSingle()
-  if (error) {
-    console.error('fetchWorkUsername', error)
-    return ''
-  }
-  const username = data?.username
-  return typeof username === 'string' ? username.trim().toLowerCase() : ''
+  const identity = await fetchWorkProfileIdentity(userId)
+  return identity.username
 }
 
 /**

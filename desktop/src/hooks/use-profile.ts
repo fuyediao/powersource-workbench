@@ -3,11 +3,12 @@ import type { User } from '@supabase/supabase-js'
 import {
   createProfile,
   fetchProfile,
-  fetchWorkUsername,
+  fetchWorkProfileIdentity,
   uploadProfileAvatar,
   upsertProfileFields,
 } from '@/services/profile-api'
 import { publicContactEmail, usernameFromAuthUser } from '@/utils/auth/workbench-username'
+import { personNameOrEmpty, resolveUserDisplayName } from '@/utils/shared/user-profile'
 import type { UserRole } from '@/types/crm-settings'
 import type { GroupRecord } from '@/services/groups-api'
 import { resolvePhoneCountryIso } from '@/utils/settings/phone-number-parts'
@@ -81,23 +82,25 @@ export function useProfile(
         setOauthAvatarUrl(oauthImg.trim())
       }
 
-      const workUsername = (await fetchWorkUsername(user.id)) || usernameFromAuthUser(user)
+      const work = await fetchWorkProfileIdentity(user.id)
+      const workUsername = work.username || usernameFromAuthUser(user)
       let row = await fetchProfile(user.id)
       if (!row) {
-        const seedName =
-          (meta?.display_name as string | undefined) ??
-          (meta?.full_name as string | undefined) ??
-          workUsername
         row = await createProfile({
           id: user.id,
           email: publicContactEmail(user.email) || null,
-          displayName: seedName,
+          displayName:
+            personNameOrEmpty(work.displayName, user) || resolveUserDisplayName(user) || null,
           avatarUrl: oauthImg ?? null,
           employeeId: workUsername || null,
         })
       }
       if (row) {
-        setDisplayName(row.display_name ?? '')
+        setDisplayName(
+          personNameOrEmpty(row.display_name, user) ||
+            personNameOrEmpty(row.full_name, user) ||
+            personNameOrEmpty(work.displayName, user),
+        )
         setEmail(publicContactEmail(row.email))
         setBio(row.bio ?? '')
         setPhoneNumber(row.phone_number ?? '')
@@ -105,7 +108,7 @@ export function useProfile(
         setAvatarUrl(row.avatar_url ?? '')
         setEmployeeId(workUsername || row.employee_id || '')
       } else {
-        setDisplayName((meta?.display_name as string | undefined) ?? (meta?.full_name as string | undefined) ?? '')
+        setDisplayName(personNameOrEmpty(work.displayName, user) || resolveUserDisplayName(user))
         setEmail('')
         setEmployeeId(workUsername)
       }

@@ -58,8 +58,8 @@ import {
   subscribeAskAiSearch,
   takePendingAskAiSearchQuery,
 } from '@/utils/ask-ai/ask-ai-search-request'
-import { usernameFromAuthUser } from '@/utils/auth/workbench-username'
-import { resolveUserAvatarUrl, resolveUserDisplayName } from '@/utils/shared/user-profile'
+import { useProfileDisplayName } from '@/hooks/use-profile-display-name'
+import { givenNameForGreeting, resolveUserAvatarUrl } from '@/utils/shared/user-profile'
 import {
   BotIcon,
   ChevronDownIcon,
@@ -126,17 +126,6 @@ export interface ChatMainPaneHandle {
 }
 
 /**
- * Returns the first token of a display name for welcome copy.
- *
- * @param fullName - User full name from metadata
- * @returns Given name or empty string
- */
-function getWelcomeGivenName(fullName: string | undefined): string {
-  if (!fullName?.trim()) return ''
-  return fullName.trim().split(/\s+/)[0] ?? ''
-}
-
-/**
  * Returns whether microphone capture for voice-to-text is available.
  *
  * @returns True when MediaRecorder + getUserMedia can run
@@ -182,7 +171,7 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   const { addHistory, updateHistory } = useChatHistory()
   const nativeApplicationMenu = Boolean(window.workbench?.window?.usesNativeApplicationMenu)
 
-  const displayName = resolveUserDisplayName(user, user.email ?? '')
+  const displayName = useProfileDisplayName(user)
   const avatarUrl = resolveUserAvatarUrl(user)
   const [avatarError, setAvatarError] = useState(false)
 
@@ -808,8 +797,7 @@ export const ChatMainPane = forwardRef<ChatMainPaneHandle, ChatMainPaneProps>(fu
   )
 
   const currentModeEntry = MODES.find((x) => x.id === mode)
-  const welcomeName =
-    getWelcomeGivenName(displayName) || usernameFromAuthUser(user) || t('chat.welcome.guest')
+  const welcomeName = givenNameForGreeting(displayName, user) || t('chat.welcome.guest')
   const welcomeDescription =
     t(mode === 'quick' ? 'chat.welcome.descriptionQuick' : 'chat.welcome.descriptionThink')
   const WelcomeIcon = MessageSquareIcon

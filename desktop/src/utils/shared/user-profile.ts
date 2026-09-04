@@ -1,5 +1,8 @@
 import type { User } from '@supabase/supabase-js'
-import { publicContactEmail, usernameFromAuthUser } from '@/utils/auth/workbench-username'
+import {
+  isLoginUsernameNotPersonName,
+  publicContactEmail,
+} from '@/utils/auth/workbench-username'
 
 /**
  * Reads the first non-empty string from OAuth / user metadata candidates.
@@ -17,6 +20,24 @@ function firstString(...values: unknown[]): string | null {
     }
   }
   return null
+}
+
+/**
+ * Returns a personal name, or empty when the value is missing or a login username.
+ *
+ * @param value - Stored or metadata name
+ * @param user - Signed-in user, used to reject the employee-id username
+ * @returns Trimmed person name, or empty
+ */
+export function personNameOrEmpty(
+  value: string | null | undefined,
+  user?: User | null | undefined,
+): string {
+  const trimmed = value?.trim() ?? ''
+  if (!trimmed || isLoginUsernameNotPersonName(trimmed, user)) {
+    return ''
+  }
+  return trimmed
 }
 
 /**
@@ -39,11 +60,12 @@ export function resolveUserAvatarUrl(user: User | null | undefined): string | nu
 }
 
 /**
- * Resolves a display name from OAuth metadata, falling back to the email local-part.
+ * Resolves a personal display name from OAuth metadata or a real contact email local-part.
+ * Never uses the Workbench login username (employee id).
  *
  * @param user - Signed-in Supabase user
  * @param fallbackEmail - Email string when metadata has no name
- * @returns Display name for the account panel
+ * @returns Person name, or empty when only a login id is available
  */
 export function resolveUserDisplayName(
   user: User | null | undefined,
@@ -51,24 +73,34 @@ export function resolveUserDisplayName(
 ): string {
   const meta = user?.user_metadata as Record<string, unknown> | undefined
   const identityData = user?.identities?.[0]?.identity_data as Record<string, unknown> | undefined
-  const named = firstString(
-    meta?.display_name,
-    meta?.full_name,
-    meta?.name,
-    meta?.username,
-    identityData?.full_name,
-    identityData?.name,
+  const named = personNameOrEmpty(
+    firstString(meta?.display_name, meta?.full_name, meta?.name, identityData?.full_name, identityData?.name),
+    user,
   )
   if (named) {
     return named
   }
-  const username = usernameFromAuthUser(user)
-  if (username) {
-    return username
-  }
   const email = publicContactEmail(user?.email ?? fallbackEmail)
   if (email.includes('@')) {
-    return email.split('@')[0] || email
+    return personNameOrEmpty(email.split('@')[0] || '', user)
   }
-  return email || 'Workbench'
+  return ''
+}
+
+/**
+ * Returns the first whitespace token of a person name for welcome copy.
+ *
+ * @param fullName - Profile or metadata display name
+ * @param user - Signed-in user, used to reject the employee-id username
+ * @returns Given name, or empty
+ */
+export function givenNameForGreeting(
+  fullName: string | undefined,
+  user?: User | null | undefined,
+): string {
+  const person = personNameOrEmpty(fullName, user)
+  if (!person) {
+    return ''
+  }
+  return person.split(/\s+/)[0] ?? ''
 }

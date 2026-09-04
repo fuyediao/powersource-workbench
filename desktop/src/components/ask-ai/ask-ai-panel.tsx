@@ -43,7 +43,8 @@ import type { ChatMessage } from '@/types/chat'
 import { loadAskAiMode, saveAskAiMode } from '@/utils/chat/ask-ai-mode'
 import { useAiModelAllowlist } from '@/hooks/use-ai-model-allowlist'
 import { filterEnabledAiModels } from '@/utils/settings/ai-model-allowlist'
-import { resolveUserDisplayName } from '@/utils/shared/user-profile'
+import { useProfileDisplayName } from '@/hooks/use-profile-display-name'
+import { givenNameForGreeting } from '@/utils/shared/user-profile'
 
 const PANEL_MENU =
   'absolute z-50 mb-2 origin-bottom overflow-hidden rounded-2xl border border-zinc-950/10 bg-white py-1 shadow-xl animate-dropdown-in-up dark:border-white/10 dark:bg-zinc-900'
@@ -102,8 +103,8 @@ export function AskAiPanel({ user, pageLabel, getExcludeRightPx }: AskAiPanelPro
   const modeRef = useRef<HTMLDivElement>(null)
   const composingRef = useRef(false)
 
-  const displayName = resolveUserDisplayName(user, user.email ?? '')
-  const givenName = displayName.trim().split(/\s+/)[0] || t('askAi.guest')
+  const displayName = useProfileDisplayName(user)
+  const givenName = givenNameForGreeting(displayName, user) || t('askAi.guest')
   const sharingLabel = pageLabel.trim() || t('askAi.sharingThisWindow')
 
   const apiKeys = useMemo(

@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Greeted Ask and Ask AI with the profile person name instead of the Workbench username (employee id).
+- Stopped copying the Workbench login username into `profiles.display_name`.
 - Showed Settings Harness and Models section titles, and the Ask empty-history line, as translated labels instead of i18n keys.
 - Locked desktop Calendar to personal calendars and removed the Calendar group switcher.
 - Removed the Office library page from the Harness workspace-tools sidebar. Review, Terminal, Browser, Files, and Canvas stay.

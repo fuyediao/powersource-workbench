@@ -19,7 +19,8 @@ import { FUNCTIONS_CATEGORY_ID } from '@/constants/rail-categories'
 import { isFeatureTabId, type FeatureTabId } from '@/constants/feature-tabs'
 import { isBrowserTabId } from '@/utils/settings/link-open-preference'
 import { publicContactEmail } from '@/utils/auth/workbench-username'
-import { resolveUserAvatarUrl, resolveUserDisplayName } from '@/utils/shared/user-profile'
+import { useProfileDisplayName } from '@/hooks/use-profile-display-name'
+import { resolveUserAvatarUrl } from '@/utils/shared/user-profile'
 
 /** Settings is loaded only when the Settings tab is open. */
 const SettingsPage = lazy(async () => {
@@ -108,6 +109,7 @@ export function SignedInShell({
   const [selectedCategoryId, setSelectedCategoryId] = useState(FUNCTIONS_CATEGORY_ID)
   const slide = useTabSlideDirection(screen)
   const email = publicContactEmail(user.email)
+  const userDisplayName = useProfileDisplayName(user)
   const showHome = screen === 'home'
   const showSettings = screen === 'settings'
   const settingsMounted = openTabs.includes('settings')
@@ -157,7 +159,7 @@ export function SignedInShell({
                         user={user}
                         userEmail={email}
                         userAvatarUrl={resolveUserAvatarUrl(user)}
-                        userDisplayName={resolveUserDisplayName(user, email)}
+                        userDisplayName={userDisplayName}
                         onSignOut={onSignOut}
                       />
                     </ShellSuspense>

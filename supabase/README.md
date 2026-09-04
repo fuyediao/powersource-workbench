@@ -11,6 +11,8 @@ GeoCRM on `powersource.app` is a behavior reference only. Do not apply these mig
 | `20260903113749_direct_supabase_auth.sql` | `work_profiles` and invitations. |
 | `20260904120000_ask_ai_profiles_history.sql` | `profiles` (BYOK keys), Ask/Harness `history`, map pins, avatar bucket. |
 | `20260904120100_groups_customers_mail_calendar.sql` | Groups, leftover customers/contacts, Mail, Calendar, write-grant tables. |
+| `20260904140000_drop_gmail_google_calendar.sql` | Drop unused Gmail OAuth and Google Calendar sync tables. |
+| `20260904150000_profile_display_name_not_username.sql` | Stop copying the login username into `profiles.display_name`. |
 
 `scripts/deploy-remote.py` applies these files in name order and records them in `public.workbench_schema_migrations`.
 
