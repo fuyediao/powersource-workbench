@@ -52,12 +52,6 @@ export const SPOTLIGHT_IPC_CHANNEL = 'workbench:spotlight'
 /** Event pushed to the Spotlight renderer when the window is shown (focus the input). */
 export const SPOTLIGHT_SHOWN_EVENT = 'workbench:spotlight-shown'
 
-/** IPC channel for the always-on-top Agent overlay (toggle / hide / setEnabled). */
-export const AGENT_OVERLAY_IPC_CHANNEL = 'workbench:agent-overlay'
-
-/** Event pushed to the Agent overlay renderer when the window is shown (focus the composer). */
-export const AGENT_OVERLAY_SHOWN_EVENT = 'workbench:agent-overlay-shown'
-
 /** Event pushed to the main renderer to open a URL as an in-app browser tab. */
 export const OPEN_URL_IN_APP_EVENT = 'workbench:open-url-in-app'
 
@@ -119,7 +113,7 @@ export function isAppWindowPeer(value: unknown): value is AppWindowPeer {
 export interface TabTransferPayload {
   id: string
   kind: TabTransferKind
-  /** Feature id when `kind` is `feature` (e.g. `chat`, `harness`). */
+  /** Feature id when `kind` is `feature` (e.g. `chat`). */
   feature?: string
   /** Absolute http(s) URL when `kind` is `browser`. */
   url?: string
@@ -214,7 +208,7 @@ export const OA_ERP_CREDENTIALS_IPC_CHANNEL = 'workbench:oa-erp-credentials'
 /** IPC channel for the desktop AI model allowlist (Settings → AI → Models, local SQLite). */
 export const AI_MODEL_ALLOWLIST_IPC_CHANNEL = 'workbench:ai-model-allowlist'
 
-/** IPC channel for Ask and Harness conversation transcripts (local SQLite). */
+/** IPC channel for Ask conversation transcripts (local SQLite). */
 export const CHAT_HISTORY_IPC_CHANNEL = 'workbench:chat-history'
 
 /** IPC channel for personal calendars and events (local SQLite). */
@@ -277,7 +271,6 @@ export const MENU_CHAT_EVENT = 'workbench:menu-chat'
 /** Feature pages listed under the Go menu (same ids as title-bar tabs). */
 export const MENU_FEATURE_IDS = [
   'chat',
-  'harness',
   'mail',
   'calendar',
 ] as const
@@ -1013,7 +1006,6 @@ export type ApplicationMenuLabels = {
   quit: string
   spotlight: string
   openApp: string
-  agentOverlay: string
   signOut: string
   file: string
   closeTab: string
@@ -1037,7 +1029,6 @@ export type ApplicationMenuLabels = {
   docs: string
   sheets: string
   slides: string
-  harness: string
   language: string
   languageEn: string
   languageZhTw: string

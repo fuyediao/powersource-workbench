@@ -1,5 +1,3 @@
-import type { HarnessItem } from '@/types/harness'
-
 /** One message in an AI chat thread. */
 export interface ChatMessage {
   id: string
@@ -16,16 +14,16 @@ export interface ChatMessage {
   screenshotDataUrl?: string
 }
 
-/** Chat surface: Ask (Q&A) or Agent (tool-using). Histories are not shared. */
+/** Stored chat surface. Legacy `'agent'` rows are coerced to Ask. */
 export type ChatAssistantKind = 'ask' | 'agent'
 
 /**
- * Coerces a stored assistant kind. Unknown values map to Ask.
+ * Coerces a stored assistant kind. Unknown values and legacy Agent rows map to Ask.
  * @param value - Raw value from storage or the database
- * @returns `ask` or `agent`
+ * @returns Always `ask`
  */
-export function parseChatAssistantKind(value: unknown): ChatAssistantKind {
-  return value === 'agent' ? 'agent' : 'ask'
+export function parseChatAssistantKind(_value: unknown): 'ask' {
+  return 'ask'
 }
 
 /** Persisted chat history row (local SQLite). */
@@ -37,10 +35,6 @@ export interface HistoryRecord {
   groupId?: string | null
   createdByUserId?: string | null
   assistantKind: ChatAssistantKind
-  /** Local Codex thread id for same-device Harness resume. */
-  harnessThreadId?: string | null
-  /** Full projected workflow transcript for Harness restore. */
-  harnessItems?: HarnessItem[]
   createdAt: string
   updatedAt: string
 }
@@ -50,6 +44,4 @@ export interface HistoryInput {
   query: string
   messages: ChatMessage[]
   assistantKind?: ChatAssistantKind
-  harnessThreadId?: string | null
-  harnessItems?: HarnessItem[]
 }

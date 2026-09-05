@@ -38,10 +38,10 @@ type Entry struct {
 	Default bool `json:"default,omitempty"`
 	// Vision is true when the model accepts screenshots.
 	Vision bool `json:"vision,omitempty"`
-	// ComputerUse is true when Harness may use the model for desktop control.
+	// ComputerUse is true when the model supports desktop control.
 	ComputerUse bool `json:"computerUse,omitempty"`
 	// ReasoningEfforts is the vendor-native depth list this model accepts.
-	// Empty means the Agent picker is hidden and Harness omits reasoning fields.
+	// Empty means the model has no adjustable reasoning depth.
 	ReasoningEfforts []string `json:"reasoningEfforts,omitempty"`
 	// DefaultReasoningEffort is used when the client omits or sends an invalid level.
 	DefaultReasoningEffort string `json:"defaultReasoningEffort,omitempty"`

@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAiKeys } from '@/hooks/use-ai-keys'
 import { useDialogPresence } from '@/hooks/use-dialog-presence'
-import { HarnessSection } from '@/components/settings/sections/harness-section'
 import { AiModelAllowlistBlock } from '@/components/settings/sections/ai-model-allowlist-block'
 import {
   FOCUS_RING_SHELL,
@@ -689,9 +688,6 @@ export function AiSection({ userId }: AiSectionProps) {
         </div>
       ) : null}
 
-      <div className="border-t border-zinc-950/10 pt-5 dark:border-white/10">
-        <HarnessSection />
-      </div>
       <div className="border-t border-zinc-950/10 pt-5 dark:border-white/10">
         <AiModelAllowlistBlock apiKeys={ai.keys} />
       </div>

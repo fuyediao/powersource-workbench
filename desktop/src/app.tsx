@@ -22,7 +22,6 @@ import {
 } from '@/utils/settings/settings-section-request'
 import { subscribeOpenMailRequest } from '@/utils/mail/mail-compose-request'
 import { subscribeOpenCalendarRequest } from '@/utils/calendar/calendar-event-request'
-import { isAgentOverlayFallbackChord } from '@/utils/agent-overlay/agent-overlay-shortcut'
 import { isSpotlightFallbackChord } from '@/utils/spotlight/spotlight-shortcut'
 import { migrateLegacyOfficeWorkspace } from '@/office/office-workspace-legacy-migration'
 import {
@@ -287,10 +286,8 @@ function MainWindowApp() {
 
   useEffect(() => {
     void window.workbench?.spotlight?.setEnabled?.(signedIn)
-    void window.workbench?.agentOverlay?.setEnabled?.(signedIn)
     return () => {
       void window.workbench?.spotlight?.setEnabled?.(false)
-      void window.workbench?.agentOverlay?.setEnabled?.(false)
     }
   }, [signedIn])
 
@@ -320,42 +317,6 @@ function MainWindowApp() {
         event.preventDefault()
         event.stopPropagation()
         void window.workbench?.spotlight?.toggle?.()
-      }
-      window.addEventListener('keydown', handleKeyDown, true)
-      removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)
-    })
-
-    return () => {
-      cancelled = true
-      removeKeyDown?.()
-    }
-  }, [signedIn])
-
-  useEffect(() => {
-    if (!signedIn) {
-      return
-    }
-
-    let cancelled = false
-    let removeKeyDown: (() => void) | undefined
-
-    void window.workbench?.agentOverlay?.usesGlobalShortcut?.().then((usesGlobal) => {
-      if (cancelled || usesGlobal) {
-        return
-      }
-      const accelerator = window.workbench?.agentOverlay?.accelerator ?? 'Alt+G'
-      /**
-       * In-window shortcut fallback when the OS blocks the global overlay chord.
-       * @param event - Keyboard event.
-       * @returns Nothing.
-       */
-      function handleKeyDown(event: KeyboardEvent): void {
-        if (!isAgentOverlayFallbackChord(event, accelerator)) {
-          return
-        }
-        event.preventDefault()
-        event.stopPropagation()
-        void window.workbench?.agentOverlay?.toggle?.()
       }
       window.addEventListener('keydown', handleKeyDown, true)
       removeKeyDown = () => window.removeEventListener('keydown', handleKeyDown, true)

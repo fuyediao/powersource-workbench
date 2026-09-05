@@ -8,7 +8,7 @@ Electron desktop client for the PowerSource group workbench. It includes the des
 2. Run `npm install` in this directory.
 3. From the repository root, run `npm run dev:electron`. `npm run dev` in this directory still works.
 
-The renderer posts login to `https://api.powersource.work` and reads leftover workspace rows from `https://supabase.powersource.work`. It never receives a secret or legacy service-role key. Packaged builds load from the secure `workbench://app` origin. Ask and Harness transcripts, Mail (plus attachment files), and Calendar are stored under Electron userData on this PC.
+The renderer posts login to `https://api.powersource.work` and reads leftover workspace rows from `https://supabase.powersource.work`. It never receives a secret or legacy service-role key. Packaged builds load from the secure `workbench://app` origin. Ask transcripts, Mail (plus attachment files), and Calendar are stored under Electron userData on this PC.
 
 Window, tray, and installer icons use the POWERSOURCE mark in `public/app-icon.svg`. The 16x16 ICNS and ICO slot uses the simplified mark in `public/app-icon-16.svg` so Finder does not show a pink smear. After editing either file, run `npm run icons:rasterize` and `npm run icons:nsis`.
 

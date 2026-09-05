@@ -31,13 +31,6 @@ export const SETTINGS_ACCELERATOR = 'CommandOrControl+,'
 export const CLOSE_TAB_ACCELERATOR = PLATFORM === 'darwin' ? 'CommandOrControl+W' : 'Alt+W'
 
 /**
- * Toggles the always-on-top Agent overlay (Chrome Gemini-style pop-out).
- * Windows / Linux use Alt+G; macOS uses Control+G. Registered as a global
- * shortcut after sign-in (tray and other apps included).
- */
-export const AGENT_OVERLAY_ACCELERATOR = PLATFORM === 'darwin' ? 'Control+G' : 'Alt+G'
-
-/**
  * Quit the whole app (tray / menu label accelerator).
  * macOS uses Command+Q; Windows / Linux use Alt+Q.
  */

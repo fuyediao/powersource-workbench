@@ -1,7 +1,7 @@
 /**
  * Single composer model picker: vendor icon plus "OpenAI · GPT-5.6 Sol" on
  * both the trigger and every menu row (no vendor header / model wrap).
- * The list portals to `document.body` so Harness / Ask overflow ancestors
+ * The list portals to `document.body` so Ask overflow ancestors
  * cannot clip combined labels or the Not Configured hint.
  */
 
@@ -41,7 +41,7 @@ interface AiCombinedModelPickerProps {
   open?: boolean
   /** Controlled open-state setter. */
   onOpenChange?: (open: boolean) => void
-  /** Compact matches Ask-panel / Harness chips; default matches the Ask page. */
+  /** Compact matches Ask-panel chips; default matches the Ask page. */
   density?: 'default' | 'compact'
   /** Menu alignment relative to the trigger. */
   menuAlign?: 'left' | 'right'

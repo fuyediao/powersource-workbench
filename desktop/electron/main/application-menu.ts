@@ -81,12 +81,10 @@ import {
 } from '../shared/ipc'
 import {
   CLOSE_TAB_ACCELERATOR,
-  AGENT_OVERLAY_ACCELERATOR,
   QUIT_ACCELERATOR,
   SETTINGS_ACCELERATOR,
   SPOTLIGHT_ACCELERATOR,
 } from '../shared/platform'
-import { toggleAgentOverlay } from './agent-overlay'
 import { isAuxiliaryWindow } from './auxiliary-windows'
 import { updateDarwinTrayMenu } from './platform/darwin/tray'
 import { quitWindowsApp, updateWindowsTrayMenu } from './platform/windows/tray'
@@ -100,7 +98,6 @@ const DEFAULT_LABELS: ApplicationMenuLabels = {
   quit: `Quit ${APP_SHORT_NAME}`,
   spotlight: 'Spotlight',
   openApp: `Open ${APP_SHORT_NAME}`,
-  agentOverlay: 'Ask Agent',
   signOut: 'Sign out',
   file: 'File',
   closeTab: 'Close Tab',
@@ -117,24 +114,13 @@ const DEFAULT_LABELS: ApplicationMenuLabels = {
   home: 'Home',
   settings: 'Settings…',
   chat: 'Artificial Intelligence',
-  messages: 'Messages',
   mail: 'Mail',
   calendar: 'Calendar',
-  kanban: 'Board',
-  map: 'Map',
-  admin: 'Admin',
-  orders: 'Orders',
-  products: 'Products',
-  nexdot: 'NEXDOT',
-  teAdmin: 'T&E Admin',
-  team: 'Team',
   aura: 'Editor',
   folio: 'Folio',
   docs: 'Docs',
   sheets: 'Sheets',
   slides: 'Slides',
-  clash: 'Clash',
-  harness: 'Harness',
   language: 'Language',
   languageEn: 'English',
   languageZhTw: 'Traditional Chinese',
@@ -3053,15 +3039,6 @@ function buildDarwinTemplate(state: ApplicationMenuState): MenuItemConstructorOp
             void toggleSpotlight()
           },
         },
-        {
-          label: labels.agentOverlay,
-          accelerator: AGENT_OVERLAY_ACCELERATOR,
-          registerAccelerator: false,
-          enabled: signedIn,
-          click: () => {
-            void toggleAgentOverlay()
-          },
-        },
         { type: 'separator' },
         {
           label: labels.home,
@@ -3126,15 +3103,6 @@ function buildNonDarwinTemplate(state: ApplicationMenuState): MenuItemConstructo
     {
       label: labels.file,
       submenu: [
-        {
-          label: labels.agentOverlay,
-          accelerator: AGENT_OVERLAY_ACCELERATOR,
-          registerAccelerator: false,
-          enabled: signedIn,
-          click: () => {
-            void toggleAgentOverlay()
-          },
-        },
         {
           label: labels.closeTab,
           accelerator: CLOSE_TAB_ACCELERATOR,

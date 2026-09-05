@@ -13,7 +13,7 @@ import {
   providerLabelKey,
   type AiCatalogModel,
 } from '@/chat/ai-model-catalog'
-import { withCatalogReasoning } from '@/utils/harness/reasoning-effort'
+import { withCatalogReasoning } from '@/utils/settings/ai-catalog-reasoning'
 import { listAiModels } from '@/services/ai-api'
 import { probeAllLocalAiModels } from '@/services/local-ai-models'
 import { getAiKey, type AiKeysState } from '@/services/ai-keys-api'
@@ -37,7 +37,7 @@ interface AiModelAllowlistBlockProps {
 
 /**
  * Settings → AI → Models: search, vendor-filter dropdown, refresh, and
- * per-model enable/disable toggles backed by local SQLite. The heading matches AI Settings / Harness.
+ * per-model enable/disable toggles backed by local SQLite. The heading matches AI Settings.
  * Rows use the same combined label as composer pickers (`OpenAI · GPT-5.6 Sol`)
  * with a vendor icon. Cloud models without an API key are muted and show
  * a Not Configured hint to the right of the name. The list is un-capped;

@@ -8,7 +8,6 @@ import { isFunctionsCategory } from '@/constants/rail-categories'
 import {
   ArtificialIntelligenceIcon,
   CalendarIcon,
-  HarnessIcon,
   MailIcon,
   NextorchBrandIcon,
   PowersourceBrandIcon,
@@ -48,10 +47,6 @@ const FUNCTION_SVG_ICONS: Record<string, FunctionSvgConfig> = {
     Icon: SettingsIcon,
     iconClass: 'size-6 sm:size-7 text-brand',
   },
-  'function-harness': {
-    Icon: HarnessIcon,
-    iconClass: 'size-6 sm:size-7 text-brand',
-  },
   'function-nextorch': {
     Icon: NextorchBrandIcon,
     iconClass: 'h-[58%] w-auto text-brand',
@@ -71,7 +66,6 @@ const FUNCTION_SVG_ICONS_COMPACT: Record<string, string> = {
   'function-mail': 'size-3.5 sm:size-4 text-brand',
   'function-calendar': 'size-3.5 sm:size-4 text-brand',
   'function-settings': 'size-3.5 sm:size-4 text-brand',
-  'function-harness': 'size-3.5 sm:size-4 text-brand',
   'function-nextorch': 'h-[70%] w-auto text-brand',
   'function-oa': 'h-[78%] w-[78%]',
   'function-erp': 'h-[78%] w-[78%]',

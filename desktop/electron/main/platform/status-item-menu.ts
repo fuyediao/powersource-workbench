@@ -2,24 +2,21 @@ import { Menu, type MenuItemConstructorOptions } from 'electron'
 import { APP_SHORT_NAME } from '../../shared/app-identity'
 import type { ApplicationMenuLabels } from '../../shared/ipc'
 import {
-  AGENT_OVERLAY_ACCELERATOR,
   QUIT_ACCELERATOR,
   SETTINGS_ACCELERATOR,
   SPOTLIGHT_ACCELERATOR,
 } from '../../shared/platform'
-import { toggleAgentOverlay } from '../agent-overlay'
 import { toggleSpotlight } from '../spotlight'
 
 /** Labels used by the menu-bar extra / tray. */
 export type StatusItemLabels = Pick<
   ApplicationMenuLabels,
-  'openApp' | 'agentOverlay' | 'spotlight' | 'settings' | 'signOut' | 'quit'
+  'openApp' | 'spotlight' | 'settings' | 'signOut' | 'quit'
 >
 
 /** Fallback labels before the renderer syncs app i18n. */
 export const DEFAULT_STATUS_ITEM_LABELS: StatusItemLabels = {
   openApp: `Open ${APP_SHORT_NAME}`,
-  agentOverlay: 'Ask Agent',
   spotlight: 'Spotlight',
   settings: 'Settings…',
   signOut: 'Sign out',
@@ -36,7 +33,7 @@ interface StatusItemMenuOptions {
 }
 
 /**
- * Builds the menu-bar extra / tray context menu (Open, Ask Agent, Spotlight,
+ * Builds the menu-bar extra / tray context menu (Open, Spotlight,
  * Settings, Sign out, Quit). Accelerators are display-only so the app menu and
  * global shortcuts stay in charge.
  * @param options - Labels, signed-in flag, and click handlers.
@@ -48,15 +45,6 @@ export function buildStatusItemMenu(options: StatusItemMenuOptions): Menu {
     {
       label: labels.openApp,
       click: onOpen,
-    },
-    {
-      label: labels.agentOverlay,
-      accelerator: AGENT_OVERLAY_ACCELERATOR,
-      registerAccelerator: false,
-      enabled: signedIn,
-      click: () => {
-        void toggleAgentOverlay()
-      },
     },
     {
       label: labels.spotlight,

@@ -20,7 +20,7 @@ type fileRow struct {
 	UpdatedAt   string  `json:"updated_at"`
 }
 
-// FileSummary is an ACL-filtered Office library row returned to Harness.
+// FileSummary is an ACL-filtered Office library row.
 type FileSummary struct {
 	ID          string  `json:"id"`
 	Kind        string  `json:"kind"`

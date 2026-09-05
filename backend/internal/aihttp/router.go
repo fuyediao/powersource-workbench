@@ -18,7 +18,6 @@ import (
 	providershttp "github.com/fuyediao/powersource-workbench/backend/internal/ai/providershttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/ai/settings"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
-	"github.com/fuyediao/powersource-workbench/backend/internal/harness"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
@@ -26,25 +25,21 @@ import (
 
 // Handler owns shared deps for /ai routes.
 type Handler struct {
-	sb      *supabase.Client
-	aiC     *ai.Client
-	harness *harness.Handler
+	sb  *supabase.Client
+	aiC *ai.Client
 }
 
 // New builds the /ai router owner.
-func New(env config.Env, sb *supabase.Client) *Handler {
+func New(_ config.Env, sb *supabase.Client) *Handler {
 	aiC := ai.NewClient()
 	return &Handler{
-		sb:      sb,
-		aiC:     aiC,
-		harness: harness.New(env, sb),
+		sb:  sb,
+		aiC: aiC,
 	}
 }
 
-// StartWorkers starts the Harness cron ticker.
-func (h *Handler) StartWorkers(ctx context.Context) {
-	h.harness.StartWorkers(ctx)
-}
+// StartWorkers is a no-op. Ask has no background workers.
+func (*Handler) StartWorkers(_ context.Context) {}
 
 // Routes returns the /ai sub-router (all routes require a Supabase user JWT).
 func (h *Handler) Routes() chi.Router {
@@ -66,9 +61,6 @@ func (h *Handler) Routes() chi.Router {
 		pr.Method(http.MethodPost, "/settings/connectivity", settings.NewConnectivity(h.sb))
 		pr.Method(http.MethodGet, "/providers", providershttp.New())
 		pr.Method(http.MethodGet, "/models", models.New())
-		// Desktop Harness: slim VPS profile, scheduled tasks, and
-		// first-party CRM tools. Never the public /mcp transport.
-		pr.Mount("/harness", h.harness.Routes())
 	})
 
 	return r

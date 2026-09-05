@@ -298,8 +298,6 @@ function parseChatHistoryCreateInput(value: unknown): ChatHistoryCreateInput {
     query: raw.query,
     messages: raw.messages,
     assistantKind: parseChatHistoryKind(raw.assistantKind),
-    harnessThreadId: typeof raw.harnessThreadId === 'string' ? raw.harnessThreadId : null,
-    harnessItems: Array.isArray(raw.harnessItems) ? raw.harnessItems : null,
     createdAt: typeof raw.createdAt === 'string' ? raw.createdAt : undefined,
     updatedAt: typeof raw.updatedAt === 'string' ? raw.updatedAt : undefined,
   }
@@ -321,12 +319,6 @@ function parseChatHistoryUpdateInput(value: unknown): ChatHistoryUpdateInput {
   }
   if (Array.isArray(raw.messages)) {
     patch.messages = raw.messages
-  }
-  if (raw.harnessThreadId === null || typeof raw.harnessThreadId === 'string') {
-    patch.harnessThreadId = raw.harnessThreadId
-  }
-  if (raw.harnessItems === null || Array.isArray(raw.harnessItems)) {
-    patch.harnessItems = raw.harnessItems
   }
   return patch
 }

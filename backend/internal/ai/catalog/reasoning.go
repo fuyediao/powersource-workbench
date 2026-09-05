@@ -3,8 +3,7 @@ package catalog
 import "strings"
 
 // Vendor-native reasoning / thinking effort ids (Codex wire values).
-// Empty catalog rows mean the model has no adjustable depth — the Agent picker
-// hides, and /ai/harness omits vendor reasoning fields.
+// Empty catalog rows mean the model has no adjustable depth.
 var (
 	// OpenAI public Chat Completions / Responses accept none|low|medium|high|xhigh
 	// only. Codex ChatGPT extras (max, ultra) are coerced to xhigh on the wire.

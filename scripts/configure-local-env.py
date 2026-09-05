@@ -80,8 +80,6 @@ def configure(replace: bool = False) -> None:
             f"SUPABASE_PUBLIC_URL={supabase_url}",
             f"SUPABASE_ANON_KEY={publishable_key}",
             f"SUPABASE_SERVICE_ROLE_KEY={server_key}",
-            "HERMES_ORG_SKILLS_ROOT=",
-            "HERMES_PROFILES_ROOT=",
         ],
         replace,
     )

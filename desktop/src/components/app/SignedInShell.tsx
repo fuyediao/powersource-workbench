@@ -28,7 +28,7 @@ const SettingsPage = lazy(async () => {
   return { default: module.SettingsPage }
 })
 
-/** Feature hosts (Ask / Mail / Calendar / Harness) load when a feature tab is active. */
+/** Feature hosts (Ask / Mail / Calendar) load when a feature tab is active. */
 const FeaturePage = lazy(async () => {
   const module = await import('@/pages/feature-page')
   return { default: module.FeaturePage }

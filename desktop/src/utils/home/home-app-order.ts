@@ -1,8 +1,6 @@
 /**
  * Migrates legacy Home Apps tile ids onto the current catalog.
- * Maps `function-ai-chat` → Ask and `function-agent` → Harness, then places
- * Harness immediately after Ask when the saved order still uses the old
- * default (Harness next to Clash or Settings).
+ * Maps `function-ai-chat` → Ask and drops removed Agent / Harness tiles.
  * @param savedIds - Persisted order.
  * @returns Migrated ids (may still include unknown ids; catalog apply drops them).
  */
@@ -10,52 +8,15 @@ export function migrateHomeAppOrderIds(savedIds: readonly string[]): string[] {
   const out: string[] = []
   const seen = new Set<string>()
   for (const id of savedIds) {
-    const nextId =
-      id === 'function-ai-chat'
-        ? 'function-ask'
-        : id === 'function-agent'
-          ? 'function-harness'
-          : id
+    if (id === 'function-agent' || id === 'function-harness') {
+      continue
+    }
+    const nextId = id === 'function-ai-chat' ? 'function-ask' : id
     if (seen.has(nextId)) continue
     out.push(nextId)
     seen.add(nextId)
   }
-  return relocateHarnessBesideAsk(out)
-}
-
-const ASK_APP_ID = 'function-ask'
-const HARNESS_APP_ID = 'function-harness'
-const CLASH_APP_ID = 'function-clash'
-const SETTINGS_APP_ID = 'function-settings'
-
-/**
- * Moves Harness to immediately after Ask when the saved order still matches
- * the previous catalog (Harness beside Clash or Settings). Custom placements
- * are left unchanged.
- * @param ids - Deduplicated tile ids.
- * @returns Ids with Harness relocated when the old default is detected.
- */
-function relocateHarnessBesideAsk(ids: string[]): string[] {
-  const harnessAt = ids.indexOf(HARNESS_APP_ID)
-  if (harnessAt < 0) {
-    return ids
-  }
-  const askAt = ids.indexOf(ASK_APP_ID)
-  if (askAt >= 0 && harnessAt === askAt + 1) {
-    return ids
-  }
-  const before = harnessAt > 0 ? ids[harnessAt - 1] : null
-  const after = harnessAt < ids.length - 1 ? ids[harnessAt + 1] : null
-  const looksLikeOldDefault = before === CLASH_APP_ID || after === SETTINGS_APP_ID
-  if (!looksLikeOldDefault) {
-    return ids
-  }
-  const without = ids.filter((id) => id !== HARNESS_APP_ID)
-  const insertAfter = without.indexOf(ASK_APP_ID)
-  if (insertAfter < 0) {
-    return [HARNESS_APP_ID, ...without]
-  }
-  return [...without.slice(0, insertAfter + 1), HARNESS_APP_ID, ...without.slice(insertAfter + 1)]
+  return out
 }
 
 /**

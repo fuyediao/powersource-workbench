@@ -23,9 +23,6 @@ type Env struct {
 	GoogleClientSecret string
 	GoogleRedirectURI  string
 
-	HermesProfilesRoot  string
-	HermesOrgSkillsRoot string
-
 	JWTSecret            string
 	MCPOAuthClientID     string
 	MCPOAuthClientSecret string
@@ -53,9 +50,6 @@ func Load() Env {
 		GoogleClientID:     strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_ID")),
 		GoogleClientSecret: strings.TrimSpace(os.Getenv("GOOGLE_CLIENT_SECRET")),
 		GoogleRedirectURI:  strings.TrimSpace(os.Getenv("GOOGLE_REDIRECT_URI")),
-
-		HermesProfilesRoot:  strings.TrimSpace(os.Getenv("HERMES_PROFILES_ROOT")),
-		HermesOrgSkillsRoot: strings.TrimSpace(os.Getenv("HERMES_ORG_SKILLS_ROOT")),
 
 		JWTSecret:            strings.TrimSpace(os.Getenv("JWT_SECRET")),
 		MCPOAuthClientID:     strings.TrimSpace(os.Getenv("MCP_OAUTH_CLIENT_ID")),

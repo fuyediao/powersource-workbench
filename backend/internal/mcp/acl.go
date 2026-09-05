@@ -9,15 +9,10 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
 
-// DesktopAgentModule is the Electron Harness entry key
-// (group_desktop_module_access.module_key).
-const DesktopAgentModule = "desktop_agent"
-
 // desktopModuleKeys is the full Electron entry whitelist, matching the CHECK
 // constraint on group_desktop_module_access.module_key.
 var desktopModuleKeys = []string{
 	"desktop_chat",
-	DesktopAgentModule,
 	"desktop_messages",
 	"desktop_mail",
 	"desktop_calendar",

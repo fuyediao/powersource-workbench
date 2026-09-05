@@ -1,6 +1,6 @@
 /**
  * Editor UI façade used by the Markdown WYSIWYG kernel.
- * Ask and Harness only render Markdown; these hooks are no-ops unless an
+ * Ask only renders Markdown; these hooks are no-ops unless an
  * editor instance is constructed.
  */
 
@@ -27,7 +27,7 @@ export const editorUi = {
    * @returns Nothing.
    */
   showToast(_message: string, _timeout?: number): void {
-    // Editor chrome is not shipped; chat / Harness do not surface these toasts.
+    // Editor chrome is not shipped; Ask does not surface these toasts.
   },
   /**
    * Registers the hint fill callback.

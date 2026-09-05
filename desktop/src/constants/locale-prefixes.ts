@@ -47,7 +47,6 @@ const FEATURE_LOCALE_PREFIXES: Record<FeatureTabId, readonly string[]> = {
   chat: ['chat'],
   mail: ['mail'],
   calendar: ['calendar'],
-  harness: ['harness'],
 }
 
 /**

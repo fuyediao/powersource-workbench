@@ -19,12 +19,6 @@ export type ClawdBridgeActivity = {
   toolName?: string
 }
 
-/** Parsed Clawd `/permission` outcome. */
-export type ClawdPermissionResult =
-  | { kind: 'decision'; decision: 'allow' | 'deny' }
-  | { kind: 'no-decision' }
-  | { kind: 'cancelled' }
-
 /**
  * Returns whether a parsed JSON document is the Clawd-managed Workbench bridge.
  * @param value - File contents.
@@ -40,45 +34,4 @@ export function isManagedClawdBridge(value: unknown): boolean {
       && (value as { marker?: unknown }).marker === CLAWD_WORKBENCH_BRIDGE_MARKER
       && (value as { managed?: unknown }).managed === true,
   )
-}
-
-/**
- * Maps a Clawd permission HTTP result to allow, deny, or native fallback.
- * @param statusCode - HTTP status, or null when the request failed.
- * @param body - Response text.
- * @param aborted - True when the caller cancelled the request.
- * @returns Parsed outcome.
- */
-export function parseClawdPermissionResult(
-  statusCode: number | null,
-  body: string,
-  aborted = false,
-): ClawdPermissionResult {
-  if (aborted) {
-    return { kind: 'cancelled' }
-  }
-  if (statusCode === 204 || statusCode === null) {
-    return { kind: 'no-decision' }
-  }
-  if (statusCode !== 200 || !body) {
-    return { kind: 'no-decision' }
-  }
-  try {
-    const parsed: unknown = JSON.parse(body)
-    if (
-      parsed
-      && typeof parsed === 'object'
-      && !Array.isArray(parsed)
-      && ((parsed as { decision?: unknown }).decision === 'allow'
-        || (parsed as { decision?: unknown }).decision === 'deny')
-    ) {
-      return {
-        kind: 'decision',
-        decision: (parsed as { decision: 'allow' | 'deny' }).decision,
-      }
-    }
-  } catch {
-    return { kind: 'no-decision' }
-  }
-  return { kind: 'no-decision' }
 }

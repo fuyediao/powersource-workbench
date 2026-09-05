@@ -6,7 +6,7 @@ import (
 )
 
 func TestFirstPartyToolsIncludeCronDigestCalls(t *testing.T) {
-	// VPS Harness cron runs list_my_access + summarize_records via CallForUser.
+	// In-process callers run list_my_access + summarize_records via CallForUser.
 	for _, tool := range []string{toolListMyAccess, toolSummarizeRecords} {
 		if !IsFirstPartyTool(tool) {
 			t.Fatalf("%s must stay on the first-party door for cron digest", tool)
@@ -29,31 +29,31 @@ func TestIsFirstPartyToolAcceptsSharedCrmTools(t *testing.T) {
 }
 
 func TestHasDesktopModuleFailsClosed(t *testing.T) {
-	ok, err := HasDesktopModule(context.Background(), nil, "user", DesktopAgentModule)
+	ok, err := HasDesktopModule(context.Background(), nil, "user", "desktop_chat")
 	if err != nil || ok {
-		t.Fatalf("nil client must not grant Harness, ok=%v err=%v", ok, err)
+		t.Fatalf("nil client must not grant desktop_chat, ok=%v err=%v", ok, err)
 	}
-	ok, err = HasDesktopModule(context.Background(), nil, "", DesktopAgentModule)
+	ok, err = HasDesktopModule(context.Background(), nil, "", "desktop_chat")
 	if err != nil || ok {
-		t.Fatalf("empty user must not grant Harness, ok=%v err=%v", ok, err)
+		t.Fatalf("empty user must not grant desktop_chat, ok=%v err=%v", ok, err)
 	}
 }
 
-func TestUnrestrictedAccessIncludesDesktopAgent(t *testing.T) {
+func TestUnrestrictedAccessIncludesDesktopChat(t *testing.T) {
 	acc := &access{Unrestricted: true, modules: map[string]bool{}}
-	if !acc.hasModule(DesktopAgentModule) {
-		t.Fatal("system admins must reach Harness")
+	if !acc.hasModule("desktop_chat") {
+		t.Fatal("system admins must reach desktop_chat")
 	}
 }
 
-func TestMemberWithoutDesktopAgentCannotOpenHarness(t *testing.T) {
+func TestMemberWithoutDesktopChatCannotOpenAsk(t *testing.T) {
 	acc := &access{
 		UserID:   "member",
 		GroupIDs: []string{"ntna"},
 		modules:  map[string]bool{"desktop_admin": true, "desktop_mail": true},
 	}
-	if acc.hasModule(DesktopAgentModule) {
-		t.Fatal("CRM modules must not imply the Harness tile")
+	if acc.hasModule("desktop_chat") {
+		t.Fatal("CRM modules must not imply the Ask tile")
 	}
 }
 

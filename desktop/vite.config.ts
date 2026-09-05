@@ -399,11 +399,6 @@ export default defineConfig(({ command, mode }) => {
       host: '127.0.0.1',
       port: RENDERER_PORT,
       strictPort: true,
-      watch: {
-        ignored: [
-          '**/src/lib/codex/**',
-        ],
-      },
     },
     plugins: [
       workbenchLocaleResourcesPlugin(path.join(packageDir, 'src/i18n/locales')),

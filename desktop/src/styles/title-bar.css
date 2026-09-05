@@ -76,8 +76,7 @@ html.has-custom-title-bar .mail-page,
 html.has-custom-title-bar .folio-page,
 html.has-custom-title-bar .calendar-page,
 html.has-custom-title-bar .map-page,
-html.has-custom-title-bar .clash-page,
-html.has-custom-title-bar .harness-page {
+html.has-custom-title-bar .clash-page {
   height: 100%;
   max-height: 100%;
 }

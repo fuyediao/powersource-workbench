@@ -52,8 +52,7 @@
   },
   "include": ["src"],
   "exclude": [
-    "src/lib/schedule-x",
-    "src/lib/codex"
+    "src/lib/schedule-x"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

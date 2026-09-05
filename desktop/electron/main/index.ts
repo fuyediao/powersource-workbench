@@ -3,7 +3,6 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { APP_DISPLAY_NAME, APP_SHORT_NAME } from '../shared/app-identity'
 import { AUTH_DEEP_LINK_SCHEME } from '../shared/ipc'
-import { setupAgentOverlay, teardownAgentOverlay } from './agent-overlay'
 import { configureAppWindows } from './app-windows'
 import {
   configureLoginWindow,
@@ -14,7 +13,6 @@ import {
 } from './login-window'
 import { startAppUpdateScheduler } from './app-update-scheduler'
 import { setupApplicationMenu } from './application-menu'
-import { disposeHarnessHosts, registerHarnessIpc } from './harness'
 import { destroyAllInAppBrowserPanes, setupInAppBrowser } from './in-app-browser'
 import { flushPendingAuthDeepLink, handleAuthDeepLink, registerIpcHandlers } from './ipc'
 import { loadMainProcessEnv } from './load-env'
@@ -75,7 +73,6 @@ if (!app.requestSingleInstanceLock()) {
 
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
-const harnessE2EMode = process.env.WORKBENCH_HARNESS_E2E === '1'
 
 /**
  * Handles a deep-link URL from argv or OS open-url.
@@ -105,7 +102,6 @@ app.whenReady().then(async () => {
     indexHtml,
     devServerUrl: VITE_DEV_SERVER_URL,
     publicDir: process.env.VITE_PUBLIC!,
-    harnessE2EMode,
   })
   configureLoginWindow({
     preload,
@@ -153,24 +149,17 @@ app.whenReady().then(async () => {
   }
   attachHomeWallpaperProtocol()
   registerIpcHandlers()
-  registerHarnessIpc()
   registerTabTransferIpc()
   syncLoginItemFromStore()
   platformShell.onAppReady(process.env.VITE_PUBLIC!, () => getForegroundWindow())
   setupInAppBrowser()
   startAppUpdateScheduler(() => getForegroundWindow())
-  // Register Spotlight / Agent overlay IPC before the renderer loads — App.tsx
-  // calls setEnabled on mount.
+  // Register Spotlight IPC before the renderer loads — App.tsx calls setEnabled on mount.
   setupSpotlight({
     preload,
     viteDevServerUrl: VITE_DEV_SERVER_URL,
     indexHtml,
     getMainWindow: () => getForegroundWindow(),
-  })
-  setupAgentOverlay({
-    preload,
-    viteDevServerUrl: VITE_DEV_SERVER_URL,
-    indexHtml,
   })
   const startHidden = shouldStartHidden()
   setLoginSilentStart(startHidden)
@@ -182,8 +171,6 @@ app.whenReady().then(async () => {
 app.on('will-quit', () => {
   destroyAllInAppBrowserPanes()
   teardownSpotlight()
-  teardownAgentOverlay()
-  disposeHarnessHosts()
 })
 
 // macOS delivers custom-scheme URLs here; register before ready so launch-via-URL is not missed.

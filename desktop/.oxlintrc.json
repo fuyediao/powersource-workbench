@@ -8,7 +8,6 @@
   },
   "ignorePatterns": [
     "src/lib/univer/**",
-    "src/lib/schedule-x/**",
-    "src/lib/codex/**"
+    "src/lib/schedule-x/**"
   ]
 }

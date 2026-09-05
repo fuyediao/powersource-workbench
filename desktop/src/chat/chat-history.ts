@@ -14,7 +14,7 @@ import { parseChatAssistantKind } from '@/types/chat'
  *
  * @param messages - Current conversation messages
  * @param query - Display query (typically the last user message content)
- * @param assistantKind - Ask vs Agent surface for this thread
+ * @param assistantKind - Stored surface; always persisted as Ask
  * @returns History payload for local insert/update
  */
 export function buildHistoryInput(

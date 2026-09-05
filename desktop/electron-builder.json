@@ -3,9 +3,6 @@
   "appId": "com.workbench.desktop",
   "productName": "PowerSource Workbench",
   "asar": true,
-  "asarUnpack": [
-    "node_modules/node-pty/**"
-  ],
   "compression": "maximum",
   "forceCodeSigning": true,
   "electronLanguages": ["en", "zh-TW", "zh-CN"],
@@ -23,11 +20,6 @@
     {
       "from": ".env",
       "to": ".env"
-    },
-    {
-      "from": "src/lib/codex/bin",
-      "to": "codex",
-      "filter": ["codex-app-server", "codex-app-server.exe"]
     }
   ],
   "win": {

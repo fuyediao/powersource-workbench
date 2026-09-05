@@ -37,9 +37,10 @@ export interface ElectronAiModelSelection {
 const STORAGE_KEY = 'electron_ai_model_selection'
 
 /**
- * localStorage key for the last model on one Ask / Agent surface.
+ * localStorage key for the last Ask model selection.
  * Ask keeps the unscoped key so existing preferences still apply.
- * @param kind - Surface that owns the picker
+ * Unknown kinds get a scoped suffix and are unused by the Ask UI.
+ * @param kind - Chat surface that owns the picker
  * @returns Storage key
  */
 function selectionStorageKey(kind?: ChatAssistantKind): string {
@@ -265,7 +266,7 @@ export function chatProviderIcon(provider: string): (props: SVGProps<SVGSVGEleme
 
 /**
  * Loads the last Electron model selection from localStorage.
- * @param kind - Ask or Agent surface; Ask uses the legacy unscoped key
+ * @param kind - Chat surface; Ask uses the legacy unscoped key
  * @returns Selection or null when missing / invalid
  */
 export function loadElectronAiModelSelection(kind?: ChatAssistantKind): ElectronAiModelSelection | null {
@@ -288,7 +289,7 @@ export function loadElectronAiModelSelection(kind?: ChatAssistantKind): Electron
 /**
  * Persists the Electron model selection.
  * @param selection - Provider + vendor model id
- * @param kind - Ask or Agent surface; Ask uses the legacy unscoped key
+ * @param kind - Chat surface; Ask uses the legacy unscoped key
  */
 export function saveElectronAiModelSelection(
   selection: ElectronAiModelSelection,

@@ -3,8 +3,8 @@
  *
  * Every window created here is a Workbench shell (title-bar tabs, Ask AI, pin).
  * The first window and dock-created windows also have a Home launcher;
- * windows spawned by tab tear-off omit it. Spotlight and the Agent overlay
- * are separate auxiliary panels and never enter this registry (see
+ * windows spawned by tab tear-off omit it. Spotlight is a separate
+ * auxiliary panel and never enters this registry (see
  * `auxiliary-windows.ts`). This registry backs Chrome-style title-bar tab
  * tear-off / merge: a torn-off tab spawns a new app window here, and a
  * dropped-on-caption tab targets another window from {@link appWindows}.
@@ -20,14 +20,13 @@ import { getPlatformShell } from './platform'
 
 const platformShell = getPlatformShell()
 
-/** Live top-level app windows, oldest first (excludes Spotlight / Agent overlay). */
+/** Live top-level app windows, oldest first (excludes Spotlight). */
 const windows = new Set<BrowserWindow>()
 
 let preloadPath = ''
 let rendererIndexHtml = ''
 let devServerUrl: string | undefined
 let publicDir = ''
-let harnessE2EMode = false
 
 /**
  * Title-bar caption strip height in DIP — matches `h-10` (2.5rem) in
@@ -52,7 +51,7 @@ export interface AppWindowSeed {
 
 /**
  * One-time wiring from `electron/main/index.ts` before the first window opens.
- * @param options - Preload path, renderer entry points, public assets dir, and E2E flag.
+ * @param options - Preload path, renderer entry points, and public assets dir.
  * @returns Nothing.
  */
 export function configureAppWindows(options: {
@@ -60,13 +59,11 @@ export function configureAppWindows(options: {
   indexHtml: string
   devServerUrl?: string
   publicDir: string
-  harnessE2EMode: boolean
 }): void {
   preloadPath = options.preload
   rendererIndexHtml = options.indexHtml
   devServerUrl = options.devServerUrl
   publicDir = options.publicDir
-  harnessE2EMode = options.harnessE2EMode
 }
 
 /**
@@ -76,9 +73,6 @@ export function configureAppWindows(options: {
  */
 function buildAdditionalArguments(seed?: AppWindowSeed): string[] {
   const args: string[] = []
-  if (harnessE2EMode) {
-    args.push('--harness-e2e-renderer')
-  }
   if (seed?.showHomeButton === false) {
     args.push(APP_WINDOW_HIDE_HOME_ARG)
   }

@@ -56,25 +56,6 @@ html.spotlight-window #root {
   overflow: visible;
 }
 
-html.agent-overlay-window {
-  --panel-alpha: 1;
-  --search-panel-alpha: 1;
-}
-
-html.agent-overlay-window,
-html.agent-overlay-window body,
-html.agent-overlay-window #root {
-  min-height: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-html.agent-overlay-frameless,
-html.agent-overlay-frameless body,
-html.agent-overlay-frameless #root {
-  background: transparent !important;
-}
-
 html.has-wallpaper .app-shell-brand-glow {
   opacity: 0;
 }

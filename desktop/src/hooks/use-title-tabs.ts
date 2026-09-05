@@ -252,7 +252,7 @@ export function useTitleTabs(signedIn: boolean, showHomeLauncher = true): {
 
   /**
    * Opens a Workbench feature page as a closable title-bar tab.
-   * @param feature - Feature id (`chat` / `harness` / `mail` / `calendar`).
+   * @param feature - Feature id (`chat` / `mail` / `calendar`).
    * @returns Nothing.
    */
   const openFeature = useCallback((feature: FeatureTabId): void => {

@@ -1,13 +1,13 @@
 /**
- * Ask and Harness conversation rows stored in machine SQLite.
+ * Ask conversation rows stored in machine SQLite.
  * Not company Supabase. One database per Electron userData directory.
  */
 
-/** Ask vs Harness transcript kind. */
-export type ChatHistoryKind = 'ask' | 'agent'
+/** Ask transcript kind. Legacy Harness rows stored as `agent` are read as Ask. */
+export type ChatHistoryKind = 'ask'
 
 /**
- * One persisted conversation. Messages and Harness items are JSON-safe arrays.
+ * One persisted conversation. Messages are JSON-safe arrays.
  */
 export interface ChatHistoryRowDto {
   id: string
@@ -15,8 +15,6 @@ export interface ChatHistoryRowDto {
   query: string
   messages: unknown[]
   assistantKind: ChatHistoryKind
-  harnessThreadId: string | null
-  harnessItems: unknown[] | null
   createdAt: string
   updatedAt: string
 }
@@ -27,8 +25,6 @@ export interface ChatHistoryCreateInput {
   query: string
   messages: unknown[]
   assistantKind: ChatHistoryKind
-  harnessThreadId?: string | null
-  harnessItems?: unknown[] | null
   createdAt?: string
   updatedAt?: string
 }
@@ -37,15 +33,14 @@ export interface ChatHistoryCreateInput {
 export interface ChatHistoryUpdateInput {
   query?: string
   messages?: unknown[]
-  harnessThreadId?: string | null
-  harnessItems?: unknown[] | null
 }
 
 /**
- * Coerces a stored assistant kind.
- * @param value - Raw value.
- * @returns `ask` or `agent`.
+ * Coerces a stored assistant kind to Ask.
+ * Legacy Harness rows used `agent` and are treated as Ask.
+ * @param _value - Raw stored or IPC value.
+ * @returns `ask`.
  */
-export function parseChatHistoryKind(value: unknown): ChatHistoryKind {
-  return value === 'agent' ? 'agent' : 'ask'
+export function parseChatHistoryKind(_value: unknown): ChatHistoryKind {
+  return 'ask'
 }

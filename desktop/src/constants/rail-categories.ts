@@ -26,13 +26,12 @@ export function isFunctionsCategory(categoryId: string): boolean {
  * Set `true` to show the badge; `false` to hide it.
  * Site tiles (OA / ERP / NEXTORCH) are not included.
  */
-export const FUNCTION_BETA_FLAGS = {
+export const FUNCTION_BETA_FLAGS: Record<string, boolean> = {
   'function-ask': false,
   'function-mail': false,
   'function-calendar': false,
-  'function-harness': true,
   'function-settings': false,
-} as const satisfies Record<string, boolean>
+}
 
 /**
  * Applies {@link FUNCTION_BETA_FLAGS} onto a built-in feature tile.
@@ -56,30 +55,23 @@ export const FUNCTION_FEATURE_APPS: AppItem[] = [
     name: 'functions.apps.ask',
   },
   {
-    id: 'function-harness',
-    categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 1,
-    url: 'workbench://harness',
-    name: 'functions.apps.harness',
-  },
-  {
     id: 'function-mail',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 2,
+    position: 1,
     url: 'workbench://mail',
     name: 'functions.apps.mail',
   },
   {
     id: 'function-calendar',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 3,
+    position: 2,
     url: 'workbench://calendar',
     name: 'functions.apps.calendar',
   },
   {
     id: 'function-settings',
     categoryId: FUNCTIONS_CATEGORY_ID,
-    position: 4,
+    position: 3,
     url: 'workbench://settings',
     name: 'functions.apps.settings',
   },

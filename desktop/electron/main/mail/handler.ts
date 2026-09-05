@@ -5,13 +5,11 @@
 import type { SQLOutputValue } from 'node:sqlite'
 import type {
   MailAccountTestResult,
-  MailAddress,
   MailBinaryDto,
   MailBulkAction,
   MailDraftRequest,
   MailImapSmtpConfig,
   MailProvider,
-  MailSendAttachment,
   MailSendRequest,
 } from '../../shared/mail-types'
 import {
@@ -84,102 +82,6 @@ function asRecord(value: unknown, label: string): Record<string, unknown> {
 function stringField(record: Record<string, unknown>, key: string, fallback = ''): string {
   const value = record[key]
   return typeof value === 'string' ? value : fallback
-}
-
-/**
- * Parses address objects from a Harness tool argument.
- * @param value - Raw `to` / `cc` / `bcc` value.
- * @returns Address list.
- */
-function parseHarnessAddresses(value: unknown): MailAddress[] {
-  if (!Array.isArray(value)) {
-    return []
-  }
-  return value.flatMap((entry) => {
-    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
-      return []
-    }
-    const record = entry as Record<string, unknown>
-    const email = typeof record.email === 'string' ? record.email.trim() : ''
-    if (!email) {
-      return []
-    }
-    const address: MailAddress = { email }
-    if (typeof record.name === 'string' && record.name.trim()) {
-      address.name = record.name.trim()
-    }
-    return [address]
-  })
-}
-
-/**
- * Parses expanded Harness attachments (base64 payloads).
- * @param value - Raw attachments array.
- * @returns Attachment list, or undefined when empty.
- */
-function parseHarnessAttachments(value: unknown): MailSendAttachment[] | undefined {
-  if (!Array.isArray(value)) {
-    return undefined
-  }
-  const out: MailSendAttachment[] = []
-  for (const entry of value) {
-    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
-      continue
-    }
-    const record = entry as Record<string, unknown>
-    if (typeof record.dataBase64 !== 'string' || !record.dataBase64) {
-      continue
-    }
-    out.push({
-      filename: typeof record.filename === 'string' && record.filename.trim() ? record.filename : 'attachment',
-      contentType:
-        typeof record.contentType === 'string' && record.contentType.trim()
-          ? record.contentType
-          : 'application/octet-stream',
-      dataBase64: record.dataBase64,
-    })
-  }
-  return out.length > 0 ? out : undefined
-}
-
-/**
- * Maps a Harness `send_mail` argument object onto the local send payload.
- * @param args - Dynamic-tool arguments after attachment expansion.
- * @returns Send request.
- */
-export function mailSendRequestFromHarnessArgs(args: Record<string, unknown>): MailSendRequest {
-  return {
-    mailAccountId: stringField(args, 'mailAccountId'),
-    fromAddress: stringField(args, 'fromAddress'),
-    replyTo: stringField(args, 'replyTo') || undefined,
-    to: parseHarnessAddresses(args.to),
-    cc: parseHarnessAddresses(args.cc),
-    bcc: parseHarnessAddresses(args.bcc),
-    subject: stringField(args, 'subject'),
-    bodyHtml: stringField(args, 'bodyHtml') || undefined,
-    bodyText: stringField(args, 'bodyText') || undefined,
-    inReplyToMessageId: stringField(args, 'inReplyToMessageId') || undefined,
-    draftId: stringField(args, 'draftId') || undefined,
-    attachments: parseHarnessAttachments(args.attachments),
-  }
-}
-
-/**
- * Maps a Harness `save_mail_draft` argument object onto the local draft payload.
- * @param args - Dynamic-tool arguments after attachment expansion.
- * @returns Draft request.
- */
-export function mailDraftRequestFromHarnessArgs(args: Record<string, unknown>): MailDraftRequest {
-  return {
-    mailAccountId: stringField(args, 'mailAccountId'),
-    fromAddress: stringField(args, 'fromAddress') || undefined,
-    to: parseHarnessAddresses(args.to),
-    cc: parseHarnessAddresses(args.cc),
-    bcc: parseHarnessAddresses(args.bcc),
-    subject: stringField(args, 'subject') || undefined,
-    bodyHtml: stringField(args, 'bodyHtml') || undefined,
-    bodyText: stringField(args, 'bodyText') || undefined,
-  }
 }
 
 /**
@@ -436,7 +338,7 @@ export async function sendMailForUser(
 }
 
 /**
- * Saves a local draft for Harness or the Mail composer.
+ * Saves a local draft for the Mail composer.
  * @param userId - Auth user id.
  * @param req - Draft payload.
  * @returns Draft id.

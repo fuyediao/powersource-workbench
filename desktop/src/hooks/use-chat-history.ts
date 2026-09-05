@@ -1,5 +1,5 @@
 /**
- * React hook for Ask and Harness history stored in local SQLite.
+ * React hook for Ask history stored in local SQLite.
  */
 
 import { useCallback, useState } from 'react'
@@ -10,7 +10,6 @@ import type {
   ChatAssistantKind,
 } from '@/types/chat'
 import { parseChatAssistantKind } from '@/types/chat'
-import type { HarnessItem } from '@/types/harness'
 
 /** One local SQLite conversation row returned over IPC. */
 interface LocalHistoryRow {
@@ -19,8 +18,6 @@ interface LocalHistoryRow {
   query: string
   messages: unknown[]
   assistantKind: ChatAssistantKind
-  harnessThreadId: string | null
-  harnessItems: unknown[] | null
   createdAt: string
   updatedAt: string
 }
@@ -38,10 +35,6 @@ function mapLocalRow(row: LocalHistoryRow): HistoryRecord {
     query: row.query,
     messages: Array.isArray(row.messages) ? (row.messages as ChatMessage[]) : [],
     assistantKind: parseChatAssistantKind(row.assistantKind),
-    harnessThreadId: row.harnessThreadId,
-    harnessItems: Array.isArray(row.harnessItems)
-      ? (row.harnessItems as HarnessItem[])
-      : undefined,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   }
@@ -62,7 +55,7 @@ export interface UseChatHistoryReturn {
 }
 
 /**
- * Loads and mutates Ask / Harness history stored on this machine.
+ * Loads and mutates Ask history stored on this machine.
  *
  * @returns History list and CRUD helpers
  */
@@ -108,8 +101,6 @@ export function useChatHistory(): UseChatHistoryReturn {
           query: input.query,
           messages: input.messages,
           assistantKind: parseChatAssistantKind(input.assistantKind),
-          harnessThreadId: input.harnessThreadId ?? null,
-          harnessItems: input.harnessItems ?? null,
         })
         const record = mapLocalRow(row)
         setHistory((prev) => [record, ...prev])
@@ -135,8 +126,6 @@ export function useChatHistory(): UseChatHistoryReturn {
         const row = await api.update(userId, historyId, {
           query: updates.query,
           messages: updates.messages,
-          harnessThreadId: updates.harnessThreadId,
-          harnessItems: updates.harnessItems,
         })
         if (!row) {
           return null

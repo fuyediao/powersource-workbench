@@ -1,5 +1,5 @@
 /**
- * Thin Clawd on Desk reporter for Workbench Ask and Harness.
+ * Thin Clawd on Desk reporter for Workbench Ask.
  *
  * Reads `~/.clawd/runtime.json` for the live port. Posts only when Clawd has
  * written a managed `clawd-bridge.json` into this app's userData.
@@ -14,9 +14,7 @@ import {
   CLAWD_WORKBENCH_AGENT_ID,
   CLAWD_WORKBENCH_BRIDGE_FILE,
   isManagedClawdBridge,
-  parseClawdPermissionResult,
   type ClawdBridgeActivity,
-  type ClawdPermissionResult,
 } from '../shared/clawd-bridge'
 
 const SERVER_ID = 'clawd-on-desk'
@@ -24,7 +22,6 @@ const SERVER_HEADER = 'x-clawd-server'
 const PORTS = Object.freeze([23333, 23334, 23335, 23336, 23337])
 const PROBE_TIMEOUT_MS = 500
 const STATE_TIMEOUT_MS = 1000
-const PERMISSION_TIMEOUT_MS = 10 * 60 * 1000
 const DISCOVERY_COOLDOWN_MS = 1000
 const BRIDGE_CACHE_MS = 2000
 const MAX_RESPONSE_BYTES = 64 * 1024
@@ -279,7 +276,7 @@ async function discover(signal?: AbortSignal): Promise<number | null> {
 
 /**
  * POSTs JSON to a Clawd path, rediscovering the port once on failure.
- * @param pathname - `/state` or `/permission`.
+ * @param pathname - `/state`.
  * @param body - JSON payload.
  * @param options - Timeout, abort, retry.
  * @returns HTTP result.
@@ -332,53 +329,4 @@ export function reportClawdState(activity: ClawdBridgeActivity): void {
     timeoutMs: STATE_TIMEOUT_MS,
     maxResponseBytes: 4096,
   }).catch(() => undefined)
-}
-
-/** Fields for a Harness approval POST to Clawd `/permission`. */
-export type ClawdPermissionRequest = {
-  sessionId: string
-  toolName: string
-  toolUseId?: string
-  reason?: string | null
-  toolInput?: Record<string, unknown>
-  cwd?: string
-  signal?: AbortSignal
-}
-
-/**
- * Asks Clawd to Allow or Deny a Harness approval. A no-decision result means
- * Workbench should show its native card.
- * @param request - Tool name and bounded input.
- * @returns Allow, deny, cancelled, or native fallback.
- */
-export async function requestClawdPermission(
-  request: ClawdPermissionRequest,
-): Promise<ClawdPermissionResult> {
-  if (!isClawdBridgeEnabled()) return { kind: 'no-decision' }
-  const toolName = request.toolName.trim() || 'unknown'
-  const sessionId = request.sessionId.trim() || 'harness'
-  const body: Record<string, unknown> = {
-    agent_id: CLAWD_WORKBENCH_AGENT_ID,
-    hook_source: 'workbench-bridge',
-    session_id: sessionId,
-    tool_name: toolName,
-    tool_input: request.toolInput && typeof request.toolInput === 'object' ? request.toolInput : {},
-  }
-  if (request.toolUseId?.trim()) body.tool_use_id = request.toolUseId.trim()
-  if (request.reason?.trim()) body.reason = request.reason.trim()
-  if (request.cwd?.trim()) {
-    const input = body.tool_input as Record<string, unknown>
-    if (typeof input.cwd !== 'string') input.cwd = request.cwd.trim()
-  }
-  const result = await post('/permission', body, {
-    timeoutMs: PERMISSION_TIMEOUT_MS,
-    signal: request.signal,
-    retry: false,
-    maxResponseBytes: 16 * 1024,
-  })
-  return parseClawdPermissionResult(
-    result.statusCode ?? null,
-    result.body ?? '',
-    result.aborted === true,
-  )
 }

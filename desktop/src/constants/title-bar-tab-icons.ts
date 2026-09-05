@@ -7,7 +7,6 @@ import {
   ArtificialIntelligenceIcon,
   CalendarIcon,
   GlobeIcon,
-  HarnessIcon,
   MailIcon,
   SettingsIcon,
 } from '@/icons/AllIcons'
@@ -20,7 +19,6 @@ const FEATURE_TAB_ICONS: Record<FeatureTabId, SvgIcon> = {
   chat: ArtificialIntelligenceIcon,
   mail: MailIcon,
   calendar: CalendarIcon,
-  harness: HarnessIcon,
 }
 
 /**

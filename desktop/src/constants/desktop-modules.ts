@@ -29,7 +29,6 @@ export const DESKTOP_FUNCTION_KEYS = [
   'desktop_sheets',
   'desktop_slides',
   'desktop_clash',
-  'desktop_agent',
 ] as const
 
 export type DesktopFunctionKey = (typeof DESKTOP_FUNCTION_KEYS)[number]
@@ -106,7 +105,6 @@ export const FEATURE_TO_DESKTOP_ENTRY: Record<FeatureTabId, DesktopFunctionKey> 
   chat: 'desktop_chat',
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
-  harness: 'desktop_agent',
 }
 
 /** Home Function app tile id → desktop entry key (Settings omitted). */
@@ -114,7 +112,6 @@ export const FUNCTION_APP_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> =
   'function-ask': 'desktop_chat',
   'function-mail': 'desktop_mail',
   'function-calendar': 'desktop_calendar',
-  'function-harness': 'desktop_agent',
 }
 
 /** Go-menu feature id → desktop entry key. */
@@ -122,7 +119,6 @@ export const GO_MENU_TO_DESKTOP_ENTRY: Record<string, DesktopFunctionKey> = {
   chat: 'desktop_chat',
   mail: 'desktop_mail',
   calendar: 'desktop_calendar',
-  harness: 'desktop_agent',
 }
 
 /** Map sidebar source → desktop layer key (`map` explore has no layer key). */
@@ -304,7 +300,6 @@ export const DESKTOP_MODULE_LABEL_KEYS: Record<DesktopModuleKey, string> = {
   desktop_sheets: 'settings.desktopModules.sheets',
   desktop_slides: 'settings.desktopModules.slides',
   desktop_clash: 'settings.desktopModules.clash',
-  desktop_agent: 'settings.desktopModules.harness',
   desktop_map_favorites: 'settings.desktopModules.mapFavorites',
   desktop_map_customers: 'settings.desktopModules.mapCustomers',
   desktop_map_leads: 'settings.desktopModules.mapLeads',

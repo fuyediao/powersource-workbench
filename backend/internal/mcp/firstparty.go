@@ -65,7 +65,7 @@ func HasDesktopModule(ctx context.Context, sb *supabase.Client, userID, key stri
 }
 
 // workbenchModuleGranted is the Workbench ACL adapter used until GeoCRM group
-// grants exist. Active work_profiles always receive the four Home tiles.
+// grants exist. Active work_profiles always receive the three Home tiles.
 // Super/system admins also receive leftover CRM admin gates.
 func workbenchModuleGranted(ctx context.Context, sb *supabase.Client, userID, key string) bool {
 	var row struct {
@@ -80,7 +80,7 @@ func workbenchModuleGranted(ctx context.Context, sb *supabase.Client, userID, ke
 		return false
 	}
 	switch key {
-	case "desktop_chat", DesktopAgentModule, "desktop_mail", "desktop_calendar":
+	case "desktop_chat", "desktop_mail", "desktop_calendar":
 		return true
 	default:
 		return row.Role == "super_admin" || row.Role == "system_admin"
@@ -92,9 +92,7 @@ func workbenchModuleGranted(ctx context.Context, sb *supabase.Client, userID, ke
 // It resolves the same desktop ACL as the public /mcp transport
 // (group membership plus group_desktop_module_access and
 // group_desktop_writes_*), so an in-process caller can never see another
-// group's rows or write without the matching grant. Two callers use it: the
-// Harness door with the signed-in session, and scheduled runs acting as the
-// job's user id while that user's laptop is closed.
+// group's rows or write without the matching grant.
 func CallForUser(
 	ctx context.Context,
 	sb *supabase.Client,

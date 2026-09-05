@@ -25,7 +25,6 @@ import {
 import { APP_SHORT_NAME } from '../shared/app-identity'
 import { appWindowById, appWindows, createAppWindow, windowAtScreenPoint } from './app-windows'
 import { showBrowserWindow } from './platform'
-import { transferHarnessHost } from './harness'
 
 /** New-window offset so the dropped tab's caption lands near the cursor, not under it. */
 const NEW_WINDOW_CURSOR_OFFSET_X = 80
@@ -106,7 +105,6 @@ async function dropTab(
   const source = BrowserWindow.fromWebContents(event.sender)
   const target = windowAtScreenPoint(dropPoint, { excluding: source, captionOnly: true })
   if (target) {
-    if (!transferLiveTabState(event.sender, target, payload)) return { accepted: false }
     sendTransferredTab(target, payload)
     showBrowserWindow(target)
     return { accepted: true }
@@ -117,7 +115,6 @@ async function dropTab(
     y: Math.max(0, Math.round(dropPoint.y - NEW_WINDOW_CURSOR_OFFSET_Y)),
     showHomeButton: false,
   })
-  if (!transferLiveTabState(event.sender, created, payload)) return { accepted: false }
   sendTransferredTab(created, payload)
   showBrowserWindow(created)
   return { accepted: true }
@@ -144,7 +141,6 @@ async function openInNewWindow(
     y: bounds ? bounds.y + NEW_WINDOW_CASCADE_OFFSET : undefined,
     showHomeButton: false,
   })
-  if (!transferLiveTabState(event.sender, created, payload)) return { accepted: false }
   sendTransferredTab(created, payload)
   showBrowserWindow(created)
   return { accepted: true }
@@ -170,7 +166,6 @@ function moveToWindow(
   if (!target || target === source) {
     return { accepted: false }
   }
-  if (!transferLiveTabState(event.sender, target, payload)) return { accepted: false }
   sendTransferredTab(target, payload)
   showBrowserWindow(target)
   return { accepted: true }
@@ -233,22 +228,6 @@ function sendTransferredTab(target: BrowserWindow, payload: TabTransferPayload):
   const queued = pendingTransfers.get(contents) ?? []
   queued.push(payload)
   pendingTransfers.set(contents, queued)
-}
-
-/**
- * Transfers live Harness state before the source renderer unmounts its tab.
- * @param source - Source renderer.
- * @param target - Destination window.
- * @param payload - Tab being moved.
- * @returns Whether the destination can accept the live state.
- */
-function transferLiveTabState(
-  source: WebContents,
-  target: BrowserWindow,
-  payload: TabTransferPayload,
-): boolean {
-  if (payload.kind !== 'feature' || payload.feature !== 'harness') return true
-  return transferHarnessHost(source, target.webContents)
 }
 
 /**

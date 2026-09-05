@@ -25,7 +25,7 @@ import {
   TrashIcon,
 } from '@/icons/AllIcons'
 
-/** Ask surface only until Harness is rebuilt. */
+/** Ask chat surface. */
 const ASK_KIND: ChatAssistantKind = 'ask'
 
 interface ChatPageProps {

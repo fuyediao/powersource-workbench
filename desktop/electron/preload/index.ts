@@ -1,15 +1,4 @@
-import { contextBridge, ipcRenderer, webUtils } from 'electron'
-import {
-  HARNESS_EVENT,
-  HARNESS_CANVAS_CONSOLE_EVENT,
-  HARNESS_IPC_CHANNEL,
-  HARNESS_PTY_DATA_EVENT,
-  HARNESS_PTY_EXIT_EVENT,
-  type HarnessApprovalDecisionWire,
-  type HarnessHostStatus,
-  type HarnessStartOptions,
-  type HarnessStartTurnExtras,
-} from '../shared/harness'
+import { contextBridge, ipcRenderer } from 'electron'
 import { INSTALL_LANGUAGE_SYNC_CHANNEL } from '../shared/install-language'
 import type {
   HomeLibraryAppDto,
@@ -99,8 +88,6 @@ import {
   type AiModelAllowlistRow,
   SPOTLIGHT_IPC_CHANNEL,
   SPOTLIGHT_SHOWN_EVENT,
-  AGENT_OVERLAY_IPC_CHANNEL,
-  AGENT_OVERLAY_SHOWN_EVENT,
   WINDOW_FOCUS_EVENT,
   WINDOW_FULLSCREEN_EVENT,
   WINDOW_IPC_CHANNEL,
@@ -127,7 +114,6 @@ import {
   type LegacyOfficeWorkspaceFile,
 } from '../shared/ipc'
 import {
-  AGENT_OVERLAY_ACCELERATOR,
   SPOTLIGHT_ACCELERATOR,
   USES_CUSTOM_TITLE_BAR,
   USES_CUSTOM_TRAFFIC_LIGHTS,
@@ -161,22 +147,6 @@ function windowInvoke(method: string): Promise<unknown> {
  */
 function spotlightInvoke(method: string, ...args: unknown[]): Promise<unknown> {
   return ipcRenderer.invoke(SPOTLIGHT_IPC_CHANNEL, method, ...args).catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : String(error)
-    if (message.includes('No handler registered')) {
-      return null
-    }
-    throw error
-  })
-}
-
-/**
- * Invokes an Agent overlay IPC method; soft-fails when the main handler is not ready yet.
- * @param method - Overlay method name.
- * @param args - Method arguments.
- * @returns Handler result, or `null` when no handler is registered.
- */
-function agentOverlayInvoke(method: string, ...args: unknown[]): Promise<unknown> {
-  return ipcRenderer.invoke(AGENT_OVERLAY_IPC_CHANNEL, method, ...args).catch((error: unknown) => {
     const message = error instanceof Error ? error.message : String(error)
     if (message.includes('No handler registered')) {
       return null
@@ -616,9 +586,9 @@ contextBridge.exposeInMainWorld('workbench', {
   },
   chatHistory: {
     /**
-     * Lists Ask or Harness conversations stored on this machine.
+     * Lists Ask conversations stored on this machine.
      * @param userId - Auth user id.
-     * @param kind - Ask or agent.
+     * @param kind - Ask.
      * @returns Newest-first rows.
      */
     list: (userId: string, kind: ChatHistoryKind): Promise<ChatHistoryRowDto[]> =>
@@ -1196,235 +1166,6 @@ contextBridge.exposeInMainWorld('workbench', {
         enabled,
       ) as Promise<void>,
   },
-  harness: {
-    /** True only when Electron was launched by the Harness E2E suite. */
-    testMode: process.argv.includes('--harness-e2e-renderer'),
-    /** Reads local Harness preferences from the main-process SQLite store. */
-    getDevicePreferences: (legacyValue?: unknown): Promise<import('../shared/harness').HarnessDevicePreferences> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'getDevicePreferences', legacyValue) as Promise<import('../shared/harness').HarnessDevicePreferences>,
-    /** Replaces local Harness preferences in the main-process SQLite store. */
-    setDevicePreferences: (value: import('../shared/harness').HarnessDevicePreferences): Promise<import('../shared/harness').HarnessDevicePreferences> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'setDevicePreferences', value) as Promise<import('../shared/harness').HarnessDevicePreferences>,
-    /**
-     * Reports whether a local Codex workflow binary is installed.
-     * @returns Availability and resolved path.
-     */
-    status: (): Promise<HarnessHostStatus> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'status') as Promise<HarnessHostStatus>,
-    /**
-     * Starts the local workflow process and opens a thread.
-     * @param options - Working directory, permission profile, provider key.
-     * @returns Nothing.
-     */
-    start: (options: HarnessStartOptions): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'start', options) as Promise<void>,
-    /** Returns the current host projection after a tab transfer. */
-    snapshot: (): Promise<unknown[]> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'snapshot') as Promise<unknown[]>,
-    /**
-     * Submits one task and starts a turn.
-     * @param text - Task text.
-     * @param extras - Optional wake-job id to complete after the turn.
-     * @returns Nothing.
-     */
-    startTurn: (text: string, extras?: HarnessStartTurnExtras): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'startTurn', text, extras ?? null) as Promise<void>,
-    /**
-     * Returns the default Documents/Harness work folder.
-     * @returns Absolute path.
-     */
-    defaultWorkFolder: (): Promise<string> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'defaultWorkFolder') as Promise<string>,
-    /**
-     * Opens a native directory picker for the Harness work folder.
-     * @returns Selected path, or null when cancelled.
-     */
-    pickWorkFolder: (): Promise<string | null> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'pickWorkFolder') as Promise<string | null>,
-    /**
-     * Opens a native picker for composer file attachments.
-     * @returns Selected absolute paths.
-     */
-    pickFiles: (): Promise<string[]> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'pickFiles') as Promise<string[]>,
-    /**
-     * Returns the absolute path for a File dropped onto the renderer.
-     * @param file - OS file from a drag-and-drop payload.
-     * @returns Absolute path, or an empty string when unavailable.
-     */
-    getPathForFile: (file: File): string => {
-      try {
-        return webUtils.getPathForFile(file)
-      } catch {
-        return ''
-      }
-    },
-    /**
-     * Opens a native picker for one composer folder attachment.
-     * @returns Selected absolute path, or null when cancelled.
-     */
-    pickAttachmentFolder: (): Promise<string | null> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'pickAttachmentFolder') as Promise<string | null>,
-    /** Lists one level of the active Harness workspace. */
-    listWorkspace: (cwd?: string | null, relativePath = ''): Promise<import('../shared/harness').HarnessWorkspaceEntry[]> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'listWorkspace', cwd ?? null, relativePath) as Promise<import('../shared/harness').HarnessWorkspaceEntry[]>,
-    /** Reads one text preview from the active Harness workspace. */
-    readWorkspaceFile: (cwd: string | null | undefined, relativePath: string): Promise<import('../shared/harness').HarnessWorkspaceFile> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'readWorkspaceFile', cwd ?? null, relativePath) as Promise<import('../shared/harness').HarnessWorkspaceFile>,
-    /** Saves one editable HTML or Markdown document in the Canvas folder. */
-    writeCanvasFile: (cwd: string | null | undefined, relativePath: string, content: string): Promise<import('../shared/harness').HarnessWorkspaceFile> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'writeCanvasFile', cwd ?? null, relativePath, content) as Promise<import('../shared/harness').HarnessWorkspaceFile>,
-    /** Copies live Canvas files into the conversation archive without clearing them. */
-    snapshotCanvas: (cwd: string | null | undefined, historyId: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'snapshotCanvas', cwd ?? null, historyId) as Promise<void>,
-    /** Archives the current conversation Canvas and clears the live preview folder. */
-    parkCanvas: (cwd: string | null | undefined, historyId?: string | null): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'parkCanvas', cwd ?? null, historyId ?? null) as Promise<void>,
-    /** Restores archived Canvas files for one conversation into the live folder. */
-    restoreCanvas: (cwd: string | null | undefined, historyId: string): Promise<boolean> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'restoreCanvas', cwd ?? null, historyId) as Promise<boolean>,
-    /** Shows the isolated native HTML preview at renderer placeholder bounds. */
-    showCanvasPreview: (bounds: { x: number; y: number; width: number; height: number }, document: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'showCanvasPreview', bounds, document) as Promise<void>,
-    /** Hides the isolated native HTML preview. */
-    hideCanvasPreview: (): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'hideCanvasPreview') as Promise<void>,
-    /** Subscribes to console output from the isolated native HTML preview. */
-    onCanvasConsole: (callback: (entry: { level: 'info' | 'warning' | 'error'; message: string }) => void): (() => void) => {
-      const listener = (_event: Electron.IpcRendererEvent, entry: { level: 'info' | 'warning' | 'error'; message: string }): void => callback(entry)
-      ipcRenderer.on(HARNESS_CANVAS_CONSOLE_EVENT, listener)
-      return () => ipcRenderer.removeListener(HARNESS_CANVAS_CONSOLE_EVENT, listener)
-    },
-    /**
-     * Spawns the OS login shell in a PTY for one Terminal tab.
-     * @param sessionId - Tab session id.
-     * @param cwd - Harness work folder.
-     * @param cols - Initial columns.
-     * @param rows - Initial rows.
-     * @returns Nothing.
-     */
-    ptySpawn: (sessionId: string, cwd: string | null | undefined, cols: number, rows: number): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'ptySpawn', sessionId, cwd ?? null, cols, rows) as Promise<void>,
-    /**
-     * Writes raw keystrokes into one Terminal PTY.
-     * @param sessionId - Tab session id.
-     * @param data - UTF-8 input.
-     * @returns Nothing.
-     */
-    ptyWrite: (sessionId: string, data: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'ptyWrite', sessionId, data) as Promise<void>,
-    /**
-     * Resizes one Terminal PTY to the xterm grid.
-     * @param sessionId - Tab session id.
-     * @param cols - Columns.
-     * @param rows - Rows.
-     * @returns Nothing.
-     */
-    ptyResize: (sessionId: string, cols: number, rows: number): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'ptyResize', sessionId, cols, rows) as Promise<void>,
-    /**
-     * Kills one Terminal PTY.
-     * @param sessionId - Tab session id.
-     * @returns Nothing.
-     */
-    ptyDispose: (sessionId: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'ptyDispose', sessionId) as Promise<void>,
-    /** Reads the Git working-tree snapshot for the Harness Review page. */
-    readReview: (cwd?: string | null): Promise<import('../shared/harness').HarnessReviewSnapshot> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'readReview', cwd ?? null) as Promise<import('../shared/harness').HarnessReviewSnapshot>,
-    /**
-     * Starts OAuth for one configured MCP server.
-     * @param name - MCP config name.
-     * @returns Nothing.
-     */
-    mcpLogin: (name: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'mcpLogin', name) as Promise<void>,
-    /** Lists connectors from the signed-in Codex app directory. */
-    listConnectors: (forceRefetch = false): Promise<import('../shared/harness').HarnessAppConnector[]> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'listConnectors', forceRefetch) as Promise<import('../shared/harness').HarnessAppConnector[]>,
-    /** Opens the provider-owned connector installation flow. */
-    installConnector: (connectorId: string, installUrl: string): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'installConnector', connectorId, installUrl) as Promise<void>,
-    /** Lists native displays and windows available to Computer Use. */
-    listComputerTargets: (): Promise<import('../shared/harness').HarnessComputerTarget[]> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'listComputerTargets') as Promise<import('../shared/harness').HarnessComputerTarget[]>,
-    /**
-     * Cancels the in-flight turn.
-     * @returns Nothing.
-     */
-    interrupt: (): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'interrupt') as Promise<void>,
-    /**
-     * Answers a pending approval request.
-     * @param requestId - Approval identifier from the event.
-     * @param decision - Allow once / allow for session / deny.
-     * @returns Nothing.
-     */
-    respondToApproval: (
-      requestId: string,
-      decision: HarnessApprovalDecisionWire,
-    ): Promise<void> =>
-      ipcRenderer.invoke(
-        HARNESS_IPC_CHANNEL,
-        'respondToApproval',
-        requestId,
-        decision,
-      ) as Promise<void>,
-    /**
-     * Terminates the workflow process for this window.
-     * @returns Nothing.
-     */
-    dispose: (): Promise<void> =>
-      ipcRenderer.invoke(HARNESS_IPC_CHANNEL, 'dispose') as Promise<void>,
-    /**
-     * Subscribes to workflow events (items, approvals, turn lifecycle).
-     * @param listener - Receives one event payload.
-     * @returns Unsubscribe function.
-     */
-    onEvent: (listener: (event: unknown) => void): (() => void) => {
-      const handler = (_event: Electron.IpcRendererEvent, payload: unknown): void => {
-        listener(payload)
-      }
-      ipcRenderer.on(HARNESS_EVENT, handler)
-      return () => {
-        ipcRenderer.removeListener(HARNESS_EVENT, handler)
-      }
-    },
-    /**
-     * Subscribes to PTY output for one Terminal tab.
-     * @param listener - Receives session id and UTF-8 chunk.
-     * @returns Unsubscribe function.
-     */
-    onPtyData: (listener: (sessionId: string, data: string) => void): (() => void) => {
-      const handler = (_event: Electron.IpcRendererEvent, payload: unknown): void => {
-        if (!payload || typeof payload !== 'object') return
-        const record = payload as Record<string, unknown>
-        if (typeof record.sessionId !== 'string' || typeof record.data !== 'string') return
-        listener(record.sessionId, record.data)
-      }
-      ipcRenderer.on(HARNESS_PTY_DATA_EVENT, handler)
-      return () => {
-        ipcRenderer.removeListener(HARNESS_PTY_DATA_EVENT, handler)
-      }
-    },
-    /**
-     * Subscribes to PTY exit for one Terminal tab.
-     * @param listener - Receives session id and exit code.
-     * @returns Unsubscribe function.
-     */
-    onPtyExit: (listener: (sessionId: string, exitCode: number) => void): (() => void) => {
-      const handler = (_event: Electron.IpcRendererEvent, payload: unknown): void => {
-        if (!payload || typeof payload !== 'object') return
-        const record = payload as Record<string, unknown>
-        if (typeof record.sessionId !== 'string' || typeof record.exitCode !== 'number') return
-        listener(record.sessionId, record.exitCode)
-      }
-      ipcRenderer.on(HARNESS_PTY_EXIT_EVENT, handler)
-      return () => {
-        ipcRenderer.removeListener(HARNESS_PTY_EXIT_EVENT, handler)
-      }
-    },
-  },
   clawd: {
     /**
      * Reports Ask / Ask AI lifecycle to standalone Clawd on Desk.
@@ -1851,47 +1592,6 @@ contextBridge.exposeInMainWorld('workbench', {
       ipcRenderer.on(OPEN_URL_IN_APP_EVENT, handler)
       return () => {
         ipcRenderer.removeListener(OPEN_URL_IN_APP_EVENT, handler)
-      }
-    },
-  },
-  agentOverlay: {
-    /**
-     * Toggles the always-on-top Agent overlay.
-     * @returns Nothing.
-     */
-    toggle: (): Promise<void> => agentOverlayInvoke('toggle') as Promise<void>,
-    /**
-     * Hides the Agent overlay.
-     * @returns Nothing.
-     */
-    hide: (): Promise<void> => agentOverlayInvoke('hide') as Promise<void>,
-    /**
-     * Arms the overlay shortcut after sign-in (disarmed on the login screen).
-     * @param enabled - True when a session is active.
-     * @returns Nothing.
-     */
-    setEnabled: (enabled: boolean): Promise<void> =>
-      agentOverlayInvoke('setEnabled', enabled) as Promise<void>,
-    /** Platform overlay chord (`Control+G` on macOS, `Alt+G` elsewhere). */
-    accelerator: AGENT_OVERLAY_ACCELERATOR,
-    /**
-     * Whether the main process owns the overlay shortcut (renderer must not also toggle).
-     * @returns True when the global shortcut is registered.
-     */
-    usesGlobalShortcut: (): Promise<boolean> =>
-      agentOverlayInvoke('usesGlobalShortcut') as Promise<boolean>,
-    /**
-     * Subscribes when the Agent overlay is shown (focus the composer).
-     * @param listener - Callback.
-     * @returns Unsubscribe function.
-     */
-    onShown: (listener: () => void): (() => void) => {
-      const handler = (): void => {
-        listener()
-      }
-      ipcRenderer.on(AGENT_OVERLAY_SHOWN_EVENT, handler)
-      return () => {
-        ipcRenderer.removeListener(AGENT_OVERLAY_SHOWN_EVENT, handler)
       }
     },
   },

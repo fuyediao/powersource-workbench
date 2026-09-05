@@ -25,7 +25,6 @@ interface ApplicationMenuLabels {
   quit: string
   spotlight: string
   openApp: string
-  agentOverlay: string
   signOut: string
   file: string
   closeTab: string
@@ -49,7 +48,6 @@ interface ApplicationMenuLabels {
   docs: string
   sheets: string
   slides: string
-  harness: string
   language: string
   languageEn: string
   languageZhTw: string
@@ -562,7 +560,6 @@ interface ApplicationMenuState {
   labels: ApplicationMenuLabels
   allowedGoFeatures?: Array<
     | 'chat'
-    | 'harness'
     | 'mail'
     | 'calendar'
     | 'aura'
@@ -596,7 +593,6 @@ type MenuNavigateTarget =
   | 'home'
   | 'settings'
   | 'chat'
-  | 'harness'
   | 'mail'
   | 'calendar'
   | 'aura'
@@ -1009,119 +1005,6 @@ interface WorkbenchBridge {
       options?: { accountId?: string | null; status?: string; limit?: number },
     ) => Promise<import('../electron/shared/mail-types').MailSyncTaskPage>
   }
-  harness: {
-    testMode: boolean
-    getDevicePreferences: (legacyValue?: unknown) => Promise<{
-      approvalMode: 'askAlways' | 'askIfUnsafe' | 'fullAccess'
-      computerUseEnabled: boolean
-      webSearchEnabled: boolean
-      computerUseTarget: {
-        id: string
-        kind: 'display' | 'window'
-        label: string
-      } | null
-      sidebarVisible: boolean
-      utilitySidebarVisible: boolean
-      utilitySidebarWidth: number
-      workFolder: string
-      mcpServers: Array<import('../electron/shared/harness').HarnessMcpServerConfig>
-    }>
-    setDevicePreferences: (value: import('../electron/shared/harness').HarnessDevicePreferences) => Promise<import('../electron/shared/harness').HarnessDevicePreferences>
-    status: () => Promise<{ available: boolean; binaryPath: string }>
-    start: (options: {
-      cwd?: string | null
-      resumeThreadId?: string | null
-      continuationInstructions?: string | null
-      approvalMode: 'askAlways' | 'askIfUnsafe' | 'fullAccess'
-      apiKey?: string | null
-      model?: string | null
-      provider?: string | null
-      computerUseProvider?: string | null
-      computerUseModel?: string | null
-      computerUseEnabled?: boolean
-      webSearchEnabled?: boolean
-      computerUseTarget?: {
-        id: string
-        kind: 'display' | 'window'
-        label: string
-      } | null
-      allowedTools?: string[] | null
-      activeExpert?: import('../electron/shared/harness').HarnessActiveExpertConfig | null
-      developerInstructions?: string | null
-      accessToken?: string | null
-      apiBaseUrl?: string | null
-      mcpServers?: Array<{
-        name: string
-        transport: 'stdio' | 'streamableHttp'
-        command?: string
-        args?: string[]
-        url?: string
-        bearerTokenEnvVar?: string
-        httpHeaders?: Record<string, string>
-        envHttpHeaders?: Record<string, string>
-      }> | null
-    }) => Promise<void>
-    snapshot: () => Promise<unknown[]>
-    startTurn: (
-      text: string,
-      extras?: {
-        wakeJobId?: string | null
-        attachments?: Array<{ path: string; kind: 'file' | 'folder' }> | null
-        mentions?: Array<{ name: string; path: string }> | null
-        goal?: string | null
-        planMode?: boolean
-        canvasMode?: boolean
-        effort?: string | null
-      },
-    ) => Promise<void>
-    defaultWorkFolder: () => Promise<string>
-    pickWorkFolder: () => Promise<string | null>
-    pickFiles: () => Promise<string[]>
-    getPathForFile: (file: File) => string
-    pickAttachmentFolder: () => Promise<string | null>
-    listWorkspace: (cwd?: string | null, relativePath?: string) => Promise<import('../electron/shared/harness').HarnessWorkspaceEntry[]>
-    readWorkspaceFile: (cwd: string | null | undefined, relativePath: string) => Promise<import('../electron/shared/harness').HarnessWorkspaceFile>
-    writeCanvasFile: (cwd: string | null | undefined, relativePath: string, content: string) => Promise<import('../electron/shared/harness').HarnessWorkspaceFile>
-    snapshotCanvas: (cwd: string | null | undefined, historyId: string) => Promise<void>
-    parkCanvas: (cwd: string | null | undefined, historyId?: string | null) => Promise<void>
-    restoreCanvas: (cwd: string | null | undefined, historyId: string) => Promise<boolean>
-    showCanvasPreview: (bounds: { x: number; y: number; width: number; height: number }, document: string) => Promise<void>
-    hideCanvasPreview: () => Promise<void>
-    onCanvasConsole: (callback: (entry: { level: 'info' | 'warning' | 'error'; message: string }) => void) => () => void
-    ptySpawn: (sessionId: string, cwd: string | null | undefined, cols: number, rows: number) => Promise<void>
-    ptyWrite: (sessionId: string, data: string) => Promise<void>
-    ptyResize: (sessionId: string, cols: number, rows: number) => Promise<void>
-    ptyDispose: (sessionId: string) => Promise<void>
-    readReview: (cwd?: string | null) => Promise<import('../electron/shared/harness').HarnessReviewSnapshot>
-    mcpLogin: (name: string) => Promise<void>
-    listConnectors: (forceRefetch?: boolean) => Promise<Array<{
-      id: string
-      name: string
-      description: string
-      iconUrl: string
-      installUrl: string
-      accessible: boolean
-      enabled: boolean
-      installed: boolean
-      callable: boolean
-      toolNames: string[]
-    }>>
-    installConnector: (connectorId: string, installUrl: string) => Promise<void>
-    listComputerTargets: () => Promise<Array<{
-      id: string
-      kind: 'display' | 'window'
-      label: string
-    }>>
-    interrupt: () => Promise<void>
-    respondToApproval: (
-      requestId: string,
-      decision: 'accept' | 'acceptForSession' | 'decline',
-    ) => Promise<void>
-    dispose: () => Promise<void>
-    onEvent: (listener: (event: unknown) => void) => () => void
-    onPtyData: (listener: (sessionId: string, data: string) => void) => () => void
-    onPtyExit: (listener: (sessionId: string, exitCode: number) => void) => () => void
-  }
   oaErpCredentials: {
     get: (userId: string) => Promise<{
       oaUsername: string
@@ -1172,14 +1055,6 @@ interface WorkbenchBridge {
     openInMain: (url: string) => Promise<void>
     onShown: (listener: () => void) => () => void
     onOpenInApp: (listener: (url: string) => void) => () => void
-  }
-  agentOverlay: {
-    accelerator: string
-    toggle: () => Promise<void>
-    hide: () => Promise<void>
-    setEnabled: (enabled: boolean) => Promise<void>
-    usesGlobalShortcut: () => Promise<boolean>
-    onShown: (listener: () => void) => () => void
   }
   browser: {
     invoke: (method: string, ...args: unknown[]) => Promise<unknown>

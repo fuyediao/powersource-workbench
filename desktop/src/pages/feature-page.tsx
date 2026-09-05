@@ -23,11 +23,6 @@ const CalendarPageLazy = lazy(async () => {
   return { default: module.CalendarPage }
 })
 
-const HarnessPageLazy = lazy(async () => {
-  const module = await import('@/pages/harness-page')
-  return { default: module.HarnessPage }
-})
-
 interface FeaturePageProps {
   feature: FeatureTabId
   userId: string
@@ -83,14 +78,6 @@ export function FeaturePage({
     return (
       <FeatureSuspense>
         <CalendarPageLazy userId={userId} user={user} />
-      </FeatureSuspense>
-    )
-  }
-
-  if (feature === 'harness') {
-    return (
-      <FeatureSuspense>
-        <HarnessPageLazy userId={userId} />
       </FeatureSuspense>
     )
   }

@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench API are documented here.
 
 ## Unreleased
 
+- Removed the Harness API (`/ai/harness`) and desktop_agent module key.
 - Unmounted `/mail/*`. IMAP/SMTP, drafts, and send run on the signed-in Workbench desktop. `send_mail` and `save_mail_draft` on the VPS refuse and tell the agent to use Electron.
 - Dropped Mail and Calendar from first-party `list_entities`. Those datasets are not on company Postgres.
 - Stopped reading Ask/Harness transcripts from Supabase. `search_harness_sessions` on the VPS returns an empty list; the desktop intercepts that tool against local SQLite.

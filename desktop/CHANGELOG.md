@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Removed Harness (Agent) from Home, the title bar, the Go menu, Settings, and the Agent overlay window. Ask chat stays.
 - Stored Mail in local SQLite (`mail.sqlite`) with attachment files under Electron userData. IMAP/SMTP runs in the desktop main process. Company mail tables and Storage are not used.
 - Stored Calendar in local SQLite (`calendar.sqlite`) under Electron userData. Company calendar tables are not used.
 - Stopped Calendar from subscribing to dropped company Realtime tables; the grid reloads from local SQLite only.

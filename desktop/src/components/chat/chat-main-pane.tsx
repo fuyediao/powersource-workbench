@@ -1,6 +1,6 @@
 /**
  * Ask transcript + composer for Artificial Intelligence.
- * `kind` remains for history / session keys (Ask only until Harness is rebuilt).
+ * `kind` remains for history / session keys (Ask only).
  */
 
 import {

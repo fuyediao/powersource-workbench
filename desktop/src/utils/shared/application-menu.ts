@@ -3,7 +3,6 @@ const MENU_NAVIGATE_TARGETS = [
   'home',
   'settings',
   'chat',
-  'harness',
   'mail',
   'calendar',
 ] as const

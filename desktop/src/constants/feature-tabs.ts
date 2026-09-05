@@ -1,7 +1,6 @@
 /** Closable title-bar tabs for Workbench feature pages (like Settings). */
 export const FEATURE_TAB_IDS = [
   'chat',
-  'harness',
   'mail',
   'calendar',
 ] as const
@@ -12,7 +11,6 @@ export type FeatureTabId = (typeof FEATURE_TAB_IDS)[number]
 /**
  * Maps a lowercase `workbench://` host segment to a feature tab id.
  * Artificial Intelligence accepts product hosts (`artificial-intelligence`, `chat`, `ask`, `ai`).
- * Harness accepts `harness` and the legacy `agent` host.
  * @param id - Lowercased deep-link host.
  * @returns Feature tab id, or null.
  */
@@ -25,9 +23,6 @@ function featureTabFromDeepLinkId(id: string): FeatureTabId | null {
     id === 'ask'
   ) {
     return 'chat'
-  }
-  if (id === 'agent') {
-    return 'harness'
   }
   return isFeatureTabId(id) ? id : null
 }
@@ -150,7 +145,6 @@ export function featureTabFromUrl(url: string): FeatureTabId | null {
 /** i18n key for each feature tab title (reuses Functions tile labels). */
 export const FEATURE_TAB_LABEL_KEY: Record<FeatureTabId, string> = {
   chat: 'functions.apps.ask',
-  harness: 'functions.apps.harness',
   mail: 'functions.apps.mail',
   calendar: 'functions.apps.calendar',
 }

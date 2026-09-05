@@ -77,18 +77,6 @@ export const BUNDLED_OPEN_SOURCE_NOTICES: readonly OpenSourceNotice[] = [
     homepage: 'https://github.com/ONLYOFFICE/DocumentServer',
   },
   {
-    id: 'hermes',
-    name: 'Hermes Agent',
-    license: 'MIT',
-    homepage: 'https://github.com/NousResearch/hermes-agent',
-  },
-  {
-    id: 'codex',
-    name: 'Codex',
-    license: 'Apache-2.0',
-    homepage: 'https://github.com/openai/codex',
-  },
-  {
     id: 'univer',
     name: 'Univer',
     license: 'Apache-2.0',

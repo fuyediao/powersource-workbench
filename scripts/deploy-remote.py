@@ -3,9 +3,9 @@
 Packages backend/, uploads a build archive, compiles in a temporary directory
 on the VPS, and recreates the workbench-api container on supabase_default.
 Only /opt/workbench-backend/.env persists. Server keys are copied from the
-existing /opt/supabase-project/.env on that host. Extra Ask/Mail/Harness
-keys are merged in place so ENCRYPTION_KEY survives
-rebuilds. This script does not touch the powersource.app GeoCRM stack.
+existing /opt/supabase-project/.env on that host. Extra Ask keys are merged
+in place so ENCRYPTION_KEY survives rebuilds. This script does not touch
+the powersource.app GeoCRM stack.
 """
 
 from __future__ import annotations
@@ -24,7 +24,6 @@ COMPOSE_DIR = "/opt/supabase-project"
 COMPOSE_FILE = "docker-compose.workbench.yml"
 IMAGE_NAME = "workbench-api:latest"
 REMOTE_TAR = "/tmp/workbench-backend-deploy.tar.gz"
-HERMES_PROFILES_HOST = "/opt/workbench-hermes/profiles"
 
 SKIP_DIRS = {".git", ".idea", "node_modules", "tmp"}
 SKIP_FILES = {".env", ".smoke-out.log", ".smoke-err.log"}
@@ -37,8 +36,6 @@ COMPOSE_CONTENT = f"""services:
     ports:
       - "127.0.0.1:3001:3001"
     env_file: {REMOTE_DIR}/.env
-    volumes:
-      - {HERMES_PROFILES_HOST}:/var/lib/workbench/hermes-profiles
     networks:
       supabase_default:
         aliases:
@@ -104,9 +101,8 @@ REMOTE_DIR={REMOTE_DIR!r}
 COMPOSE_DIR={COMPOSE_DIR!r}
 COMPOSE_FILE={COMPOSE_FILE!r}
 IMAGE_NAME={IMAGE_NAME!r}
-HERMES_PROFILES_HOST={HERMES_PROFILES_HOST!r}
 
-mkdir -p "$REMOTE_DIR" "$HERMES_PROFILES_HOST"
+mkdir -p "$REMOTE_DIR"
 python3 - <<'PY'
 import secrets
 from pathlib import Path
@@ -148,8 +144,6 @@ lines = [
     f"ENCRYPTION_KEY={{encryption_key}}",
     f"APP_PUBLIC_ORIGIN={{keep('APP_PUBLIC_ORIGIN')}}",
     f"APP_PUBLIC_ORIGIN_ALLOWLIST={{keep('APP_PUBLIC_ORIGIN_ALLOWLIST')}}",
-    "HERMES_PROFILES_ROOT=/var/lib/workbench/hermes-profiles",
-    "HERMES_ORG_SKILLS_ROOT=/app/assets/harness/org-skills",
     "",
 ]
 env_path.write_text("\\n".join(lines))
