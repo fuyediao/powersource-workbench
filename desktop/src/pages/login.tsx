@@ -10,7 +10,7 @@ interface LoginPageProps {
 }
 
 /**
- * Renders the password-only Workbench login form.
+ * Renders the employee-id and password Workbench login form.
  * @param props - Authentication state and actions.
  * @returns The login screen.
  */
@@ -37,7 +37,7 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
   }, [])
 
   /**
-   * Submits the username and password sign-in form.
+   * Submits the employee id and password sign-in form.
    * @param event - Form submit event.
    * @returns Nothing.
    */
@@ -58,11 +58,11 @@ export function LoginPage({ error, loading, onLogin }: LoginPageProps) {
             <h2>{t('auth.title')}</h2>
           </div>
           <label>
-            <span>{t('auth.username')}</span>
+            <span>{t('auth.employeeIdLabel')}</span>
             <input
               autoComplete="username"
               autoFocus={usernameReady && username.length === 0}
-              placeholder={t('auth.usernamePlaceholder')}
+              placeholder={t('auth.employeeIdPlaceholder')}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               required

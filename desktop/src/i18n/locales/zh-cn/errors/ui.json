@@ -2,7 +2,7 @@
   "account_disabled": "此账号已停用。",
   "forbidden": "仅系统管理员可执行此操作。",
   "internal_error": "服务器无法完成请求。",
-  "invalid_credentials": "用户名或密码不正确。",
+  "invalid_credentials": "工号或密码不正确。",
   "invalid_session": "会话已过期，请重新登录。",
   "invalid_username": "用户名须为 3–32 位小写字母、数字、点、下划线或连字符。",
   "network_error": "服务不可用。",

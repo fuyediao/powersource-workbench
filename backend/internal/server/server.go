@@ -10,6 +10,7 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/aihttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/auth"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
+	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 	"github.com/fuyediao/powersource-workbench/backend/internal/start"
@@ -18,7 +19,8 @@ import (
 // New builds the Workbench API handler and starts background workers.
 func New(ctx context.Context, env config.Env) http.Handler {
 	sb := supabase.NewService(env.SupabaseURL, env.ResolvedSupabasePublicURL(), env.SupabaseServiceRoleKey, env.SupabaseAnonKey)
-	authHandler := auth.New(sb)
+	authmw.OASecret = auth.SessionSecret(env)
+	authHandler := auth.New(sb, env)
 
 	r := chi.NewRouter()
 	r.Use(httpx.CORS)

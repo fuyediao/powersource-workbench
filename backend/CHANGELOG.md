@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench API are documented here.
 
 ## Unreleased
 
+- Login checks stored super-admin and system-admin accounts first. Other employee ids are verified against POWERSOURCE OA (`OA_VERIFY_URL`, default `http://61.29.250.144:86/`) and receive a Workbench HMAC session. OA employees are not written to Auth or `work_profiles`.
 - Removed the Harness API (`/ai/harness`) and desktop_agent module key.
 - Unmounted `/mail/*`. IMAP/SMTP, drafts, and send run on the signed-in Workbench desktop. `send_mail` and `save_mail_draft` on the VPS refuse and tell the agent to use Electron.
 - Dropped Mail and Calendar from first-party `list_entities`. Those datasets are not on company Postgres.

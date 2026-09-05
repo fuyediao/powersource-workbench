@@ -2,7 +2,7 @@
   "account_disabled": "This account is disabled.",
   "forbidden": "This action is available only to the system administrator.",
   "internal_error": "The server could not complete the request.",
-  "invalid_credentials": "The username or password is incorrect.",
+  "invalid_credentials": "The employee ID or password is incorrect.",
   "invalid_session": "Your session has expired. Sign in again.",
   "invalid_username": "Use 3–32 lowercase letters, numbers, dots, underscores, or hyphens.",
   "network_error": "The service is unavailable.",

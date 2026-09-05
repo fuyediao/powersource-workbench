@@ -7,8 +7,13 @@ import (
 
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/crmadmin"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
+	"github.com/fuyediao/powersource-workbench/backend/internal/shared/oajwt"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
+
+// OASecret is the HMAC key used to accept OA employee sessions.
+// Empty disables OA Bearer tokens (Supabase JWTs still work).
+var OASecret []byte
 
 type contextKey int
 
@@ -38,7 +43,13 @@ func DefaultUnauthorized(w http.ResponseWriter) {
 func RequireUser(sb *supabase.Client, onUnauthorized func(http.ResponseWriter)) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			user, err := sb.GetUser(r.Context(), httpx.BearerToken(r))
+			token := httpx.BearerToken(r)
+			if claims, err := oajwt.ParseAccess(OASecret, token); err == nil {
+				ctx := context.WithValue(r.Context(), userIDKey, oajwt.UserID(claims.Subject))
+				next.ServeHTTP(w, r.WithContext(ctx))
+				return
+			}
+			user, err := sb.GetUser(r.Context(), token)
 			if err != nil || user == nil {
 				onUnauthorized(w)
 				return

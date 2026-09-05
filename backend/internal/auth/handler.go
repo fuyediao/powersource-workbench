@@ -11,13 +11,17 @@ import (
 	"strings"
 	"time"
 
+	"github.com/fuyediao/powersource-workbench/backend/internal/config"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
+	"github.com/fuyediao/powersource-workbench/backend/internal/shared/oajwt"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
 
 // Handler serves /auth/* routes.
 type Handler struct {
-	sb *supabase.Client
+	jwtSecret []byte
+	oaURL     string
+	sb        *supabase.Client
 }
 
 type workProfile struct {
@@ -42,9 +46,22 @@ type sessionResponse struct {
 	User         publicUser `json:"user"`
 }
 
+// SessionSecret returns the HMAC key for OA employee sessions.
+func SessionSecret(env config.Env) []byte {
+	secret := []byte(strings.TrimSpace(env.EncryptionKey))
+	if len(secret) == 0 {
+		secret = []byte(strings.TrimSpace(env.JWTSecret))
+	}
+	return secret
+}
+
 // New constructs an auth handler.
-func New(sb *supabase.Client) *Handler {
-	return &Handler{sb: sb}
+func New(sb *supabase.Client, env config.Env) *Handler {
+	oaURL := strings.TrimSpace(env.OAVerifyURL)
+	if oaURL == "" {
+		oaURL = "http://61.29.250.144:86/"
+	}
+	return &Handler{jwtSecret: SessionSecret(env), oaURL: oaURL, sb: sb}
 }
 
 // Login handles POST /auth/login.
@@ -71,29 +88,15 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		writeSupabase(w, err, "internal_error")
 		return
 	}
-	if profile == nil {
-		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
+	if profile != nil && IsPlatformAdmin(profile.Role) {
+		if profile.Status == "disabled" {
+			httpx.WriteCode(w, http.StatusForbidden, "account_disabled")
+			return
+		}
+		h.loginLocalAdmin(w, r, *profile, body.Password)
 		return
 	}
-	if profile.Status == "disabled" {
-		httpx.WriteCode(w, http.StatusForbidden, "account_disabled")
-		return
-	}
-	authUser, err := h.sb.GetAdminUser(r.Context(), profile.ID)
-	if err != nil || authUser == nil || strings.TrimSpace(authUser.Email) == "" {
-		writeSupabase(w, err, "internal_error")
-		return
-	}
-	session, err := h.sb.SignInPassword(r.Context(), authUser.Email, body.Password)
-	if err != nil {
-		writeSupabase(w, err, "invalid_credentials")
-		return
-	}
-	if session == nil || session.User == nil || session.User.ID == "" {
-		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
-		return
-	}
-	writeSession(w, session, *profile)
+	h.loginOAEmployee(w, username, body.Password)
 }
 
 // Refresh handles POST /auth/refresh.
@@ -103,6 +106,10 @@ func (h *Handler) Refresh(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := httpx.DecodeJSON(r, &body); err != nil || strings.TrimSpace(body.RefreshToken) == "" {
 		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_session")
+		return
+	}
+	if oajwt.IsRefreshToken(body.RefreshToken) {
+		h.refreshOAEmployee(w, body.RefreshToken)
 		return
 	}
 	session, err := h.sb.RefreshSession(r.Context(), body.RefreshToken)
@@ -130,6 +137,10 @@ func (h *Handler) Refresh(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	token := httpx.BearerToken(r)
 	if token != "" {
+		if _, err := oajwt.ParseAccess(h.jwtSecret, token); err == nil {
+			httpx.WriteJSON(w, http.StatusOK, map[string]bool{"ok": true})
+			return
+		}
 		_ = h.sb.Logout(r.Context(), token)
 	}
 	httpx.WriteJSON(w, http.StatusOK, map[string]bool{"ok": true})
@@ -137,6 +148,10 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 
 // Me handles GET /auth/me.
 func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
+	if claims, ok := h.oaAccess(r); ok {
+		httpx.WriteJSON(w, http.StatusOK, oaPublicUser(claims.Subject))
+		return
+	}
 	user, profile, ok := h.requireProfile(w, r)
 	if !ok {
 		return
@@ -203,6 +218,77 @@ func (h *Handler) CreateInvitation(w http.ResponseWriter, r *http.Request) {
 		"expiresAt":      expiresAt,
 		"username":       username,
 	})
+}
+
+func (h *Handler) loginLocalAdmin(w http.ResponseWriter, r *http.Request, profile workProfile, password string) {
+	authUser, err := h.sb.GetAdminUser(r.Context(), profile.ID)
+	if err != nil || authUser == nil || strings.TrimSpace(authUser.Email) == "" {
+		writeSupabase(w, err, "internal_error")
+		return
+	}
+	session, err := h.sb.SignInPassword(r.Context(), authUser.Email, password)
+	if err != nil {
+		writeSupabase(w, err, "invalid_credentials")
+		return
+	}
+	if session == nil || session.User == nil || session.User.ID == "" {
+		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
+		return
+	}
+	writeSession(w, session, profile)
+}
+
+func (h *Handler) loginOAEmployee(w http.ResponseWriter, username, password string) {
+	ok, err := VerifyOA(h.oaURL, username, password)
+	if err != nil {
+		httpx.WriteCode(w, http.StatusServiceUnavailable, "network_error")
+		return
+	}
+	if !ok {
+		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_credentials")
+		return
+	}
+	h.writeOASession(w, username)
+}
+
+func (h *Handler) refreshOAEmployee(w http.ResponseWriter, refreshToken string) {
+	claims, err := oajwt.ParseRefresh(h.jwtSecret, refreshToken)
+	if err != nil {
+		httpx.WriteCode(w, http.StatusUnauthorized, "invalid_session")
+		return
+	}
+	h.writeOASession(w, claims.Subject)
+}
+
+func (h *Handler) writeOASession(w http.ResponseWriter, username string) {
+	pair, err := oajwt.IssuePair(h.jwtSecret, username)
+	if err != nil {
+		httpx.WriteCode(w, http.StatusInternalServerError, "internal_error")
+		return
+	}
+	httpx.WriteJSON(w, http.StatusOK, sessionResponse{
+		AccessToken:  pair.AccessToken,
+		RefreshToken: pair.RefreshToken,
+		ExpiresIn:    pair.ExpiresIn,
+		User:         oaPublicUser(username),
+	})
+}
+
+func (h *Handler) oaAccess(r *http.Request) (*oajwt.Claims, bool) {
+	claims, err := oajwt.ParseAccess(h.jwtSecret, httpx.BearerToken(r))
+	if err != nil {
+		return nil, false
+	}
+	return claims, true
+}
+
+func oaPublicUser(username string) publicUser {
+	return publicUser{
+		ID:          oajwt.UserID(username),
+		Username:    username,
+		DisplayName: username,
+		Role:        "member",
+	}
 }
 
 func (h *Handler) requireProfile(w http.ResponseWriter, r *http.Request) (*supabase.User, *workProfile, bool) {

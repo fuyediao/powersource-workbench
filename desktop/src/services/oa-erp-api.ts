@@ -5,6 +5,7 @@
 
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { fetchWorkUsername } from '@/services/profile-api'
+import { employeeIdFromRemoteOaUserId, isRemoteOaUserId } from '@/utils/auth/workbench-username'
 
 /** Credentials used by Settings and POWERSOURCE autofill. */
 export interface OaErpCredentials {
@@ -52,11 +53,15 @@ function oaErpCredentialsBridge(): Window['workbench']['oaErpCredentials'] | nul
  * @returns Trimmed username or leftover employee id, or empty
  */
 async function fetchEmployeeId(userId: string): Promise<string> {
+  const fromOa = employeeIdFromRemoteOaUserId(userId)
+  if (fromOa) {
+    return fromOa
+  }
   const username = await fetchWorkUsername(userId)
   if (username) {
     return username
   }
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return ''
   }
   const { data, error } = await supabase

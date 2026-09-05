@@ -1,4 +1,4 @@
-import type { InvitationResult, WorkbenchUser } from '@/types/auth'
+import { isPlatformAdminRole, type InvitationResult, type WorkbenchUser } from '@/types/auth'
 import {
   persistAuthSession,
   persistLastUsername,
@@ -48,9 +48,9 @@ async function ensureSession(): Promise<StoredAuthSession> {
 }
 
 /**
- * Signs in through the Workbench Go API with a username and password.
- * @param username - Workbench username. Email is not accepted.
- * @param password - Existing account password.
+ * Signs in through the Workbench Go API with an employee id and password.
+ * @param username - Employee id (ps####). Email is not accepted.
+ * @param password - OA password, or the stored admin password.
  * @returns The authenticated Workbench user.
  */
 export async function signIn(username: string, password: string): Promise<WorkbenchUser> {
@@ -60,7 +60,9 @@ export async function signIn(username: string, password: string): Promise<Workbe
     password,
   })
   await persistTokenResponse(response.data)
-  await persistLastUsername(trimmed)
+  if (isPlatformAdminRole(response.data.user.role)) {
+    await persistLastUsername(trimmed)
+  }
   return response.data.user
 }
 

@@ -6,8 +6,35 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/fuyediao/powersource-workbench/backend/internal/shared/oajwt"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
 )
+
+func TestRequireUserAcceptsOAAccessToken(t *testing.T) {
+	secret := []byte("unit-test-secret-unit-test-secret")
+	OASecret = secret
+	t.Cleanup(func() { OASecret = nil })
+	pair, err := oajwt.IssuePair(secret, "ps0042")
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler := RequireUser(
+		supabase.NewService("http://127.0.0.1:9", "http://127.0.0.1:9", "service-key", "anon-key"),
+		DefaultUnauthorized,
+	)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if got := UserIDFrom(r); got != "oa:ps0042" {
+			t.Fatalf("user id = %q", got)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	request := httptest.NewRequest(http.MethodGet, "/", nil)
+	request.Header.Set("Authorization", "Bearer "+pair.AccessToken)
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, request)
+	if recorder.Code != http.StatusNoContent {
+		t.Fatalf("status = %d, want 204", recorder.Code)
+	}
+}
 
 func TestRequireGroupOrSystemAdminRejectsOrdinaryUser(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

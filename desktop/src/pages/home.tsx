@@ -149,7 +149,9 @@ function CategoryAppsSection({
                 : 'translate-y-0 opacity-100'
             }`}
           >
-            {t('status.appsCount', { count: appsCount })}
+            {t(isFunctions ? 'status.functionsCount' : 'status.websitesCount', {
+              count: appsCount,
+            })}
           </p>
           {canEditLayout ? (
             <button

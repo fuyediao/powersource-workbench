@@ -4,6 +4,10 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Sign-in asks for employee id and password. Only super admin and system admin usernames are remembered on this PC. Other employees receive a remote OA session and are not stored as Workbench users.
+- Renamed the Home Functions rail title from Apps to Features so Apps can later
+  mean installed software on this PC. The Features count says N features; the
+  Websites rail says N websites.
 - Removed Harness (Agent) from Home, the title bar, the Go menu, Settings, and the Agent overlay window. Ask chat stays.
 - Stored Mail in local SQLite (`mail.sqlite`) with attachment files under Electron userData. IMAP/SMTP runs in the desktop main process. Company mail tables and Storage are not used.
 - Stored Calendar in local SQLite (`calendar.sqlite`) under Electron userData. Company calendar tables are not used.

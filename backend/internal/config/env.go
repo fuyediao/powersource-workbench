@@ -24,6 +24,7 @@ type Env struct {
 	GoogleRedirectURI  string
 
 	JWTSecret            string
+	OAVerifyURL          string
 	MCPOAuthClientID     string
 	MCPOAuthClientSecret string
 
@@ -52,6 +53,7 @@ func Load() Env {
 		GoogleRedirectURI:  strings.TrimSpace(os.Getenv("GOOGLE_REDIRECT_URI")),
 
 		JWTSecret:            strings.TrimSpace(os.Getenv("JWT_SECRET")),
+		OAVerifyURL:          strings.TrimSpace(os.Getenv("OA_VERIFY_URL")),
 		MCPOAuthClientID:     strings.TrimSpace(os.Getenv("MCP_OAUTH_CLIENT_ID")),
 		MCPOAuthClientSecret: strings.TrimSpace(os.Getenv("MCP_OAUTH_CLIENT_SECRET")),
 

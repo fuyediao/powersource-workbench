@@ -142,6 +142,7 @@ lines = [
     f"SUPABASE_SERVICE_ROLE_KEY={{service}}",
     "SUPABASE_PUBLIC_URL=https://supabase.powersource.work",
     f"ENCRYPTION_KEY={{encryption_key}}",
+    f"OA_VERIFY_URL={{keep('OA_VERIFY_URL', 'http://61.29.250.144:86/')}}",
     f"APP_PUBLIC_ORIGIN={{keep('APP_PUBLIC_ORIGIN')}}",
     f"APP_PUBLIC_ORIGIN_ALLOWLIST={{keep('APP_PUBLIC_ORIGIN_ALLOWLIST')}}",
     "",

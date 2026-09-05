@@ -2,7 +2,7 @@
   "account_disabled": "此帳號已停用。",
   "forbidden": "僅系統管理員可執行此操作。",
   "internal_error": "伺服器無法完成請求。",
-  "invalid_credentials": "使用者名稱或密碼不正確。",
+  "invalid_credentials": "工號或密碼不正確。",
   "invalid_session": "工作階段已過期，請重新登入。",
   "invalid_username": "使用者名稱須為 3–32 位小寫字母、數字、點、底線或連字號。",
   "network_error": "服務不可用。",

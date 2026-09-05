@@ -1,5 +1,6 @@
 {
-  "appsCount": "{{count}} 个应用程序",
+  "functionsCount": "{{count}} 项功能",
+  "websitesCount": "{{count}} 个网页",
   "createFailed": "新增失败，请检查网址与名称后再试。",
   "databaseError": "无法加载应用数据，请刷新后再试。",
   "loading": "加载中",

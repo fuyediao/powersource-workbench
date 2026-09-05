@@ -1,6 +1,6 @@
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { PROFILE_AVATARS_BUCKET, type ProfileRow } from '@/types/crm-settings'
-import { publicContactEmail } from '@/utils/auth/workbench-username'
+import { isRemoteOaUserId, publicContactEmail } from '@/utils/auth/workbench-username'
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024
 
@@ -52,7 +52,7 @@ async function encodeAvatarWebp(file: File): Promise<{ blob: Blob; contentType: 
  * @returns Profile row or null.
  */
 export async function fetchProfile(userId: string): Promise<ProfileRow | null> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return null
   }
   const { data, error } = await supabase
@@ -75,7 +75,7 @@ export async function fetchProfile(userId: string): Promise<ProfileRow | null> {
 export async function fetchWorkProfileIdentity(
   userId: string,
 ): Promise<{ username: string; displayName: string }> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return { username: '', displayName: '' }
   }
   const { data, error } = await supabase
@@ -115,7 +115,7 @@ export async function createProfile(input: {
   language?: string | null
   employeeId?: string | null
 }): Promise<ProfileRow | null> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(input.id)) {
     return null
   }
   const { error } = await supabase.from('profiles').insert({
@@ -158,7 +158,7 @@ export async function upsertProfileFields(
     avatar_index: number | null
   }>,
 ): Promise<boolean> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return false
   }
   const nextPatch = { ...patch }
@@ -190,7 +190,7 @@ export async function uploadProfileAvatar(
   userId: string,
   file: File,
 ): Promise<{ publicUrl: string } | { error: string }> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return { error: 'not_configured' }
   }
   if (file.size > MAX_AVATAR_BYTES) {
@@ -218,7 +218,7 @@ export async function uploadProfileAvatar(
  * @returns Nothing.
  */
 export async function deleteProfileAvatar(userId: string): Promise<void> {
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
     return
   }
   try {

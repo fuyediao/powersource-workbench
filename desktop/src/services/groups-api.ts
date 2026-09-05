@@ -1,5 +1,6 @@
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import type { UserRole } from '@/types/crm-settings'
+import { isRemoteOaUserId } from '@/utils/auth/workbench-username'
 
 export interface ProfileSnippet {
   id: string
@@ -58,7 +59,7 @@ export async function fetchUserRole(userId: string): Promise<UserRole> {
     return pending
   }
   const promise = (async (): Promise<UserRole> => {
-    if (!isSupabaseConfigured || !supabase) {
+    if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
       return 'user'
     }
     const { data, error } = await supabase
@@ -176,7 +177,7 @@ export async function fetchCurrentGroup(userId: string): Promise<GroupRecord | n
     return pending
   }
   const promise = (async (): Promise<GroupRecord | null> => {
-    if (!isSupabaseConfigured || !supabase) {
+    if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
       return null
     }
     const { data: adminGroup } = await supabase

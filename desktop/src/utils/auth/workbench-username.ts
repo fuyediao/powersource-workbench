@@ -1,5 +1,29 @@
 import type { User } from '@supabase/supabase-js'
 
+/** Prefix on Workbench user ids issued after OA verification. */
+const REMOTE_OA_USER_PREFIX = 'oa:'
+
+/**
+ * Returns whether this id belongs to an OA employee (not a stored Auth user).
+ * @param userId - Workbench user id.
+ * @returns True for `oa:{employeeId}` ids.
+ */
+export function isRemoteOaUserId(userId: string | null | undefined): boolean {
+  return Boolean(userId?.startsWith(REMOTE_OA_USER_PREFIX))
+}
+
+/**
+ * Reads the employee id from an OA Workbench user id.
+ * @param userId - Workbench user id.
+ * @returns Employee id, or empty when the id is not an OA session.
+ */
+export function employeeIdFromRemoteOaUserId(userId: string | null | undefined): string {
+  if (!isRemoteOaUserId(userId) || !userId) {
+    return ''
+  }
+  return userId.slice(REMOTE_OA_USER_PREFIX.length).trim().toLowerCase()
+}
+
 /** Host used for GoTrue-only emails. Not a contact address. */
 export const SYNTHETIC_AUTH_EMAIL_HOST = 'users.invalid'
 
@@ -85,6 +109,10 @@ export function usernameFromAuthUser(user: User | null | undefined): string {
   const fromApp = readUsernameField(user?.app_metadata)
   if (fromApp) {
     return fromApp
+  }
+  const fromOa = employeeIdFromRemoteOaUserId(user?.id)
+  if (fromOa) {
+    return fromOa
   }
   return usernameFromSyntheticAuthEmail(user?.email)
 }

@@ -3,6 +3,9 @@ import type { Session, User } from '@supabase/supabase-js'
 import i18n from '@/i18n'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { loadSession, signIn as signInRequest, signOut as signOutRequest } from '@/services/auth-api'
+import type { WorkbenchUser } from '@/types/auth'
+import { sessionFromRemoteOaUser } from '@/utils/auth/oa-session'
+import { isRemoteOaUserId } from '@/utils/auth/workbench-username'
 import {
   hydrateAuthSession,
   persistAuthSession,
@@ -41,7 +44,8 @@ async function persistSupabaseSession(nextSession: Session): Promise<void> {
 
 /**
  * Applies persisted Workbench tokens to the Supabase client.
- * @returns The active Supabase session or null when tokens are unusable.
+ * OA employee tokens are not Supabase JWTs; those fail here and stay in the machine cache.
+ * @returns The active Supabase session or null when tokens are not a Supabase session.
  */
 async function applyStoredSession(): Promise<Session | null> {
   if (!supabase) {
@@ -52,23 +56,31 @@ async function applyStoredSession(): Promise<Session | null> {
     await supabase.auth.signOut()
     return null
   }
-  const { data, error } = await supabase.auth.setSession({
+  const { data } = await supabase.auth.setSession({
     access_token: stored.accessToken,
     refresh_token: stored.refreshToken,
   })
-  if (data.session) {
-    return data.session
-  }
-  if (error && isInvalidSessionError(error)) {
-    await persistAuthSession(null)
-    await supabase.auth.signOut()
+  return data.session ?? null
+}
+
+/**
+ * Restores a renderer session from a validated Workbench user and cached tokens.
+ * @param user - Public user from /auth/me or /auth/login.
+ * @returns A Supabase session, or a synthetic OA session.
+ */
+function sessionForWorkbenchUser(user: WorkbenchUser): Session | null {
+  const stored = readAuthSession()
+  if (!stored) {
     return null
+  }
+  if (isRemoteOaUserId(user.id)) {
+    return sessionFromRemoteOaUser(user, stored)
   }
   return null
 }
 
 /**
- * Manages Workbench username/password auth and mirrors tokens into Supabase.
+ * Manages Workbench employee-id auth and mirrors admin tokens into Supabase.
  * @returns Current session state and sign-in/sign-out actions.
  */
 export function useAuth(): AuthState {
@@ -97,8 +109,9 @@ export function useAuth(): AuthState {
           }
           return
         }
+        let workbenchUser: WorkbenchUser | null = null
         try {
-          await loadSession()
+          workbenchUser = await loadSession()
         } catch (restoreError) {
           if (isInvalidSessionError(restoreError)) {
             await persistAuthSession(null)
@@ -110,6 +123,7 @@ export function useAuth(): AuthState {
           }
         }
         const nextSession = await applyStoredSession()
+          ?? (workbenchUser ? sessionForWorkbenchUser(workbenchUser) : null)
         if (active) {
           setSession(nextSession)
         }
@@ -159,9 +173,9 @@ export function useAuth(): AuthState {
   }, [])
 
   /**
-   * Signs in with a Workbench username and password.
-   * @param username - Workbench username.
-   * @param password - Account password.
+   * Signs in with an employee id and password.
+   * @param username - Employee id (ps####).
+   * @param password - OA password, or the stored admin password.
    * @returns True when a session was created.
    */
   const login = useCallback(async (username: string, password: string): Promise<boolean> => {
@@ -172,8 +186,8 @@ export function useAuth(): AuthState {
     setError(null)
     setIsActionLoading(true)
     try {
-      await signInRequest(username, password)
-      const nextSession = await applyStoredSession()
+      const user = await signInRequest(username, password)
+      const nextSession = await applyStoredSession() ?? sessionForWorkbenchUser(user)
       if (!nextSession) {
         setError(i18n.t('errors.invalid_session'))
         return false
