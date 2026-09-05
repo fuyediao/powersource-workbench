@@ -15,6 +15,16 @@
 | 打包輸出 | `desktop/release/{version}/` |
 | Supabase Storage bucket | `desktop-releases` |
 
+同一份原始碼在三台機器上的位置：
+
+| 角色 | 路徑 |
+| --- | --- |
+| Windows 原始碼 | `F:\Documents\GitHub\powersource-workbench` |
+| Windows 經 SMB 看 Mac | `\\192.168.50.26\jonathan\Documents\github\powersource-workbench` |
+| Mac 磁碟 | `/Users/jonathan/Documents/github/powersource-workbench` |
+
+macOS 必須在 Mac 上打包（簽名與公證）。Windows 必須在 Windows x64 上打包。上傳時可在 Windows 用 SMB 讀 Mac 打好的 DMG。
+
 版本取自 `desktop/package.json`。若只是修正同一個測試包，可以維持版本不變並覆蓋本機產物；對外發佈時應使用新的 SemVer 版本，避免使用者或快取取得舊檔。
 
 ## 2. 必要環境
@@ -89,11 +99,24 @@ APPLE_KEYCHAIN_PROFILE=Workbench-notary \
   npx electron-builder --mac dmg --arm64
 ```
 
-以 `0.1.0-beta` 為例，主要產物為：
+以 `0.1.0-beta` 為例，主要產物為（`cd desktop` 後的相對路徑）：
 
 ```text
 release/0.1.0-beta/mac-arm64/PowerSource Workbench.app
 release/0.1.0-beta/PowerSource Workbench-0.1.0-beta-arm64.dmg
+```
+
+Mac 磁碟完整路徑：
+
+```text
+/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/mac-arm64/PowerSource Workbench.app
+/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta-arm64.dmg
+```
+
+從 Windows 經 SMB 讀同一個 DMG：
+
+```text
+\\192.168.50.26\jonathan\Documents\github\powersource-workbench\desktop\release\0.1.0-beta\PowerSource Workbench-0.1.0-beta-arm64.dmg
 ```
 
 ## 6. macOS Intel 打包
@@ -109,6 +132,19 @@ APPLE_KEYCHAIN_PROFILE=Workbench-notary \
 ```text
 release/0.1.0-beta/mac/PowerSource Workbench.app
 release/0.1.0-beta/PowerSource Workbench-0.1.0-beta.dmg
+```
+
+Mac 磁碟完整路徑：
+
+```text
+/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/mac/PowerSource Workbench.app
+/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta.dmg
+```
+
+從 Windows 經 SMB：
+
+```text
+\\192.168.50.26\jonathan\Documents\github\powersource-workbench\desktop\release\0.1.0-beta\PowerSource Workbench-0.1.0-beta.dmg
 ```
 
 兩個架構可以一次依序建置：
@@ -299,6 +335,7 @@ Dashboard 若手動上傳，路徑與檔名必須完全符合上表。Authentica
 2. 倉庫根目錄的忽略檔 `.env.vps` 指向 Workbench VPS（`IP`、`Username`、`Passwd`）。
 3. VPS 已套用 `supabase/migrations/20260906020000_desktop_releases_bucket.sql`（`python scripts/deploy-remote.py` 會套用 migrations）。
 4. `download.powersource.work` 已指向同一台主機，並跑過 `python scripts/setup-download-nginx-vps.py`。
+5. `supabase-storage` 的 `FILE_SIZE_LIMIT` 必須 ≥ 1 GiB（`/opt/supabase-project/docker-compose.yml`）。預設 50 MiB 會讓 NSIS／DMG 回 413。
 
 不要把 `SERVICE_ROLE_KEY` 寫進 `desktop/.env` 或文件。腳本會 SSH 進 VPS，從 `/opt/supabase-project/.env` 讀取該金鑰。
 
@@ -306,19 +343,31 @@ Dashboard 若手動上傳，路徑與檔名必須完全符合上表。Authentica
 
 從 repository 根目錄執行。腳本先 SFTP 到 VPS 暫存，再 POST 到 `supabase-storage`，並以 `x-upsert: true` 覆蓋同路徑舊檔。省略 `--name` 時，macOS 預設 `workbench.dmg`、Windows 預設 `workbench.exe`。
 
-以 `0.1.0-beta` → `beta0.1.0` 為例：
+以 `0.1.0-beta` → `beta0.1.0` 為例。在 **Mac** 上（磁碟路徑）：
 
 ```bash
 python3 scripts/upload-desktop-release-vps.py \
-  "desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta-arm64.dmg" \
+  "/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta-arm64.dmg" \
   macos-m beta0.1.0 --name workbench.dmg
 
 python3 scripts/upload-desktop-release-vps.py \
-  "desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta.dmg" \
+  "/Users/jonathan/Documents/github/powersource-workbench/desktop/release/0.1.0-beta/PowerSource Workbench-0.1.0-beta.dmg" \
+  macos-i beta0.1.0 --name workbench.dmg
+```
+
+在 **Windows** 上：Mac DMG 走 SMB，NSIS 走本機 `release/`：
+
+```powershell
+python scripts/upload-desktop-release-vps.py `
+  "\\192.168.50.26\jonathan\Documents\github\powersource-workbench\desktop\release\0.1.0-beta\PowerSource Workbench-0.1.0-beta-arm64.dmg" `
+  macos-m beta0.1.0 --name workbench.dmg
+
+python scripts/upload-desktop-release-vps.py `
+  "\\192.168.50.26\jonathan\Documents\github\powersource-workbench\desktop\release\0.1.0-beta\PowerSource Workbench-0.1.0-beta.dmg" `
   macos-i beta0.1.0 --name workbench.dmg
 
-python3 scripts/upload-desktop-release-vps.py \
-  "desktop/release/0.1.0-beta/PowerSource Workbench Setup 0.1.0-beta.exe" \
+python scripts/upload-desktop-release-vps.py `
+  "desktop\release\0.1.0-beta\PowerSource Workbench Setup 0.1.0-beta.exe" `
   windows beta0.1.0 --name workbench.exe
 ```
 
