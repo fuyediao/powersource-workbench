@@ -1,7 +1,7 @@
 {
   "name": "workbench-electron",
   "productName": "PowerSource Workbench",
-  "version": "0.1.7-beta",
+  "version": "0.1.0-beta",
   "private": true,
   "description": "PowerSource Workbench Electron desktop app",
   "license": "AGPL-3.0",

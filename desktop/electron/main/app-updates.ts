@@ -125,7 +125,7 @@ export async function checkForDesktopUpdate(): Promise<AppUpdateCheckResult> {
 
 /**
  * Whether the running build sits below the server-declared update floor.
- * @param currentVersion - Local release id (e.g. `beta0.1.7`).
+ * @param currentVersion - Local release id (e.g. `beta0.1.0`).
  * @param minSupportedVersion - Manifest floor (dotted, e.g. `0.1.5`), if any.
  * @returns True when `currentVersion` must be treated as a forced update.
  */

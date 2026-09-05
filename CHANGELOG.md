@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Set the desktop package version to 0.1.0-beta.
 - Added a repository-wide `.gitattributes` so text files stay LF across Windows, macOS, and Linux.
 - Ignored macOS `.DS_Store` files so they stay out of source control.
 - Prefills Settings Feedback employee id from the signed-in OA employee id when there is no stored Workbench profile.
