@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Added a static English download page at `web/download/` for `https://binovo.ai/download`.
 - Wired desktop auto-update to the Workbench feed on `download.powersource.work`, matching the GeoCRM installer manifest flow.
 - Set the desktop package version to 0.1.0-beta.
 - Added a repository-wide `.gitattributes` so text files stay LF across Windows, macOS, and Linux.
