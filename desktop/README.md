@@ -14,4 +14,4 @@ Window, tray, and installer icons use the POWERSOURCE mark in `public/app-icon.s
 
 ## Production
 
-The default API origin is `https://api.powersource.work`. The default Supabase origin is `https://supabase.powersource.work`. `VITE_SUPABASE_PUBLISHABLE_KEY` is required and is intentionally safe to embed in the client when RLS and least-privilege grants are active.
+The default API origin is `https://api.powersource.work`. The default Supabase origin is `https://supabase.powersource.work`. The desktop update feed is `https://download.powersource.work/{macos-m|macos-i|windows}/{latest|beta|beta0.1.0}`. `VITE_SUPABASE_PUBLISHABLE_KEY` is required and is intentionally safe to embed in the client when RLS and least-privilege grants are active.

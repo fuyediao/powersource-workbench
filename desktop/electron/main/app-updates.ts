@@ -34,7 +34,7 @@ export function resolveDownloadOrigin(): string {
   if (domain) {
     return `https://download.${domain}`
   }
-  return 'https://download.powersource.app'
+  return 'https://download.powersource.work'
 }
 
 /**

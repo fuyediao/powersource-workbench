@@ -145,6 +145,7 @@ lines = [
     f"OA_VERIFY_URL={{keep('OA_VERIFY_URL', 'http://61.29.250.144:86/')}}",
     f"APP_PUBLIC_ORIGIN={{keep('APP_PUBLIC_ORIGIN')}}",
     f"APP_PUBLIC_ORIGIN_ALLOWLIST={{keep('APP_PUBLIC_ORIGIN_ALLOWLIST')}}",
+    f"DESKTOP_MIN_SUPPORTED_VERSION={{keep('DESKTOP_MIN_SUPPORTED_VERSION')}}",
     "",
 ]
 env_path.write_text("\\n".join(lines))

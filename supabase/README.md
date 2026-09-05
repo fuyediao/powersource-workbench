@@ -15,6 +15,7 @@ GeoCRM on `powersource.app` is a behavior reference only. Do not apply these mig
 | `20260904150000_profile_display_name_not_username.sql` | Stop copying the login username into `profiles.display_name`. |
 | `20260905030000_drop_history_and_map_pins.sql` | Drop `history` and `agent_location_sets` (transcripts are local SQLite). |
 | `20260905145000_drop_desktop_agent.sql` | Drop the `desktop_agent` module key from group desktop access. |
+| `20260906020000_desktop_releases_bucket.sql` | Public `desktop-releases` Storage bucket for installer feeds. |
 
 `scripts/deploy-remote.py` applies these files in name order and records them in `public.workbench_schema_migrations`.
 

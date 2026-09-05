@@ -80,9 +80,9 @@ export function isAllowedUpdateUrl(raw: string): boolean {
  */
 function allowedUpdateHosts(): Set<string> {
   const hosts = new Set([
-    'download.powersource.app',
-    'supabase.powersource.app',
-    'api.powersource.app',
+    'download.powersource.work',
+    'supabase.powersource.work',
+    'api.powersource.work',
   ])
   const domain = process.env.VITE_DEPLOYMENT_DOMAIN?.trim()
     .replace(/^https?:\/\//, '')

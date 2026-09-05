@@ -10,6 +10,7 @@ import (
 	"github.com/fuyediao/powersource-workbench/backend/internal/aihttp"
 	"github.com/fuyediao/powersource-workbench/backend/internal/auth"
 	"github.com/fuyediao/powersource-workbench/backend/internal/config"
+	"github.com/fuyediao/powersource-workbench/backend/internal/download"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/authmw"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/httpx"
 	"github.com/fuyediao/powersource-workbench/backend/internal/shared/supabase"
@@ -33,6 +34,10 @@ func New(ctx context.Context, env config.Env) http.Handler {
 	r.Get("/auth/me", authHandler.Me)
 	r.Post("/auth/invitations", authHandler.CreateInvitation)
 	r.Mount("/start", start.New().Routes())
+
+	downloadHandler := download.New(env, sb)
+	r.Mount("/download", downloadHandler.Routes())
+	downloadHandler.MountReleaseRoutes(r)
 
 	aiHandler := aihttp.New(env, sb)
 	r.Mount("/ai", aiHandler.Routes())

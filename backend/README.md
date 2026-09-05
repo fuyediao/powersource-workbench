@@ -23,6 +23,8 @@ The production host is `https://api.powersource.work` on the Workbench VPS. It t
 | `GET` | `/start/currency/catalog` | Fiat and crypto FX catalog. |
 | `GET` | `/start/currency/convert` | FX conversion (`amount`, `from`, `to`). |
 | `*` | `/ai/*` | Ask chat, customer/KOL summary, model catalog, BYOK ping. |
+| `GET`/`HEAD` | `/{macos-m\|macos-i\|windows}/{release}` | Desktop installer feed (`latest`, `beta`, or `beta0.1.0`). JSON when `Accept: application/json`. |
+| `GET`/`HEAD` | `/download/{macos-m\|macos-i\|windows}/{release}` | Same feed under `/download`. |
 | `GET` | `/health` | Liveness. |
 
 Public `/mcp` and `/office` HTTP mounts are not part of this binary.
@@ -40,4 +42,12 @@ cd ..
 python scripts/deploy-remote.py
 ```
 
-The deploy script merges extra env keys into `/opt/workbench-backend/.env` without wiping `ENCRYPTION_KEY`, applies every file in `supabase/migrations/`, and recreates the container. `scripts/configure-local-env.py` writes local ignored files from the Workbench VPS Supabase keys. The process listen port on the VPS is `3001`.
+The deploy script merges extra env keys into `/opt/workbench-backend/.env` without wiping `ENCRYPTION_KEY` or `DESKTOP_MIN_SUPPORTED_VERSION`, applies every file in `supabase/migrations/`, and recreates the container. `scripts/configure-local-env.py` writes local ignored files from the Workbench VPS Supabase keys. The process listen port on the VPS is `3001`.
+
+Desktop auto-update uses the same GeoCRM feed shape. Packaged Electron checks `https://download.powersource.work/{platform}/latest` (then `beta`, then the running release id). Upload a built installer with:
+
+```powershell
+python scripts/upload-desktop-release-vps.py desktop/release/0.1.0-beta/PowerSource-Workbench-0.1.0-beta-arm64.dmg macos-m beta0.1.0
+```
+
+Point nginx at the feed with `python scripts/setup-download-nginx-vps.py` after `download.powersource.work` resolves to this VPS.

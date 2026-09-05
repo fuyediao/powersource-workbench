@@ -4,6 +4,7 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
+- Pointed auto-update checks and installer downloads at `download.powersource.work` instead of the GeoCRM `.app` hosts.
 - Set the desktop package version to 0.1.0-beta.
 - Prefills Settings Feedback employee id from the signed-in OA employee id when there is no stored Workbench profile.
 - After a successful OA employee sign-in, the login password is copied into Settings OA/ERP on this PC. OA is always updated; ERP is filled only when its password is still empty.

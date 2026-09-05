@@ -31,6 +31,8 @@ type Env struct {
 	OnlyOfficeDSURL         string
 	OnlyOfficeDSInternalURL string
 	OnlyOfficeJWTSecret     string
+
+	DesktopMinSupportedVersion string
 }
 
 // Load reads Workbench API settings from environment variables.
@@ -60,6 +62,8 @@ func Load() Env {
 		OnlyOfficeDSURL:         strings.TrimRight(strings.TrimSpace(os.Getenv("ONLYOFFICE_DS_URL")), "/"),
 		OnlyOfficeDSInternalURL: strings.TrimRight(strings.TrimSpace(os.Getenv("ONLYOFFICE_DS_INTERNAL_URL")), "/"),
 		OnlyOfficeJWTSecret:     strings.TrimSpace(os.Getenv("ONLYOFFICE_JWT_SECRET")),
+
+		DesktopMinSupportedVersion: strings.TrimSpace(os.Getenv("DESKTOP_MIN_SUPPORTED_VERSION")),
 	}
 }
 
