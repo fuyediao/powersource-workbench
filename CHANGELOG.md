@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Pointed the Vercel static site at `web/` and send `/` to `/download` so the production URL is not a 404.
 - Added a static English download page at `web/download/` for `https://binovo.ai/download`.
 - Wired desktop auto-update to the Workbench feed on `download.powersource.work`, matching the GeoCRM installer manifest flow.
 - Set the desktop package version to 0.1.0-beta.

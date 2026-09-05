@@ -10,7 +10,7 @@ GeoCRM on `powersource.app` is a behavior reference only. Workbench runs on its 
 - `backend/`: Go API (`workbench-api`). Password grants, invitation creation, and Home widget proxies (`/start/*`) stay here.
 - `supabase/`: Database migrations for Workbench profiles and leftover customer rows. Mail and Calendar are not stored here.
 - `scripts/`: Ignored environment generation, VPS deploy, and the one-time administrator bootstrap.
-- `web/`: Public static pages. `web/download/` is the installer page for `https://binovo.ai/download`.
+- `web/`: Public static pages. `web/download/` is the installer page for `https://binovo.ai/download`. Vercel serves this folder and rewrites `/` to `/download`.
 
 ## Authentication
 
