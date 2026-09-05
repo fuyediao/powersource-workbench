@@ -1,0 +1,63 @@
+# Monorepo-wide line-ending normalization (Windows / macOS / Linux / CI).
+# See: https://git-scm.com/docs/gitattributes
+* text=auto eol=lf
+
+# Shell / tooling (must stay LF)
+*.sh text eol=lf
+
+# Windows-only scripts: keep CRLF when checked out on Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Treat as text (explicit; redundant with * but documents intent)
+*.css text diff=css
+*.go text
+go.mod text
+go.sum text
+*.html text diff=html
+*.js text
+*.jsx text
+*.cjs text
+*.mjs text
+*.ts text
+*.tsx text
+*.json text
+*.yaml text
+*.yml text
+*.toml text
+*.md text diff=markdown
+*.txt text
+*.xml text
+*.svg text
+*.sql text
+*.py text
+*.swift text
+Dockerfile text
+
+# Binary assets (do not merge / do not EOL-normalize)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.icns binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.7z binary
+*.mp3 binary
+*.mp4 binary
+*.webm binary
+*.wasm binary
+*.exe binary
+*.dll binary
+# Go test binaries
+*.test binary

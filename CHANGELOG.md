@@ -4,6 +4,8 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Added a repository-wide `.gitattributes` so text files stay LF across Windows, macOS, and Linux.
+- Ignored macOS `.DS_Store` files so they stay out of source control.
 - Prefills Settings Feedback employee id from the signed-in OA employee id when there is no stored Workbench profile.
 - After a successful OA employee sign-in, the same password is written to Settings OA/ERP on this PC (OA always; ERP only when still empty).
 - Sign-in now takes an employee id and password. Super admin and system admin still use stored Workbench accounts. Other employees are checked against POWERSOURCE OA on the 61 VPS and are not stored in Workbench. The last successful employee id is remembered on the login form.

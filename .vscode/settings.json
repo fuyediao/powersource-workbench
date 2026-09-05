@@ -1,0 +1,23 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, .oxlintrc.json, electron-builder.json, stylelint.config.*, .env*",
+    "go.mod": "go.sum, .env*, Dockerfile, .dockerignore",
+    "README.md": "CHANGELOG.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, LICENSE, .gitignore, .gitattributes"
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.validate": true,
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.experimental.configFile": "desktop/src/styles/theme.css",
+  "i18n-ally.keystyle": "nested"
+}
