@@ -1,6 +1,6 @@
 # PowerSource Workbench 桌面端打包指南
 
-本文記錄 PowerSource Workbench Electron 桌面端的正式打包流程。macOS 產物必須完成 Developer ID 簽名、Apple 公證（notarization）與票據裝訂（stapling）後才可交付。
+本文記錄 PowerSource Workbench Electron 桌面端的正式打包流程。macOS 產物必須完成 Developer ID 簽名、Apple 公證（notarization）與票據裝訂（stapling）後才可交付。Windows 產物在 x64 本機打 NSIS，流程見第 9 節。
 
 ## 1. 專案與發佈設定
 
@@ -173,20 +173,99 @@ open "/Applications/PowerSource Workbench.app"
 
 ## 9. Windows NSIS 打包
 
-Windows 產物應在 Windows x64 環境打包，不要在 macOS 交叉打包：
+Windows 安裝包必須在 **Windows x64** 上打，不要在 macOS 交叉編譯。Workbench 沒有 Clash / Harness sidecar 預建步驟。
+
+### 9.1 環境
+
+- Windows 10 / 11 x64
+- Node.js 24 以上、npm 10 以上
+- `desktop/.env`（第 3 節；`electron-builder` 會把它打進安裝包）
+- 圖示：`desktop/public/favicon.ico`，NSIS 頁首／側欄點陣圖在 `desktop/build/`
+
+改過品牌 SVG 後，先在 Windows 重出圖示再打包：
+
+```powershell
+cd desktop
+npm run icons:rasterize
+npm run icons:nsis
+```
+
+確認環境：
+
+```powershell
+node --version
+npm --version
+Test-Path desktop\.env
+```
+
+`electron-builder.json` 的 `forceCodeSigning` 預設為 `true`。本機 Windows 目前沒有對外交付用的 Authenticode 憑證，因此打包時必須關掉自動尋憑與強制簽名（見 9.3）。SmartScreen 可能顯示未知發行者。
+
+### 9.2 建置前檢查
+
+在 PowerShell 從 repository 根目錄進入 `desktop/`：
 
 ```powershell
 cd desktop
 npm install
 npm run lint
+npm run lint:style
 npm run typecheck
 npm run build:vite
+```
 
+lint、typecheck 或 Vite 失敗必須先修好。Vite 的 chunk-size 或 native config loader 警告可以忽略。
+
+### 9.3 打 NSIS
+
+```powershell
+cd desktop
 $env:CSC_IDENTITY_AUTO_DISCOVERY = 'false'
 npx electron-builder --win nsis --x64 --config.forceCodeSigning=false
 ```
 
-目前沒有設定 Windows Authenticode 憑證，因此需以 `forceCodeSigning=false` 建置，使用者可能看到未知發行者提示。
+不要省略 `--win nsis --x64`，否則可能連 macOS / Linux 目標一起跑。`CSC_IDENTITY_AUTO_DISCOVERY=false` 加上 `forceCodeSigning=false` 才不會因為本機找不到碼簽憑證而失敗。
+
+安裝程式設定（`electron-builder.json` → `nsis`）：
+
+- 非一鍵安裝，可改安裝目錄
+- 多語系：`en_US`、`zh_TW`、`zh_CN`
+- `compression: maximum`
+- 不產生 differential package
+
+以 `0.1.0-beta` 為例，主要產物為：
+
+```text
+desktop/release/0.1.0-beta/PowerSource Workbench Setup 0.1.0-beta.exe
+desktop/release/0.1.0-beta/win-unpacked/
+```
+
+`win-unpacked` 是未封裝的可執行目錄，給本機試跑用。對外交付只上傳 Setup `.exe`。`0.1.0-beta` 的壓縮安裝包大約 137 MiB。
+
+### 9.4 核對產物
+
+只核對路徑與雜湊，不要把 `.env` 內容印到終端：
+
+```powershell
+$version = "0.1.0-beta"
+$release = "desktop\release\$version"
+Get-Item "$release\PowerSource Workbench Setup $version.exe"
+Get-FileHash -Algorithm SHA256 "$release\PowerSource Workbench Setup $version.exe"
+Get-FileHash -Algorithm SHA256 desktop\.env
+Get-FileHash -Algorithm SHA256 "$release\win-unpacked\resources\.env"
+```
+
+兩個 `.env` 的 SHA-256 應一致。Setup 檔案存在且大小不是接近 0 即可進入上傳或本機安裝。
+
+### 9.5 本機安裝
+
+退出正在執行的 Workbench，再跑 Setup：
+
+```powershell
+Stop-Process -Name "PowerSource Workbench" -ErrorAction SilentlyContinue
+Start-Process -FilePath "desktop\release\0.1.0-beta\PowerSource Workbench Setup 0.1.0-beta.exe"
+```
+
+安裝完成後從開始功能表或安裝目錄啟動。本機試裝不必上傳；要對外發佈時依第 10 節把 Setup 上傳為 `windows/beta0.1.0/workbench.exe`。
 
 ## 10. 上傳到 Supabase Storage
 

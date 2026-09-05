@@ -4,6 +4,7 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
+- Documented the Windows NSIS packaging flow in `docs/desktop-packaging.md`.
 - Documented how packaged installers are uploaded into the Workbench `desktop-releases` Storage bucket.
 - Loaded download-page CSS, icon, and script from `/download/` so `/download` without a trailing slash still styles.
 - Pointed the Vercel static site at `web/` and send `/` to `/download` so the production URL is not a 404.
