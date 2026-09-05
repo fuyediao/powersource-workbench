@@ -4,10 +4,11 @@
   "buildCommand": "true",
   "installCommand": "echo skipped",
   "outputDirectory": "web",
+  "trailingSlash": true,
   "rewrites": [
     {
       "source": "/",
-      "destination": "/download"
+      "destination": "/download/"
     }
   ]
 }
