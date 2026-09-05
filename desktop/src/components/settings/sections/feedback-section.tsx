@@ -2,7 +2,10 @@ import { useEffect, useRef, useState, type ClipboardEvent, type DragEvent } from
 import { useTranslation } from 'react-i18next'
 import { ClipboardIcon, CloudUploadIcon } from '@/icons/AllIcons'
 import { fetchProfile, fetchWorkUsername } from '@/services/profile-api'
-import { publicContactEmail } from '@/utils/auth/workbench-username'
+import {
+  employeeIdFromRemoteOaUserId,
+  publicContactEmail,
+} from '@/utils/auth/workbench-username'
 import {
   FEEDBACK_MAX_IMAGES,
   FeedbackSubmitError,
@@ -71,7 +74,10 @@ export function FeedbackSection({ userId, fallbackEmail }: FeedbackSectionProps)
         setEmail(
           publicContactEmail(profile?.email) || publicContactEmail(fallbackEmail),
         )
-        const staffId = workUsername || profile?.employee_id?.trim() || ''
+        const staffId =
+          workUsername ||
+          profile?.employee_id?.trim() ||
+          employeeIdFromRemoteOaUserId(userId)
         if (staffId) {
           setEmployeeId(staffId)
         }

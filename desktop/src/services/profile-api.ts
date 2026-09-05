@@ -1,6 +1,10 @@
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { PROFILE_AVATARS_BUCKET, type ProfileRow } from '@/types/crm-settings'
-import { isRemoteOaUserId, publicContactEmail } from '@/utils/auth/workbench-username'
+import {
+  employeeIdFromRemoteOaUserId,
+  isRemoteOaUserId,
+  publicContactEmail,
+} from '@/utils/auth/workbench-username'
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024
 
@@ -75,7 +79,11 @@ export async function fetchProfile(userId: string): Promise<ProfileRow | null> {
 export async function fetchWorkProfileIdentity(
   userId: string,
 ): Promise<{ username: string; displayName: string }> {
-  if (!isSupabaseConfigured || !supabase || isRemoteOaUserId(userId)) {
+  const oaUsername = employeeIdFromRemoteOaUserId(userId)
+  if (oaUsername) {
+    return { username: oaUsername, displayName: '' }
+  }
+  if (!isSupabaseConfigured || !supabase) {
     return { username: '', displayName: '' }
   }
   const { data, error } = await supabase

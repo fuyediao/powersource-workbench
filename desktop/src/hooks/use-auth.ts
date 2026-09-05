@@ -3,6 +3,7 @@ import type { Session, User } from '@supabase/supabase-js'
 import i18n from '@/i18n'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { loadSession, signIn as signInRequest, signOut as signOutRequest } from '@/services/auth-api'
+import { seedOaErpCredentialsFromLogin } from '@/services/oa-erp-api'
 import type { WorkbenchUser } from '@/types/auth'
 import { sessionFromRemoteOaUser } from '@/utils/auth/oa-session'
 import { isRemoteOaUserId } from '@/utils/auth/workbench-username'
@@ -191,6 +192,9 @@ export function useAuth(): AuthState {
       if (!nextSession) {
         setError(i18n.t('errors.invalid_session'))
         return false
+      }
+      if (isRemoteOaUserId(user.id)) {
+        await seedOaErpCredentialsFromLogin(user.id, user.username || username, password)
       }
       setSession(nextSession)
       return true

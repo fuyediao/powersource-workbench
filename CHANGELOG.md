@@ -4,7 +4,9 @@ All notable changes to PowerSource Workbench are documented here.
 
 ## Unreleased
 
-- Sign-in now takes an employee id and password. Super admin and system admin still use stored Workbench accounts. Other employees are checked against POWERSOURCE OA on the 61 VPS and are not stored in Workbench.
+- Prefills Settings Feedback employee id from the signed-in OA employee id when there is no stored Workbench profile.
+- After a successful OA employee sign-in, the same password is written to Settings OA/ERP on this PC (OA always; ERP only when still empty).
+- Sign-in now takes an employee id and password. Super admin and system admin still use stored Workbench accounts. Other employees are checked against POWERSOURCE OA on the 61 VPS and are not stored in Workbench. The last successful employee id is remembered on the login form.
 - Removed the Harness (Agent) product surface: Home tile, feature tab, overlay, Settings block, Electron Codex host, `/ai/harness` API, and the `desktop_agent` module key. Ask chat stays.
 - Stored Mail (IMAP/SMTP, bodies, attachments) and Calendar on this PC in Electron SQLite. Dropped the unused company mail and calendar tables plus the `mail-attachments` Storage bucket.
 - Stored Ask and Harness transcripts in local SQLite on this PC. Dropped the unused company `history` and `agent_location_sets` tables.

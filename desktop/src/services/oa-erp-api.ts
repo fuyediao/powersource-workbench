@@ -150,3 +150,34 @@ export async function saveOaErpCredentials(
     erpPassword,
   }
 }
+
+/**
+ * Writes a successful OA login into local OA/ERP Settings credentials.
+ * OA password is always replaced with the password that just worked.
+ * ERP password is filled only when it is still empty, so a custom ERP secret is kept.
+ * @param userId - Signed-in Workbench user id.
+ * @param username - Employee id used at sign-in.
+ * @param password - Plaintext password accepted by OA.
+ * @returns Nothing. Failures are ignored so sign-in still succeeds.
+ */
+export async function seedOaErpCredentialsFromLogin(
+  userId: string,
+  username: string,
+  password: string,
+): Promise<void> {
+  const loginUsername = username.trim()
+  if (!userId.trim() || !loginUsername || !password) {
+    return
+  }
+  try {
+    const current = await fetchOaErpCredentials(userId)
+    await saveOaErpCredentials(userId, {
+      oaUsername: current.oaUsername.trim() || loginUsername,
+      oaPassword: password,
+      erpUsername: current.erpUsername.trim() || loginUsername,
+      erpPassword: current.erpPassword || password,
+    })
+  } catch {
+    // Local SQLite is optional for sign-in; Settings can still be filled later.
+  }
+}

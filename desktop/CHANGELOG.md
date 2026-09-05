@@ -4,7 +4,9 @@ All notable changes to the PowerSource Workbench desktop application are documen
 
 ## Unreleased
 
-- Sign-in asks for employee id and password. Only super admin and system admin usernames are remembered on this PC. Other employees receive a remote OA session and are not stored as Workbench users.
+- Prefills Settings Feedback employee id from the signed-in OA employee id when there is no stored Workbench profile.
+- After a successful OA employee sign-in, the login password is copied into Settings OA/ERP on this PC. OA is always updated; ERP is filled only when its password is still empty.
+- Sign-in asks for employee id and password. The last successful employee id is remembered on the login form. Other employees receive a remote OA session and are not stored as Workbench users.
 - Renamed the Home Functions rail title from Apps to Features so Apps can later
   mean installed software on this PC. The Features count says N features; the
   Websites rail says N websites.

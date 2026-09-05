@@ -1,4 +1,4 @@
-import { isPlatformAdminRole, type InvitationResult, type WorkbenchUser } from '@/types/auth'
+import type { InvitationResult, WorkbenchUser } from '@/types/auth'
 import {
   persistAuthSession,
   persistLastUsername,
@@ -60,9 +60,7 @@ export async function signIn(username: string, password: string): Promise<Workbe
     password,
   })
   await persistTokenResponse(response.data)
-  if (isPlatformAdminRole(response.data.user.role)) {
-    await persistLastUsername(trimmed)
-  }
+  await persistLastUsername(trimmed)
   return response.data.user
 }
 
